@@ -183,16 +183,16 @@ package body Root.Eyrie is
       elsif Character'Pos (Option) - 96 = C_Idx - 1 then
         -- Choose multiple clearings, pick lowest eyrie warriors/priority
         declare
-          IL : Input_List (1..12);
+          PL : Priority_List;
           Min : Integer := MEEPLE_MAX;
           Min_P : Integer := 1;
         begin
-          IL := Get_List ("clearings with the most enemies");
-          for I in IL'Range loop
-            if IL (I) /= 0 then
-              if M (IL (I)).C_Suit = S and Roosts (IL (I)) and Meeples (IL (I)) <= Min then
-                Min := Meeples (IL (I));
-                Min_P := IL (I);
+          PL := Get_List ("clearings with the most enemies");
+          for I in PL'Range loop
+            if PL (I) /= 0 then
+              if M (PL (I)).C_Suit = S and Roosts (PL (I)) and Meeples (PL (I)) <= Min then
+                Min := Meeples (PL (I));
+                Min_P := PL (I);
               end if;
             end if;
           end loop;
@@ -214,12 +214,49 @@ package body Root.Eyrie is
     end if;
   end Recruit;
 
+  -- Move phase of daylight --
   procedure Move (S : Suit; M : Map_T) is
     Max : Integer := 0;
     Max_Idx : Integer;
+    Clearings : Priority_List := (others => 0);
+    Count : Integer := 0;
   begin
-    Put_Line (S'Image & ": Unimplemented!");
-    return;
+    -- Find matching clearings with warriors --
+    for I in M'Range loop
+      if M (I).C_Suit = S and Meeples (I) > 0 then
+        Count := Count + 1;
+        Clearings (Count) := I;
+      end if;
+    end loop;
+
+    if Count = 0 then
+      return;
+    end if;
+
+    -- Print options --
+    Put_Line ("Which of these clearings do you rule:");
+    Put_Line ("--------------------");
+    declare
+      C_Idx : Integer := 1;
+    begin
+      for I in 1..Count loop
+        Put_Line (" " & Character'Val (96 + C_Idx) & "." & Clearings (I)'Image);
+        C_Idx := C_Idx + 1;
+      end loop;
+    end;
+    Put_Line ("--------------------");
+
+    declare
+      OL : Option_List (1..Count);
+    begin
+      OL := Get_List (Count);
+      if OL (1) = Character'Val (0) then
+        return;
+      end if;
+
+      Put_Line ("Move unimplemented");
+      -- Determine clearing, determine enemy warriors in that clearing
+    end;
 
     for I in M'Range loop
       -- Inherently accounts for priority --
