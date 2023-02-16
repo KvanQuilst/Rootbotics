@@ -159,7 +159,7 @@ package body Root.Eyrie is
       Put_Line (" " & Character'Val (96 + C_Idx) & ". no enemies");
       Put_Line ("--------------------");
 
-      Get_Input (Option, C_Idx);
+      Get_Option (Option, C_Idx);
 
       -- No enemies --
       if Character'Pos (Option) - 96 = C_Idx then
@@ -216,8 +216,6 @@ package body Root.Eyrie is
 
   -- Move phase of daylight --
   procedure Move (S : Suit; M : Map_T) is
-    Max : Integer := 0;
-    Max_Idx : Integer;
     Clearings : Priority_List := (others => 0);
     Count : Integer := 0;
   begin
@@ -234,7 +232,7 @@ package body Root.Eyrie is
     end if;
 
     -- Print options --
-    Put_Line ("Which of these clearings do you rule:");
+    Put_Line ("Which of these " & S'Image & " clearings do you rule:");
     Put_Line ("--------------------");
     declare
       C_Idx : Integer := 1;
@@ -248,27 +246,65 @@ package body Root.Eyrie is
 
     declare
       OL : Option_List (1..Count);
+      Max : Integer := 0;
+      Max_Idx : Integer;
+      Min : Integer := MEEPLE_MAX;
+      Min_Idx : Integer;
+      Val : Integer range 0..MEEPLE_MAX;
     begin
       OL := Get_List (Count);
       if OL (1) = Character'Val (0) then
         return;
       end if;
 
-      Put_Line ("Move unimplemented");
-      -- Determine clearing, determine enemy warriors in that clearing
-    end;
+      for I in OL'Range loop
+        Val := Clearings (Character'Pos (OL (I)) - 96);
 
-    for I in M'Range loop
-      -- Inherently accounts for priority --
-      if Meeples (I) > Max and M (I).C_Suit = S then
-        Max := Meeples (I);
-        Max_Idx := I;
+        -- Determine if neighbors all have roosts --
+        for J in M (Val).Neighbors'Range loop
+          -- If a neighbor doesn't have a roost and this clearing --
+          -- has the most warriors                                --
+          if M (Val).Neighbors (J) /= 0 then 
+            if not Roosts (M (Val).Neighbors (J)) and 
+               Meeples (Val) > Max then
+              Max := Meeples (Val);
+              Max_Idx := Val;
+            end if;
+          end if;
+        end loop;
+      end loop;
+      
+      -- If there's a clearing with neighbors without roosts --
+      if Max > 0 then
+        for I in M (Max_Idx).Neighbors'Range loop
+          if M (Max_Idx).Neighbors (I) /= 0 then
+            if not Roosts (M (Max_Idx).Neighbors (I)) then
+              Put_Line ("What is the total number of enemy PIECES in clearing" &
+                          M (Max_Idx).Neighbors (I)'Image & ":");
+              Get_Input (Val);
+
+              -- Addresses lowest priority --
+              if Val <= Min then
+                Min := Val;
+                Min_Idx := M (Max_Idx).Neighbors (I);
+              end if;
+            end if;
+          end if;
+        end loop;
+
+        Put_Line ("How many warriors do the Electric Eyrie need to rule clearing" &
+                  Max_Idx'Image & ":");
+        Get_Input (Val);
+        Val := (if Val > Decrees (S) then Val else Decrees (S));
+        Val := Meeples (Max_Idx) - Val;
+        Put_Line ("Move" & Val'Image & " warriors from clearing" & Max_Idx'Image &
+                  " to clearing" & Min_Idx'Image & ".");
+
+      -- All neighbors have a roost --
+      else
+        null;
       end if;
-    end loop;
-
-    if Max = 0 then
-      return;
-    end if;
+    end;
 
   end Move;
 

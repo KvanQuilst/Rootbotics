@@ -4,7 +4,7 @@ with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 package body Root is
   package Int_IO is new Integer_IO (Integer); use Int_IO;
 
-  procedure Get_Input (C : out Character; Num_Opts : Integer) is
+  procedure Get_Option (C : out Character; Num_Opts : Integer) is
   begin
     Put ("Option: ");
     Get (C);
@@ -13,6 +13,22 @@ package body Root is
       Put_Line ("Invalid option!");
       Put ("Option: ");
       Get (C);
+    end loop;
+  end Get_Option;
+
+  function Get_Input_Internal (I : out Integer) return Boolean is
+  begin
+    Get (I);
+    return true;
+  exception
+    when others =>
+      return False;
+  end Get_Input_Internal;
+
+  procedure Get_Input (I : out Integer) is
+  begin
+    while not Get_Input_Internal (I) loop
+      Put_Line ("Invalid input!");
     end loop;
   end Get_Input;
 
