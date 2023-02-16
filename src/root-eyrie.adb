@@ -39,10 +39,12 @@ package body Root.Eyrie is
   -- Take Turn --
   ---------------
   procedure Recruit (S : Suit; M : Map_T);
-  procedure Move (S : Suit; M : Map_T); 
+  procedure Move    (S : Suit; M : Map_T); 
+  procedure Battle  (S : Suit; M : Map_T; Most : Boolean);
 
   procedure Take_Turn (Order : Suit; M : Map_T) is
     Max : Suit;
+    Tie : Boolean := False;
   begin
 
     -- Electric Eyrie Stats --
@@ -89,7 +91,9 @@ package body Root.Eyrie is
     
     Max := Fox;
     for I in Decrees'Range loop
-      if Decrees(I) > Decrees(Max) then
+      if I /= Max and Decrees (I) = Decrees (Max) then
+        Tie := True;
+      elsif Decrees (I) > Decrees (Max) then
          Max := I;
       end if;
     end loop;
@@ -106,15 +110,21 @@ package body Root.Eyrie is
 
       -- Move --
     Put_Line ("--  Move");
-      for I in Decrees'Range loop
-        if Decrees (I) > 0 then
-          Move (I, M);
-        end if;
-      end loop;
+    for I in Decrees'Range loop
+      if Decrees (I) > 0 then
+        Move (I, M);
+      end if;
+    end loop;
 
     Wait_Continue;
     
       -- Battle --
+    Put_Line ("-- Battle");
+    for I in Decrees'Range loop
+      if Decrees (I) > 0 then
+        Battle (I, M, Max = I and not Tie);
+      end if;
+    end loop;
 
       -- Build --
 
@@ -308,5 +318,10 @@ package body Root.Eyrie is
                 " to clearing" & Min_Idx'Image);
     end if;
   end Move;
+
+  procedure Battle (S : Suit; M : Map_T; Most : Boolean) is
+  begin
+    null;
+  end Battle;
 
 end Root.Eyrie;
