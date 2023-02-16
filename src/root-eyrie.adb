@@ -46,9 +46,9 @@ package body Root.Eyrie is
   begin
 
     -- Electric Eyrie Stats --
-    Put_Line ("--------------------");
+    Put_Line ("-------------------------");
     New_Line;
-    Put_Line ("   Electric Eyrie   ");
+    Put_Line ("      Electric Eyrie     ");
     New_Line;
     Put_Line (" Meeple Supply:" & Meeple_Supply'Image);
     Put_Line ("  Roost Supply:" & Roost_Supply'Image);
@@ -58,7 +58,10 @@ package body Root.Eyrie is
                           & Decrees (Mouse)'Image & " "
                           & Decrees (Rabbit)'Image & " "
                           & Decrees (Bird)'Image);
-    Put_Line ("--------------------");
+    New_Line;
+    Put_Line (" Current Order: " & Order'Image);
+    New_Line;
+    Put_Line ("-------------------------");
 
     if Meeple_Supply = MEEPLE_MAX and Roost_Supply = ROOST_MAX then
       Put_Line ("The Electric Eyrie cannot do anything!");
@@ -74,6 +77,8 @@ package body Root.Eyrie is
     
     Put_Line ("Craft order card for (+ 1) if it has an available item.");
     Decrees (Order) := Decrees (Order) + 1;
+
+    Wait_Continue;
 
     -- Daylight --
     New_Line;
@@ -96,7 +101,8 @@ package body Root.Eyrie is
         Recruit (I, M);        
       end if;      
     end loop;
-    New_Line;
+
+    Wait_Continue;
 
       -- Move --
     Put_Line ("--  Move");
@@ -105,7 +111,8 @@ package body Root.Eyrie is
           Move (I, M);
         end if;
       end loop;
-    New_Line;
+
+    Wait_Continue;
     
       -- Battle --
 
@@ -251,7 +258,7 @@ package body Root.Eyrie is
     declare
       OL : Option_List (1..Count);
     begin
-      OL := Get_List (Count);
+      Get_List (OL);
       if OL (1) = Character'Val (0) then
         return;
       end if;

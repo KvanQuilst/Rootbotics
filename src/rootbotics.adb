@@ -22,7 +22,7 @@ begin
   Put_Line ("More factions to get added later!");
   Put_Line ("--------------------");
 
-  OL := Get_List (4);
+  Get_List (OL);
 
   if OL (1) = Character'Val (0) then
     return;

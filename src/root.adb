@@ -17,8 +17,10 @@ package body Root is
   end Get_Option;
 
   function Get_Input_Internal (I : out Integer) return Boolean is
+    Line : Unbounded_String;
   begin
     Get (I);
+    Line := To_Unbounded_String (Get_Line);
     return true;
   exception
     when others =>
@@ -67,12 +69,11 @@ package body Root is
   end Get_List;
 
 
-  function Get_List_Internal (OL : out Option_List;
-                               Num_Opts : Positive) return Boolean is
+  function Get_List_Internal (OL : out Option_List) return Boolean is
     Line : Unbounded_String;
     Last : Integer := 0;
     Count : Integer := 1;
-    Opt : Character range 'a' .. Character'Val (96 + Num_Opts);
+    Opt : Character range 'a' .. Character'Val (96 + OL'Length);
   begin
     for I in OL'Range loop
       OL (I) := Character'Val (0);
@@ -95,15 +96,23 @@ package body Root is
 
   -- Get space separated list of options --
   -- Checks for error                    --
-  function Get_List (Num_Opts : Positive) return Option_List is
-    OL : Option_List (1..Num_Opts);
+  procedure Get_List (OL : out Option_List) is
   begin
     Put_Line ("Provide a space separated list of options that apply:");
-    while not Get_List_Internal (OL, Num_Opts) loop
+    while not Get_List_Internal (OL) loop
       Put_Line ("Invalid input!");
       Put_Line ("Provide a spae separated list of options that apply:");
     end loop;
-    return OL;
   end Get_List;
+
+
+  procedure Wait_Continue is
+    Line : Unbounded_String;
+  begin
+    New_Line;
+    Put ("Press enter to continue...");
+    Line := To_Unbounded_String (Get_Line);
+    New_Line;
+  end Wait_Continue;
 
 end Root;

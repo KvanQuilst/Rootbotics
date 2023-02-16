@@ -1,0 +1,6 @@
+obj/
+*.stderr
+*.stdout
+*.ali
+*.o
+rootbotics

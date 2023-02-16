@@ -11,6 +11,8 @@ package Root is
   procedure Get_Option (C : out Character; Num_Opts : Integer);
   procedure Get_Input  (I : out Integer);
   function Get_List    (Values : String) return Priority_List;
-  function Get_List    (Num_Opts : Positive) return Option_List;
+  procedure Get_List   (OL : out Option_List);
+
+  procedure Wait_Continue;
 
 end Root;
