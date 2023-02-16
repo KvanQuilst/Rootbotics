@@ -272,7 +272,7 @@ package body Root.Eyrie is
       for I in M (Max_Idx).Neighbors'Range loop
         if M (Max_Idx).Neighbors (I) /= 0 then
           Put ("What is the total number of enemy PIECES in clearing" &
-               M (Max_Idx).Neighbors (I)'Image & ":");
+               M (Max_Idx).Neighbors (I)'Image & ": ");
           Get_Input (Val);
 
           -- Track for all neighbors --
@@ -293,12 +293,12 @@ package body Root.Eyrie is
       Min_Idx := (if Min_RIdx /= 0 then Min_RIdx else Min_Idx);
 
       Put ("How many warriors do the Electric Eyrie need to rule clearing" &
-           Max_Idx'Image & ":");
+           Max_Idx'Image & ": ");
       Get_Input (Val);
       Val := (if Val > Decrees (S) then Val else Decrees (S));
       Val := Meeples (Max_Idx) - Val;
       Put_Line ("Move" & Val'Image & " warriors from clearing" & Max_Idx'Image &
-                " to clearing" & Min_Idx'Image & ".");
+                " to clearing" & Min_Idx'Image);
     end if;
   end Move;
 
