@@ -72,9 +72,9 @@ package body Root.Eyrie is
 
     -- Birdsong --
     New_Line; 
-    Put_Line ("--------------------");
-    Put_Line ("      Birdsong      ");
-    Put_Line ("--------------------");
+    Put_Line ("-------------------------");
+    Put_Line ("        Birdsong      ");
+    Put_Line ("-------------------------");
     New_Line;
     
     Put_Line ("Craft order card for (+ 1) if it has an available item.");
@@ -84,9 +84,9 @@ package body Root.Eyrie is
 
     -- Daylight --
     New_Line;
-    Put_Line ("--------------------");
-    Put_Line ("      Daylight      ");
-    Put_Line ("--------------------");
+    Put_Line ("-------------------------");
+    Put_Line ("        Daylight      ");
+    Put_Line ("-------------------------");
     New_Line;
     
     Max := Fox;
@@ -130,9 +130,9 @@ package body Root.Eyrie is
 
     -- Evening --
     New_Line;
-    Put_Line ("--------------------");
-    Put_Line ("       Evening      ");
-    Put_Line ("--------------------");
+    Put_Line ("-------------------------");
+    Put_Line ("         Evening      ");
+    Put_Line ("-------------------------");
     New_Line;
 
     Put ("Score (+" & Roost_Points'Image & ") points for the Electric Eyrie.");
@@ -163,7 +163,7 @@ package body Root.Eyrie is
     -- Multiple clearings to pick from
     if C_Idx > 2 then
       Put_Line ("Which clearing has the most enemies: ");
-      Put_Line ("--------------------");
+      Put_Line ("-------------------------");
       C_Idx := 1;
       for J in Clearings'Range loop
         if Clearings (J) /= 0 then
@@ -174,7 +174,7 @@ package body Root.Eyrie is
       Put_Line (" " & Character'Val (96 + C_Idx) & ". multiple");
       C_Idx := C_Idx + 1;
       Put_Line (" " & Character'Val (96 + C_Idx) & ". no enemies");
-      Put_Line ("--------------------");
+      Put_Line ("-------------------------");
 
       Get_Option (Option, C_Idx);
 
@@ -254,7 +254,7 @@ package body Root.Eyrie is
 
     -- Print options --
     Put_Line ("Which of these " & S'Image & " clearings do you rule:");
-    Put_Line ("--------------------");
+    Put_Line ("-------------------------");
     declare
       C_Idx : Integer := 1;
     begin
@@ -263,7 +263,8 @@ package body Root.Eyrie is
         C_Idx := C_Idx + 1;
       end loop;
     end;
-    Put_Line ("--------------------");
+    Put_Line ("    Press enter for 'none'");
+    Put_Line ("-------------------------");
 
     declare
       OL : Option_List (1..Count);
@@ -290,7 +291,7 @@ package body Root.Eyrie is
         if M (Max_Idx).Neighbors (I) /= 0 then
           Put ("What is the total number of enemy PIECES in clearing" &
                M (Max_Idx).Neighbors (I)'Image & ": ");
-          Get_Input (Val);
+          Get_Input (Val, 0, 30);
 
           -- Track for all neighbors --
           if Val <= Min then
@@ -311,7 +312,8 @@ package body Root.Eyrie is
 
       Put ("How many warriors do the Electric Eyrie need to rule clearing" &
            Max_Idx'Image & ": ");
-      Get_Input (Val);
+      Get_Input (Val, 0, 30);
+      -- TODO Check if eyrie remains in rule if moved --
       Val := (if Val > Decrees (S) then Val else Decrees (S));
       Val := Meeples (Max_Idx) - Val;
       Put_Line ("Move" & Val'Image & " warriors from clearing" & Max_Idx'Image &
@@ -320,8 +322,32 @@ package body Root.Eyrie is
   end Move;
 
   procedure Battle (S : Suit; M : Map_T; Most : Boolean) is
+    Clearings : array (Integer range 1..4) of Integer range 0..12 := (others => 0);
+    Count : Integer := 0;
   begin
-    null;
+    -- Find matching clearings with warriors --
+    for I in M'Range loop
+      if M (I).C_Suit = S and Meeples (I) > 0 then
+        Count := Count + 1;
+        Clearings (Count) := I;
+      end if;
+    end loop;
+
+    if Count = 0 then
+      return;
+    end if;
+
+    declare
+      Enemy_Build : array (Integer range 1..Count) of Integer range 0..3;
+    begin
+      -- Determine which clearing has the most enemy buildings --
+      for I in Enemy_Build'Range loop
+        Put ("How many buildings does the enemy with the most buildings have" &
+             " in clearing" & Clearings (I)'Image & ": ");
+        Get_Input (Enemy_Build (I), 0, 3);
+      end loop;
+    end;
+
   end Battle;
 
 end Root.Eyrie;

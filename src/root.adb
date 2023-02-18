@@ -16,20 +16,22 @@ package body Root is
     end loop;
   end Get_Option;
 
-  function Get_Input_Internal (I : out Integer) return Boolean is
+  function Get_Input_Internal (I : out Integer; Low, High : Integer) return Boolean is
     Line : Unbounded_String;
+    Val  : Integer range Low .. High;
   begin
-    Get (I);
+    Get (Val);
     Line := To_Unbounded_String (Get_Line);
+    I := Val;
     return true;
   exception
     when others =>
       return False;
   end Get_Input_Internal;
 
-  procedure Get_Input (I : out Integer) is
+  procedure Get_Input (I : out Integer; Low, High : Integer) is
   begin
-    while not Get_Input_Internal (I) loop
+    while not Get_Input_Internal (I, Low, High) loop
       Put_Line ("Invalid input!");
     end loop;
   end Get_Input;
