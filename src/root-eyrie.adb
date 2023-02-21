@@ -65,6 +65,8 @@ package body Root.Eyrie is
     New_Line;
     Put_Line ("-------------------------");
 
+    -- TODO Determine lost warriors --
+
     if Meeple_Supply = MEEPLE_MAX and Roost_Supply = ROOST_MAX then
       Put_Line ("The Electric Eyrie cannot do anything!");
       return;

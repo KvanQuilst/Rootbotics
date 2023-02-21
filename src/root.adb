@@ -16,6 +16,21 @@ package body Root is
     end loop;
   end Get_Option;
 
+  function Get_YN return Boolean is
+    Line : Unbounded_String;
+    C : Character := 'a';
+  begin
+    Put ("Option: ");
+    Get (C);
+    while C /= 'y' or C /= 'n' loop
+      Put_Line ("Invalid input!");
+      Put ("Option: ");
+      Get (C);
+      Line := To_Unbounded_String (Get_Line);
+    end loop;
+    return C = 'y';
+  end Get_YN;
+
   function Get_Input_Internal (I : out Integer; Low, High : Integer) return Boolean is
     Line : Unbounded_String;
     Val  : Integer range Low .. High;

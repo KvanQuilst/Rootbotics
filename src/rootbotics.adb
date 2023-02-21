@@ -3,6 +3,7 @@ with Ada.Text_IO; use Ada.Text_IO;
 with Root; use Root;
 with Root.Map;
 with Root.Eyrie;
+with Root.Marquise;
 
 procedure Rootbotics is
   VERSION : constant String := "v0.1";
@@ -43,7 +44,16 @@ begin
     if Playing (I) then
       case I is
         when Marquise =>
-          Put_Line ("The Mechanical Marquise 2.0 is unimplemented!");
+          declare
+            Corner : Integer range 1..4;
+          begin
+            Put ("Which corner clearing will the Mechanical Marquise 2.0 start in: ");
+            Get_Input (Corner, 1, 4);
+            while not Root.Marquise.Setup (Corner, Default) loop
+              Put ("Which corner clearing will the Mechanical Marquise 2.0 start in: ");
+              Get_Input (Corner, 1, 4);
+            end loop;
+          end;
 
         when Eyrie =>
           declare
