@@ -48,7 +48,7 @@ package body Root.Eyrie is
   begin
 
     -- Electric Eyrie Stats --
-    Put_Line ("-------------------------");
+    Separator;
     New_Line;
     Put_Line ("      Electric Eyrie     ");
     New_Line;
@@ -63,7 +63,7 @@ package body Root.Eyrie is
     New_Line;
     Put_Line (" Current Order: " & Order'Image);
     New_Line;
-    Put_Line ("-------------------------");
+    Separator;
 
     -- TODO Determine lost warriors --
 
@@ -74,9 +74,9 @@ package body Root.Eyrie is
 
     -- Birdsong --
     New_Line; 
-    Put_Line ("-------------------------");
+    Separator;
     Put_Line ("        Birdsong      ");
-    Put_Line ("-------------------------");
+    Separator;
     New_Line;
     
     Put_Line ("Craft order card for (+ 1) if it has an available item.");
@@ -86,9 +86,9 @@ package body Root.Eyrie is
 
     -- Daylight --
     New_Line;
-    Put_Line ("-------------------------");
+    Separator;
     Put_Line ("        Daylight      ");
-    Put_Line ("-------------------------");
+    Separator;
     New_Line;
     
     Max := Fox;
@@ -132,9 +132,9 @@ package body Root.Eyrie is
 
     -- Evening --
     New_Line;
-    Put_Line ("-------------------------");
+    Separator;
     Put_Line ("         Evening      ");
-    Put_Line ("-------------------------");
+    Separator;
     New_Line;
 
     Put ("Score (+" & Roost_Points'Image & ") points for the Electric Eyrie.");

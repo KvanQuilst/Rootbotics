@@ -132,4 +132,9 @@ package body Root is
     New_Line;
   end Wait_Continue;
 
+  procedure Separator is
+  begin
+    Put_Line ("-------------------------");
+  end Separator;
+
 end Root;

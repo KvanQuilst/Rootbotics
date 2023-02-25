@@ -4,11 +4,12 @@ with Root; use Root;
 with Root.Map;
 with Root.Eyrie;
 with Root.Marquise;
+with Root.Vagabot; use Root.Vagabot;
 
 procedure Rootbotics is
   VERSION : constant String := "v0.1";
 
-  OL : Option_List (1..4);
+  OL  : Option_List (1..4);
   
   -- In order of setup priority --
   type Faction is (Marquise, Eyrie, Alliance, Vagabot);
@@ -17,7 +18,7 @@ begin
   Put_Line ("Welcome to the Rootbotics Logic Tool " & VERSION & "!");
   New_Line;
   Put_Line ("Which of the following clockwork factions will you be playing with:");
-  Put_Line ("-------------------------");
+  Separator;
   Put_Line (" a. Mechanical Marquise 2.0");
   Put_Line (" b. Electric Eyrie");
   Put_Line (" c. Automated Alliance");
@@ -25,7 +26,7 @@ begin
   Put_Line ("    No specified options to quit");
   New_Line;
   Put_Line ("More factions to get added later!");
-  Put_Line ("-------------------------");
+  Separator;
 
   Get_List (OL);
 
@@ -43,36 +44,67 @@ begin
   for I in Playing'Range loop
     if Playing (I) then
       case I is
+
+        -----------------------------
+        -- Mechanical Marquise 2.0 --
+        -----------------------------
         when Marquise =>
           declare
             Corner : Integer range 1..4;
           begin
-            Put ("Which corner clearing will the Mechanical Marquise 2.0 start in: ");
-            Get_Input (Corner, 1, 4);
-            while not Root.Marquise.Setup (Corner, Default) loop
+            loop
               Put ("Which corner clearing will the Mechanical Marquise 2.0 start in: ");
               Get_Input (Corner, 1, 4);
+
+              exit when Root.Marquise.Setup (Corner, Default);
             end loop;
           end;
 
+        --------------------
+        -- Electric Eyrie --
+        --------------------
         when Eyrie =>
           declare
             Corner : Integer range 1..4;
           begin
-            Put ("Which corner clearing will the Electric Eyrie start in: ");
-            Get_Input (Corner, 1, 4);
-            while not Root.Eyrie.Setup (Corner, Default) loop
+            loop
               Put ("Which corner clearing will the Electric Eyrie start in: ");
               Get_Input (Corner, 1, 4);
+
+              exit when Root.Eyrie.Setup (Corner, Default);
             end loop;
           end;
 
+        ------------------------
+        -- Automated Alliance --
+        ------------------------
         when Alliance =>
           Put_Line ("The Automated Alliance is unimplmented!");
 
+        -------------
+        -- Vagabot --
+        -------------
         when Vagabot =>
-          Put_Line ("The Vagabot is unimplemented!");
+          declare
+            Opt : Character;
+            Char : V_Character;
+          begin
+            loop
+              Put ("Which character will the Vagabot be playing:");
+              Separator;
+              Put (" a. Thief");
+              Put (" b. Tinker");
+              Put (" c. Ranger");
+              Put (" d. Vagrant");
+              Put (" e. Scoundrel");
+              Put (" f. Arbiter");
+              Separator;
+              Get_Option (Opt, 6);
+              Char := V_Character'Val (Character'Pos (Opt) - 96);
 
+              exit when Root.Vagabot.Setup (Char, Default);
+            end loop;
+          end;
       end case;
     end if;
   end loop;

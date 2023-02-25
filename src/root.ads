@@ -15,5 +15,6 @@ package Root is
   procedure Get_List   (OL : out Option_List);
 
   procedure Wait_Continue;
+  procedure Separator;
 
 end Root;

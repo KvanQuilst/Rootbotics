@@ -24,7 +24,7 @@ package body Root.Marquise is
   begin
 
     -- Mechanical Marquise 2.0 State --
-    Put_Line ("-------------------------");
+    Separtor;
     New_Line;
     Put_Line (" Mechanical Marquise 2.0");
     New_Line;
@@ -35,7 +35,7 @@ package body Root.Marquise is
     New_Line;
     Put_Line (" Current Order: " & Order'Image);
     New_Line;
-    Put_Line ("-------------------------");
+    Separator;
 
     -- TODO Determine lost warriors --
 
@@ -47,9 +47,9 @@ package body Root.Marquise is
 
     -- Birdsong --
     New_Line;
-    Put_Line ("-------------------------");
+    Separator;
     Put_Line ("        Birdsong      ");
-    Put_Line ("-------------------------");
+    Separator;
     New_Line;
   
     Put_Line ("Craft order card for (+ 1) if it has an available item.");
@@ -58,9 +58,9 @@ package body Root.Marquise is
 
     -- Daylight --
     New_Line;
-    Put_Line ("-------------------------");
+    Separator;
     Put_Line ("        Daylight      ");
-    Put_Line ("-------------------------");
+    Separator;
     New_Line;
 
     while Expand loop
@@ -89,9 +89,9 @@ package body Root.Marquise is
 
     -- Evening --
     New_Line;
-    Put_Line ("-------------------------");
+    Separator;
     Put_Line ("         Evening      ");
-    Put_Line ("-------------------------");
+    Separator;
     New_Line;
 
     Put ("Score  (+");
