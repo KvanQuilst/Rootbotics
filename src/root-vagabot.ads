@@ -17,6 +17,8 @@ private
   type Item_Arr    is array (Integer range 1..MAX_ITEMS) of Item_State;
   subtype Item_Idx is Integer range 0..MAX_ITEMS;
 
+  Special : access procedure;
+
   -- Order: [Unexhausted items, Exhausted items] --
   Undamaged : Item_Arr := (others => Empty);
   Undamaged_Idx : Item_Idx;

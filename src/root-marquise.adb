@@ -24,9 +24,9 @@ package body Root.Marquise is
   begin
 
     -- Mechanical Marquise 2.0 State --
-    Separtor;
+    Separator;
     New_Line;
-    Put_Line (" Mechanical Marquise 2.0");
+    Put_Line_Center ("Mechanical Marquise 2.0");
     New_Line;
     Put_Line ("    Meeple Supply:" & Meeple_Supply'Image);
     Put_Line ("   Sawmill Supply:" & Sawmill_Supply'Image);
@@ -41,27 +41,20 @@ package body Root.Marquise is
 
     -- Have the marquise lost? --
     if Meeple_Supply = MEEPLE_SUPPLY then
+      New_Line;
       Put_Line ("The Mechanical Marquise 2.0 cannot do anything!");
       return;
     end if;
 
     -- Birdsong --
-    New_Line;
-    Separator;
-    Put_Line ("        Birdsong      ");
-    Separator;
-    New_Line;
+    Put_Birdsong;
   
     Put_Line ("Craft order card for (+ 1) if it has an available item.");
 
     Wait_Continue;
 
     -- Daylight --
-    New_Line;
-    Separator;
-    Put_Line ("        Daylight      ");
-    Separator;
-    New_Line;
+    Put_Daylight;
 
     while Expand loop
 
@@ -88,11 +81,7 @@ package body Root.Marquise is
     end loop;
 
     -- Evening --
-    New_Line;
-    Separator;
-    Put_Line ("         Evening      ");
-    Separator;
-    New_Line;
+    Put_Evening;
 
     Put ("Score  (+");
     declare

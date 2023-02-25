@@ -50,7 +50,7 @@ package body Root.Eyrie is
     -- Electric Eyrie Stats --
     Separator;
     New_Line;
-    Put_Line ("      Electric Eyrie     ");
+    Put_Line_Center ("Electric Eyrie");
     New_Line;
     Put_Line (" Meeple Supply:" & Meeple_Supply'Image);
     Put_Line ("  Roost Supply:" & Roost_Supply'Image);
@@ -68,29 +68,22 @@ package body Root.Eyrie is
     -- TODO Determine lost warriors --
 
     if Meeple_Supply = MEEPLE_MAX and Roost_Supply = ROOST_MAX then
+      New_Line;
       Put_Line ("The Electric Eyrie cannot do anything!");
       return;
     end if;
 
     -- Birdsong --
-    New_Line; 
-    Separator;
-    Put_Line ("        Birdsong      ");
-    Separator;
-    New_Line;
-    
+    Put_Birdsong; 
+
     Put_Line ("Craft order card for (+ 1) if it has an available item.");
     Decrees (Order) := Decrees (Order) + 1;
 
     Wait_Continue;
 
     -- Daylight --
-    New_Line;
-    Separator;
-    Put_Line ("        Daylight      ");
-    Separator;
-    New_Line;
-    
+    Put_Daylight; 
+
     Max := Fox;
     for I in Decrees'Range loop
       if I /= Max and Decrees (I) = Decrees (Max) then
@@ -131,11 +124,7 @@ package body Root.Eyrie is
       -- Build --
 
     -- Evening --
-    New_Line;
-    Separator;
-    Put_Line ("         Evening      ");
-    Separator;
-    New_Line;
+    Put_Evening;
 
     Put ("Score (+" & Roost_Points'Image & ") points for the Electric Eyrie.");
 

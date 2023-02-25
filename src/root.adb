@@ -137,4 +137,40 @@ package body Root is
     Put_Line ("-------------------------");
   end Separator;
 
+  procedure Put_Line_Center (S : String) is
+    Start : Integer;
+  begin
+    Start := (WIDTH / 2) - (S'Length / 2) + 1;
+    for I in 1..Start loop
+      Put (" ");
+    end loop;
+    Put_Line (S);
+  end Put_Line_Center;
+
+  procedure Put_Birdsong is
+  begin
+    New_Line; 
+    Separator;
+    Put_Line_Center ("Birdsong");
+    Separator;
+    New_Line;
+  end Put_Birdsong;
+
+  procedure Put_Daylight is
+  begin
+    New_Line; 
+    Separator;
+    Put_Line_Center ("Daylight");
+    Separator;
+    New_Line;
+  end Put_Daylight;
+
+  procedure Put_Evening is
+  begin
+    New_Line; 
+    Separator;
+    Put_Line_Center ("Evening");
+    Separator;
+    New_Line;
+  end Put_Evening;
 end Root;
