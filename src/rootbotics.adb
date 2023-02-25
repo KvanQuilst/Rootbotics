@@ -9,10 +9,12 @@ with Root.Vagabot; use Root.Vagabot;
 procedure Rootbotics is
   VERSION : constant String := "v0.1";
 
-  OL  : Option_List (1..4);
-  
   -- In order of setup priority --
-  type Faction is (Marquise, Eyrie, Alliance, Vagabot);
+  type Faction is (Marquise, Eyrie, Alliance, Vagabot, 
+                   Lizards, Riverfolk, Corvids, Duchy);
+
+  OL  : Option_List (1..Faction'Pos (Faction'Last));
+
   Playing : array (Faction'Range) of Boolean := (others => False);
 begin
   Put_Line ("Welcome to the Rootbotics Logic Tool " & VERSION & "!");
@@ -23,12 +25,16 @@ begin
   Put_Line (" b. Electric Eyrie");
   Put_Line (" c. Automated Alliance");
   Put_Line (" d. Vagabot");
+  Put_Line (" e. Logical Lizards");
+  Put_Line (" f. Riverfolk Robots");
+  Put_Line (" g. Cogwheel Corvids");
+  Put_Line (" h. Drillbit Duchy");
   Put_Line ("    No specified options to quit");
   New_Line;
   Put_Line ("More factions to get added later!");
   Separator;
 
-  Get_List (OL);
+  Get_List (OL, OL'Length);
 
   if OL (1) = Character'Val (0) then
     return;
@@ -105,6 +111,31 @@ begin
               exit when Root.Vagabot.Setup (Char, Default);
             end loop;
           end;
+
+        ---------------------
+        -- Logical Lizards --
+        ---------------------
+        when Lizards =>
+          Put_Line ("The Logical Lizards are unimplemented!");
+
+        ----------------------
+        -- Riverfolk Robots --
+        ----------------------
+        when Riverfolk =>
+          Put_Line ("The Riverfolk Robots are unimplemented!");
+
+        ----------------------
+        -- Cogwheel Corvids --
+        ----------------------
+        when Corvids =>
+          Put_Line ("The Cogwheel Corvids are unimplemented!");
+
+        --------------------
+        -- Drillbit Duchy --
+        --------------------
+        when Duchy =>
+          Put_Line ("The Drillbit Duchy is unimplemented!");
+
       end case;
     end if;
   end loop;

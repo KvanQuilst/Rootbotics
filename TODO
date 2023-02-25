@@ -1,0 +1,51 @@
+GENERAL
+--------------------
+- Handle difficulty query
+- Handle user taking turn
+- Enable user to quit out of turn at start
+
+CLOCKWORK 1
+--------------------
+
+Mechanical Marquise 2.0:
+  - Implement Setup
+  - Implement Move
+  - Handle Expand Action (Take_Turn)
+    - New Order
+  - Handle Marquise Losing (Take_Turn)
+  - Implement Difficulty
+
+Electric Eyrie:
+  - Implement Build
+  - Finished Battle
+  - Make sure Move and Recruit are correct
+  - Implement Difficulty
+
+Automated Alliance:
+  - Implement All
+
+Vagabot:
+  - Implement Thief, Thinker, Ranger_Special
+  - Implement Take_Turn
+  - Implement Explore, Quest, Aid, Battle
+  - Implement Difficulty
+
+CLOCKWORK 2
+--------------------
+
+-- BUY THE EXPANSION
+
+Logical Lizards:
+  - Implement All
+
+Riverfolk Robots:
+  - Implement All
+
+Cogwheel Corvids:
+  - Implement All
+
+ Drillbit Duchy:
+  - Implement All
+
+Vagabot:
+  - Implement Vagrant, Scoundrel, Arbiter_Special

@@ -195,12 +195,18 @@ package body Root.Vagabot is
     -- Birdsong --
     Put_Birdsong;
 
+    Wait_Continue;
+
     -- Daylight --
     Put_Daylight;
+
+    Wait_Continue;
 
     -- Evening --
     Put_Evening; 
     
+    Wait_Continue;
+
   end Take_Turn;
 
   procedure Explore is

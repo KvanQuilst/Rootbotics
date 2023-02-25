@@ -260,7 +260,7 @@ package body Root.Eyrie is
     declare
       OL : Option_List (1..Count);
     begin
-      Get_List (OL);
+      Get_List (OL, Count);
       if OL (1) = Character'Val (0) then
         return;
       end if;

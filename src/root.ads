@@ -12,7 +12,7 @@ package Root is
   function  Get_YN     return Boolean;
   procedure Get_Input  (I : out Integer; Low, High : Integer);
   function  Get_List   (Values : String) return Priority_List;
-  procedure Get_List   (OL : out Option_List);
+  procedure Get_List   (OL : out Option_List; Num_Opts : Positive);
 
   WIDTH : constant := 25;
 

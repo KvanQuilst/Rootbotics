@@ -211,6 +211,7 @@ package body Root.Marquise is
 
   procedure Move (S : Suit; M : Map_T) is
   begin
+    -- TODO Implement
     null;
   end Move;
 

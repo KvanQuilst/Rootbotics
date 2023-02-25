@@ -86,11 +86,11 @@ package body Root is
   end Get_List;
 
 
-  function Get_List_Internal (OL : out Option_List) return Boolean is
+  function Get_List_Internal (OL : out Option_List; Num_Opts : Positive) return Boolean is
     Line : Unbounded_String;
     Last : Integer := 0;
     Count : Integer := 1;
-    Opt : Character range 'a' .. Character'Val (96 + OL'Length);
+    Opt : Character range 'a' .. Character'Val (96 + Num_Opts);
   begin
     for I in OL'Range loop
       OL (I) := Character'Val (0);
@@ -113,10 +113,10 @@ package body Root is
 
   -- Get space separated list of options --
   -- Checks for error                    --
-  procedure Get_List (OL : out Option_List) is
+  procedure Get_List (OL : out Option_List; Num_Opts : Positive) is
   begin
     Put_Line ("Provide a space separated list of options that apply:");
-    while not Get_List_Internal (OL) loop
+    while not Get_List_Internal (OL, Num_Opts) loop
       Put_Line ("Invalid input!");
       Put_Line ("Provide a spae separated list of options that apply:");
     end loop;
