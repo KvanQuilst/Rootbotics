@@ -6,14 +6,45 @@ package body Root.Marquise is
   -- Faction Setup --
   -------------------
 
-  function Setup (Clearing : Priority; Diff : Difficulty) return Boolean is
+  function Setup (Clearing : Priority; Diff : Difficulty;
+                  M : Map_T) return Boolean is
   begin
+    if Clearing > 4 then
+      Put_Line ("Invalid starting clearing for Mechanical Marquise 2.0");
+      return False;
+    end if;
+
+    -- Place starting pieces --
+    for I in Meeples'Range loop
+      Meeples (I) := 1;
+    end loop;
+    Meeples (Clearing) := Meeples (Clearing) + 1;
+
+    --if M = Lake_Map then
+    --  case Clearing is
+    --    when 1 => Meeples (2) := 0;
+    --    when 2 => Meeples (1) := 0;
+    --    when 3 => Meeples (4) := 0;
+    --    when 4 => Meeples (3) := 0;
+    --    when others => return False;
+    --  end case;
+    --else
+    case Clearing is
+      when 1 => Meeples (3) := 0;
+      when 2 => Meeples (4) := 0;
+      when 3 => Meeples (1) := 0;
+      when 4 => Meeples (2) := 0;
+      when others => return False;
+    end case;
+    --end if;
+
     return True;
   end Setup;
 
   ---------------
   -- Take Turn --
   ---------------
+  procedure Warriors_Lost (M : Map_T);
   procedure Battle  (S : Suit; M : Map_T);
   procedure Recruit (S : Suit; M : Map_T);
   function  Build   (S : Suit; M : Map_T) return Boolean;
@@ -37,7 +68,7 @@ package body Root.Marquise is
     New_Line;
     Separator;
 
-    -- TODO Determine lost warriors --
+    Warriors_Lost (M);
 
     -- Have the marquise lost? --
     if Meeple_Supply = MEEPLE_SUPPLY then
@@ -108,6 +139,77 @@ package body Root.Marquise is
 
   end Take_Turn;
 
+  procedure Warriors_Lost (M : Map_T) is
+  begin
+    -- Determine lost warriors --
+    for I in M'Range loop
+
+      -- Warriors --
+      if Meeples (I) > 0 then
+        Put_Line ("Do the Mechanical Marquise 2.0 still have" &
+                  Meeples (I)'Image & " warrior(s) in clearing" & I'Image &
+                  "? (y/n)");
+        if Get_YN then
+          Put ("How many warriors remain: ");
+          declare
+            Val : Integer;
+          begin
+            Get_Input (Val, 0, MEEPLE_MAX);
+            Meeples (I) := Val;
+          end;
+        end if;
+      end if;
+
+      -- Sawmills --
+      if Sawmill_Supply > 0 then
+        Put_Line ("Do the Mechanical Marquise 2.0 still have" &
+                  Sawmill (I)'Image & " sawmill(s) in clearing" &
+                  I'Image & "? (y/n)");
+        if Get_YN then
+          Put ("How many workshops remain: ");
+          declare
+            Val : Integer;
+          begin
+            Get_Input (Val, 0, M (I).Buildings);
+            Sawmill (I) := Val;
+          end;
+        end if;
+      end if;
+
+      -- Workshop --
+      if Sawmill_Supply > 0 then
+        Put_Line ("Do the Mechanical Marquise 2.0 still have" &
+                  Workshops (I)'Image & " workshop(s) in clearing" &
+                  I'Image & "? (y/n)");
+        if Get_YN then
+          Put ("How many workshops remain: ");
+          declare
+            Val : Integer;
+          begin
+            Get_Input (Val, 0, M (I).Buildings);
+            Workshops (I) := Val;
+          end;
+        end if;
+      end if;
+
+      -- Recruiter --
+      if Sawmill_Supply > 0 then
+        Put_Line ("Do the Mechanical Marquise 2.0 still have" &
+                  Recruiter (I)'Image & " recruiter(s) in clearing" &
+                  I'Image & "? (y/n)");
+        if Get_YN then
+          Put ("How many recruiters remain: ");
+          declare
+            Val : Integer;
+          begin
+            Get_Input (Val, 0, M (I).Buildings);
+            Recruiter (I) := Val;
+          end;
+        end if;
+      end if;
+    end loop;
+  end Warriors_Lost;
+
   procedure Battle (S : Suit; M : Map_T) is
     Lost : Integer;
   begin
@@ -129,7 +231,7 @@ package body Root.Marquise is
     for I in M'Range loop
       if M (I).C_Suit = S and Meeples (I) > 0 then
         Put_Line  ("Do the Mechanical Marquise 2.0 rule clearing" & I'Image & 
-                   " (y/n)");
+                   "? (y/n)");
         if Get_YN then
           Count := Count + 1;
           Rule (Count) := I;
@@ -160,10 +262,10 @@ package body Root.Marquise is
     for I in M'Range loop
       if M (I).C_Suit = S and Meeples (I) > 0 then
         Put_Line ("Do the Mechanical Marquise 2.0 rule clearing" & I'Image & 
-                  " (y/n)");
+                  "? (y/n)");
         if Get_YN then
           Put_Line ("Are there available building slots in clearing" & I'Image & 
-                    " (y/n)");
+                    "? (y/n)");
           if Get_YN then
             Max := Meeples (I);
             Max_Idx := I;

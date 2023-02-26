@@ -2,7 +2,8 @@ with Root.Map; use Root.Map;
 
 package Root.Marquise is
 
-  function  Setup (Clearing : Priority; Diff : Difficulty) return Boolean;
+  function  Setup (Clearing : Priority; Diff : Difficulty;
+                   M : Map_T) return Boolean;
   procedure Take_Turn (Order : Suit; M : Map_T);
 
 private

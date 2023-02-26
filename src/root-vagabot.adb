@@ -152,12 +152,16 @@ package body Root.Vagabot is
 
       when Vagrant =>
         Special := Vagrant_Special'Access;
+        return False;
 
       when Scoundrel =>
         Special := Scoundrel_Special'Access;
+        return False;
 
       when Arbiter =>
         Special := Arbiter_Special'Access;
+        return False;
+
     end case;
 
     for I in 1..Num_Items loop

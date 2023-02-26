@@ -2,20 +2,23 @@ GENERAL
 --------------------
 - Handle difficulty query
 - Handle user taking turn
+- Handle map query
 - Enable user to quit out of turn at start
+- Implement Winter, Lake, Mountain Maps
 
 CLOCKWORK 1
 --------------------
 
 Mechanical Marquise 2.0:
-  - Implement Setup
+  - Implement Lost Warriors/Buildings
   - Implement Move
   - Handle Expand Action (Take_Turn)
-    - New Order
-  - Handle Marquise Losing (Take_Turn)
+    - New Order Card
+  - Implement Escalations
   - Implement Difficulty
 
 Electric Eyrie:
+  - Implement Lost Warriors/Buildings
   - Implement Build
   - Finished Battle
   - Make sure Move and Recruit are correct
@@ -25,6 +28,7 @@ Automated Alliance:
   - Implement All
 
 Vagabot:
+  - Implement Damaged Items
   - Implement Thief, Thinker, Ranger_Special
   - Implement Take_Turn
   - Implement Explore, Quest, Aid, Battle

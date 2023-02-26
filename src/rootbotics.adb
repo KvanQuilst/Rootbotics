@@ -29,9 +29,8 @@ begin
   Put_Line (" f. Riverfolk Robots");
   Put_Line (" g. Cogwheel Corvids");
   Put_Line (" h. Drillbit Duchy");
-  Put_Line ("    No specified options to quit");
   New_Line;
-  Put_Line ("More factions to get added later!");
+  Put_Line ("    No specified options to quit");
   Separator;
 
   Get_List (OL, OL'Length);
@@ -62,7 +61,7 @@ begin
               Put ("Which corner clearing will the Mechanical Marquise 2.0 start in: ");
               Get_Input (Corner, 1, 4);
 
-              exit when Root.Marquise.Setup (Corner, Default);
+              exit when Root.Marquise.Setup (Corner, Default, Root.Map.Fall_Map);
             end loop;
           end;
 
