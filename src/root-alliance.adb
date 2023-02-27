@@ -1,6 +1,18 @@
 with Ada.Text_IO; use Ada.Text_IO;
 
+with Root.Color; use Root.Color;
+
 package body Root.Alliance is
+
+  procedure Put_Name (NewLine : Boolean := False) is
+  begin
+    Set_Color (Green);
+    Put ("Automated Alliance");
+    Reset_Style;
+    if NewLine then
+      New_Line;
+    end if;
+  end Put_Name;
 
   -------------------
   -- Faction Setup --
@@ -22,7 +34,9 @@ package body Root.Alliance is
     -- Alliance State --
     Separator;
     New_Line;
+    Set_Color (Green);
     Put_Line_Center ("Automated Alliance");
+    Reset_Style;
     -- F  M  R
     -- X  X  X
     -- Sympathetic Clearings: X

@@ -14,7 +14,7 @@ package Root is
   function  Get_List   (Values : String) return Priority_List;
   procedure Get_List   (OL : out Option_List; Num_Opts : Positive);
 
-  WIDTH : constant := 25;
+  WIDTH : constant := 40;
 
   procedure Wait_Continue;
   procedure Separator;

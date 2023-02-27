@@ -4,7 +4,8 @@ package Root.Eyrie is
 
   function  Setup (Clearing : Priority; Diff : Difficulty) return Boolean;
   procedure Take_Turn (Order : Suit; M : Map_T);
-
+  procedure Put_Name (NewLine : Boolean := False);
+  
 private
 
   MEEPLE_MAX : constant := 20;

@@ -5,6 +5,7 @@ package Root.Marquise is
   function  Setup (Clearing : Priority; Diff : Difficulty;
                    M : Map_T) return Boolean;
   procedure Take_Turn (Order : Suit; M : Map_T);
+  procedure Put_Name (NewLine : Boolean := False);
 
 private
 

@@ -1,6 +1,18 @@
 with Ada.Text_IO; use Ada.Text_IO;
 
+with Root.Color; use Root.Color;
+
 package body Root.Marquise is
+
+  procedure Put_Name (NewLine : Boolean := False) is
+  begin
+    Set_Color (Orange);
+    Put ("Mechanical Marquise 2.0");
+    Reset_Style;
+    if NewLine then
+      New_Line;
+    end if;
+  end Put_Name;
 
   -------------------
   -- Faction Setup --
@@ -57,7 +69,9 @@ package body Root.Marquise is
     -- Mechanical Marquise 2.0 State --
     Separator;
     New_Line;
+    Set_Color (Orange);
     Put_Line_Center ("Mechanical Marquise 2.0");
+    Reset_Style;
     New_Line;
     Put_Line ("    Meeple Supply:" & Meeple_Supply'Image);
     Put_Line ("   Sawmill Supply:" & Sawmill_Supply'Image);

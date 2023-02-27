@@ -1,6 +1,18 @@
 with Ada.Text_IO; use Ada.Text_IO;
 
+with Root.Color; use Root.Color;
+
 package body Root.Vagabot is
+
+  procedure Put_Name (NewLine : Boolean := False) is
+  begin
+    Set_Color (Dark_Grey);
+    Put ("Vagabot");
+    Reset_Style;
+    if NewLine then
+      New_Line;
+    end if;
+  end Put_Name;
   
   -------------------------------
   -- Character Special Actions --
@@ -186,7 +198,9 @@ package body Root.Vagabot is
     -- Vagabot Stats --
     Separator; 
     New_Line;
+    Set_Color (Dark_Grey);
     Put_Line_Center ("Vagabot");
+    Reset_Style;
     New_Line;
     Put_Line ("           Undamaged Items:" & Undamaged_Idx'Image);
     Put_Line (" Exhausted Undamaged Items:" & Exhausted (Undamaged)'Image);

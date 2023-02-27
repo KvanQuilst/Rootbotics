@@ -4,8 +4,9 @@ package Root.Vagabot is
 
   type V_Character is (Thief, Tinker, Ranger, Vagrant, Scoundrel, Arbiter);
   
-  function Setup (Char : V_Character; Diff : Difficulty) return Boolean;
+  function  Setup (Char : V_Character; Diff : Difficulty) return Boolean;
   procedure Take_Turn (Order : Suit; M : Map_T);
+  procedure Put_Name (NewLine : Boolean := False);
 
 private
 

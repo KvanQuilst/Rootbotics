@@ -134,7 +134,7 @@ package body Root is
 
   procedure Separator is
   begin
-    Put_Line ("-------------------------");
+    Put_Line (To_String (WIDTH * "-"));
   end Separator;
 
   procedure Put_Line_Center (S : String) is
@@ -173,4 +173,5 @@ package body Root is
     Separator;
     New_Line;
   end Put_Evening;
+
 end Root;

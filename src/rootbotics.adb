@@ -2,8 +2,10 @@ with Ada.Text_IO; use Ada.Text_IO;
 
 with Root; use Root;
 with Root.Map;
+
 with Root.Eyrie;
 with Root.Marquise;
+with Root.Alliance;
 with Root.Vagabot; use Root.Vagabot;
 
 procedure Rootbotics is
@@ -21,10 +23,14 @@ begin
   New_Line;
   Put_Line ("Which of the following clockwork factions will you be playing with:");
   Separator;
-  Put_Line (" a. Mechanical Marquise 2.0");
-  Put_Line (" b. Electric Eyrie");
-  Put_Line (" c. Automated Alliance");
-  Put_Line (" d. Vagabot");
+  Put      (" a. ");
+  Root.Marquise.Put_Name (True);
+  Put      (" b. ");
+  Root.Eyrie.Put_Name (True);
+  Put      (" c. ");
+  Root.Alliance.Put_Name (True);
+  Put      (" d. ");
+  Root.Vagabot.Put_Name (True);
   Put_Line (" e. Logical Lizards");
   Put_Line (" f. Riverfolk Robots");
   Put_Line (" g. Cogwheel Corvids");

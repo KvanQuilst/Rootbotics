@@ -5,17 +5,18 @@ GENERAL
 - Handle map query
 - Enable user to quit out of turn at start
 - Implement Winter, Lake, Mountain Maps
+- Test
 
 CLOCKWORK 1
 --------------------
 
 Mechanical Marquise 2.0:
-  - Implement Lost Warriors/Buildings
   - Implement Move
   - Handle Expand Action (Take_Turn)
     - New Order Card
   - Implement Escalations
   - Implement Difficulty
+  - Test
 
 Electric Eyrie:
   - Implement Lost Warriors/Buildings
@@ -23,6 +24,7 @@ Electric Eyrie:
   - Finished Battle
   - Make sure Move and Recruit are correct
   - Implement Difficulty
+  - Test
 
 Automated Alliance:
   - Implement All
@@ -33,6 +35,7 @@ Vagabot:
   - Implement Take_Turn
   - Implement Explore, Quest, Aid, Battle
   - Implement Difficulty
+  - Test
 
 CLOCKWORK 2
 --------------------
