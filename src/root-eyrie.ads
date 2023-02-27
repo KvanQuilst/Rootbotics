@@ -2,9 +2,9 @@ with Root.Map; use Root.Map;
 
 package Root.Eyrie is
 
-  function  Setup (Clearing : Priority; Diff : Difficulty) return Boolean;
+  procedure  Setup; 
   procedure Take_Turn (Order : Suit; M : Map_T);
-  procedure Put_Name (NewLine : Boolean := False);
+  procedure Put_Name  (NewLine : Boolean := False);
   
 private
 

@@ -55,92 +55,14 @@ begin
   for I in Playing'Range loop
     if Playing (I) then
       case I is
-
-        -----------------------------
-        -- Mechanical Marquise 2.0 --
-        -----------------------------
-        when Marquise =>
-          declare
-            Corner : Integer range 1..4;
-          begin
-            loop
-              Put ("Which corner clearing will the Mechanical Marquise 2.0 start in: ");
-              Get_Input (Corner, 1, 4);
-
-              exit when Root.Marquise.Setup (Corner, Default, Root.Map.Fall_Map);
-            end loop;
-          end;
-
-        --------------------
-        -- Electric Eyrie --
-        --------------------
-        when Eyrie =>
-          declare
-            Corner : Integer range 1..4;
-          begin
-            loop
-              Put ("Which corner clearing will the Electric Eyrie start in: ");
-              Get_Input (Corner, 1, 4);
-
-              exit when Root.Eyrie.Setup (Corner, Default);
-            end loop;
-          end;
-
-        ------------------------
-        -- Automated Alliance --
-        ------------------------
-        when Alliance =>
-          Put_Line ("The Automated Alliance is unimplmented!");
-
-        -------------
-        -- Vagabot --
-        -------------
-        when Vagabot =>
-          declare
-            Opt : Character;
-            Char : V_Character;
-          begin
-            loop
-              Put ("Which character will the Vagabot be playing:");
-              Separator;
-              Put (" a. Thief");
-              Put (" b. Tinker");
-              Put (" c. Ranger");
-              Put (" d. Vagrant");
-              Put (" e. Scoundrel");
-              Put (" f. Arbiter");
-              Separator;
-              Get_Option (Opt, 6);
-              Char := V_Character'Val (Character'Pos (Opt) - 96);
-
-              exit when Root.Vagabot.Setup (Char, Default);
-            end loop;
-          end;
-
-        ---------------------
-        -- Logical Lizards --
-        ---------------------
-        when Lizards =>
-          Put_Line ("The Logical Lizards are unimplemented!");
-
-        ----------------------
-        -- Riverfolk Robots --
-        ----------------------
-        when Riverfolk =>
-          Put_Line ("The Riverfolk Robots are unimplemented!");
-
-        ----------------------
-        -- Cogwheel Corvids --
-        ----------------------
-        when Corvids =>
-          Put_Line ("The Cogwheel Corvids are unimplemented!");
-
-        --------------------
-        -- Drillbit Duchy --
-        --------------------
-        when Duchy =>
-          Put_Line ("The Drillbit Duchy is unimplemented!");
-
+        when Marquise => Root.Marquise.Setup (Root.Map.Fall_Map);
+        when Eyrie => Root.Eyrie.Setup;
+        when Alliance => Put_Line ("The Automated Alliance is unimplmented!");
+        when Vagabot => Root.Vagabot.Setup;
+        when Lizards => Put_Line ("The Logical Lizards are unimplemented!");
+        when Riverfolk => Put_Line ("The Riverfolk Robots are unimplemented!");
+        when Corvids => Put_Line ("The Cogwheel Corvids are unimplemented!");
+        when Duchy => Put_Line ("The Drillbit Duchy is unimplemented!");
       end case;
     end if;
   end loop;

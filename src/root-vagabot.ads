@@ -2,9 +2,8 @@ with Root.Map; use Root.Map;
 
 package Root.Vagabot is
 
-  type V_Character is (Thief, Tinker, Ranger, Vagrant, Scoundrel, Arbiter);
   
-  function  Setup (Char : V_Character; Diff : Difficulty) return Boolean;
+  procedure Setup;
   procedure Take_Turn (Order : Suit; M : Map_T);
   procedure Put_Name (NewLine : Boolean := False);
 
@@ -13,6 +12,8 @@ private
   MAX_ITEMS : constant := 20;
 
   Num_Items : Positive := 4;
+
+  type V_Character is (Thief, Tinker, Ranger, Vagrant, Scoundrel, Arbiter);
 
   type Item_State  is (Exhausted, Unexhausted, Empty);
   type Item_Arr    is array (Integer range 1..MAX_ITEMS) of Item_State;

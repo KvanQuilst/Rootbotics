@@ -18,19 +18,17 @@ package body Root.Marquise is
   -- Faction Setup --
   -------------------
 
-  function Setup (Clearing : Priority; Diff : Difficulty;
-                  M : Map_T) return Boolean is
+  procedure Setup (M : Map_T) is
+    Corner : Integer range 1..4;
   begin
-    if Clearing > 4 then
-      Put_Line ("Invalid starting clearing for Mechanical Marquise 2.0");
-      return False;
-    end if;
+    Put ("Which corner clearing will the Mechanical Marquise 2.0 start in: ");
+    Get_Input (Corner, 1, 4);
 
     -- Place starting pieces --
     for I in Meeples'Range loop
       Meeples (I) := 1;
     end loop;
-    Meeples (Clearing) := Meeples (Clearing) + 1;
+    Meeples (Corner) := Meeples (Corner) + 1;
 
     --if M = Lake_Map then
     --  case Clearing is
@@ -38,19 +36,16 @@ package body Root.Marquise is
     --    when 2 => Meeples (1) := 0;
     --    when 3 => Meeples (4) := 0;
     --    when 4 => Meeples (3) := 0;
-    --    when others => return False;
     --  end case;
     --else
-    case Clearing is
+    case Corner is
       when 1 => Meeples (3) := 0;
       when 2 => Meeples (4) := 0;
       when 3 => Meeples (1) := 0;
       when 4 => Meeples (2) := 0;
-      when others => return False;
     end case;
     --end if;
 
-    return True;
   end Setup;
 
   ---------------

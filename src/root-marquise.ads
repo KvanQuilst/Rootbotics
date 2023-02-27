@@ -2,10 +2,9 @@ with Root.Map; use Root.Map;
 
 package Root.Marquise is
 
-  function  Setup (Clearing : Priority; Diff : Difficulty;
-                   M : Map_T) return Boolean;
+  procedure Setup     (M : Map_T);
   procedure Take_Turn (Order : Suit; M : Map_T);
-  procedure Put_Name (NewLine : Boolean := False);
+  procedure Put_Name  (NewLine : Boolean := False);
 
 private
 

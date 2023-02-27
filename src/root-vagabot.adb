@@ -149,8 +149,24 @@ package body Root.Vagabot is
   -- Faction Setup --
   -------------------
 
-  function Setup (Char : V_Character; Diff : Difficulty) return Boolean is
+  procedure Setup is
+    Char : V_Character;
+    Opt : Character;
   begin
+
+    -- Character Selection --
+    Put ("Which character will the Vagabot be playing:");
+    Separator;
+    Put (" a. Thief");
+    Put (" b. Tinker");
+    Put (" c. Ranger");
+    Put (" d. Vagrant");
+    Put (" e. Scoundrel");
+    Put (" f. Arbiter");
+    Separator;
+    Get_Option (Opt, 6);
+    Char := V_Character'Val (Character'Pos (Opt) - 96);
+
     case Char is
       when Thief =>
         Special := Thief_Special'Access;
@@ -164,23 +180,21 @@ package body Root.Vagabot is
 
       when Vagrant =>
         Special := Vagrant_Special'Access;
-        return False;
 
       when Scoundrel =>
         Special := Scoundrel_Special'Access;
-        return False;
 
       when Arbiter =>
         Special := Arbiter_Special'Access;
-        return False;
 
     end case;
+
+    -- TODO Difficulty Selection --
 
     for I in 1..Num_Items loop
       Add_Item;
     end loop;
 
-    return True;
   end Setup;
 
 

@@ -33,18 +33,16 @@ package body Root.Eyrie is
   -- Faction Setup --
   -------------------
 
-  function Setup (Clearing : Priority; Diff : Difficulty) return Boolean is
+  procedure Setup is
+    Corner : Integer range 1..4;
   begin
-    if Clearing > 4 then
-      Put_Line ("Invalid starting clearing for Electric Eyrie");
-      return False;
-    end if;
+    Put ("Which corner clearing will the Electric Eyrie start in: ");
+    Get_Input (Corner, 1, 4);
 
     -- Place Starting Pieces --
-    Meeples (Clearing) := 6;
-    Roosts  (Clearing) := True;
+    Meeples (Corner) := 6;
+    Roosts  (Corner) := True;
 
-    return True;
   end Setup;
 
   ---------------
@@ -140,7 +138,7 @@ package body Root.Eyrie is
     -- Evening --
     Put_Evening;
 
-    Put ("Score (+" & Roost_Points'Image & ") points for the Electric Eyrie.");
+    Put_Line ("Score (+" & Roost_Points'Image & ") points for the Electric Eyrie.");
 
   end Take_Turn;
 
