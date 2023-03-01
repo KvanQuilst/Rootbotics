@@ -36,7 +36,7 @@ package body Root.Eyrie is
   procedure Setup is
     Corner : Integer range 1..4;
   begin
-    Put ("Which corner clearing will the "); Put_Name; Put_Line (" start in: ");
+    Put ("Which corner clearing will the "); Put_Name; Put (" start in: ");
     Get_Input (Corner, 1, 4);
 
     -- Place Starting Pieces --
@@ -166,7 +166,7 @@ package body Root.Eyrie is
     -- Multiple clearings to pick from
     if C_Idx > 2 then
       Put_Line ("Which clearing has the most enemies: ");
-      Put_Line ("-------------------------");
+      Separator;
       C_Idx := 1;
       for J in Clearings'Range loop
         if Clearings (J) /= 0 then
@@ -177,7 +177,7 @@ package body Root.Eyrie is
       Put_Line (" " & Character'Val (96 + C_Idx) & ". multiple");
       C_Idx := C_Idx + 1;
       Put_Line (" " & Character'Val (96 + C_Idx) & ". no enemies");
-      Put_Line ("-------------------------");
+      Separator;
 
       Get_Option (Option, C_Idx);
 

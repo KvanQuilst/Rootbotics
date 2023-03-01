@@ -1,6 +1,6 @@
 package Root.Color is
 
-  type Color is (None, Blue, Green, Teal, Purple, 
+  type Color is (None, Blue, Green, Teal, Purple, Red,
                  Orange, Peach, Yellow, Dark_Grey);
   for Color use (
     None      => -1,
@@ -8,6 +8,7 @@ package Root.Color is
     Green     => 34,
     Teal      => 87,
     Purple    => 99,
+    Red       => 196,
     Orange    => 208,
     Peach     => 223,
     Yellow    => 226,

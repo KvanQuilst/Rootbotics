@@ -127,11 +127,97 @@ begin
       end case;
     end if;
   end loop;
+  New_Line;
 
   ---------------------
   -- Manage the Game --
   ---------------------
   loop
-    Root.Eyrie.Take_Turn (Rabbit, Root.Map.Fall_Map);
+    declare
+      P_Idx : Integer := 0;
+      F_Opt, Order : Character;
+      F : Faction;
+    begin
+      -- Choose Faction Turn --
+      Put_Line ("Whose turn will you take:");
+      Separator;
+      for I in Playing'Range loop
+        if Playing (I) then
+          Put (" " & Character'Val (97 + P_Idx) & ". "); -- 'a' + P_Idx --
+          P_Idx := P_Idx + 1;
+          case I is
+            when Marquise => Root.Marquise.Put_Name (True);
+            when Eyrie    => Root.Eyrie.Put_Name    (True);
+            when Alliance => Root.Alliance.Put_Name (True);
+            when Vagabot  => Root.Vagabot.Put_Name  (True);
+            --when Lizards => Root.Lizards.Put_Name (True);
+            --when Riverfolk => Root.Riverfolk.Put_Name (True);
+            --when Corvids => Root.Corvids.Put_Name (True);
+            --when Duchy => Root.Duchy.Put_Name (True);
+          end case;
+        end if;
+      end loop;
+      Separator;
+
+      Get_Option (F_Opt, P_Idx);
+
+      P_Idx := Character'Pos (F_Opt) - 96;
+      F := Marquise;
+      while P_Idx /= 0 loop
+        if Playing (F) then
+          P_Idx := P_Idx - 1;
+        end if;
+        F := Faction'Succ (F);
+      end loop;
+      F := Faction'Pred (F);
+
+      New_Line;
+
+      -- What's the Order? --
+      Put_Line ("What is the order of this turn:");
+      Separator;
+
+      Put (" a. ");
+      Set_Color (Red);
+      Put_Line ("Fox");
+      Reset_Style;
+
+      Put (" b. ");
+      Set_Color (Orange);
+      Put_Line ("Mouse");
+      Reset_Style;
+
+      Put (" c. ");
+      Set_Color (Yellow);
+      Put_Line ("Rabbit");
+      Reset_Style;
+
+      Put (" d. ");
+      Set_Color (Blue);
+      Put_Line ("Bird");
+      Reset_Style;
+
+      Separator;
+
+      Get_Option (Order, 4);
+
+      New_Line;
+      
+      -- Handle faction turn --
+      case F is
+        when Marquise => 
+          Root.Marquise.Take_Turn (Suit'Val (Character'Pos (Order) - 97), Map);
+        when Eyrie    => 
+          Root.Eyrie.Take_Turn    (Suit'Val (Character'Pos (Order) - 97), Map);
+        when Alliance => 
+          Root.Alliance.Take_Turn (Suit'Val (Character'Pos (Order) - 97), Map);
+        when Vagabot  => 
+          Root.Vagabot.Take_Turn  (Suit'Val (Character'Pos (Order) - 97), Map);
+        --when Lizards => Root.Lizards.Take_Turn (Order, Map);
+        --when Riverfok => Root.Riverfolk.Take_Turn (Order, Map);
+        --when Corvids => Root.Corvids.Take_Turn (Order, Map);
+        --when Duchy => Root.Duchy.Take_Turn (Order, Map);
+      end case;
+    end;
   end loop;
 end Rootbotics;
