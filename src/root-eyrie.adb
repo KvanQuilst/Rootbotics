@@ -36,7 +36,7 @@ package body Root.Eyrie is
   procedure Setup is
     Corner : Integer range 1..4;
   begin
-    Put ("Which corner clearing will the Electric Eyrie start in: ");
+    Put ("Which corner clearing will the "); Put_Name; Put_Line (" start in: ");
     Get_Input (Corner, 1, 4);
 
     -- Place Starting Pieces --
@@ -81,7 +81,7 @@ package body Root.Eyrie is
 
     if Meeple_Supply = MEEPLE_MAX and Roost_Supply = ROOST_MAX then
       New_Line;
-      Put_Line ("The Electric Eyrie cannot do anything!");
+      Put ("The "); Put_Name; Put_Line (" cannot do anything!");
       return;
     end if;
 
@@ -138,7 +138,7 @@ package body Root.Eyrie is
     -- Evening --
     Put_Evening;
 
-    Put_Line ("Score (+" & Roost_Points'Image & ") points for the Electric Eyrie.");
+    Put ("Score (+" & Roost_Points'Image & ") points for the ");  Put_Name (True);
 
   end Take_Turn;
 
@@ -313,7 +313,7 @@ package body Root.Eyrie is
 
       Min_Idx := (if Min_RIdx /= 0 then Min_RIdx else Min_Idx);
 
-      Put ("How many warriors do the Electric Eyrie need to rule clearing" &
+      Put ("How many warriors do the "); Put_Name; Put (" need to rule clearing" &
            Max_Idx'Image & ": ");
       Get_Input (Val, 0, 30);
       -- TODO Check if eyrie remains in rule if moved --
