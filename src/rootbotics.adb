@@ -90,6 +90,7 @@ begin
 
   Separator;
 
+  -- Handle map input --
   declare
     Option : Character;
   begin
@@ -127,6 +128,9 @@ begin
     end if;
   end loop;
 
+  ---------------------
+  -- Manage the Game --
+  ---------------------
   loop
     Root.Eyrie.Take_Turn (Rabbit, Root.Map.Fall_Map);
   end loop;

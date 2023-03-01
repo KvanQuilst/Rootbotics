@@ -21,7 +21,7 @@ package body Root.Marquise is
   procedure Setup (M : Map_T) is
     Corner : Integer range 1..4;
   begin
-    Put ("Which corner clearing will the Mechanical Marquise 2.0 start in: ");
+    Put ("Which corner clearing will the "); Put_Name; Put (" start in: ");
     Get_Input (Corner, 1, 4);
 
     -- Place starting pieces --
@@ -82,7 +82,7 @@ package body Root.Marquise is
     -- Have the marquise lost? --
     if Meeple_Supply = MEEPLE_SUPPLY then
       New_Line;
-      Put_Line ("The Mechanical Marquise 2.0 cannot do anything!");
+      Put ("The "); Put_Name; Put_Line (" cannot do anything!");
       return;
     end if;
 
@@ -144,7 +144,7 @@ package body Root.Marquise is
           P := (if P /= 6 then 6 - P - 1 else 0);
       end case;
     end;
-    Put_Line (") points for the Mechanical Marquise 2.0");
+    Put (") points for the "); Put_Name (True);
 
   end Take_Turn;
 
@@ -155,7 +155,7 @@ package body Root.Marquise is
 
       -- Warriors --
       if Meeples (I) > 0 then
-        Put_Line ("Do the Mechanical Marquise 2.0 still have" &
+        Put ("Do the "); Put_Name; Put_Line (" still have" &
                   Meeples (I)'Image & " warrior(s) in clearing" & I'Image &
                   "? (y/n)");
         if Get_YN then
@@ -171,7 +171,7 @@ package body Root.Marquise is
 
       -- Sawmills --
       if Sawmill_Supply > 0 then
-        Put_Line ("Do the Mechanical Marquise 2.0 still have" &
+        Put_Line ("Do the "); Put_Name; Put_Line (" still have" &
                   Sawmill (I)'Image & " sawmill(s) in clearing" &
                   I'Image & "? (y/n)");
         if Get_YN then
@@ -187,7 +187,7 @@ package body Root.Marquise is
 
       -- Workshop --
       if Sawmill_Supply > 0 then
-        Put_Line ("Do the Mechanical Marquise 2.0 still have" &
+        Put ("Do the "); Put_Name; Put_Line (" still have" &
                   Workshops (I)'Image & " workshop(s) in clearing" &
                   I'Image & "? (y/n)");
         if Get_YN then
@@ -203,7 +203,7 @@ package body Root.Marquise is
 
       -- Recruiter --
       if Sawmill_Supply > 0 then
-        Put_Line ("Do the Mechanical Marquise 2.0 still have" &
+        Put ("Do the "); Put_Name; Put_Line (" still have" &
                   Recruiter (I)'Image & " recruiter(s) in clearing" &
                   I'Image & "? (y/n)");
         if Get_YN then
@@ -239,8 +239,8 @@ package body Root.Marquise is
   begin
     for I in M'Range loop
       if M (I).C_Suit = S and Meeples (I) > 0 then
-        Put_Line  ("Do the Mechanical Marquise 2.0 rule clearing" & I'Image & 
-                   "? (y/n)");
+        Put ("Do the "); Put_Name; Put_Line (" rule clearing" & I'Image & 
+             "? (y/n)");
         if Get_YN then
           Count := Count + 1;
           Rule (Count) := I;
@@ -249,7 +249,7 @@ package body Root.Marquise is
     end loop;
 
     case Count is
-      when 0 => Put_Line ("The Mechanical Marquise 2.0 cannot place any warriors!");
+      when 0 => Put ("The "); Put_Name; Put_Line (" cannot place any warriors!");
       when 1 => Put_Line ("Place 4 warriors in clearing" & Rule (1)'Image);
       when 2 => Put_Line ("Place 2 warriors in clearing" & Rule (1)'Image);
                 Put_Line ("Place 2 warriors in clearing" & Rule (2)'Image);
@@ -270,7 +270,7 @@ package body Root.Marquise is
   begin
     for I in M'Range loop
       if M (I).C_Suit = S and Meeples (I) > 0 then
-        Put_Line ("Do the Mechanical Marquise 2.0 rule clearing" & I'Image & 
+        Put ("Do the "); Put_Name; Put_Line (" rule clearing" & I'Image & 
                   "? (y/n)");
         if Get_YN then
           Put_Line ("Are there available building slots in clearing" & I'Image & 
@@ -284,7 +284,7 @@ package body Root.Marquise is
     end loop;
 
     if Max = 0 then
-      Put_Line ("The Mechanical Marquise 2.0 cannot place any buildings.");
+      Put ("The "); Put_Name; Put_Line (" cannot place any buildings.");
       return False;
     end if;
 
@@ -294,7 +294,7 @@ package body Root.Marquise is
           Put ("Place a SAWMILL in clearing" & Max_Idx'Image);
           Sawmill_Supply := Sawmill_Supply - 1;
         else
-          Put_Line ("The Mechanical Marquise 2.0 cannot place any buildings.");
+          Put ("The "); Put_Name; Put_Line (" cannot place any buildings.");
           return False;
         end if;
       when Rabbit => 
@@ -302,19 +302,19 @@ package body Root.Marquise is
           Put ("Place a WORKSHOP in clearing" & Max_Idx'Image);
           Workshop_Supply := Workshop_Supply - 1;
         else
-          Put_Line ("The Mechanical Marquise 2.0 cannot place any buildings.");
+          Put ("The "); Put_Name; Put_Line (" cannot place any buildings.");
           return False;
         end if;
       when Mouse  => 
         if Recruiter_Supply /= 0 then
-          Put ("Place a RECRUITER in clearing" & Max_Idx'Image);
+          Put_Line ("Place a RECRUITER in clearing" & Max_Idx'Image);
           Recruiter_Supply := Recruiter_Supply - 1;
         else
-          Put_Line ("The Mechanical Marquise 2.0 cannot place any buildings.");
+          Put ("The "); Put_Name; Put_Line (" cannot place any buildings.");
           return False;
         end if;
       when Bird   => 
-        Put ("WE SHOULD NEVER GET HERE");
+        Put_Line ("WE SHOULD NEVER GET HERE");
     end case;
 
     return True;
