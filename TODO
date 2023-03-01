@@ -1,7 +1,7 @@
 GENERAL
 --------------------
 - Handle difficulty query (Root)
-- Handle user taking turn
+- Handle only one automated faction playing (no who's turn query)
 - Enable user to quit out of turn at start of turn
 - Implement Winter, Lake, Mountain Maps
 - More with colors

@@ -16,6 +16,7 @@ procedure Rootbotics is
   type Faction is (Marquise, Eyrie, Alliance, Vagabot);
                    --Lizards, Riverfolk, Corvids, Duchy);
   Playing : array (Faction'Range) of Boolean := (others => False);
+  Num_Playing : Integer := 0;
 
   Map : Map_T;
 
@@ -57,6 +58,7 @@ begin
     for I in OL'Range loop
       if OL (I) /= Character'Val (0) then
         Playing (Faction'Val (Character'Pos (OL (I)) - 97)) := True;
+        Num_Playing := Num_Playing + 1;
       end if;
     end loop;
   end;
@@ -138,30 +140,36 @@ begin
       F_Opt, Order : Character;
       F : Faction;
     begin
-      -- Choose Faction Turn --
-      Put_Line ("Whose turn will you take:");
-      Separator;
-      for I in Playing'Range loop
-        if Playing (I) then
-          Put (" " & Character'Val (97 + P_Idx) & ". "); -- 'a' + P_Idx --
-          P_Idx := P_Idx + 1;
-          case I is
-            when Marquise => Root.Marquise.Put_Name (True);
-            when Eyrie    => Root.Eyrie.Put_Name    (True);
-            when Alliance => Root.Alliance.Put_Name (True);
-            when Vagabot  => Root.Vagabot.Put_Name  (True);
-            --when Lizards => Root.Lizards.Put_Name (True);
-            --when Riverfolk => Root.Riverfolk.Put_Name (True);
-            --when Corvids => Root.Corvids.Put_Name (True);
-            --when Duchy => Root.Duchy.Put_Name (True);
-          end case;
-        end if;
-      end loop;
-      Separator;
 
-      Get_Option (F_Opt, P_Idx);
+      if Num_Playing > 1 then
+        -- Choose Faction Turn --
+        Put_Line ("Whose turn will you take:");
+        Separator;
+        for I in Playing'Range loop
+          if Playing (I) then
+            Put (" " & Character'Val (97 + P_Idx) & ". "); -- 'a' + P_Idx --
+            P_Idx := P_Idx + 1;
+            case I is
+              when Marquise => Root.Marquise.Put_Name (True);
+              when Eyrie    => Root.Eyrie.Put_Name    (True);
+              when Alliance => Root.Alliance.Put_Name (True);
+              when Vagabot  => Root.Vagabot.Put_Name  (True);
+              --when Lizards => Root.Lizards.Put_Name (True);
+              --when Riverfolk => Root.Riverfolk.Put_Name (True);
+              --when Corvids => Root.Corvids.Put_Name (True);
+              --when Duchy => Root.Duchy.Put_Name (True);
+            end case;
+          end if;
+        end loop;
+        Separator;
 
-      P_Idx := Character'Pos (F_Opt) - 96;
+        Get_Option (F_Opt, P_Idx);
+        P_Idx := Character'Pos (F_Opt) - 96;
+      else
+        P_Idx := 1;
+      end if;
+
+
       F := Marquise;
       while P_Idx /= 0 loop
         if Playing (F) then
