@@ -1,4 +1,4 @@
-package Root.Map is
+package Root.Maps is
 
   type Neighbor_Arr is array (Integer range 1..6) of Integer range 0..12;
 
@@ -9,12 +9,19 @@ package Root.Map is
     Neighbors : Neighbor_Arr;
   end record;
 
-  type Map_T is array (Integer range 1..12) of Clearing;
+  type Clearing_Arr is array (Integer range 1..12) of Clearing;
+  type Map_Name is (Fall, Winter, Lake, Mountain);
+
+  type Map is record
+    Name      : Map_Name;
+    Clearings : Clearing_Arr;
+  end record;
 
   ----------
   -- Fall --
   ----------
-  Fall_Map : constant Map_T :=
+  Fall_Map : constant Map :=
+    (Fall,
     ((Fox,    1, False, (5, 9, 10, 0, 0, 0)),   -- 1
      (Mouse,  2, False, (5, 6, 10, 0, 0, 0)),   -- 2
      (Rabbit, 1, False, (6, 7, 11, 0, 0, 0)),   -- 3
@@ -26,21 +33,21 @@ package Root.Map is
      (Mouse,  2, False, (1, 4, 12, 0, 0, 0)),   -- 9
      (Rabbit, 1, True,  (1, 2, 12, 0, 0, 0)),   -- 10
      (Mouse,  2, True,  (3, 6, 12, 0, 0, 0)),   -- 11
-     (Fox,    1, True,  (4, 7, 9, 10, 11, 0))); -- 12
+     (Fox,    1, True,  (4, 7, 9, 10, 11, 0)))); -- 12
 
   ------------
   -- Winter --
   ------------
-  function Winter_Map return Map_T;
+  function Winter_Map return Map;
 
   ----------
   -- Lake --
   ----------
-  function Lake_Map return Map_T;
+  function Lake_Map return Map;
 
 private
 
   type Clearing_Suit  is array (Priority'Range) of Suit;
   type Clearing_Order is array (Priority'Range) of Priority;
 
-end Root.Map;
+end Root.Maps;

@@ -1,9 +1,9 @@
-with Root.Map; use Root.Map;
+with Root.Maps; use Root.Maps;
 
 package Root.Marquise is
 
-  procedure Setup     (M : Map_T);
-  procedure Take_Turn (Order : Suit; M : Map_T);
+  procedure Setup     (M : Map);
+  procedure Take_Turn (Order : Suit; M : Map);
   procedure Put_Name  (NewLine : Boolean := False);
 
 private

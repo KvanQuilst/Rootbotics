@@ -1,9 +1,9 @@
-with Root.Map; use Root.Map;
+with Root.Maps; use Root.Maps;
 
 package Root.Eyrie is
 
   procedure  Setup; 
-  procedure Take_Turn (Order : Suit; M : Map_T);
+  procedure Take_Turn (Order : Suit; M : Map);
   procedure Put_Name  (NewLine : Boolean := False);
   
 private

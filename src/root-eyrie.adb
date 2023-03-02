@@ -48,11 +48,11 @@ package body Root.Eyrie is
   ---------------
   -- Take Turn --
   ---------------
-  procedure Recruit (S : Suit; M : Map_T);
-  procedure Move    (S : Suit; M : Map_T); 
-  procedure Battle  (S : Suit; M : Map_T; Most : Boolean);
+  procedure Recruit (S : Suit; M : Map);
+  procedure Move    (S : Suit; M : Map); 
+  procedure Battle  (S : Suit; M : Map; Most : Boolean);
 
-  procedure Take_Turn (Order : Suit; M : Map_T) is
+  procedure Take_Turn (Order : Suit; M : Map) is
     Max : Suit;
     Tie : Boolean := False;
   begin
@@ -143,16 +143,16 @@ package body Root.Eyrie is
   end Take_Turn;
 
   -- Recruit phase of daylight --
-  procedure Recruit (S : Suit; M : Map_T) is
+  procedure Recruit (S : Suit; M : Map) is
     Clearings : array (Integer range 1..7) of Integer range 0..12 := (others => 0);
     C_Idx : Integer range 1..7;
     Option : Character;
   begin
     -- Find Clearings with Roosts
     C_Idx := 1;
-    for J in M'Range loop
+    for J in Priority'Range loop
       -- Fox, Mouse, Rabbit Decrees --
-      if M (J).C_Suit = S and Roosts (J) then
+      if M.Clearings (J).C_Suit = S and Roosts (J) then
         Clearings (C_Idx) := J;
         C_Idx := C_Idx + 1;
 
@@ -189,7 +189,7 @@ package body Root.Eyrie is
         begin
           -- Inherently accounts for priority --
           for J in Roosts'Range loop
-            if M (J).C_Suit = S and Roosts (J) and Meeples (J) <= Min then
+            if M.Clearings (J).C_Suit = S and Roosts (J) and Meeples (J) <= Min then
               Min := Meeples (J);
               Min_P := J;
             end if;
@@ -210,7 +210,7 @@ package body Root.Eyrie is
           PL := Get_List ("clearings with the most enemies");
           for I in PL'Range loop
             if PL (I) /= 0 then
-              if M (PL (I)).C_Suit = S and Roosts (PL (I)) and Meeples (PL (I)) <= Min then
+              if M.Clearings (PL (I)).C_Suit = S and Roosts (PL (I)) and Meeples (PL (I)) <= Min then
                 Min := Meeples (PL (I));
                 Min_P := PL (I);
               end if;
@@ -235,7 +235,7 @@ package body Root.Eyrie is
   end Recruit;
 
   -- Move phase of daylight --
-  procedure Move (S : Suit; M : Map_T) is
+  procedure Move (S : Suit; M : Map) is
     Clearings : Priority_List := (others => 0);
     Count : Integer := 0;
     Max, Max_Idx : Integer := 0;
@@ -244,8 +244,8 @@ package body Root.Eyrie is
     Val : Integer range 0..MEEPLE_MAX;
   begin
     -- Find matching clearings with warriors --
-    for I in M'Range loop
-      if M (I).C_Suit = S and Meeples (I) > 0 then
+    for I in Priority'Range loop
+      if M.Clearings (I).C_Suit = S and Meeples (I) > 0 then
         Count := Count + 1;
         Clearings (Count) := I;
       end if;
@@ -290,23 +290,23 @@ package body Root.Eyrie is
       
     -- If there's warriors to move... --
     if Max > 0 then
-      for I in M (Max_Idx).Neighbors'Range loop
-        if M (Max_Idx).Neighbors (I) /= 0 then
+      for I in M.Clearings (Max_Idx).Neighbors'Range loop
+        if M.Clearings (Max_Idx).Neighbors (I) /= 0 then
           Put ("What is the total number of enemy PIECES in clearing" &
-               M (Max_Idx).Neighbors (I)'Image & ": ");
+               M.Clearings (Max_Idx).Neighbors (I)'Image & ": ");
           Get_Input (Val, 0, 30);
 
           -- Track for all neighbors --
           if Val <= Min then
             Min := Val;
-            Min_Idx := M (Max_Idx).Neighbors (I);
+            Min_Idx := M.Clearings (Max_Idx).Neighbors (I);
           end if;
 
           -- Track for neighbors without roosts --
-          if not Roosts (M (Max_Idx).Neighbors (I)) and
+          if not Roosts (M.Clearings (Max_Idx).Neighbors (I)) and
              Val <= Min then
             Min_R := Val;
-            Min_RIdx := M (Max_Idx).Neighbors (I);
+            Min_RIdx := M.Clearings (Max_Idx).Neighbors (I);
           end if;
         end if;
       end loop;
@@ -324,13 +324,13 @@ package body Root.Eyrie is
     end if;
   end Move;
 
-  procedure Battle (S : Suit; M : Map_T; Most : Boolean) is
+  procedure Battle (S : Suit; M : Map; Most : Boolean) is
     Clearings : array (Integer range 1..4) of Integer range 0..12 := (others => 0);
     Count : Integer := 0;
   begin
     -- Find matching clearings with warriors --
-    for I in M'Range loop
-      if M (I).C_Suit = S and Meeples (I) > 0 then
+    for I in Priority'Range loop
+      if M.Clearings (I).C_Suit = S and Meeples (I) > 0 then
         Count := Count + 1;
         Clearings (Count) := I;
       end if;

@@ -2,7 +2,7 @@ with Ada.Text_IO; use Ada.Text_IO;
 
 with Root; use Root;
 with Root.Color; use Root.Color;
-with Root.Map; use Root.Map;
+with Root.Maps; use Root.Maps;
 
 with Root.Eyrie;
 with Root.Marquise;
@@ -18,7 +18,7 @@ procedure Rootbotics is
   Playing : array (Faction'Range) of Boolean := (others => False);
   Num_Playing : Integer := 0;
 
-  Map : Map_T;
+  M : Map;
 
 begin
   Put_Line ("Welcome to the Rootbotics Logic Tool " & VERSION & "!");
@@ -100,10 +100,10 @@ begin
     Get_Option (Option, 3);
 
     case Option is
-      when 'a' => Map := Fall_Map;
-      when 'b' => Map := Winter_Map;
-      when 'c' => Map := Lake_Map;
-      --when 'd' => Map := Mountain_Map;
+      when 'a' => M := Fall_Map;
+      when 'b' => M := Winter_Map;
+      when 'c' => M := Lake_Map;
+      --when 'd' => M := Mountain_Map;
       when others => 
         Put_Line ("ERROR: Should never reach here!");
         return;
@@ -117,7 +117,7 @@ begin
   for I in Playing'Range loop
     if Playing (I) then
       case I is
-        when Marquise => Root.Marquise.Setup (Map);
+        when Marquise => Root.Marquise.Setup (M);
         when Eyrie => Root.Eyrie.Setup;
         when Alliance => Put_Line ("The Automated Alliance is unimplmented!");
         when Vagabot => Root.Vagabot.Setup;
@@ -191,17 +191,17 @@ begin
       -- Handle faction turn --
       case F is
         when Marquise => 
-          Root.Marquise.Take_Turn (Suit'Val (Character'Pos (Order) - 97), Map);
+          Root.Marquise.Take_Turn (Suit'Val (Character'Pos (Order) - 97), M);
         when Eyrie    => 
-          Root.Eyrie.Take_Turn    (Suit'Val (Character'Pos (Order) - 97), Map);
+          Root.Eyrie.Take_Turn    (Suit'Val (Character'Pos (Order) - 97), M);
         when Alliance => 
-          Root.Alliance.Take_Turn (Suit'Val (Character'Pos (Order) - 97), Map);
+          Root.Alliance.Take_Turn (Suit'Val (Character'Pos (Order) - 97), M);
         when Vagabot  => 
-          Root.Vagabot.Take_Turn  (Suit'Val (Character'Pos (Order) - 97), Map);
-        --when Lizards => Root.Lizards.Take_Turn (Order, Map);
-        --when Riverfok => Root.Riverfolk.Take_Turn (Order, Map);
-        --when Corvids => Root.Corvids.Take_Turn (Order, Map);
-        --when Duchy => Root.Duchy.Take_Turn (Order, Map);
+          Root.Vagabot.Take_Turn  (Suit'Val (Character'Pos (Order) - 97), M);
+        --when Lizards => Root.Lizards.Take_Turn (Order, M);
+        --when Riverfok => Root.Riverfolk.Take_Turn (Order, M);
+        --when Corvids => Root.Corvids.Take_Turn (Order, M);
+        --when Duchy => Root.Duchy.Take_Turn (Order, M);
       end case;
     end;
   end loop;

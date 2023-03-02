@@ -18,7 +18,7 @@ package body Root.Marquise is
   -- Faction Setup --
   -------------------
 
-  procedure Setup (M : Map_T) is
+  procedure Setup (M : Map) is
     Corner : Integer range 1..4;
   begin
     Put ("Which corner clearing will the "); Put_Name; Put (" start in: ");
@@ -30,7 +30,7 @@ package body Root.Marquise is
     end loop;
     Meeples (Corner) := Meeples (Corner) + 1;
 
-    --if M = Lake_Map then
+    --if M.Name = Lake then
     --  case Clearing is
     --    when 1 => Meeples (2) := 0;
     --    when 2 => Meeples (1) := 0;
@@ -51,13 +51,13 @@ package body Root.Marquise is
   ---------------
   -- Take Turn --
   ---------------
-  procedure Warriors_Lost (M : Map_T);
-  procedure Battle  (S : Suit; M : Map_T);
-  procedure Recruit (S : Suit; M : Map_T);
-  function  Build   (S : Suit; M : Map_T) return Boolean;
-  procedure Move    (S : Suit; M : Map_T);
+  procedure Warriors_Lost (M : Map);
+  procedure Battle  (S : Suit; M : Map);
+  procedure Recruit (S : Suit; M : Map);
+  function  Build   (S : Suit; M : Map) return Boolean;
+  procedure Move    (S : Suit; M : Map);
 
-  procedure Take_Turn (Order : Suit; M : Map_T) is
+  procedure Take_Turn (Order : Suit; M : Map) is
     Expand : Boolean := True;
   begin
 
@@ -148,10 +148,10 @@ package body Root.Marquise is
 
   end Take_Turn;
 
-  procedure Warriors_Lost (M : Map_T) is
+  procedure Warriors_Lost (M : Map) is
   begin
     -- Determine lost warriors --
-    for I in M'Range loop
+    for I in Priority'Range loop
 
       -- Warriors --
       if Meeples (I) > 0 then
@@ -179,7 +179,7 @@ package body Root.Marquise is
           declare
             Val : Integer;
           begin
-            Get_Input (Val, 0, M (I).Buildings);
+            Get_Input (Val, 0, M.Clearings (I).Buildings);
             Sawmill (I) := Val;
           end;
         end if;
@@ -195,7 +195,7 @@ package body Root.Marquise is
           declare
             Val : Integer;
           begin
-            Get_Input (Val, 0, M (I).Buildings);
+            Get_Input (Val, 0, M.Clearings (I).Buildings);
             Workshops (I) := Val;
           end;
         end if;
@@ -211,7 +211,7 @@ package body Root.Marquise is
           declare
             Val : Integer;
           begin
-            Get_Input (Val, 0, M (I).Buildings);
+            Get_Input (Val, 0, M.Clearings (I).Buildings);
             Recruiter (I) := Val;
           end;
         end if;
@@ -219,11 +219,11 @@ package body Root.Marquise is
     end loop;
   end Warriors_Lost;
 
-  procedure Battle (S : Suit; M : Map_T) is
+  procedure Battle (S : Suit; M : Map) is
     Lost : Integer;
   begin
-    for I in M'Range loop
-      if M (I).C_Suit = S and Meeples (I) > 0 then
+    for I in Priority'Range loop
+      if M.Clearings (I).C_Suit = S and Meeples (I) > 0 then
         Put_Line ("Battle in clearing" & I'Image & " the enemy with " &
                   "the most pieces, then the most points.");
         Put_Line ("How many pieces were lost: ");
@@ -233,12 +233,12 @@ package body Root.Marquise is
     end loop;
   end Battle;
 
-  procedure Recruit (S : Suit; M : Map_T) is
+  procedure Recruit (S : Suit; M : Map) is
     Rule : array (Integer range 1..4) of Integer := (others => 0);
     Count  : Integer range 0..4 := 0;
   begin
-    for I in M'Range loop
-      if M (I).C_Suit = S and Meeples (I) > 0 then
+    for I in Priority'Range loop
+      if M.Clearings (I).C_Suit = S and Meeples (I) > 0 then
         Put ("Do the "); Put_Name; Put_Line (" rule clearing" & I'Image & 
              "? (y/n)");
         if Get_YN then
@@ -264,12 +264,12 @@ package body Root.Marquise is
 
   end Recruit;
 
-  function Build (S : Suit; M : Map_T) return Boolean is
+  function Build (S : Suit; M : Map) return Boolean is
     Max : Integer := 0;
     Max_Idx : Integer;
   begin
-    for I in M'Range loop
-      if M (I).C_Suit = S and Meeples (I) > 0 then
+    for I in Priority'Range loop
+      if M.Clearings (I).C_Suit = S and Meeples (I) > 0 then
         Put ("Do the "); Put_Name; Put_Line (" rule clearing" & I'Image & 
                   "? (y/n)");
         if Get_YN then
@@ -320,7 +320,7 @@ package body Root.Marquise is
     return True;
   end Build;
 
-  procedure Move (S : Suit; M : Map_T) is
+  procedure Move (S : Suit; M : Map) is
   begin
     -- TODO Implement
     null;
