@@ -82,7 +82,7 @@ begin
 
   Put      (" c. ");
   Set_Color (Blue);
-  Put_Line ("Lake     (unimplemented)");
+  Put_Line ("Lake");
   Reset_Style;
 
   Put      (" d. ");
@@ -97,12 +97,12 @@ begin
     Option : Character;
   begin
     -- TODO Implement other maps --
-    Get_Option (Option, 2);
+    Get_Option (Option, 3);
 
     case Option is
       when 'a' => Map := Fall_Map;
       when 'b' => Map := Winter_Map;
-      --when 'c' => Map := Lake_Map
+      when 'c' => Map := Lake_Map;
       --when 'd' => Map := Mountain_Map;
       when others => 
         Put_Line ("ERROR: Should never reach here!");

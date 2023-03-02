@@ -33,6 +33,11 @@ package Root.Map is
   ------------
   function Winter_Map return Map_T;
 
+  ----------
+  -- Lake --
+  ----------
+  function Lake_Map return Map_T;
+
 private
 
   type Clearing_Suit  is array (Priority'Range) of Suit;
