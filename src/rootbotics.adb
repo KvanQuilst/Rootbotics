@@ -96,14 +96,13 @@ begin
   declare
     Option : Character;
   begin
-    -- TODO Implement other maps --
-    Get_Option (Option, 3);
+    Get_Option (Option, 4);
 
     case Option is
       when 'a' => M := Fall_Map;
       when 'b' => M := Winter_Map;
       when 'c' => M := Lake_Map;
-      --when 'd' => M := Mountain_Map;
+      when 'd' => M := Mountain_Map;
       when others => 
         Put_Line ("ERROR: Should never reach here!");
         return;

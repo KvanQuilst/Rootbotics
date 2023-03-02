@@ -35,15 +35,9 @@ package Root.Maps is
      (Mouse,  2, True,  (3, 6, 12, 0, 0, 0)),   -- 11
      (Fox,    1, True,  (4, 7, 9, 10, 11, 0)))); -- 12
 
-  ------------
-  -- Winter --
-  ------------
-  function Winter_Map return Map;
-
-  ----------
-  -- Lake --
-  ----------
-  function Lake_Map return Map;
+  function Winter_Map   return Map;
+  function Lake_Map     return Map;
+  function Mountain_Map return Map;
 
 private
 
