@@ -30,21 +30,21 @@ package body Root.Marquise is
     end loop;
     Meeples (Corner) := Meeples (Corner) + 1;
 
-    --if M.Name = Lake then
-    --  case Clearing is
-    --    when 1 => Meeples (2) := 0;
-    --    when 2 => Meeples (1) := 0;
-    --    when 3 => Meeples (4) := 0;
-    --    when 4 => Meeples (3) := 0;
-    --  end case;
-    --else
-    case Corner is
-      when 1 => Meeples (3) := 0;
-      when 2 => Meeples (4) := 0;
-      when 3 => Meeples (1) := 0;
-      when 4 => Meeples (2) := 0;
-    end case;
-    --end if;
+    if M.Name = Lake then
+      case Corner is
+        when 1 => Meeples (2) := 0;
+        when 2 => Meeples (1) := 0;
+        when 3 => Meeples (4) := 0;
+        when 4 => Meeples (3) := 0;
+      end case;
+    else
+      case Corner is
+        when 1 => Meeples (3) := 0;
+        when 2 => Meeples (4) := 0;
+        when 3 => Meeples (1) := 0;
+        when 4 => Meeples (2) := 0;
+      end case;
+    end if;
 
   end Setup;
 
