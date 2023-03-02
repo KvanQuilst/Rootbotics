@@ -77,7 +77,7 @@ begin
 
   Put      (" b. ");
   Set_Color (Teal);
-  Put_Line ("Winter   (unimplemented)");
+  Put_Line ("Winter");
   Reset_Style;
 
   Put      (" c. ");
@@ -97,11 +97,11 @@ begin
     Option : Character;
   begin
     -- TODO Implement other maps --
-    Get_Option (Option, 1);
+    Get_Option (Option, 2);
 
     case Option is
       when 'a' => Map := Fall_Map;
-      --when 'b' => Map := Winter_Map;
+      when 'b' => Map := Winter_Map;
       --when 'c' => Map := Lake_Map
       --when 'd' => Map := Mountain_Map;
       when others => 
@@ -208,7 +208,6 @@ begin
       Separator;
 
       Get_Option (Order, 4);
-
       New_Line;
       
       -- Handle faction turn --

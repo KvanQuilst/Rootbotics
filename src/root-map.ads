@@ -28,4 +28,9 @@ package Root.Map is
      (Mouse,  2, True,  (3, 6, 12, 0, 0, 0)),   -- 11
      (Fox,    1, True,  (4, 7, 9, 10, 11, 0))); -- 12
 
+  ------------
+  -- Winter --
+  ------------
+  function Winter_Map return Map_T;
+
 end Root.Map;
