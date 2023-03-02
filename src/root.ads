@@ -23,5 +23,6 @@ package Root is
   procedure Put_Birdsong;
   procedure Put_Daylight;
   procedure Put_Evening;
+  procedure Put_Suits_Options;
 
 end Root;

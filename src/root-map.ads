@@ -33,4 +33,9 @@ package Root.Map is
   ------------
   function Winter_Map return Map_T;
 
+private
+
+  type Clearing_Suit  is array (Priority'Range) of Suit;
+  type Clearing_Order is array (Priority'Range) of Priority;
+
 end Root.Map;

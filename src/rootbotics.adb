@@ -183,29 +183,7 @@ begin
 
       -- What's the Order? --
       Put_Line ("What is the order of this turn:");
-      Separator;
-
-      Put (" a. ");
-      Set_Color (Red);
-      Put_Line ("Fox");
-      Reset_Style;
-
-      Put (" b. ");
-      Set_Color (Orange);
-      Put_Line ("Mouse");
-      Reset_Style;
-
-      Put (" c. ");
-      Set_Color (Yellow);
-      Put_Line ("Rabbit");
-      Reset_Style;
-
-      Put (" d. ");
-      Set_Color (Blue);
-      Put_Line ("Bird");
-      Reset_Style;
-
-      Separator;
+      Put_Suits_Options;
 
       Get_Option (Order, 4);
       New_Line;

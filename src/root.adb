@@ -1,6 +1,8 @@
 with Ada.Text_IO; use Ada.Text_IO;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 
+with Root.Color; use Root.Color;
+
 package body Root is
   package Int_IO is new Integer_IO (Integer); use Int_IO;
 
@@ -45,9 +47,12 @@ package body Root is
   end Get_Input_Internal;
 
   procedure Get_Input (I : out Integer; Low, High : Integer) is
+    Line : Unbounded_String;
   begin
     while not Get_Input_Internal (I, Low, High) loop
+      Line := To_Unbounded_String (Get_Line); 
       Put_Line ("Invalid input!");
+      Put ("Option: ");
     end loop;
   end Get_Input;
 
@@ -173,5 +178,32 @@ package body Root is
     Separator;
     New_Line;
   end Put_Evening;
+
+  procedure Put_Suits_Options is
+  begin
+    Separator;
+    
+    Put (" a. ");
+    Set_Color (Red);
+    Put_Line ("Fox");
+    Reset_Style;
+
+    Put (" b. ");
+    Set_Color (Orange);
+    Put_Line ("Mouse");
+    Reset_Style;
+
+    Put (" c. ");
+    Set_Color (Yellow);
+    Put_Line ("Rabbit");
+    Reset_Style;
+
+    Put (" d. ");
+    Set_Color (Blue);
+    Put_Line ("Bird");
+    Reset_Style;
+
+    Separator;
+  end Put_Suits_Options;
 
 end Root;
