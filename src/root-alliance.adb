@@ -1,12 +1,12 @@
 with Ada.Text_IO; use Ada.Text_IO;
 
-with Root.Color; use Root.Color;
+with Root.IO; use Root.IO;
 
 package body Root.Alliance is
 
   procedure Put_Name (NewLine : Boolean := False) is
   begin
-    Set_Color (Green);
+    Set_Style (Green);
     Put ("Automated Alliance");
     Reset_Style;
     if NewLine then
@@ -34,8 +34,8 @@ package body Root.Alliance is
     -- Alliance State --
     Separator;
     New_Line;
-    Set_Color (Green);
-    Put_Line_Center ("Automated Alliance");
+    Set_Style (Green);
+    Put_Line_Centered ("Automated Alliance");
     Reset_Style;
     -- F  M  R
     -- X  X  X
@@ -46,17 +46,17 @@ package body Root.Alliance is
     -- Birdsong --
     Put_Birdsong;
 
-    Wait_Continue;
+    Continue;
 
     -- Daylight --
     Put_Daylight;
 
-    Wait_Continue;
+    Continue;
 
     -- Evening --
     Put_Evening; 
     
-    Wait_Continue;
+    Continue;
 
   end Take_Turn;
 

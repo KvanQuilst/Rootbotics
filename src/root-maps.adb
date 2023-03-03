@@ -1,6 +1,6 @@
 with Ada.Text_IO; use Ada.Text_IO;
 
-with Root.Color; use Root.Color;
+with Root.IO; use Root.IO;
 
 package body Root.Maps is
 
@@ -16,7 +16,7 @@ package body Root.Maps is
     for I in Priority'Range loop
       Put_Line ("What is the suit of clearing" & 
                 O (I)'Image & ":");
-      Put_Suits_Options;
+      Put_Suit_Opts;
 
       Get_Option (Opt, 4);
       New_Line;

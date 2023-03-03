@@ -14,15 +14,4 @@ package Root is
   function  Get_List   (Values : String) return Priority_List;
   procedure Get_List   (OL : out Option_List; Num_Opts : Positive);
 
-  WIDTH : constant := 40;
-
-  procedure Wait_Continue;
-  procedure Separator;
-  procedure Put_Line_Center (S : String);
-
-  procedure Put_Birdsong;
-  procedure Put_Daylight;
-  procedure Put_Evening;
-  procedure Put_Suits_Options;
-
 end Root;

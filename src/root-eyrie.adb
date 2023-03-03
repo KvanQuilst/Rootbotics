@@ -1,12 +1,12 @@
 with Ada.Text_IO; use Ada.Text_IO;
 
-with Root.Color; use Root.Color;
+with Root.IO; use Root.IO;
 
 package body Root.Eyrie is
 
   procedure Put_Name (NewLine : Boolean := False) is
   begin
-    Set_Color (Blue);
+    Set_Style (B_Blue);
     Put ("Electric Eyrie");
     Reset_Style;
     if NewLine then
@@ -60,8 +60,8 @@ package body Root.Eyrie is
     -- Electric Eyrie Stats --
     Separator;
     New_Line;
-    Set_Color (Blue);
-    Put_Line_Center ("Electric Eyrie");
+    Set_Style (B_Blue);
+    Put_Line_Centered ("Electric Eyrie");
     Reset_Style;
     New_Line;
     Put_Line (" Meeple Supply:" & Meeple_Supply'Image);
@@ -91,7 +91,7 @@ package body Root.Eyrie is
     Put_Line ("Craft order card for (+ 1) if it has an available item.");
     Decrees (Order) := Decrees (Order) + 1;
 
-    Wait_Continue;
+    Continue;
 
     -- Daylight --
     Put_Daylight; 
@@ -113,7 +113,7 @@ package body Root.Eyrie is
       end if;      
     end loop;
 
-    Wait_Continue;
+    Continue;
 
       -- Move --
     Put_Line ("--  Move");
@@ -123,7 +123,7 @@ package body Root.Eyrie is
       end if;
     end loop;
 
-    Wait_Continue;
+    Continue;
     
       -- Battle --
     Put_Line ("-- Battle");

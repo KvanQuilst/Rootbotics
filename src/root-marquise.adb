@@ -1,12 +1,12 @@
 with Ada.Text_IO; use Ada.Text_IO;
 
-with Root.Color; use Root.Color;
+with Root.IO; use Root.IO;
 
 package body Root.Marquise is
 
   procedure Put_Name (NewLine : Boolean := False) is
   begin
-    Set_Color (Orange);
+    Set_Style (Yellow);
     Put ("Mechanical Marquise 2.0");
     Reset_Style;
     if NewLine then
@@ -64,8 +64,8 @@ package body Root.Marquise is
     -- Mechanical Marquise 2.0 State --
     Separator;
     New_Line;
-    Set_Color (Orange);
-    Put_Line_Center ("Mechanical Marquise 2.0");
+    Set_Style (Yellow);
+    Put_Line_Centered ("Mechanical Marquise 2.0");
     Reset_Style;
     New_Line;
     Put_Line ("    Meeple Supply:" & Meeple_Supply'Image);
@@ -91,7 +91,7 @@ package body Root.Marquise is
   
     Put_Line ("Craft order card for (+ 1) if it has an available item.");
 
-    Wait_Continue;
+    Continue;
 
     -- Daylight --
     Put_Daylight;
@@ -102,13 +102,13 @@ package body Root.Marquise is
       Put_Line ("--  Battle");
       Battle (Order, M);
 
-      Wait_Continue;
+      Continue;
 
       -- Recruit --
       Put_Line ("--  Recruit");
       Recruit (Order, M);
 
-      Wait_Continue;
+      Continue;
 
       -- Build --
       Put_Line ("--  Build");

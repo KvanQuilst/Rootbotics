@@ -1,7 +1,7 @@
 with Ada.Text_IO; use Ada.Text_IO;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 
-with Root.Color; use Root.Color;
+with Root.IO; use Root.IO;
 
 package body Root is
   package Int_IO is new Integer_IO (Integer); use Int_IO;
@@ -126,84 +126,5 @@ package body Root is
       Put_Line ("Provide a spae separated list of options that apply:");
     end loop;
   end Get_List;
-
-
-  procedure Wait_Continue is
-    Line : Unbounded_String;
-  begin
-    New_Line;
-    Put ("Press enter to continue...");
-    Line := To_Unbounded_String (Get_Line);
-    New_Line;
-  end Wait_Continue;
-
-  procedure Separator is
-  begin
-    Put_Line (To_String (WIDTH * "-"));
-  end Separator;
-
-  procedure Put_Line_Center (S : String) is
-    Start : Integer;
-  begin
-    Start := (WIDTH / 2) - (S'Length / 2) + 1;
-    for I in 1..Start loop
-      Put (" ");
-    end loop;
-    Put_Line (S);
-  end Put_Line_Center;
-
-  procedure Put_Birdsong is
-  begin
-    New_Line; 
-    Separator;
-    Put_Line_Center ("Birdsong");
-    Separator;
-    New_Line;
-  end Put_Birdsong;
-
-  procedure Put_Daylight is
-  begin
-    New_Line; 
-    Separator;
-    Put_Line_Center ("Daylight");
-    Separator;
-    New_Line;
-  end Put_Daylight;
-
-  procedure Put_Evening is
-  begin
-    New_Line; 
-    Separator;
-    Put_Line_Center ("Evening");
-    Separator;
-    New_Line;
-  end Put_Evening;
-
-  procedure Put_Suits_Options is
-  begin
-    Separator;
-    
-    Put (" a. ");
-    Set_Color (Red);
-    Put_Line ("Fox");
-    Reset_Style;
-
-    Put (" b. ");
-    Set_Color (Orange);
-    Put_Line ("Mouse");
-    Reset_Style;
-
-    Put (" c. ");
-    Set_Color (Yellow);
-    Put_Line ("Rabbit");
-    Reset_Style;
-
-    Put (" d. ");
-    Set_Color (Blue);
-    Put_Line ("Bird");
-    Reset_Style;
-
-    Separator;
-  end Put_Suits_Options;
 
 end Root;

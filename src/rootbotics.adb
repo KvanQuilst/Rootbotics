@@ -1,7 +1,7 @@
 with Ada.Text_IO; use Ada.Text_IO;
 
 with Root; use Root;
-with Root.Color; use Root.Color;
+with Root.IO; use Root.IO;
 with Root.Maps; use Root.Maps;
 
 with Root.Eyrie;
@@ -71,22 +71,22 @@ begin
   Separator;
 
   Put      (" a. ");
-  Set_Color (Green);
+  Set_Style (Green);
   Put_Line ("Fall");
   Reset_Style;
 
   Put      (" b. ");
-  Set_Color (Teal);
+  Set_Style (B_Cyan);
   Put_Line ("Winter");
   Reset_Style;
 
   Put      (" c. ");
-  Set_Color (Blue);
+  Set_Style (Blue);
   Put_Line ("Lake");
   Reset_Style;
 
   Put      (" d. ");
-  Set_Color (Orange);
+  Set_Style (Yellow);
   Put_Line ("Mountain (unimplemented)");
   Reset_Style;
 
@@ -182,7 +182,7 @@ begin
 
       -- What's the Order? --
       Put_Line ("What is the order of this turn:");
-      Put_Suits_Options;
+      Put_Suit_Opts;
 
       Get_Option (Order, 4);
       New_Line;
