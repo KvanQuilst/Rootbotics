@@ -5,10 +5,29 @@ package Root.IO is
   WIDTH : constant Integer := 40;
 
   type Color is (Black, Red, Green, Yellow, 
-                 Blue, Magenta, Cyan, White,
+                 Blue, Magenta, Cyan, White, Default,
                  B_Black, B_Red, B_Green, B_Yellow,
-                 B_Blue, B_Magenta, B_Cyan, B_White,
-                 Default, None);
+                 B_Blue, B_Magenta, B_Cyan, B_White);
+
+  for Color use (
+    Black     => 30,
+    Red       => 31,
+    Green     => 32,
+    Yellow    => 33,
+    Blue      => 34,
+    Magenta   => 35,
+    Cyan      => 36,
+    White     => 37,
+    Default   => 39,
+    B_Black   => 90,
+    B_Red     => 91,
+    B_Green   => 92,
+    B_Yellow  => 93,
+    B_Blue    => 94,
+    B_Magenta => 95,
+    B_Cyan    => 96,
+    B_White   => 97
+    );
 
   type Style is (None, Dim, Italic, Underline, Strikethrough,
                  Not_Dim, Not_Italic, Not_Underline, Not_Strikethrough);
@@ -46,7 +65,6 @@ package Root.IO is
   procedure Put_Line_Centered (S : String);
 
   procedure Set_Style (FG :    Color; 
-                       BG :    Color := None;
                        S  : Style := None);
   procedure Reset_Style;
 

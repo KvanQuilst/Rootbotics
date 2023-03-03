@@ -20,7 +20,6 @@ package body Root.IO is
   end Put_Line_Centered;
 
   procedure Set_Style (FG : Color;
-                       BG : Color := None;
                        S  : Style := None) is
   begin
     Put (ESC & "[");
@@ -31,49 +30,9 @@ package body Root.IO is
       Put (";");
     end if;
 
-    -- BG --
-    case BG is
-      when Black     => Put ("40;");
-      when Red       => Put ("41;");
-      when Green     => Put ("42;");
-      when Yellow    => Put ("43;");
-      when Blue      => Put ("44;");
-      when Magenta   => Put ("45;");
-      when Cyan      => Put ("46;");
-      when White     => Put ("47;");
-      when B_Black   => Put ("100;");
-      when B_Red     => Put ("101;");
-      when B_Green   => Put ("102;");
-      when B_Yellow  => Put ("103;");
-      when B_Blue    => Put ("104;");
-      when B_Magenta => Put ("105;");
-      when B_Cyan    => Put ("106;");
-      when B_White   => Put ("107;");
-      when Default   => Put ("49;");
-      when None      => null;
-    end case;
-
     -- FG --
-    case FG is
-      when Black     => Put ("30m");
-      when Red       => Put ("31m");
-      when Green     => Put ("32m");
-      when Yellow    => Put ("33m");
-      when Blue      => Put ("34m");
-      when Magenta   => Put ("35m");
-      when Cyan      => Put ("36m");
-      when White     => Put ("37m");
-      when B_Black   => Put ("90m");
-      when B_Red     => Put ("91m");
-      when B_Green   => Put ("92m");
-      when B_Yellow  => Put ("93m");
-      when B_Blue    => Put ("94m");
-      when B_Magenta => Put ("95m");
-      when B_Cyan    => Put ("96m");
-      when B_White   => Put ("97m");
-      when Default   => Put ("39m");
-      when None      => Put ("39m");
-    end case;
+    Put (Color'Enum_Rep (FG), 0);
+    Put ("m");
   end Set_Style;
 
   procedure Reset_Style is
