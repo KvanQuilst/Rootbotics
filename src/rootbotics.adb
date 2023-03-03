@@ -87,7 +87,7 @@ begin
 
   Put      (" d. ");
   Set_Style (Yellow);
-  Put_Line ("Mountain (unimplemented)");
+  Put_Line ("Mountain");
   Reset_Style;
 
   Separator;
@@ -96,7 +96,8 @@ begin
   declare
     Option : Character;
   begin
-    Get_Option (Option, 4);
+    --Get_Option (Option, 4);
+    Option := Get_Option (4);
 
     case Option is
       when 'a' => M := Fall_Map;
@@ -182,9 +183,10 @@ begin
 
       -- What's the Order? --
       Put_Line ("What is the order of this turn:");
-      Put_Suit_Opts;
+      --Put_Suit_Opts;
 
-      Get_Option (Order, 4);
+      --Get_Option (Order, 4);
+      Order := Get_Suit_Opts;
       New_Line;
       
       -- Handle faction turn --

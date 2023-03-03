@@ -1,8 +1,11 @@
+with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Ada.Text_IO; use Ada.Text_IO;
 
 package Root.IO is 
 
   WIDTH : constant Integer := 40;
+
+  type String_Arr is array (Positive range <>) of Unbounded_String;
 
   type Color is (Black, Red, Green, Yellow, 
                  Blue, Magenta, Cyan, White, Default,
@@ -50,11 +53,18 @@ package Root.IO is
   -- General Format:
   --  $ Input: <user input>
   ----------------------------
-
-  --function Get_Option  (Num_Opts  : in Integer;
-  --                      Options   : in array of String) return Character;
+  function Get_Option (Num_Opts  : Integer) return Character;
+  -- Print options out from Options --
+  function Get_Option (Num_Opts  : Integer;
+                       Options   : String_Arr) return Character;
   --function Get_Integer (Low, High : in Integer)         return Integer;
   --function Get_Yes_No  return Boolean;
+
+
+  -----------------
+  -- Common Gets --
+  -----------------
+  function Get_Suit_Opts return Character;
 
 
   ----------------
@@ -64,9 +74,17 @@ package Root.IO is
   -- Centered around WIDTH --
   procedure Put_Line_Centered (S : String);
 
-  procedure Set_Style (FG :    Color; 
+  procedure Set_Style (FG : Color; 
                        S  : Style := None);
   procedure Reset_Style;
+
+  --------------------------
+  -- Common Color Strings --
+  --------------------------
+  function Fox    return String;
+  function Mouse  return String;
+  function Rabbit return String;
+  function Bird   return String;
 
   -------------------
   -- Common Prints --
@@ -77,7 +95,5 @@ package Root.IO is
   procedure Put_Birdsong;
   procedure Put_Daylight;
   procedure Put_Evening;
-
-  procedure Put_Suit_Opts;
 
 end Root.IO;
