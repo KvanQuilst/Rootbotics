@@ -2,9 +2,10 @@ with Root.Maps; use Root.Maps;
 
 package Root.Alliance is
 
-  function Setup (Diff : Difficulty) return Boolean;
+  function  Setup (Diff : Difficulty) return Boolean;
   procedure Take_Turn (Order : Suit; M : Map);
   procedure Put_Name (NewLine : Boolean := False);
+  function  Name return String;
 
 private
 

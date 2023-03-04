@@ -13,6 +13,11 @@ package body Root.Vagabot is
       New_Line;
     end if;
   end Put_Name;
+
+  function Name return String is
+  begin
+    return String_Style ("Vagabot", B_Black);
+  end Name;
   
   -------------------------------
   -- Character Special Actions --

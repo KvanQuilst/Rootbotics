@@ -1,3 +1,4 @@
+with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Ada.Text_IO; use Ada.Text_IO;
 
 with Root; use Root;
@@ -47,6 +48,12 @@ begin
 
   -- Handle faction input --
   declare
+    Options : String_Arr := (
+        To_Unbounded_String ("a. " & Root.Marquise.Name),
+        To_Unbounded_String ("b. " & Root.Eyrie.Name),
+        To_Unbounded_String ("c. " & Root.Alliance.Name),
+        To_Unbounded_String ("d. " & Root.Vagabot.Name)
+      );
     OL  : Option_List (1..Faction'Pos (Faction'Last));
   begin
     Get_List (OL, OL'Length);
@@ -67,39 +74,19 @@ begin
   -------------------
   -- Map Selection --
   -------------------
-  Put_Line ("Which map will you be playing on:");
-  Separator;
-
-  Put      (" a. ");
-  Set_Style (Green);
-  Put_Line ("Fall");
-  Reset_Style;
-
-  Put      (" b. ");
-  Set_Style (B_Cyan);
-  Put_Line ("Winter");
-  Reset_Style;
-
-  Put      (" c. ");
-  Set_Style (Blue);
-  Put_Line ("Lake");
-  Reset_Style;
-
-  Put      (" d. ");
-  Set_Style (Yellow);
-  Put_Line ("Mountain");
-  Reset_Style;
-
-  Separator;
-
-  -- Handle map input --
   declare
-    Option : Character;
+    Options : String_Arr := (
+      To_Unbounded_String ("a. " & String_Style ("Fall", Green)),
+      To_Unbounded_String ("b. " & String_Style ("Winter", B_Cyan)),
+      To_Unbounded_String ("c. " & String_Style ("Lake", Blue)),
+      To_Unbounded_String ("d. " & String_Style ("Mountain", Yellow))
+      );
+    Opt : Character;
   begin
-    --Get_Option (Option, 4);
-    Option := Get_Option (4);
+    Put_Line ("Which map will you be playing on:");
+    Opt := Get_Option (4, Options);
 
-    case Option is
+    case Opt is
       when 'a' => M := Fall_Map;
       when 'b' => M := Winter_Map;
       when 'c' => M := Lake_Map;
@@ -183,9 +170,6 @@ begin
 
       -- What's the Order? --
       Put_Line ("What is the order of this turn:");
-      --Put_Suit_Opts;
-
-      --Get_Option (Order, 4);
       Order := Get_Suit_Opts;
       New_Line;
       

@@ -2,9 +2,10 @@ with Root.Maps; use Root.Maps;
 
 package Root.Eyrie is
 
-  procedure  Setup; 
+  procedure Setup; 
   procedure Take_Turn (Order : Suit; M : Map);
   procedure Put_Name  (NewLine : Boolean := False);
+  function  Name return String;
   
 private
 

@@ -5,6 +5,7 @@ package Root.Marquise is
   procedure Setup     (M : Map);
   procedure Take_Turn (Order : Suit; M : Map);
   procedure Put_Name  (NewLine : Boolean := False);
+  function  Name return String;
 
 private
 

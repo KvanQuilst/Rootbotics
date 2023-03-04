@@ -14,6 +14,11 @@ package body Root.Marquise is
     end if;
   end Put_Name;
 
+  function Name return String is
+  begin
+    return String_Style ("Mechanical Marquise 2.0", Yellow);
+  end Name;
+
   -------------------
   -- Faction Setup --
   -------------------

@@ -4,6 +4,11 @@ with Root.IO; use Root.IO;
 
 package body Root.Eyrie is
 
+  function Name return String is
+  begin
+    return String_Style ("Electric Eyrie", B_Blue);
+  end Name;
+
   procedure Put_Name (NewLine : Boolean := False) is
   begin
     Set_Style (B_Blue);
