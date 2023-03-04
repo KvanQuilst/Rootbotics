@@ -76,6 +76,9 @@ package Root.IO is
 
   procedure Set_Style (FG : Color; 
                        S  : Style := None);
+  function String_Style (Str : String;
+                         FG  : Color;
+                         S   : Style := None) return String;
   procedure Reset_Style;
 
   --------------------------

@@ -163,7 +163,7 @@ begin
         end loop;
         Separator;
 
-        Get_Option (F_Opt, P_Idx);
+        F_Opt := Get_Option (P_Idx);
         P_Idx := Character'Pos (F_Opt) - 96;
       else
         P_Idx := 1;

@@ -92,6 +92,37 @@ package body Root.IO is
     Put ("m");
   end Set_Style;
 
+  function String_Style (Str : String;
+                         FG  : Color;
+                         S   : Style := None) return String is
+    Out_Str : Unbounded_String;
+    Val     : String (1..2);
+  begin
+    Out_Str := To_Unbounded_String (ESC & "[");
+
+    -- Style --
+    if S /= None then
+      if Style'Enum_Rep (S) < 10 then
+        declare
+          Val : String (1..1);
+        begin
+          Put (Val, Style'Enum_Rep (S));
+          Out_Str := Out_Str & Val & ";";
+        end;
+      else
+        Put (Val, Style'Enum_Rep (S));
+        Out_Str := Out_Str & Val & ";";
+      end if;
+    end if;
+
+    -- FG --
+    Put (Val, Color'Enum_Rep (FG));
+    Out_Str := Out_Str & Val & "m" & Str &
+               ESC & "[0m";
+
+    return To_String (Out_Str);
+  end String_Style;
+
   procedure Reset_Style is
   begin
     Put (ESC & "[0m");
@@ -104,22 +135,22 @@ package body Root.IO is
   
   function Fox return String is
   begin
-    return ESC & "[91mFox" & ESC & "[0m";
+    return String_Style ("Fox", Red);
   end Fox;
 
   function Mouse return String is
   begin
-    return ESC & "[33mMouse" & ESC & "[0m";
+    return String_Style ("Mouse", Yellow);
   end Mouse;
 
   function Rabbit return String is
   begin
-    return ESC & "[93mRabbit" & ESC & "[0m";
+    return String_Style ("Rabbit", B_Yellow);
   end Rabbit;
 
   function Bird return String is
   begin
-    return ESC & "[94mBird" & ESC & "[0m";
+    return String_Style ("Bird", B_Blue);
   end Bird;
 
 
