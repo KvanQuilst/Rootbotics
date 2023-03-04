@@ -9,8 +9,8 @@ package body Root.IO is
  
   -- Looks only at first character of line! --
   function Get_Option (Num_Opts : Integer) return Character is
-    C : Character;
     Line : Unbounded_String;
+    C    : Character;
   begin
     pragma Assert (Num_Opts > 0 and Num_Opts <= 26);
 
@@ -44,6 +44,27 @@ package body Root.IO is
 
     return Get_Option (Num_Opts);
   end Get_Option;
+
+  function Get_Integer (Low, High : Integer) return Integer is
+    Line : Unbounded_String;
+    C    : Character;
+    EOL  : Boolean;
+    Val  : Integer;
+  begin
+    Put ("Response: ");
+    Look_Ahead (C, EOL);
+
+    while EOL or C < '0' or C > '9' loop
+      Line := To_Unbounded_String (Get_Line);
+      Put_Line ("Invalid input!");
+      Put ("Response: ");
+      Look_Ahead (C, EOL);
+    end loop;
+
+    Get (Val);
+    Line := To_Unbounded_String (Get_Line);
+    return Val;
+  end Get_Integer;
 
 
   -----------------

@@ -42,7 +42,7 @@ package body Root.Eyrie is
     Corner : Integer range 1..4;
   begin
     Put ("Which corner clearing will the "); Put_Name; Put (" start in: ");
-    Get_Input (Corner, 1, 4);
+    Corner := Get_Integer (1, 4);
 
     -- Place Starting Pieces --
     Meeples (Corner) := 6;
@@ -297,9 +297,9 @@ package body Root.Eyrie is
     if Max > 0 then
       for I in M.Clearings (Max_Idx).Neighbors'Range loop
         if M.Clearings (Max_Idx).Neighbors (I) /= 0 then
-          Put ("What is the total number of enemy PIECES in clearing" &
-               M.Clearings (Max_Idx).Neighbors (I)'Image & ": ");
-          Get_Input (Val, 0, 30);
+          Put_Line ("What is the total number of enemy PIECES in clearing" &
+                    M.Clearings (Max_Idx).Neighbors (I)'Image & ": ");
+          Val := Get_Integer (0, 30);
 
           -- Track for all neighbors --
           if Val <= Min then
@@ -320,7 +320,7 @@ package body Root.Eyrie is
 
       Put ("How many warriors do the "); Put_Name; Put (" need to rule clearing" &
            Max_Idx'Image & ": ");
-      Get_Input (Val, 0, 30);
+      Val := Get_Integer (0, 30);
       -- TODO Check if eyrie remains in rule if moved --
       Val := (if Val > Decrees (S) then Val else Decrees (S));
       Val := Meeples (Max_Idx) - Val;
@@ -352,7 +352,7 @@ package body Root.Eyrie is
       for I in Enemy_Build'Range loop
         Put ("How many buildings does the enemy with the most buildings have" &
              " in clearing" & Clearings (I)'Image & ": ");
-        Get_Input (Enemy_Build (I), 0, 3);
+        Enemy_Build (I) := Get_Integer (0, 3);
       end loop;
     end;
 

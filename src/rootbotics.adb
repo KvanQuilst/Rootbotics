@@ -49,10 +49,10 @@ begin
   -- Handle faction input --
   declare
     Options : String_Arr := (
-        To_Unbounded_String ("a. " & Root.Marquise.Name),
-        To_Unbounded_String ("b. " & Root.Eyrie.Name),
-        To_Unbounded_String ("c. " & Root.Alliance.Name),
-        To_Unbounded_String ("d. " & Root.Vagabot.Name)
+        To_Unbounded_String (Root.Marquise.Name),
+        To_Unbounded_String (Root.Eyrie.Name),
+        To_Unbounded_String (Root.Alliance.Name),
+        To_Unbounded_String (Root.Vagabot.Name)
       );
     OL  : Option_List (1..Faction'Pos (Faction'Last));
   begin

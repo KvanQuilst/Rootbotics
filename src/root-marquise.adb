@@ -27,7 +27,7 @@ package body Root.Marquise is
     Corner : Integer range 1..4;
   begin
     Put ("Which corner clearing will the "); Put_Name; Put (" start in: ");
-    Get_Input (Corner, 1, 4);
+    Corner := Get_Integer (1, 4);
 
     -- Place starting pieces --
     for I in Meeples'Range loop
@@ -168,7 +168,7 @@ package body Root.Marquise is
           declare
             Val : Integer;
           begin
-            Get_Input (Val, 0, MEEPLE_MAX);
+            Val := Get_Integer (0, MEEPLE_MAX);
             Meeples (I) := Val;
           end;
         end if;
@@ -184,7 +184,7 @@ package body Root.Marquise is
           declare
             Val : Integer;
           begin
-            Get_Input (Val, 0, M.Clearings (I).Buildings);
+            Val := Get_Integer (0, M.Clearings (I).Buildings);
             Sawmill (I) := Val;
           end;
         end if;
@@ -200,7 +200,7 @@ package body Root.Marquise is
           declare
             Val : Integer;
           begin
-            Get_Input (Val, 0, M.Clearings (I).Buildings);
+            Val := Get_Integer (0, M.Clearings (I).Buildings);
             Workshops (I) := Val;
           end;
         end if;
@@ -216,7 +216,7 @@ package body Root.Marquise is
           declare
             Val : Integer;
           begin
-            Get_Input (Val, 0, M.Clearings (I).Buildings);
+            Val := Get_Integer (0, M.Clearings (I).Buildings);
             Recruiter (I) := Val;
           end;
         end if;
@@ -232,7 +232,7 @@ package body Root.Marquise is
         Put_Line ("Battle in clearing" & I'Image & " the enemy with " &
                   "the most pieces, then the most points.");
         Put_Line ("How many pieces were lost: ");
-        Get_Input (Lost, 0, Meeples(I));
+        Lost := Get_Integer (0, Meeples(I));
         Meeples (I) := Meeples (I) - Lost;
       end if;
     end loop;

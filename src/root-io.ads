@@ -53,11 +53,10 @@ package Root.IO is
   -- General Format:
   --  $ Input: <user input>
   ----------------------------
-  function Get_Option (Num_Opts  : Integer) return Character;
-  -- Print options out from Options --
-  function Get_Option (Num_Opts  : Integer;
-                       Options   : String_Arr) return Character;
-  --function Get_Integer (Low, High : in Integer)         return Integer;
+  function Get_Option  (Num_Opts  : Integer)    return Character;
+  function Get_Option  (Num_Opts  : Integer;
+                        Options   : String_Arr) return Character;
+  function Get_Integer (Low, High : Integer)    return Integer;
   --function Get_Yes_No  return Boolean;
 
 
