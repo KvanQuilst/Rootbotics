@@ -1,11 +1,13 @@
+with Root.IO; use Root.IO;
 with Root.Maps; use Root.Maps;
 
 package Root.Marquise is
 
+  Name : constant String := String_Style ("Mechanical Marquise 2.0", Yellow);
+
   procedure Setup     (M : Map);
   procedure Take_Turn (Order : Suit; M : Map);
   procedure Put_Name  (NewLine : Boolean := False);
-  function  Name return String;
 
 private
 

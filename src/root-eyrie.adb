@@ -1,13 +1,7 @@
+with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Ada.Text_IO; use Ada.Text_IO;
 
-with Root.IO; use Root.IO;
-
 package body Root.Eyrie is
-
-  function Name return String is
-  begin
-    return String_Style ("Electric Eyrie", B_Blue);
-  end Name;
 
   procedure Put_Name (NewLine : Boolean := False) is
   begin
@@ -170,21 +164,23 @@ package body Root.Eyrie is
 
     -- Multiple clearings to pick from
     if C_Idx > 2 then
-      Put_Line ("Which clearing has the most enemies: ");
-      Separator;
-      C_Idx := 1;
-      for J in Clearings'Range loop
-        if Clearings (J) /= 0 then
-          Put_Line (" " & Character'Val (96 + C_Idx) & "." & Clearings (J)'Image); 
-          C_Idx := C_Idx + 1;
-        end if;
-      end loop;
-      Put_Line (" " & Character'Val (96 + C_Idx) & ". multiple");
-      C_Idx := C_Idx + 1;
-      Put_Line (" " & Character'Val (96 + C_Idx) & ". no enemies");
-      Separator;
+      declare
+        Options : String_Arr (Priority'Range);
+      begin
+        Put_Line ("Which clearing has the most enemies: ");
+        C_Idx := 1;
+        for J in Clearings'Range loop
+          if Clearings (J) /= 0 then
+            Options (C_Idx) := To_Unbounded_String (Clearings (J)'Image);
+            C_Idx := C_Idx + 1;
+          end if;
+        end loop;
+        Options (C_Idx) := To_Unbounded_String ("multiple");
+        C_Idx := C_Idx + 1;
+        Options (C_Idx) := To_Unbounded_String ("no enemies");
 
-      Get_Option (Option, C_Idx);
+        Option := Get_Option (Options (1..C_Idx));
+      end;
 
       -- No enemies --
       if Character'Pos (Option) - 96 = C_Idx then

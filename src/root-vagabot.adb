@@ -1,12 +1,11 @@
 with Ada.Text_IO; use Ada.Text_IO;
-
-with Root.IO; use Root.IO;
+with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 
 package body Root.Vagabot is
 
   procedure Put_Name (NewLine : Boolean := False) is
   begin
-    Set_Style (B_Black);
+    Set_Style (White);
     Put ("Vagabot");
     Reset_Style;
     if NewLine then
@@ -14,11 +13,6 @@ package body Root.Vagabot is
     end if;
   end Put_Name;
 
-  function Name return String is
-  begin
-    return String_Style ("Vagabot", B_Black);
-  end Name;
-  
   -------------------------------
   -- Character Special Actions --
   -------------------------------
@@ -160,17 +154,20 @@ package body Root.Vagabot is
   begin
 
     -- Character Selection --
-    Put ("Which character will the Vagabot be playing:");
-    Separator;
-    Put (" a. Thief");
-    Put (" b. Tinker");
-    Put (" c. Ranger");
-    Put (" d. Vagrant");
-    Put (" e. Scoundrel");
-    Put (" f. Arbiter");
-    Separator;
-    Get_Option (Opt, 6);
-    Char := V_Character'Val (Character'Pos (Opt) - 96);
+    declare
+      Options : String_Arr := (
+        To_Unbounded_String ("Thief"),
+        To_Unbounded_String ("Thinker"),
+        To_Unbounded_String ("Ranger"),
+        To_Unbounded_String ("Vagrant"),
+        To_Unbounded_String ("Scoundrel"),
+        To_Unbounded_String ("Arbiter")
+        );
+    begin
+      Put ("Which character will the Vagabot be playing:");
+      Opt := Get_Option (Options);
+      Char := V_Character'Val (Character'Pos (Opt) - 96);
+    end;
 
     case Char is
       when Thief =>

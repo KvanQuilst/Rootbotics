@@ -1,7 +1,5 @@
 with Ada.Text_IO; use Ada.Text_IO;
 
-with Root.IO; use Root.IO;
-
 package body Root.Marquise is
 
   procedure Put_Name (NewLine : Boolean := False) is
@@ -13,11 +11,6 @@ package body Root.Marquise is
       New_Line;
     end if;
   end Put_Name;
-
-  function Name return String is
-  begin
-    return String_Style ("Mechanical Marquise 2.0", Yellow);
-  end Name;
 
   -------------------
   -- Faction Setup --

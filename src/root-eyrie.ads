@@ -1,11 +1,13 @@
+with Root.IO; use Root.IO;
 with Root.Maps; use Root.Maps;
 
 package Root.Eyrie is
 
+  Name : constant String := String_Style ("Electric Eyrie", B_Blue);
+
   procedure Setup; 
   procedure Take_Turn (Order : Suit; M : Map);
   procedure Put_Name  (NewLine : Boolean := False);
-  function  Name return String;
   
 private
 

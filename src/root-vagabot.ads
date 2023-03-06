@@ -1,12 +1,13 @@
+with Root.IO; use Root.IO;
 with Root.Maps; use Root.Maps;
 
 package Root.Vagabot is
 
+  Name : constant String := String_Style ("Vagabot", White);
   
   procedure Setup;
   procedure Take_Turn (Order : Suit; M : Map);
   procedure Put_Name (NewLine : Boolean := False);
-  function  Name return String;
 
 private
 

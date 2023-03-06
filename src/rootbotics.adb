@@ -8,7 +8,7 @@ with Root.Maps; use Root.Maps;
 with Root.Eyrie;
 with Root.Marquise;
 with Root.Alliance;
-with Root.Vagabot; use Root.Vagabot;
+with Root.Vagabot;
 
 procedure Rootbotics is
   VERSION : constant String := "v0.1";
@@ -28,46 +28,27 @@ begin
   -----------------------
   -- Faction Selection --
   -----------------------
-  Put_Line ("Which of the following clockwork factions will you be playing with:");
-  Separator;
-  Put      (" a. ");
-  Root.Marquise.Put_Name (True);
-  Put      (" b. ");
-  Root.Eyrie.Put_Name (True);
-  Put      (" c. ");
-  Root.Alliance.Put_Name (True);
-  Put      (" d. ");
-  Root.Vagabot.Put_Name (True);
-  Put_Line (" e. Logical Lizards  (unimplemented)");
-  Put_Line (" f. Riverfolk Robots (unimplemented)");
-  Put_Line (" g. Cogwheel Corvids (unimplemented)");
-  Put_Line (" h. Drillbit Duchy   (unimplemented)");
-  New_Line;
-  Put_Line ("    No specified options to quit");
-  Separator;
-
-  -- Handle faction input --
   declare
     Options : String_Arr := (
         To_Unbounded_String (Root.Marquise.Name),
         To_Unbounded_String (Root.Eyrie.Name),
         To_Unbounded_String (Root.Alliance.Name),
         To_Unbounded_String (Root.Vagabot.Name)
+        -- To_Unbounded_String (Root.Lizards.Name),
+        -- To_Unbounded_String (Root.Riverfolk.Name),
+        -- To_Unbounded_String (Root.Corvids.Name),
+        -- To_Unbounded_String (Root.Duchy.Name)
       );
-    OL  : Option_List (1..Faction'Pos (Faction'Last));
+    Opts : Char_Arr := Get_Options (Options);
   begin
-    Get_List (OL, OL'Length);
-
-    if OL (1) = Character'Val (0) then
+    if Opts'Length = 0 then
       return;
     end if;
 
-    for I in OL'Range loop
-      if OL (I) /= Character'Val (0) then
-        Playing (Faction'Val (Character'Pos (OL (I)) - 97)) := True;
-        Num_Playing := Num_Playing + 1;
-      end if;
+    for I in Opts'Range loop
+      Playing (Faction'Val (Character'Pos (Opts (I)) - 97)) := True;
     end loop;
+    Num_Playing := Opts'Length;
   end;
   New_Line;
 
@@ -84,7 +65,7 @@ begin
     Opt : Character;
   begin
     Put_Line ("Which map will you be playing on:");
-    Opt := Get_Option (4, Options);
+    Opt := Get_Option (Options);
 
     case Opt is
       when 'a' => M := Fall_Map;
@@ -108,7 +89,6 @@ begin
         when Eyrie => Root.Eyrie.Setup;
         when Alliance => Put_Line ("The Automated Alliance is unimplmented!");
         when Vagabot => Root.Vagabot.Setup;
-        --TODO Clockwork Expansion 2
         --when Lizards => Put_Line ("The Logical Lizards are unimplemented!");
         --when Riverfolk => Put_Line ("The Riverfolk Robots are unimplemented!");
         --when Corvids => Put_Line ("The Cogwheel Corvids are unimplemented!");
@@ -121,36 +101,35 @@ begin
   ---------------------
   -- Manage the Game --
   ---------------------
-  loop
-    declare
-      P_Idx : Integer := 0;
-      F_Opt, Order : Character;
-      F : Faction;
-    begin
+  declare
+    Options : String_Arr (1..Num_Playing);
+    P_Idx : Integer := 0;
+    F_Opt, Order : Character;
+    F : Faction;
+  begin
 
+    for I in Playing'Range loop
+      if Playing (I) then
+        P_Idx := P_Idx + 1;
+        case I is
+          when Marquise => 
+            Options (P_Idx) := To_Unbounded_String (Root.Marquise.Name);
+          when Eyrie    => 
+            Options (P_Idx) := To_Unbounded_String (Root.Eyrie.Name);
+          when Alliance => 
+            Options (P_Idx) := To_Unbounded_String (Root.Alliance.Name);
+          when Vagabot  => 
+            Options (P_Idx) := To_Unbounded_String (Root.Vagabot.Name);
+        end case;
+      end if;
+    end loop;
+    Separator;
+
+    loop
       if Num_Playing > 1 then
         -- Choose Faction Turn --
         Put_Line ("Whose turn will you take:");
-        Separator;
-        for I in Playing'Range loop
-          if Playing (I) then
-            Put (" " & Character'Val (97 + P_Idx) & ". "); -- 'a' + P_Idx --
-            P_Idx := P_Idx + 1;
-            case I is
-              when Marquise => Root.Marquise.Put_Name (True);
-              when Eyrie    => Root.Eyrie.Put_Name    (True);
-              when Alliance => Root.Alliance.Put_Name (True);
-              when Vagabot  => Root.Vagabot.Put_Name  (True);
-              --when Lizards => Root.Lizards.Put_Name (True);
-              --when Riverfolk => Root.Riverfolk.Put_Name (True);
-              --when Corvids => Root.Corvids.Put_Name (True);
-              --when Duchy => Root.Duchy.Put_Name (True);
-            end case;
-          end if;
-        end loop;
-        Separator;
-
-        F_Opt := Get_Option (P_Idx);
+        F_Opt := Get_Option (Options);
         P_Idx := Character'Pos (F_Opt) - 96;
       else
         P_Idx := 1;
@@ -188,6 +167,6 @@ begin
         --when Corvids => Root.Corvids.Take_Turn (Order, M);
         --when Duchy => Root.Duchy.Take_Turn (Order, M);
       end case;
-    end;
-  end loop;
+    end loop;
+  end;
 end Rootbotics;

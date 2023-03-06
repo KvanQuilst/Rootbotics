@@ -6,18 +6,6 @@ with Root.IO; use Root.IO;
 package body Root is
   package Int_IO is new Integer_IO (Integer); use Int_IO;
 
-  procedure Get_Option (C : out Character; Num_Opts : Integer) is
-  begin
-    Put ("Option: ");
-    Get (C);
-
-    while Character'Pos (C) - 96 < 1 or Character'Pos (C) - 96 > Num_Opts loop
-      Put_Line ("Invalid option!");
-      Put ("Option: ");
-      Get (C);
-    end loop;
-  end Get_Option;
-
   function Get_YN return Boolean is
     Line : Unbounded_String;
     C : Character := 'a';
@@ -32,29 +20,6 @@ package body Root is
     end loop;
     return C = 'y';
   end Get_YN;
-
-  function Get_Input_Internal (I : out Integer; Low, High : Integer) return Boolean is
-    Line : Unbounded_String;
-    Val  : Integer range Low .. High;
-  begin
-    Get (Val);
-    Line := To_Unbounded_String (Get_Line);
-    I := Val;
-    return true;
-  exception
-    when others =>
-      return False;
-  end Get_Input_Internal;
-
-  procedure Get_Input (I : out Integer; Low, High : Integer) is
-    Line : Unbounded_String;
-  begin
-    while not Get_Input_Internal (I, Low, High) loop
-      Line := To_Unbounded_String (Get_Line); 
-      Put_Line ("Invalid input!");
-      Put ("Option: ");
-    end loop;
-  end Get_Input;
 
   function Get_List_Internal (PL : out Priority_List) return Boolean is
     Line : Unbounded_String; 

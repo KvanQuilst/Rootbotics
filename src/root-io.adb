@@ -1,5 +1,3 @@
-with Ada.Characters.Latin_1; use Ada.Characters.Latin_1;
-
 package body Root.IO is
   package Int_IO is new Integer_IO (Integer); use Int_IO;
 
@@ -7,19 +5,31 @@ package body Root.IO is
   -- Get Checked User Input --
   ----------------------------
  
-  -- Looks only at first character of line! --
-  function Get_Option (Num_Opts : Integer) return Character is
+  procedure Put_Options (Options : String_Arr) is
+  begin
+    pragma Assert (Options'Length /= 0);
+
+    -- Print options 'a' - '(a + Num_Opts)' --
+    Separator;
+    for I in Options'Range loop
+      Put_Line (" " & Character'Val (96 + I) & ". " &
+                To_String (Options (I)));
+    end loop;
+    Separator;
+  end Put_Options;
+
+  function Get_Option (Options  : String_Arr) return Character is
     Line : Unbounded_String;
     C    : Character;
   begin
-    pragma Assert (Num_Opts > 0 and Num_Opts <= 26);
+    Put_Options (Options);
 
     Put ("Option: ");
     Get (C);
     Line := To_Unbounded_String (Get_Line);
 
     -- Check character is between 'a' and '(a + Num_Opts)'
-    while Character'Pos (C) - 96 < 1 or Character'Pos (C) - 96 > Num_Opts loop
+    while Character'Pos (C) - 96 < 1 or Character'Pos (C) - 96 > Options'Length loop
       Put_Line ("Invalid option!");
       Put ("Option: ");
       Get (C);
@@ -29,21 +39,48 @@ package body Root.IO is
     return C;
   end Get_Option;
 
-  function Get_Option (Num_Opts : Integer;
-                       Options  : String_Arr) return Character is
+  function Get_Options (Options  : String_Arr) return Char_Arr is
+    Opts    : Char_Arr (1..Options'Length);
+    Line    : Unbounded_String;
+    Count   : Integer := 0;
+    Invalid : Boolean;
   begin
-    pragma Assert (Num_Opts = Options'Length);
+    Put_Options (Options);
 
-    -- Print options 'a' - '(a + Num_Opts)' --
-    Separator;
-    for I in Options'Range loop
-      Put_Line (" " & Character'Val (96 + I) & ". " &
-                To_String (Options (I)));
+    Put_Line ("Enter the options applicable. Press enter for 'none'...");
+
+    loop
+      Invalid := False;
+      Count   := 0;
+
+      Put ("Options: ");
+      
+      Line := To_Unbounded_String (Get_Line);
+
+      -- Get number of options / determine invalid --
+      for I in 1..Length (Line) loop
+        if Element (Line, I) >= 'a' and 
+           Element (Line, I) <= Character'Val (96 + Options'Length) then
+          Count := Count + 1;
+          Opts (Count) := Element (Line, I);
+        elsif Element (Line, I) /= ' ' then
+          Invalid := True;
+        end if;
+      end loop;
+
+      Invalid := (if Count > Options'Length then True else Invalid);  
+
+      for I in 1..Count-1 loop
+        for J in I+1..Count loop
+          Invalid := (if Opts (I) = Opts (J) then True else Invalid);
+        end loop;
+      end loop;
+
+      exit when Invalid = False;
+      Put_Line ("Invalid response!");
     end loop;
-    Separator;
-
-    return Get_Option (Num_Opts);
-  end Get_Option;
+    return Opts (1..Count);
+  end Get_Options;
 
   function Get_Integer (Low, High : Integer) return Integer is
     Line : Unbounded_String;
@@ -79,7 +116,7 @@ package body Root.IO is
       To_Unbounded_String (Bird)
       );
   begin
-    return Get_Option (4, S);
+    return Get_Option (S);
   end Get_Suit_Opts;
   
 
@@ -138,8 +175,7 @@ package body Root.IO is
 
     -- FG --
     Put (Val, Color'Enum_Rep (FG));
-    Out_Str := Out_Str & Val & "m" & Str &
-               ESC & "[0m";
+    Out_Str := Out_Str & Val & "m" & Str & ESC & "[0m";
 
     return To_String (Out_Str);
   end String_Style;
@@ -148,31 +184,6 @@ package body Root.IO is
   begin
     Put (ESC & "[0m");
   end Reset_Style;
-
-
-  ----------------------------
-  -- Common Colored Strings --
-  ----------------------------
-  
-  function Fox return String is
-  begin
-    return String_Style ("Fox", Red);
-  end Fox;
-
-  function Mouse return String is
-  begin
-    return String_Style ("Mouse", Yellow);
-  end Mouse;
-
-  function Rabbit return String is
-  begin
-    return String_Style ("Rabbit", B_Yellow);
-  end Rabbit;
-
-  function Bird return String is
-  begin
-    return String_Style ("Bird", B_Blue);
-  end Bird;
 
 
   -------------------
