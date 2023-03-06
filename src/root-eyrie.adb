@@ -3,16 +3,6 @@ with Ada.Text_IO; use Ada.Text_IO;
 
 package body Root.Eyrie is
 
-  procedure Put_Name (NewLine : Boolean := False) is
-  begin
-    Set_Style (B_Blue);
-    Put ("Electric Eyrie");
-    Reset_Style;
-    if NewLine then
-      New_Line;
-    end if;
-  end Put_Name;
-
   -- Prompt to place a number of warriors at a specific clearing --
   -- Check for 0 supply included                                 --
   procedure Place_Warriors (Num_Warriors : Integer; Clearing : Priority) is
@@ -35,7 +25,7 @@ package body Root.Eyrie is
   procedure Setup is
     Corner : Integer range 1..4;
   begin
-    Put ("Which corner clearing will the "); Put_Name; Put (" start in: ");
+    Put_Line ("Which corner clearing will the " & Name & " start in: ");
     Corner := Get_Integer (1, 4);
 
     -- Place Starting Pieces --
@@ -59,9 +49,7 @@ package body Root.Eyrie is
     -- Electric Eyrie Stats --
     Separator;
     New_Line;
-    Set_Style (B_Blue);
-    Put_Line_Centered ("Electric Eyrie");
-    Reset_Style;
+    Put_Line_Centered (Name);
     New_Line;
     Put_Line (" Meeple Supply:" & Meeple_Supply'Image);
     Put_Line ("  Roost Supply:" & Roost_Supply'Image);
@@ -80,7 +68,7 @@ package body Root.Eyrie is
 
     if Meeple_Supply = MEEPLE_MAX and Roost_Supply = ROOST_MAX then
       New_Line;
-      Put ("The "); Put_Name; Put_Line (" cannot do anything!");
+      Put_Line ("The " & Name & " cannot do anything!");
       return;
     end if;
 
@@ -137,7 +125,7 @@ package body Root.Eyrie is
     -- Evening --
     Put_Evening;
 
-    Put ("Score (+" & Roost_Points'Image & ") points for the ");  Put_Name (True);
+    Put_Line ("Score (+" & Roost_Points'Image & ") points for the " & Name);
 
   end Take_Turn;
 
@@ -304,8 +292,8 @@ package body Root.Eyrie is
 
       Min_Idx := (if Min_RIdx /= 0 then Min_RIdx else Min_Idx);
 
-      Put ("How many warriors do the "); Put_Name; Put (" need to rule clearing" &
-           Max_Idx'Image & ": ");
+      Put_Line ("How many warriors do the " & Name & " need to rule clearing" &
+           Max_Idx'Image & "? ");
       Val := Get_Integer (0, 30);
       -- TODO Check if eyrie remains in rule if moved --
       Val := (if Val > Decrees (S) then Val else Decrees (S));

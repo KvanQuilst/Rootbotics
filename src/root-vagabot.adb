@@ -3,16 +3,6 @@ with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 
 package body Root.Vagabot is
 
-  procedure Put_Name (NewLine : Boolean := False) is
-  begin
-    Set_Style (White);
-    Put ("Vagabot");
-    Reset_Style;
-    if NewLine then
-      New_Line;
-    end if;
-  end Put_Name;
-
   -------------------------------
   -- Character Special Actions --
   -------------------------------

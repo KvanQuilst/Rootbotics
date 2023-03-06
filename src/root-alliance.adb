@@ -2,16 +2,6 @@ with Ada.Text_IO; use Ada.Text_IO;
 
 package body Root.Alliance is
 
-  procedure Put_Name (NewLine : Boolean := False) is
-  begin
-    Set_Style (Green);
-    Put ("Automated Alliance");
-    Reset_Style;
-    if NewLine then
-      New_Line;
-    end if;
-  end Put_Name;
-
   -------------------
   -- Faction Setup --
   -------------------

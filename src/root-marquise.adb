@@ -2,16 +2,6 @@ with Ada.Text_IO; use Ada.Text_IO;
 
 package body Root.Marquise is
 
-  procedure Put_Name (NewLine : Boolean := False) is
-  begin
-    Set_Style (Yellow);
-    Put ("Mechanical Marquise 2.0");
-    Reset_Style;
-    if NewLine then
-      New_Line;
-    end if;
-  end Put_Name;
-
   -------------------
   -- Faction Setup --
   -------------------
@@ -19,7 +9,7 @@ package body Root.Marquise is
   procedure Setup (M : Map) is
     Corner : Integer range 1..4;
   begin
-    Put ("Which corner clearing will the "); Put_Name; Put (" start in: ");
+    Put_Line ("Which corner clearing will the " & Name & " start in: ");
     Corner := Get_Integer (1, 4);
 
     -- Place starting pieces --
@@ -80,7 +70,7 @@ package body Root.Marquise is
     -- Have the marquise lost? --
     if Meeple_Supply = MEEPLE_SUPPLY then
       New_Line;
-      Put ("The "); Put_Name; Put_Line (" cannot do anything!");
+      Put_Line ("The " & Name & " cannot do anything!");
       return;
     end if;
 
@@ -142,7 +132,7 @@ package body Root.Marquise is
           P := (if P /= 6 then 6 - P - 1 else 0);
       end case;
     end;
-    Put (") points for the "); Put_Name (True);
+    Put_Line (") points for the " & Name);
 
   end Take_Turn;
 
@@ -153,9 +143,8 @@ package body Root.Marquise is
 
       -- Warriors --
       if Meeples (I) > 0 then
-        Put ("Do the "); Put_Name; Put_Line (" still have" &
-                  Meeples (I)'Image & " warrior(s) in clearing" & I'Image &
-                  "? (y/n)");
+        Put_Line ("Do the " & Name & " still have" & Meeples (I)'Image & 
+                  " warrior(s) in clearing" & I'Image & "? (y/n)");
         if Get_YN then
           Put ("How many warriors remain: ");
           declare
@@ -169,9 +158,8 @@ package body Root.Marquise is
 
       -- Sawmills --
       if Sawmill_Supply > 0 then
-        Put_Line ("Do the "); Put_Name; Put_Line (" still have" &
-                  Sawmill (I)'Image & " sawmill(s) in clearing" &
-                  I'Image & "? (y/n)");
+        Put_Line ("Do the " & Name & " still have" & Sawmill (I)'Image & 
+                  " sawmill(s) in clearing" & I'Image & "? (y/n)");
         if Get_YN then
           Put ("How many workshops remain: ");
           declare
@@ -185,9 +173,8 @@ package body Root.Marquise is
 
       -- Workshop --
       if Sawmill_Supply > 0 then
-        Put ("Do the "); Put_Name; Put_Line (" still have" &
-                  Workshops (I)'Image & " workshop(s) in clearing" &
-                  I'Image & "? (y/n)");
+        Put_Line ("Do the " & Name & " still have" & Workshops (I)'Image & 
+                  " workshop(s) in clearing" & I'Image & "? (y/n)");
         if Get_YN then
           Put ("How many workshops remain: ");
           declare
@@ -201,9 +188,8 @@ package body Root.Marquise is
 
       -- Recruiter --
       if Sawmill_Supply > 0 then
-        Put ("Do the "); Put_Name; Put_Line (" still have" &
-                  Recruiter (I)'Image & " recruiter(s) in clearing" &
-                  I'Image & "? (y/n)");
+        Put_Line ("Do the " & Name & " still have" & Recruiter (I)'Image & 
+                  " recruiter(s) in clearing" & I'Image & "? (y/n)");
         if Get_YN then
           Put ("How many recruiters remain: ");
           declare
@@ -237,8 +223,7 @@ package body Root.Marquise is
   begin
     for I in Priority'Range loop
       if M.Clearings (I).C_Suit = S and Meeples (I) > 0 then
-        Put ("Do the "); Put_Name; Put_Line (" rule clearing" & I'Image & 
-             "? (y/n)");
+        Put_Line ("Do the " & Name & " rule clearing" & I'Image & "? (y/n)");
         if Get_YN then
           Count := Count + 1;
           Rule (Count) := I;
@@ -247,7 +232,7 @@ package body Root.Marquise is
     end loop;
 
     case Count is
-      when 0 => Put ("The "); Put_Name; Put_Line (" cannot place any warriors!");
+      when 0 => Put_Line ("The " & Name & " cannot place any warriors!");
       when 1 => Put_Line ("Place 4 warriors in clearing" & Rule (1)'Image);
       when 2 => Put_Line ("Place 2 warriors in clearing" & Rule (1)'Image);
                 Put_Line ("Place 2 warriors in clearing" & Rule (2)'Image);
@@ -268,8 +253,7 @@ package body Root.Marquise is
   begin
     for I in Priority'Range loop
       if M.Clearings (I).C_Suit = S and Meeples (I) > 0 then
-        Put ("Do the "); Put_Name; Put_Line (" rule clearing" & I'Image & 
-                  "? (y/n)");
+        Put_Line ("Do the " & Name & " rule clearing" & I'Image & "? (y/n)");
         if Get_YN then
           Put_Line ("Are there available building slots in clearing" & I'Image & 
                     "? (y/n)");
@@ -282,7 +266,7 @@ package body Root.Marquise is
     end loop;
 
     if Max = 0 then
-      Put ("The "); Put_Name; Put_Line (" cannot place any buildings.");
+      Put_Line ("The " & Name & " cannot place any buildings.");
       return False;
     end if;
 
@@ -292,7 +276,7 @@ package body Root.Marquise is
           Put ("Place a SAWMILL in clearing" & Max_Idx'Image);
           Sawmill_Supply := Sawmill_Supply - 1;
         else
-          Put ("The "); Put_Name; Put_Line (" cannot place any buildings.");
+          Put_Line ("The " & Name & " cannot place any buildings.");
           return False;
         end if;
       when Rabbit => 
@@ -300,7 +284,7 @@ package body Root.Marquise is
           Put ("Place a WORKSHOP in clearing" & Max_Idx'Image);
           Workshop_Supply := Workshop_Supply - 1;
         else
-          Put ("The "); Put_Name; Put_Line (" cannot place any buildings.");
+          Put_Line ("The " & Name & " cannot place any buildings.");
           return False;
         end if;
       when Mouse  => 
@@ -308,7 +292,7 @@ package body Root.Marquise is
           Put_Line ("Place a RECRUITER in clearing" & Max_Idx'Image);
           Recruiter_Supply := Recruiter_Supply - 1;
         else
-          Put ("The "); Put_Name; Put_Line (" cannot place any buildings.");
+          Put_Line ("The " & Name & " cannot place any buildings.");
           return False;
         end if;
       when Bird   => 
