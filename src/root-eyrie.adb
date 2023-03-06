@@ -243,11 +243,14 @@ package body Root.Eyrie is
     Min, Min_R : Integer := MEEPLE_MAX;
     Min_Idx, Min_RIdx : Integer := 0;
     Val : Integer range 0..MEEPLE_MAX;
+
+    Options : String_Arr (Priority'Range);
   begin
     -- Find matching clearings with warriors --
     for I in Priority'Range loop
       if M.Clearings (I).C_Suit = S and Meeples (I) > 0 then
         Count := Count + 1;
+        Options (I) := To_Unbounded_String (I'Image);
         Clearings (Count) := I;
       end if;
     end loop;
@@ -258,29 +261,16 @@ package body Root.Eyrie is
 
     -- Print options --
     Put_Line ("Which of these " & S'Image & " clearings do you rule:");
-    Put_Line ("-------------------------");
     declare
-      C_Idx : Integer := 1;
+      Opts : Char_Arr := Get_Options (Options (1..Count));
     begin
-      for I in 1..Count loop
-        Put_Line (" " & Character'Val (96 + C_Idx) & "." & Clearings (I)'Image);
-        C_Idx := C_Idx + 1;
-      end loop;
-    end;
-    Put_Line ("    Press enter for 'none'");
-    Put_Line ("-------------------------");
-
-    declare
-      OL : Option_List (1..Count);
-    begin
-      Get_List (OL, Count);
-      if OL (1) = Character'Val (0) then
+      if Opts'Length = 0 then
         return;
       end if;
 
       -- Find clearing with most warriors and highest priority --
-      for I in OL'Range loop
-        Val := Clearings (Character'Pos (OL (I)) - 96);
+      for I in Opts'Range loop
+        Val := Clearings (Character'Pos (Opts (I)) - 96);
 
         if Meeples (Val) > Max and Val > Max_Idx then
           Max := Meeples (Val);
