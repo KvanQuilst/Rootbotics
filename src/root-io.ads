@@ -18,7 +18,7 @@ package Root.IO is
   function Get_Option  (Options   : String_Arr) return Character;
   function Get_Options (Options   : String_Arr) return Char_Arr;
   function Get_Integer (Low, High : Integer)    return Integer;
-  --function Get_Yes_No  return Boolean;
+  function Get_Yes_No  return Boolean;
 
 
   -----------------

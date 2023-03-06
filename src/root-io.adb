@@ -103,6 +103,23 @@ package body Root.IO is
     return Val;
   end Get_Integer;
 
+  function Get_Yes_No return Boolean is
+    Line : Unbounded_String;
+    C    : Character;
+  begin
+    loop
+      Put ("Response: ");
+      Get (C);
+      Line := To_Unbounded_String (Get_Line);
+
+      exit when C = 'y' or C = 'Y' or
+                C = 'n' or C = 'N';
+      Put_Line ("Invalid input!");
+    end loop;
+
+    return C = 'y' or C = 'Y';
+  end Get_Yes_No;
+
 
   -----------------
   -- Common Gets --

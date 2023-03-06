@@ -6,21 +6,6 @@ with Root.IO; use Root.IO;
 package body Root is
   package Int_IO is new Integer_IO (Integer); use Int_IO;
 
-  function Get_YN return Boolean is
-    Line : Unbounded_String;
-    C : Character := 'a';
-  begin
-    Put ("Option: ");
-    Get (C);
-    while C /= 'y' or C /= 'n' loop
-      Put_Line ("Invalid input!");
-      Put ("Option: ");
-      Get (C);
-      Line := To_Unbounded_String (Get_Line);
-    end loop;
-    return C = 'y';
-  end Get_YN;
-
   function Get_List_Internal (PL : out Priority_List) return Boolean is
     Line : Unbounded_String; 
     Last : Integer := 0;

@@ -145,8 +145,8 @@ package body Root.Marquise is
       if Meeples (I) > 0 then
         Put_Line ("Do the " & Name & " still have" & Meeples (I)'Image & 
                   " warrior(s) in clearing" & I'Image & "? (y/n)");
-        if Get_YN then
-          Put ("How many warriors remain: ");
+        if Get_Yes_No then
+          Put_Line ("How many warriors remain?");
           declare
             Val : Integer;
           begin
@@ -160,8 +160,8 @@ package body Root.Marquise is
       if Sawmill_Supply > 0 then
         Put_Line ("Do the " & Name & " still have" & Sawmill (I)'Image & 
                   " sawmill(s) in clearing" & I'Image & "? (y/n)");
-        if Get_YN then
-          Put ("How many workshops remain: ");
+        if Get_Yes_No then
+          Put_Line ("How many workshops remain?");
           declare
             Val : Integer;
           begin
@@ -175,8 +175,8 @@ package body Root.Marquise is
       if Sawmill_Supply > 0 then
         Put_Line ("Do the " & Name & " still have" & Workshops (I)'Image & 
                   " workshop(s) in clearing" & I'Image & "? (y/n)");
-        if Get_YN then
-          Put ("How many workshops remain: ");
+        if Get_Yes_No then
+          Put_Line ("How many workshops remain?");
           declare
             Val : Integer;
           begin
@@ -190,8 +190,8 @@ package body Root.Marquise is
       if Sawmill_Supply > 0 then
         Put_Line ("Do the " & Name & " still have" & Recruiter (I)'Image & 
                   " recruiter(s) in clearing" & I'Image & "? (y/n)");
-        if Get_YN then
-          Put ("How many recruiters remain: ");
+        if Get_Yes_No then
+          Put_Line ("How many recruiters remain?");
           declare
             Val : Integer;
           begin
@@ -224,7 +224,7 @@ package body Root.Marquise is
     for I in Priority'Range loop
       if M.Clearings (I).C_Suit = S and Meeples (I) > 0 then
         Put_Line ("Do the " & Name & " rule clearing" & I'Image & "? (y/n)");
-        if Get_YN then
+        if Get_Yes_No then
           Count := Count + 1;
           Rule (Count) := I;
         end if;
@@ -254,10 +254,10 @@ package body Root.Marquise is
     for I in Priority'Range loop
       if M.Clearings (I).C_Suit = S and Meeples (I) > 0 then
         Put_Line ("Do the " & Name & " rule clearing" & I'Image & "? (y/n)");
-        if Get_YN then
+        if Get_Yes_No then
           Put_Line ("Are there available building slots in clearing" & I'Image & 
                     "? (y/n)");
-          if Get_YN then
+          if Get_Yes_No then
             Max := Meeples (I);
             Max_Idx := I;
           end if;

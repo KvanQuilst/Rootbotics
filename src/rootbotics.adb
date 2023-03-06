@@ -28,6 +28,7 @@ begin
   -----------------------
   -- Faction Selection --
   -----------------------
+  Put_Line ("Which factions will you play with?");
   declare
     Options : String_Arr := (
         To_Unbounded_String (Root.Marquise.Name),

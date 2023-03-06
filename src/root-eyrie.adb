@@ -324,8 +324,8 @@ package body Root.Eyrie is
     begin
       -- Determine which clearing has the most enemy buildings --
       for I in Enemy_Build'Range loop
-        Put ("How many buildings does the enemy with the most buildings have" &
-             " in clearing" & Clearings (I)'Image & ": ");
+        Put_Line ("How many buildings does the enemy with the most buildings" &
+             " have in clearing" & Clearings (I)'Image & ": ");
         Enemy_Build (I) := Get_Integer (0, 3);
       end loop;
     end;
