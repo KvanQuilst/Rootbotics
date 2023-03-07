@@ -58,10 +58,10 @@ begin
   -------------------
   declare
     Options : String_Arr := (
-      To_Unbounded_String ("a. " & String_Style ("Fall", Green)),
-      To_Unbounded_String ("b. " & String_Style ("Winter", B_Cyan)),
-      To_Unbounded_String ("c. " & String_Style ("Lake", Blue)),
-      To_Unbounded_String ("d. " & String_Style ("Mountain", Yellow))
+      To_Unbounded_String (String_Style ("Fall", Green)),
+      To_Unbounded_String (String_Style ("Winter", B_Cyan)),
+      To_Unbounded_String (String_Style ("Lake", Blue)),
+      To_Unbounded_String (String_Style ("Mountain", Yellow))
       );
     Opt : Character;
   begin
@@ -138,13 +138,14 @@ begin
 
 
       F := Marquise;
-      while P_Idx /= 0 loop
+      loop
         if Playing (F) then
           P_Idx := P_Idx - 1;
         end if;
+        
+        exit when P_Idx = 0;
         F := Faction'Succ (F);
       end loop;
-      F := Faction'Pred (F);
 
       New_Line;
 

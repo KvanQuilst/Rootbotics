@@ -3,6 +3,30 @@ with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 
 package body Root.Vagabot is
 
+  procedure Put_Logo is
+    Length : constant := 24;
+  begin
+    Set_Style (B_Black);
+    Put_Line_Centered ("    / \           / \    ");
+    Put_Line_Centered ("  /     \       /     \  ");
+    Put_Line_Centered (" /  |||   \ ^ /   |||  \ ");
+    Put_Line_Centered ("|     __ \ \ / / __     |");
+    Put_Line_Centered ("|   /|  |\\   //|  |\   |");
+    Put_Line_Centered (" \ | \__/ |   | \__/ | / ");
+    Put_Line_Centered (" // \ __ //   \\ __ / \\ ");
+    Reset_Style;
+    Put (To_String ((WIDTH - Length) / 2 * "-"));
+    Set_Style (B_Black);
+    Put               ("|/_______/     \_______\|");
+    Reset_Style;
+    Put_Line (To_String ((WIDTH - Length) / 2 * "-"));
+    Set_Style (B_Black);
+    Put_Line_Centered ("         \     /         ");
+    Put_Line_Centered ("          \ _ /          ");
+    Put_Line_Centered ("           \ /           ");
+    Reset_Style;
+  end Put_Logo;
+
   -------------------------------
   -- Character Special Actions --
   -------------------------------
@@ -154,9 +178,9 @@ package body Root.Vagabot is
         To_Unbounded_String ("Arbiter")
         );
     begin
-      Put ("Which character will the Vagabot be playing:");
+      Put_Line ("Which character will the Vagabot be playing:");
       Opt := Get_Option (Options);
-      Char := V_Character'Val (Character'Pos (Opt) - 96);
+      Char := V_Character'Val (Character'Pos (Opt) - 97);
     end;
 
     case Char is
@@ -202,7 +226,7 @@ package body Root.Vagabot is
   begin
 
     -- Vagabot Stats --
-    Separator; 
+    Put_Logo;
     New_Line;
     Set_Style (B_Black);
     Put_Line_Centered ("Vagabot");

@@ -1,6 +1,29 @@
+with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Ada.Text_IO; use Ada.Text_IO;
 
 package body Root.Alliance is
+
+  procedure Put_Logo is
+    Length : constant := 16;
+  begin
+    Set_Style (Green);
+    Put_Line_Centered ("      _       _      ");
+    Put_Line_Centered ("     / \     / \     ");
+    Put_Line_Centered ("    |/ \|   |/ \|    ");
+    Put_Line_Centered ("    || ||   || ||    ");
+    Put_Line_Centered ("   _|| ||___|| ||_   ");
+    Put_Line_Centered ("  /  __       __   \ ");
+    Put_Line_Centered (" / /   /\   /   /\  \");
+    Put_Line_Centered ("| |   <  | |   <  | |");
+    Put_Line_Centered ("|  \ __\/   \ __\/  |");
+    Put_Line_Centered (" \  . .   |    . .  /");
+    Reset_Style;
+    Put (To_String ((WIDTH - Length) / 2 * "-"));
+    Set_Style (Green);
+    Put               ("\________________/");
+    Reset_Style;
+    Put_Line (To_String ((WIDTH - Length) / 2 * "-"));
+  end Put_Logo;
 
   -------------------
   -- Faction Setup --
@@ -20,7 +43,7 @@ package body Root.Alliance is
   begin
 
     -- Alliance State --
-    Separator;
+    Put_Logo;
     New_Line;
     Set_Style (Green);
     Put_Line_Centered ("Automated Alliance");

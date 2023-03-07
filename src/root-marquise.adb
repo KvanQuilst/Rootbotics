@@ -1,6 +1,27 @@
+with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Ada.Text_IO; use Ada.Text_IO;
 
 package body Root.Marquise is
+
+  procedure Put_Logo is
+    Length : constant := 21;
+  begin
+    Set_Style (Yellow);
+    Put_Line_Centered ("      / \     / \      "); 
+    Put_Line_Centered ("    / /\  \ /  /\ \    "); 
+    Put_Line_Centered ("  /  /  \  ^  /  \  \  "); 
+    Put_Line_Centered (" |   __        __    | "); 
+    Put_Line_Centered (" | / __ \    / __ \  | "); 
+    Put_Line_Centered ("_|| |__| |  | |__| | |_"); 
+    Put_Line_Centered ("\  \ __ /    \ __ /   /"); 
+    Put_Line_Centered ("\    ..   /\   ..     /"); 
+    Reset_Style;
+    Put (To_String (((WIDTH - Length) / 2 + 2) * "-"));
+    Set_Style (Yellow);
+    Put                 ("\_________________/");
+    Reset_Style;
+    Put_Line (To_String (((WIDTH - Length) / 2 - 1) * "-"));
+  end Put_Logo;
 
   -------------------
   -- Faction Setup --
@@ -50,7 +71,7 @@ package body Root.Marquise is
   begin
 
     -- Mechanical Marquise 2.0 State --
-    Separator;
+    Put_Logo;
     New_Line;
     Set_Style (Yellow);
     Put_Line_Centered ("Mechanical Marquise 2.0");
@@ -61,7 +82,13 @@ package body Root.Marquise is
     Put_Line ("  Workshop Supply:" & Workshop_Supply'Image);
     Put_Line (" Recruiter Supply:" & Recruiter_Supply'Image);
     New_Line;
-    Put_Line (" Current Order: " & Order'Image);
+    Put (" Current Order: ");
+    case Order is
+      when Fox    => Put_Line (Root.IO.Fox);
+      when Mouse  => Put_Line (Root.IO.Mouse);
+      when Rabbit => Put_Line (Root.IO.Rabbit);
+      when Bird   => Put_Line (Root.IO.Bird);
+    end case;
     New_Line;
     Separator;
 
@@ -157,7 +184,7 @@ package body Root.Marquise is
       end if;
 
       -- Sawmills --
-      if Sawmill_Supply > 0 then
+      if Sawmill (I) > 0 then
         Put_Line ("Do the " & Name & " still have" & Sawmill (I)'Image & 
                   " sawmill(s) in clearing" & I'Image & "? (y/n)");
         if Get_Yes_No then
@@ -172,7 +199,7 @@ package body Root.Marquise is
       end if;
 
       -- Workshop --
-      if Sawmill_Supply > 0 then
+      if Workshops (I) > 0 then
         Put_Line ("Do the " & Name & " still have" & Workshops (I)'Image & 
                   " workshop(s) in clearing" & I'Image & "? (y/n)");
         if Get_Yes_No then
@@ -187,7 +214,7 @@ package body Root.Marquise is
       end if;
 
       -- Recruiter --
-      if Sawmill_Supply > 0 then
+      if Recruiter (I) > 0 then
         Put_Line ("Do the " & Name & " still have" & Recruiter (I)'Image & 
                   " recruiter(s) in clearing" & I'Image & "? (y/n)");
         if Get_Yes_No then

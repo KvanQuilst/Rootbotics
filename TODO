@@ -11,6 +11,7 @@ CLOCKWORK 1
 --------------------
 
 Mechanical Marquise 2.0:
+  - Finish setup (Place buildings)
   - Implement Move
   - Handle Expand Action (Take_Turn)
     - New Order Card

@@ -3,6 +3,26 @@ with Ada.Text_IO; use Ada.Text_IO;
 
 package body Root.Eyrie is
 
+  procedure Put_Logo is
+    Length : constant := 22;
+  begin
+    Set_Style (B_Blue);
+    Put_Line_Centered ("                _     ");
+    Put_Line_Centered ("             /|/ |    ");
+    Put_Line_Centered ("           /     |/|  ");
+    Put_Line_Centered ("         /   /|-   |_ ");
+    Put_Line_Centered ("      // ____       / ");
+    Put_Line_Centered ("   /    /  / \      / ");
+    Put_Line_Centered (" /      \__\_/      //");
+    Put_Line_Centered ("| ____              //");
+    Reset_Style;
+    Put (To_String ((WIDTH - Length) / 2 * "-"));
+    Set_Style (B_Blue);
+    Put               ("|/------------------>>");
+    Reset_Style;
+    Put_Line (To_String ((WIDTH - Length) / 2 * "-"));
+  end Put_Logo;
+
   -- Prompt to place a number of warriors at a specific clearing --
   -- Check for 0 supply included                                 --
   procedure Place_Warriors (Num_Warriors : Integer; Clearing : Priority) is
@@ -47,7 +67,7 @@ package body Root.Eyrie is
   begin
 
     -- Electric Eyrie Stats --
-    Separator;
+    Put_Logo;
     New_Line;
     Put_Line_Centered (Name);
     New_Line;
@@ -60,7 +80,13 @@ package body Root.Eyrie is
                           & Decrees (Rabbit)'Image & " "
                           & Decrees (Bird)'Image);
     New_Line;
-    Put_Line (" Current Order: " & Order'Image);
+    Put (" Current Order: ");
+    case Order is
+      when Fox    => Put_Line (Root.IO.Fox);
+      when Mouse  => Put_Line (Root.IO.Mouse);
+      when Rabbit => Put_Line (Root.IO.Rabbit);
+      when Bird   => Put_Line (Root.IO.Bird);
+    end case;
     New_Line;
     Separator;
 

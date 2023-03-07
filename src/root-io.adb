@@ -140,7 +140,7 @@ package body Root.IO is
   procedure Put_Line_Centered (S : String) is
     Start : Integer;
   begin
-    Start := (WIDTH / 2) - (S'Length / 2) + 1;
+    Start := (WIDTH / 2) - (S'Length / 2);
     for I in 1..Start loop
       Put (" ");
     end loop;

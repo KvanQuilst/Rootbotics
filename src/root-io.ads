@@ -86,10 +86,10 @@ package Root.IO is
   --------------------------
   -- Common Color Strings --
   --------------------------
-  Fox    : constant String := ESC & "[31mFox";
-  Mouse  : constant String := ESC & "[33mMouse";
-  Rabbit : constant String := ESC & "[93mRabbit";
-  Bird   : constant String := ESC & "[94mBird";
+  Fox    : constant String := ESC & "[31mFox" & ESC & "[0m";
+  Mouse  : constant String := ESC & "[33mMouse" & ESC & "[0m";
+  Rabbit : constant String := ESC & "[93mRabbit" & ESC & "[0m";
+  Bird   : constant String := ESC & "[94mBird" & ESC & "[0m";
 
 
   -------------------

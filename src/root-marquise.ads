@@ -20,9 +20,9 @@ private
   Workshop_Supply  : Building_Supply := BUILDINGS_MAX - 1;
   Recruiter_Supply : Building_Supply := BUILDINGS_MAX - 1;
 
-  Meeples   : array (Priority'Range) of Natural;
-  Sawmill   : array (Building_Supply'Range) of Priority;
-  Workshops : array (Building_Supply'Range) of Priority;
-  Recruiter : array (Building_Supply'Range) of Priority;
+  Meeples   : array (Priority'Range) of Integer range 0..MEEPLE_MAX;
+  Sawmill   : array (Priority'Range) of Integer range 0..3;
+  Workshops : array (Priority'Range) of Integer range 0..3;
+  Recruiter : array (Priority'Range) of Integer range 0..3;
 
 end Root.Marquise;
