@@ -24,16 +24,14 @@ package body Root.IO is
   begin
     Put_Options (Options);
 
-    Put ("Option: ");
-    Get (C);
-    Line := To_Unbounded_String (Get_Line);
-
     -- Check character is between 'a' and '(a + Num_Opts)'
-    while Character'Pos (C) - 96 < 1 or Character'Pos (C) - 96 > Options'Length loop
-      Put_Line ("Invalid option!");
+    loop
       Put ("Option: ");
       Get (C);
       Line := To_Unbounded_String (Get_Line);
+      exit when Character'Pos (C) - 96 > 0 and
+                Character'Pos (C) - 96 <= Options'Length;
+      Put_Line ("Invalid option!");
     end loop;
 
     return C;
@@ -88,14 +86,12 @@ package body Root.IO is
     EOL  : Boolean;
     Val  : Integer;
   begin
-    Put ("Response: ");
-    Look_Ahead (C, EOL);
-
-    while EOL or C < '0' or C > '9' loop
-      Line := To_Unbounded_String (Get_Line);
-      Put_Line ("Invalid input!");
+    loop
       Put ("Response: ");
       Look_Ahead (C, EOL);
+      exit when C >= '0' and C <= '9';
+      Put_Line ("Invalid input!");
+      Line := To_Unbounded_String (Get_Line);
     end loop;
 
     Get (Val);
