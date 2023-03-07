@@ -84,17 +84,18 @@ package body Root.IO is
     Line : Unbounded_String;
     C    : Character;
     EOL  : Boolean;
-    Val  : Integer;
+    Val  : Integer := -1;
   begin
     loop
       Put ("Response: ");
       Look_Ahead (C, EOL);
-      exit when C >= '0' and C <= '9';
+      if C >= '0' and C <= '9' then
+        Get (Val);
+      end if;
+      exit when Val >= Low and Val <= High;
       Put_Line ("Invalid input!");
       Line := To_Unbounded_String (Get_Line);
     end loop;
-
-    Get (Val);
     Line := To_Unbounded_String (Get_Line);
     return Val;
   end Get_Integer;

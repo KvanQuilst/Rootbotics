@@ -177,9 +177,11 @@ package body Root.Marquise is
           declare
             Val : Integer;
           begin
-            Val := Get_Integer (0, MEEPLE_MAX);
+            Val := Get_Integer (0, Meeples (I));
             Meeples (I) := Val;
           end;
+        else
+          Meeples (I) := 0;
         end if;
       end if;
 
@@ -188,13 +190,15 @@ package body Root.Marquise is
         Put_Line ("Do the " & Name & " still have" & Sawmill (I)'Image & 
                   " sawmill(s) in clearing" & I'Image & "? (y/n)");
         if Get_Yes_No then
-          Put_Line ("How many workshops remain?");
+          Put_Line ("How many sawmills remain?");
           declare
             Val : Integer;
           begin
-            Val := Get_Integer (0, M.Clearings (I).Buildings);
+            Val := Get_Integer (0, Sawmill (I));
             Sawmill (I) := Val;
           end;
+        else
+          Sawmill (I) := 0;
         end if;
       end if;
 
@@ -207,9 +211,11 @@ package body Root.Marquise is
           declare
             Val : Integer;
           begin
-            Val := Get_Integer (0, M.Clearings (I).Buildings);
+            Val := Get_Integer (0, Workshops (I));
             Workshops (I) := Val;
           end;
+        else
+          Workshops (I) := 0;
         end if;
       end if;
 
@@ -222,9 +228,11 @@ package body Root.Marquise is
           declare
             Val : Integer;
           begin
-            Val := Get_Integer (0, M.Clearings (I).Buildings);
+            Val := Get_Integer (0, Recruiter (I));
             Recruiter (I) := Val;
           end;
+        else
+          Recruiter (I) := 0;
         end if;
       end if;
     end loop;
