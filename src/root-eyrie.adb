@@ -339,7 +339,7 @@ package body Root.Eyrie is
    end Move;
 
    procedure Battle (S : Suit; M : Map; Most : Boolean) is
-      Clearings : array (Integer range 1 .. 4) 
+      Clearings : array (Integer range 1 .. 4)
         of Integer range 0 .. 12 := (others => 0);
       Count : Integer := 0;
    begin
@@ -356,13 +356,13 @@ package body Root.Eyrie is
       end if;
 
       declare
-         Enemy_Build : array (Integer range 1 .. Count) 
+         Enemy_Build : array (Integer range 1 .. Count)
            of Integer range 0 .. 3;
       begin
          -- Determine which clearing has the most enemy buildings --
          for I in Enemy_Build'Range loop
             Put_Line ("How many buildings does the enemy with the most " &
-                      "buildings have in clearing" & 
+                      "buildings have in clearing" &
                       Clearings (I)'Image & "?");
             Enemy_Build (I) := Get_Integer (0, 3);
          end loop;
