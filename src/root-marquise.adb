@@ -172,7 +172,7 @@ package body Root.Marquise is
       if Meeples (I) > 0 then
         Put_Line ("Do the " & Name & " still have" & Meeples (I)'Image & 
                   " warrior(s) in clearing" & I'Image & "? (y/n)");
-        if Get_Yes_No then
+        if not Get_Yes_No then
           Put_Line ("How many warriors remain?");
           declare
             Val : Integer;
@@ -180,8 +180,6 @@ package body Root.Marquise is
             Val := Get_Integer (0, Meeples (I));
             Meeples (I) := Val;
           end;
-        else
-          Meeples (I) := 0;
         end if;
       end if;
 
@@ -189,7 +187,7 @@ package body Root.Marquise is
       if Sawmill (I) > 0 then
         Put_Line ("Do the " & Name & " still have" & Sawmill (I)'Image & 
                   " sawmill(s) in clearing" & I'Image & "? (y/n)");
-        if Get_Yes_No then
+        if not Get_Yes_No then
           Put_Line ("How many sawmills remain?");
           declare
             Val : Integer;
@@ -197,8 +195,6 @@ package body Root.Marquise is
             Val := Get_Integer (0, Sawmill (I));
             Sawmill (I) := Val;
           end;
-        else
-          Sawmill (I) := 0;
         end if;
       end if;
 
@@ -206,7 +202,7 @@ package body Root.Marquise is
       if Workshops (I) > 0 then
         Put_Line ("Do the " & Name & " still have" & Workshops (I)'Image & 
                   " workshop(s) in clearing" & I'Image & "? (y/n)");
-        if Get_Yes_No then
+        if not Get_Yes_No then
           Put_Line ("How many workshops remain?");
           declare
             Val : Integer;
@@ -214,8 +210,6 @@ package body Root.Marquise is
             Val := Get_Integer (0, Workshops (I));
             Workshops (I) := Val;
           end;
-        else
-          Workshops (I) := 0;
         end if;
       end if;
 
@@ -223,7 +217,7 @@ package body Root.Marquise is
       if Recruiter (I) > 0 then
         Put_Line ("Do the " & Name & " still have" & Recruiter (I)'Image & 
                   " recruiter(s) in clearing" & I'Image & "? (y/n)");
-        if Get_Yes_No then
+        if not Get_Yes_No then
           Put_Line ("How many recruiters remain?");
           declare
             Val : Integer;
@@ -231,8 +225,6 @@ package body Root.Marquise is
             Val := Get_Integer (0, Recruiter (I));
             Recruiter (I) := Val;
           end;
-        else
-          Recruiter (I) := 0;
         end if;
       end if;
     end loop;

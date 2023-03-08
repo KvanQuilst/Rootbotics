@@ -100,6 +100,11 @@ package body Root.IO is
     return Val;
   end Get_Integer;
 
+  function Get_Integers (Low, High : Integer) return Int_Arr is
+  begin
+    
+  end Get_Integers;
+
   function Get_Yes_No return Boolean is
     Line : Unbounded_String;
     C    : Character;

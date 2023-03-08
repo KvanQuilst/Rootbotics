@@ -4,7 +4,6 @@ GENERAL
 - Enable user to quit out of turn at start of turn
 - More with colors
 - Handle False Orders card (Exiles and Partisans Deck)
-- Faction Logos
 - Test
 
 CLOCKWORK 1
@@ -32,7 +31,7 @@ Automated Alliance:
 
 Vagabot:
   - Implement Damaged Items
-  - Implement Thief, Thinker, Ranger_Special
+  - Implement Thief, Tinker, Ranger (Special)
   - Implement Take_Turn
   - Implement Explore, Quest, Aid, Battle
   - Implement Difficulty (Setup)
