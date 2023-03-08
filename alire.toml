@@ -1,0 +1,9 @@
+name = "rootbotics"
+description = "Shiny new project"
+version = "0.1.0-dev"
+
+authors = ["Dylan E."]
+maintainers = ["Dylan E. <76961140+KvanQuilst@users.noreply.github.com>"]
+maintainers-logins = ["kvanquilst"]
+
+executables = ["rootbotics"]
