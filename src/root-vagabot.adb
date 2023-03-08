@@ -169,7 +169,7 @@ package body Root.Vagabot is
 
     -- Character Selection --
     declare
-      Options : String_Arr := (
+      Options : constant String_Arr := (
         To_Unbounded_String ("Thief"),
         To_Unbounded_String ("Thinker"),
         To_Unbounded_String ("Ranger"),

@@ -30,7 +30,7 @@ begin
   -----------------------
   Put_Line ("Which factions will you play with?");
   declare
-    Options : String_Arr := (
+    Options : constant String_Arr := (
         To_Unbounded_String (Root.Marquise.Name),
         To_Unbounded_String (Root.Eyrie.Name),
         To_Unbounded_String (Root.Alliance.Name),
@@ -57,7 +57,7 @@ begin
   -- Map Selection --
   -------------------
   declare
-    Options : String_Arr := (
+    Options : constant String_Arr := (
       To_Unbounded_String (String_Style ("Fall", Green)),
       To_Unbounded_String (String_Style ("Winter", B_Cyan)),
       To_Unbounded_String (String_Style ("Lake", Blue)),

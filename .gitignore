@@ -4,3 +4,7 @@ obj/
 *.ali
 *.o
 rootbotics
+/obj/
+/bin/
+/alire/
+/config/
