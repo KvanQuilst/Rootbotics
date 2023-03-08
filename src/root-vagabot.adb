@@ -3,278 +3,276 @@ with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 
 package body Root.Vagabot is
 
-  procedure Put_Logo is
-    Length : constant := 24;
-  begin
-    Set_Style (B_Black);
-    Put_Line_Centered ("    / \           / \    ");
-    Put_Line_Centered ("  /     \       /     \  ");
-    Put_Line_Centered (" /  |||   \ ^ /   |||  \ ");
-    Put_Line_Centered ("|     __ \ \ / / __     |");
-    Put_Line_Centered ("|   /|  |\\   //|  |\   |");
-    Put_Line_Centered (" \ | \__/ |   | \__/ | / ");
-    Put_Line_Centered (" // \ __ //   \\ __ / \\ ");
-    Reset_Style;
-    Put (To_String ((WIDTH - Length) / 2 * "-"));
-    Set_Style (B_Black);
-    Put               ("|/_______/     \_______\|");
-    Reset_Style;
-    Put_Line (To_String ((WIDTH - Length) / 2 * "-"));
-    Set_Style (B_Black);
-    Put_Line_Centered ("         \     /         ");
-    Put_Line_Centered ("          \ _ /          ");
-    Put_Line_Centered ("           \ /           ");
-    Reset_Style;
-  end Put_Logo;
+   procedure Put_Logo is
+      Length : constant := 24;
+   begin
+      Set_Style (B_Black);
+      Put_Line_Centered ("    / \           / \    ");
+      Put_Line_Centered ("  /     \       /     \  ");
+      Put_Line_Centered (" /  |||   \ ^ /   |||  \ ");
+      Put_Line_Centered ("|     __ \ \ / / __     |");
+      Put_Line_Centered ("|   /|  |\\   //|  |\   |");
+      Put_Line_Centered (" \ | \__/ |   | \__/ | / ");
+      Put_Line_Centered (" // \ __ //   \\ __ / \\ ");
+      Reset_Style;
+      Put (To_String ((WIDTH - Length) / 2 * "-"));
+      Set_Style (B_Black);
+      Put               ("|/_______/     \_______\|");
+      Reset_Style;
+      Put_Line (To_String ((WIDTH - Length) / 2 * "-"));
+      Set_Style (B_Black);
+      Put_Line_Centered ("         \     /         ");
+      Put_Line_Centered ("          \ _ /          ");
+      Put_Line_Centered ("           \ /           ");
+      Reset_Style;
+   end Put_Logo;
 
-  -------------------------------
-  -- Character Special Actions --
-  -------------------------------
+   -------------------------------
+   -- Character Special Actions --
+   -------------------------------
 
-  procedure Thief_Special is
-  begin
-    Put_Line ("Thief_Special unimplemented!");
-  end Thief_Special;
+   procedure Thief_Special is
+   begin
+      Put_Line ("Thief_Special unimplemented!");
+   end Thief_Special;
 
-  procedure Tinker_Special is
-  begin
-    Put_Line ("Tinker_Special unimplemented!");
-  end Tinker_Special;
+   procedure Tinker_Special is
+   begin
+      Put_Line ("Tinker_Special unimplemented!");
+   end Tinker_Special;
 
-  procedure Ranger_Special is
-  begin
-    Put_Line ("Ranger_Special unimplemented!");
-  end Ranger_Special;
+   procedure Ranger_Special is
+   begin
+      Put_Line ("Ranger_Special unimplemented!");
+   end Ranger_Special;
 
-  procedure Vagrant_Special is
-  begin
-    Put_Line ("Vagrant_Special unimplemented!");
-  end Vagrant_Special;
+   procedure Vagrant_Special is
+   begin
+      Put_Line ("Vagrant_Special unimplemented!");
+   end Vagrant_Special;
 
-  procedure Scoundrel_Special is
-  begin
-    Put_Line ("Scoundrel_Special unimplemented!");
-  end Scoundrel_Special;
+   procedure Scoundrel_Special is
+   begin
+      Put_Line ("Scoundrel_Special unimplemented!");
+   end Scoundrel_Special;
 
-  procedure Arbiter_Special is
-  begin
-    Put_Line ("Arbiter_Special unimplemented!");
-  end Arbiter_Special;
+   procedure Arbiter_Special is
+   begin
+      Put_Line ("Arbiter_Special unimplemented!");
+   end Arbiter_Special;
 
-  ---------------------
-  -- Item Management --
-  ---------------------
+   ---------------------
+   -- Item Management --
+   ---------------------
 
-  procedure Add_Item is
-  begin
-    Undamaged_Idx := Undamaged_Idx + 1;
-    Undamaged (Undamaged_Idx) := Unexhausted;
-  end Add_Item;
+   procedure Add_Item is
+   begin
+      Undamaged_Idx := Undamaged_Idx + 1;
+      Undamaged (Undamaged_Idx) := Unexhausted;
+   end Add_Item;
 
-  procedure Exhaust_Item is
-    I : Item_Idx := Undamaged_Idx;
-  begin
-    if Undamaged_Idx = 0 then
-      return;
-    end if;
-
-    -- Exhaust greatest idx'd unexhausted --
-    while I > 0 loop
-      if Undamaged (I) = Unexhausted then
-        Undamaged (I) := Exhausted;
-        return;
+   procedure Exhaust_Item is
+      I : Item_Idx := Undamaged_Idx;
+   begin
+      if Undamaged_Idx = 0 then
+         return;
       end if;
 
-      I := I - 1;
-    end loop;
-  end Exhaust_item;
+      -- Exhaust greatest idx'd unexhausted --
+      while I > 0 loop
+         if Undamaged (I) = Unexhausted then
+            Undamaged (I) := Exhausted;
+            return;
+         end if;
 
-  procedure Refresh_Item is
-    I : Item_Idx := 1;
-  begin
-    if Undamaged_Idx = 0 then
-      return;
-    end if;
+         I := I - 1;
+      end loop;
+   end Exhaust_Item;
 
-    -- Refresh the least idx'd exhausted --
-    while I <= Undamaged_Idx loop
-      if Undamaged (I) = Exhausted then
-        Undamaged (I) := Unexhausted;
-        return;
+   procedure Refresh_Item is
+      I : Item_Idx := 1;
+   begin
+      if Undamaged_Idx = 0 then
+         return;
       end if;
 
-      I := I + 1;
-    end loop;
-  end Refresh_Item;
-  
-  procedure Damage_Item is
-  begin
-    if Undamaged_Idx = 0 then
-      return;
-    end if;
+      -- Refresh the least idx'd exhausted --
+      while I <= Undamaged_Idx loop
+         if Undamaged (I) = Exhausted then
+            Undamaged (I) := Unexhausted;
+            return;
+         end if;
 
-    Damaged_Idx := Damaged_Idx + 1;
-    Damaged (Damaged_Idx) := Undamaged (Undamaged_Idx);
-    Undamaged (Undamaged_Idx) := Empty;
-    Undamaged_Idx := Undamaged_Idx - 1;
-  end Damage_Item;
+         I := I + 1;
+      end loop;
+   end Refresh_Item;
 
-  procedure Repair_Item is
-    I : Item_Idx := Damaged_Idx;
-  begin
-    if Damaged_Idx = 0 then
-      return;
-    end if;
-
-    Undamaged_Idx := Undamaged_Idx + 1;
-    Undamaged (Undamaged_Idx) := Exhausted;
-
-    -- Find greatest idx'd unexhausted item --
-    while I > 0 loop
-      if Damaged (I) = Unexhausted then
-        Refresh_Item;                         -- Repaired item is unexhausted
-        Damaged (I) := Damaged (Damaged_Idx); -- Move last entry to I
+   procedure Damage_Item is
+   begin
+      if Undamaged_Idx = 0 then
+         return;
       end if;
 
-      I := I - 1;
-    end loop;
+      Damaged_Idx := Damaged_Idx + 1;
+      Damaged (Damaged_Idx) := Undamaged (Undamaged_Idx);
+      Undamaged (Undamaged_Idx) := Empty;
+      Undamaged_Idx := Undamaged_Idx - 1;
+   end Damage_Item;
 
-    -- else, everything is exhausted... --
-
-    Damaged (Damaged_Idx) := Empty;
-    Damaged_Idx := Damaged_Idx - 1;
-  end Repair_Item;
-
-
-  function Exhausted (Arr : Item_Arr) return Integer is
-    Cnt : Integer := 0;
-  begin
-    for I in Arr'Range loop
-      if Arr (I) = Exhausted then
-        Cnt := Cnt + 1;
+   procedure Repair_Item is
+      I : Item_Idx := Damaged_Idx;
+   begin
+      if Damaged_Idx = 0 then
+         return;
       end if;
-    end loop;
 
-    return Cnt;
-  end Exhausted;
+      Undamaged_Idx := Undamaged_Idx + 1;
+      Undamaged (Undamaged_Idx) := Exhausted;
 
-  -------------------
-  -- Faction Setup --
-  -------------------
+      -- Find greatest idx'd unexhausted item --
+      while I > 0 loop
+         if Damaged (I) = Unexhausted then
+            Refresh_Item; -- Repaired item is unexhausted
+            Damaged (I) := Damaged (Damaged_Idx); -- Move last entry to I
+         end if;
 
-  procedure Setup is
-    Char : V_Character;
-    Opt : Character;
-  begin
+         I := I - 1;
+      end loop;
 
-    -- Character Selection --
-    declare
-      Options : constant String_Arr := (
-        To_Unbounded_String ("Thief"),
-        To_Unbounded_String ("Thinker"),
-        To_Unbounded_String ("Ranger"),
-        To_Unbounded_String ("Vagrant"),
-        To_Unbounded_String ("Scoundrel"),
-        To_Unbounded_String ("Arbiter")
-        );
-    begin
-      Put_Line ("Which character will the Vagabot be playing:");
-      Opt := Get_Option (Options);
-      Char := V_Character'Val (Character'Pos (Opt) - 97);
-    end;
+      -- else, everything is exhausted... --
 
-    case Char is
-      when Thief =>
-        Special := Thief_Special'Access;
+      Damaged (Damaged_Idx) := Empty;
+      Damaged_Idx := Damaged_Idx - 1;
+   end Repair_Item;
 
-      when Tinker =>
-        Special := Tinker_Special'Access;
-        Num_Items := 3;
+   function Exhausted (Arr : Item_Arr) return Integer is
+      Cnt : Integer := 0;
+   begin
+      for I in Arr'Range loop
+         if Arr (I) = Exhausted then
+            Cnt := Cnt + 1;
+         end if;
+      end loop;
 
-      when Ranger =>
-        Special := Ranger_Special'Access;
+      return Cnt;
+   end Exhausted;
 
-      when Vagrant =>
-        Special := Vagrant_Special'Access;
+   -------------------
+   -- Faction Setup --
+   -------------------
 
-      when Scoundrel =>
-        Special := Scoundrel_Special'Access;
+   procedure Setup is
+      Char : V_Character;
+      Opt : Character;
+   begin
 
-      when Arbiter =>
-        Special := Arbiter_Special'Access;
+      -- Character Selection --
+      declare
+         Options : constant String_Arr := (
+            To_Unbounded_String ("Thief"),
+            To_Unbounded_String ("Thinker"),
+            To_Unbounded_String ("Ranger"),
+            To_Unbounded_String ("Vagrant"),
+            To_Unbounded_String ("Scoundrel"),
+            To_Unbounded_String ("Arbiter")
+            );
+      begin
+         Put_Line ("Which character will the Vagabot be playing:");
+         Opt := Get_Option (Options);
+         Char := V_Character'Val (Character'Pos (Opt) - 97);
+      end;
 
-    end case;
+      case Char is
+         when Thief =>
+            Special := Thief_Special'Access;
 
-    -- TODO Difficulty Selection --
+         when Tinker =>
+            Special := Tinker_Special'Access;
+            Num_Items := 3;
 
-    for I in 1..Num_Items loop
-      Add_Item;
-    end loop;
+         when Ranger =>
+            Special := Ranger_Special'Access;
 
-  end Setup;
+         when Vagrant =>
+            Special := Vagrant_Special'Access;
 
+         when Scoundrel =>
+            Special := Scoundrel_Special'Access;
 
-  ---------------
-  -- Take Turn --
-  ---------------
-  procedure Explore;
-  procedure Quest;
-  procedure Aid;
-  procedure Battle;
-  
-  procedure Take_Turn (Order : Suit; M : Map) is
-  begin
+         when Arbiter =>
+            Special := Arbiter_Special'Access;
 
-    -- Vagabot Stats --
-    Put_Logo;
-    New_Line;
-    Set_Style (B_Black);
-    Put_Line_Centered ("Vagabot");
-    Reset_Style;
-    New_Line;
-    Put_Line ("           Undamaged Items:" & Undamaged_Idx'Image);
-    Put_Line (" Exhausted Undamaged Items:" & Exhausted (Undamaged)'Image);
-    New_Line;
-    Put_Line ("             Damaged Items:" & Damaged_Idx'Image);
-    Put_Line ("   Exhausted Damaged Items:" & Exhausted (Damaged)'Image);
-    New_Line;
-    Separator; 
+      end case;
 
-    -- Birdsong --
-    Put_Birdsong;
+      -- TODO Difficulty Selection --
 
-    Continue;
+      for I in 1 .. Num_Items loop
+         Add_Item;
+      end loop;
 
-    -- Daylight --
-    Put_Daylight;
+   end Setup;
 
-    Continue;
+   ---------------
+   -- Take Turn --
+   ---------------
+   procedure Explore;
+   procedure Quest;
+   procedure Aid;
+   procedure Battle;
 
-    -- Evening --
-    Put_Evening; 
-    
-    Continue;
+   procedure Take_Turn (Order : Suit; M : Map) is
+   begin
 
-  end Take_Turn;
+      -- Vagabot Stats --
+      Put_Logo;
+      New_Line;
+      Set_Style (B_Black);
+      Put_Line_Centered ("Vagabot");
+      Reset_Style;
+      New_Line;
+      Put_Line ("           Undamaged Items:" & Undamaged_Idx'Image);
+      Put_Line (" Exhausted Undamaged Items:" & Exhausted (Undamaged)'Image);
+      New_Line;
+      Put_Line ("             Damaged Items:" & Damaged_Idx'Image);
+      Put_Line ("   Exhausted Damaged Items:" & Exhausted (Damaged)'Image);
+      New_Line;
+      Separator;
 
-  procedure Explore is
-  begin
-    null;
-  end Explore;
+      -- Birdsong --
+      Put_Birdsong;
 
-  procedure Quest is
-  begin
-    null;
-  end Quest;
+      Continue;
 
-  procedure Aid is
-  begin
-    null;
-  end Aid;
+      -- Daylight --
+      Put_Daylight;
 
-  procedure Battle is
-  begin
-    null;
-  end Battle;
+      Continue;
+
+      -- Evening --
+      Put_Evening;
+
+      Continue;
+
+   end Take_Turn;
+
+   procedure Explore is
+   begin
+      null;
+   end Explore;
+
+   procedure Quest is
+   begin
+      null;
+   end Quest;
+
+   procedure Aid is
+   begin
+      null;
+   end Aid;
+
+   procedure Battle is
+   begin
+      null;
+   end Battle;
 
 end Root.Vagabot;
