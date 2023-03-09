@@ -6,7 +6,6 @@ package body Root.Maps is
 
    procedure Query_Suits (S : out Clearing_Suit;
                           O : Clearing_Order) is
-      Opt : Character;
    begin
       New_Line;
       Put_Line ("For winter map, the clearing suits will be asked for in" &
@@ -16,10 +15,8 @@ package body Root.Maps is
       for I in Priority'Range loop
          Put_Line ("What is the suit of clearing" &
                    O (I)'Image & ":");
-         Opt := Get_Suit_Opts;
+         S (I) := Get_Suit_Opts;
          New_Line;
-
-         S (I) := Suit'Val (Character'Pos (Opt) - 97);
       end loop;
    end Query_Suits;
 

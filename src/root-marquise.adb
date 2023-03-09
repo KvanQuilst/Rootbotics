@@ -156,7 +156,7 @@ package body Root.Marquise is
                    Name & " expand!");
 
          Put_Line ("What is the new order for the " & Name & "?");
-         Curr_Order := Suit'Val (Character'Pos (Get_Suit_Opts) - 97);
+         Curr_Order := Get_Suit_Opts;
          New_Line;
 
          New_Line;

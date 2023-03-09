@@ -118,8 +118,10 @@ package body Root.IO is
    end Get_Integers;
 
    function Get_Yes_No return Boolean is
-      Line : Unbounded_String;
       C    : Character;
+
+      Line : Unbounded_String;
+      pragma Unreferenced (Line);
    begin
       loop
          Put ("Response: ");
@@ -139,7 +141,7 @@ package body Root.IO is
    -- Common Gets --
    -----------------
 
-   function Get_Suit_Opts return Character is
+   function Get_Suit_Opts return Suit is
       S : constant String_Arr := (
          To_Unbounded_String (Fox),
          To_Unbounded_String (Mouse),
@@ -147,7 +149,7 @@ package body Root.IO is
          To_Unbounded_String (Bird)
          );
    begin
-      return Get_Option (S);
+      return Suit'Val (Character'Pos (Get_Option (S)) - 97);
    end Get_Suit_Opts;
 
    ----------------
@@ -221,6 +223,7 @@ package body Root.IO is
 
    procedure Continue is
       Line : Unbounded_String;
+      pragma Unreferenced (Line);
    begin
       New_Line;
       Put ("Press enter to continue...");

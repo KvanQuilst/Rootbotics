@@ -102,7 +102,8 @@ begin
    declare
       Options : String_Arr (1 .. Num_Playing);
       P_Idx : Integer := 0;
-      F_Opt, Order : Character;
+      F_Opt : Character;
+      Order : Suit;
       F : Faction;
    begin
 
@@ -152,18 +153,10 @@ begin
 
          -- Handle faction turn --
          case F is
-            when Marquise =>
-               Root.Marquise.Take_Turn
-                 (Suit'Val (Character'Pos (Order) - 97), M);
-            when Eyrie    =>
-               Root.Eyrie.Take_Turn
-                 (Suit'Val (Character'Pos (Order) - 97), M);
-            when Alliance =>
-               Root.Alliance.Take_Turn
-                 (Suit'Val (Character'Pos (Order) - 97), M);
-            when Vagabot  =>
-               Root.Vagabot.Take_Turn
-                 (Suit'Val (Character'Pos (Order) - 97), M);
+            when Marquise => Root.Marquise.Take_Turn (Order, M);
+            when Eyrie    => Root.Eyrie.Take_Turn (Order, M);
+            when Alliance => Root.Alliance.Take_Turn (Order, M);
+            when Vagabot  => Root.Vagabot.Take_Turn (Order, M);
          end case;
       end loop;
    end;

@@ -24,7 +24,7 @@ package Root.IO is
    -----------------
    -- Common Gets --
    -----------------
-   function Get_Suit_Opts return Character;
+   function Get_Suit_Opts return Suit;
 
    ----------------
    -- Formatting --
