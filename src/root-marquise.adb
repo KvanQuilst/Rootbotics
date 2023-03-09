@@ -129,9 +129,13 @@ package body Root.Marquise is
          Put_Line ("--  Build");
          Expand := not Build (Order, M);
 
+         Continue;
+
          -- Move --
          Put_Line ("--  Move");
-         Put_Line ("Unimplemented!");
+         Move (Order, M);
+
+         Continue;
 
       end loop;
 
@@ -261,6 +265,7 @@ package body Root.Marquise is
             end if;
          end if;
       end loop;
+      New_Line;
 
       case Count is
          when 0 =>
@@ -300,6 +305,7 @@ package body Root.Marquise is
             end if;
          end if;
       end loop;
+      New_Line;
 
       if Max = 0 then
          Put_Line ("The " & Name & " cannot place any buildings.");
@@ -338,10 +344,55 @@ package body Root.Marquise is
       return True;
    end Build;
 
+   -- MOVE all but three of the warriors from each ordered    --
+   -- clearing to the adjacent clearing with the most enemies --
    procedure Move (S : Suit; M : Map) is
+      Options : String_Arr (1 .. Neighbor_Arr'Length);
+      Count   : Integer range Neighbor_Arr'Range;
    begin
-      -- TODO Implement --
-      null;
+      -- Get Suit Clearings --
+      for I in Priority'Range loop
+         if M.Clearings (I).C_Suit = S and then Meeples (I) > 3 then
+            Count := 1;
+            while Count < Neighbor_Arr'Length and then
+                  M.Clearings (I).Neighbors (Count) /= 0
+            loop
+               Options (Count) :=
+                 Trim (To_Unbounded_String (I'Image), Ada.Strings.Left);
+               Count := Count + 1;
+            end loop;
+            Put_Line ("Which clearing has the most enemies?");
+            declare
+               Opts : constant Char_Arr := Get_Options (Options);
+               Num_Move : constant Integer := Meeples (I) - 3;
+               Max : Integer := 0;
+            begin
+               New_Line;
+
+               if Opts'Length = 0 then
+                  Put_Line ("Move" & Num_Move'Image & " " & Name &
+                            " warriors from clearing" & I'Image &
+                            " to clearing" &
+                            M.Clearings (I).Neighbors (1)'Image);
+                  Meeples (M.Clearings (I).Neighbors (1)) :=
+                    Meeples (M.Clearings (I).Neighbors (1)) + Num_Move;
+                  Meeples (I) := 3;
+               else
+                  for J in Opts'Range loop
+                     Max := (if Character'Pos (Opts (J)) - 96 > Max then
+                       Character'Pos (Opts (J)) - 96 else Max);
+                  end loop;
+                  Put_Line ("Move" & Num_Move'Image & " " & Name &
+                            " warriors from clearing" & I'Image &
+                            " to clearing" &
+                            M.Clearings (I).Neighbors (Max)'Image);
+                  Meeples (M.Clearings (I).Neighbors (Max)) :=
+                    Meeples (M.Clearings (I).Neighbors (Max)) + Num_Move;
+                  Meeples (I) := 3;
+               end if;
+            end;
+         end if;
+      end loop;
    end Move;
 
 end Root.Marquise;

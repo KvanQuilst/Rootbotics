@@ -1,5 +1,5 @@
 name = "rootbotics"
-description = "Shiny new project"
+description = "Rootbotics automated faction assistant."
 version = "0.1.0-dev"
 
 authors = ["Dylan E."]
