@@ -69,6 +69,9 @@ package body Root.Marquise is
    procedure Take_Turn (Order : Suit; M : Map) is
       Expand : Boolean := True;
    begin
+      for I in Rule'Range loop
+         Rule (I) := False;
+      end loop;
 
       -- Mechanical Marquise 2.0 State --
       Put_Logo;
@@ -170,6 +173,20 @@ package body Root.Marquise is
 
    end Take_Turn;
 
+   function Check_Rule (Clearing : Priority) return Boolean is
+   begin
+      if Rule (Clearing) then
+         return True;
+      end if;
+
+      Put_Line ("Do the " & Name & " rule clearing" & Clearing'Image & "?");
+      if Get_Yes_No then
+         Rule (Clearing) := True;
+      end if;
+
+      return Rule (Clearing);
+   end Check_Rule;
+
    procedure Warriors_Lost (M : Map) is
    begin
       -- Determine lost warriors --
@@ -244,9 +261,10 @@ package body Root.Marquise is
          if M.Clearings (I).C_Suit = S and then Meeples (I) > 0 then
             Put_Line ("Battle in clearing" & I'Image & " the enemy with " &
                       "the most pieces, then the most points.");
-            Put_Line ("How many pieces were lost: ");
+            Put_Line ("How many pieces were lost?");
             Lost := Get_Integer (0, Meeples (I));
             Meeples (I) := Meeples (I) - Lost;
+            New_Line;
          end if;
       end loop;
    end Battle;
@@ -256,13 +274,12 @@ package body Root.Marquise is
       Count  : Integer range 0 .. 4 := 0;
    begin
       for I in Priority'Range loop
-         if M.Clearings (I).C_Suit = S and then Meeples (I) > 0 then
-            Put_Line ("Do the " & Name & " rule clearing" &
-                      I'Image & "? (y/n)");
-            if Get_Yes_No then
-               Count := Count + 1;
-               Rule (Count) := I;
-            end if;
+         if M.Clearings (I).C_Suit = S and then
+            Meeples (I) > 0            and then
+            Check_Rule (I)
+         then
+            Count := Count + 1;
+            Rule (Count) := I;
          end if;
       end loop;
       New_Line;
@@ -272,18 +289,29 @@ package body Root.Marquise is
             Put_Line ("The " & Name & " cannot place any warriors!");
          when 1 =>
             Put_Line ("Place 4 warriors in clearing" & Rule (1)'Image);
+            Meeples (Rule (1)) := Meeples (Rule (1)) + 4;
          when 2 =>
             Put_Line ("Place 2 warriors in clearing" & Rule (1)'Image);
             Put_Line ("Place 2 warriors in clearing" & Rule (2)'Image);
+            Meeples (Rule (1)) := Meeples (Rule (1)) + 2;
+            Meeples (Rule (2)) := Meeples (Rule (2)) + 2;
          when 3 =>
             Put_Line ("Place 2 warriors in clearing" & Rule (1)'Image);
             Put_Line ("Place 1 warrior in clearing" & Rule (2)'Image);
             Put_Line ("Place 1 warrior in clearing" & Rule (3)'Image);
+            Meeples (Rule (1)) := Meeples (Rule (1)) + 2;
+            Meeples (Rule (2)) := Meeples (Rule (2)) + 1;
+            Meeples (Rule (3)) := Meeples (Rule (3)) + 1;
          when 4 =>
             for I in Rule'Range loop
                Put_Line ("Place 1 warrior in clearing" & Rule (I)'Image);
+               Meeples (Rule (I)) := Meeples (Rule (I)) + 1;
             end loop;
       end case;
+
+      if Count /= 0 then
+         Meeple_Supply := Meeple_Supply - 4;
+      end if;
 
    end Recruit;
 
@@ -292,16 +320,15 @@ package body Root.Marquise is
       Max_Idx : Integer;
    begin
       for I in Priority'Range loop
-         if M.Clearings (I).C_Suit = S and then Meeples (I) > 0 then
-            Put_Line ("Do the " & Name & " rule clearing" &
-                      I'Image & "? (y/n)");
+         if M.Clearings (I).C_Suit = S and then 
+            Meeples (I) > 0            and then
+            Check_Clearing (I)
+         then
+            Put_Line ("Are there available building slots in clearing" & 
+              I'Image & "? (y/n)");
             if Get_Yes_No then
-               Put_Line ("Are there available building slots in clearing" &
-                         I'Image & "? (y/n)");
-               if Get_Yes_No then
-                  Max := Meeples (I);
-                  Max_Idx := I;
-               end if;
+               Max := Meeples (I);
+               Max_Idx := I;
             end if;
          end if;
       end loop;
@@ -358,12 +385,14 @@ package body Root.Marquise is
                   M.Clearings (I).Neighbors (Count) /= 0
             loop
                Options (Count) :=
-                 Trim (To_Unbounded_String (I'Image), Ada.Strings.Left);
+                 Trim (To_Unbounded_String
+                 (M.Clearings (I).Neighbors (Count)'Image), Ada.Strings.Left);
                Count := Count + 1;
             end loop;
             Put_Line ("Which clearing has the most enemies?");
             declare
-               Opts : constant Char_Arr := Get_Options (Options);
+               Opts : constant Char_Arr :=
+                  Get_Options (Options (1 .. Count - 1));
                Num_Move : constant Integer := Meeples (I) - 3;
                Max : Integer := 0;
             begin

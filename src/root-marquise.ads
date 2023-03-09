@@ -21,6 +21,7 @@ private
    Recruiter_Supply : Building_Supply := BUILDINGS_MAX - 1;
 
    Meeples   : array (Priority'Range) of Integer range 0 .. MEEPLE_MAX;
+   Rule      : array (Priority'Range) of Boolean;
    Sawmill   : array (Priority'Range) of Integer range 0 .. 3;
    Workshops : array (Priority'Range) of Integer range 0 .. 3;
    Recruiter : array (Priority'Range) of Integer range 0 .. 3;
