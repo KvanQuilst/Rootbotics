@@ -60,14 +60,14 @@ package body Root.Marquise is
    ---------------
    -- Take Turn --
    ---------------
-   procedure Warriors_Lost (M : Map);
+   procedure Warriors_Lost;
    procedure Battle  (S : Suit; M : Map);
    procedure Recruit (S : Suit; M : Map);
    function  Build   (S : Suit; M : Map) return Boolean;
    procedure Move    (S : Suit; M : Map);
 
    procedure Take_Turn (Order : Suit; M : Map) is
-      Expand : Boolean := True;
+      Expand : Boolean;
    begin
       for I in Rule'Range loop
          Rule (I) := False;
@@ -95,7 +95,7 @@ package body Root.Marquise is
       New_Line;
       Separator;
 
-      Warriors_Lost (M);
+      Warriors_Lost;
 
       -- Have the marquise lost? --
       if Meeple_Supply = MEEPLE_MAX then
@@ -106,45 +106,44 @@ package body Root.Marquise is
 
       -- Birdsong --
       Put_Birdsong;
-
       Put_Line ("Craft order card for (+ 1) if it has an available item.");
-
       Continue;
 
       -- Daylight --
       Put_Daylight;
 
-      while Expand loop
+      loop
 
          -- Battle --
          Put_Line ("--  Battle");
          Battle (Order, M);
-
          Continue;
 
          -- Recruit --
          Put_Line ("--  Recruit");
          Recruit (Order, M);
-
          Continue;
 
          -- Build --
          Put_Line ("--  Build");
          Expand := not Build (Order, M);
-
          Continue;
 
          -- Move --
          Put_Line ("--  Move");
          Move (Order, M);
-
          Continue;
+
+         exit when not Expand;
+
+         Put_Line ("No buildings were placed, the " &
+                   Name & " expand!");
+         New_Line;
 
       end loop;
 
       -- Evening --
       Put_Evening;
-
       Put ("Score  (+");
       declare
          P : Integer;
@@ -187,7 +186,7 @@ package body Root.Marquise is
       return Rule (Clearing);
    end Check_Rule;
 
-   procedure Warriors_Lost (M : Map) is
+   procedure Warriors_Lost is
    begin
       -- Determine lost warriors --
       for I in Priority'Range loop
@@ -254,11 +253,15 @@ package body Root.Marquise is
       end loop;
    end Warriors_Lost;
 
+   -- Battle in each ordered clearing --
    procedure Battle (S : Suit; M : Map) is
       Lost : Integer;
    begin
       for I in Priority'Range loop
-         if M.Clearings (I).C_Suit = S and then Meeples (I) > 0 then
+         -- Check matching clearing or escalation --
+         if (M.Clearings (I).C_Suit = S or else S = Bird) and then
+            Meeples (I) > 0
+         then
             Put_Line ("Battle in clearing" & I'Image & " the enemy with " &
                       "the most pieces, then the most points.");
             Put_Line ("How many pieces were lost?");
@@ -269,19 +272,32 @@ package body Root.Marquise is
       end loop;
    end Battle;
 
+   -- RECRUIT four warriors evenly among ordered clearings you rule --
    procedure Recruit (S : Suit; M : Map) is
       Rule : array (Integer range 1 .. 4) of Integer := (others => 0);
       Count  : Integer range 0 .. 4 := 0;
    begin
-      for I in Priority'Range loop
-         if M.Clearings (I).C_Suit = S and then
-            Meeples (I) > 0            and then
-            Check_Rule (I)
-         then
-            Count := Count + 1;
-            Rule (Count) := I;
-         end if;
-      end loop;
+      if S /= Bird then
+         for I in Priority'Range loop
+            if M.Clearings (I).C_Suit = S and then
+               Meeples (I) > 0            and then
+               Check_Rule (I)
+            then
+               Count := Count + 1;
+               Rule (Count) := I;
+            end if;
+         end loop;
+      else -- Escalation --
+         for I in reverse Priority'Range loop
+            if Count < 2       and then
+               Meeples (I) > 0 and then
+               Check_Rule (I)
+            then
+               Count := Count + 1;
+               Rule (Count) := I;
+            end if;
+         end loop;
+      end if;
       New_Line;
 
       case Count is
@@ -315,16 +331,18 @@ package body Root.Marquise is
 
    end Recruit;
 
+   -- BUILD a building the clearing you rule --
+   -- with the most Marquise warriors        --
    function Build (S : Suit; M : Map) return Boolean is
       Max : Integer := 0;
       Max_Idx : Integer;
    begin
       for I in Priority'Range loop
-         if M.Clearings (I).C_Suit = S and then 
-            Meeples (I) > 0            and then
-            Check_Clearing (I)
+         -- Check matching clearing or escalation --
+         if (M.Clearings (I).C_Suit = S or else S = Bird) and then
+            Meeples (I) > 0 and then Check_Rule (I)
          then
-            Put_Line ("Are there available building slots in clearing" & 
+            Put_Line ("Are there available building slots in clearing" &
               I'Image & "? (y/n)");
             if Get_Yes_No then
                Max := Meeples (I);
@@ -344,6 +362,7 @@ package body Root.Marquise is
             if Sawmill_Supply /= 0 then
                Put ("Place a SAWMILL in clearing" & Max_Idx'Image);
                Sawmill_Supply := Sawmill_Supply - 1;
+               Sawmill (Max_Idx) := Sawmill (Max_Idx) + 1;
             else
                Put_Line ("The " & Name & " cannot place any buildings.");
                return False;
@@ -352,6 +371,7 @@ package body Root.Marquise is
             if Workshop_Supply /= 0 then
                Put ("Place a WORKSHOP in clearing" & Max_Idx'Image);
                Workshop_Supply := Workshop_Supply - 1;
+               Workshops (Max_Idx) := Workshops (Max_Idx) + 1;
             else
                Put_Line ("The " & Name & " cannot place any buildings.");
                return False;
@@ -360,12 +380,33 @@ package body Root.Marquise is
             if Recruiter_Supply /= 0 then
                Put_Line ("Place a RECRUITER in clearing" & Max_Idx'Image);
                Recruiter_Supply := Recruiter_Supply - 1;
+               Recruiter (Max_Idx) := Recruiter (Max_Idx) + 1;
             else
                Put_Line ("The " & Name & " cannot place any buildings.");
                return False;
             end if;
          when Bird =>
-            Put_Line ("WE SHOULD NEVER GET HERE");
+            if Sawmill_Supply <= Workshop_Supply and then
+               Sawmill_Supply <= Recruiter_Supply
+            then
+               if Sawmill_Supply > 0 then
+                  Put_Line ("Place a SAWMILL in clearing" & Max_Idx'Image);
+                  Sawmill_Supply := Sawmill_Supply - 1;
+                  Sawmill (Max_Idx) := Sawmill (Max_Idx) + 1;
+               end if;
+            elsif Recruiter_Supply <= Workshop_Supply then
+               if Recruiter_Supply > 0 then
+                  Put_Line ("Place a RECRUITER in clearing" & Max_Idx'Image);
+                  Recruiter_Supply := Recruiter_Supply - 1;
+                  Recruiter (Max_Idx) := Recruiter (Max_Idx) + 1;
+               end if;
+            else
+               if Workshop_Supply > 0 then
+                  Put_Line ("Place a WORKSHOP in clearing" & Max_Idx'Image);
+                  Workshop_Supply := Workshop_Supply - 1;
+                  Workshops (Max_Idx) := Workshops (Max_Idx) + 1;
+               end if;
+            end if;
       end case;
 
       return True;
@@ -379,7 +420,10 @@ package body Root.Marquise is
    begin
       -- Get Suit Clearings --
       for I in Priority'Range loop
-         if M.Clearings (I).C_Suit = S and then Meeples (I) > 3 then
+         -- Check matching clearing or escalation --
+         if (M.Clearings (I).C_Suit = S or else S = Bird) and then
+            Meeples (I) > 3
+         then
             Count := 1;
             while Count < Neighbor_Arr'Length and then
                   M.Clearings (I).Neighbors (Count) /= 0
@@ -389,6 +433,7 @@ package body Root.Marquise is
                  (M.Clearings (I).Neighbors (Count)'Image), Ada.Strings.Left);
                Count := Count + 1;
             end loop;
+
             Put_Line ("Which clearing has the most enemies?");
             declare
                Opts : constant Char_Arr :=
@@ -418,6 +463,25 @@ package body Root.Marquise is
                   Meeples (M.Clearings (I).Neighbors (Max)) :=
                     Meeples (M.Clearings (I).Neighbors (Max)) + Num_Move;
                   Meeples (I) := 3;
+               end if;
+               New_Line;
+
+               -- Battle if in escalation --
+               if S = Bird then
+                  declare
+                     Lost : Integer;
+                  begin
+                     Put_Line ("Battle in clearing" &
+                               M.Clearings (I).Neighbors (Max)'Image &
+                               " the enemy with the most pieces, " &
+                               "then the most points.");
+                     Put_Line ("How many pieces were lost?");
+                     Lost := Get_Integer
+                       (0, Meeples (M.Clearings (I).Neighbors (Max)));
+                     Meeples (M.Clearings (I).Neighbors (Max)) :=
+                       Meeples (M.Clearings (I).Neighbors (Max)) - Lost;
+                     New_Line;
+                  end;
                end if;
             end;
          end if;
