@@ -55,6 +55,18 @@ package body Root.Marquise is
          end case;
       end if;
 
+      declare
+         Clearing : Priority;
+      begin
+         for I in Building'Range loop
+            Put_Line ("Which clearing is the starting " &
+                      I'Image & " places?");
+            Clearing := Get_Integer (Priority'First, Priority'Last);
+            -- TODO check building validity (Corner neighbor) --
+            Buildings (I, Clearing) := 1;
+         end loop;
+      end;
+
       Building_Supply := (others => BUILDINGS_MAX - 1);
       Buildings := (others => (others => 0));
 
