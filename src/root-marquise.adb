@@ -55,6 +55,9 @@ package body Root.Marquise is
          end case;
       end if;
 
+      Building_Supply := (others => BUILDINGS_MAX - 1);
+      Buildings := (others => (others => 0));
+
    end Setup;
 
    ---------------
@@ -81,9 +84,9 @@ package body Root.Marquise is
       Reset_Style;
       New_Line;
       Put_Line ("    Meeple Supply:" & Meeple_Supply'Image);
-      Put_Line ("   Sawmill Supply:" & Sawmill_Supply'Image);
-      Put_Line ("  Workshop Supply:" & Workshop_Supply'Image);
-      Put_Line (" Recruiter Supply:" & Recruiter_Supply'Image);
+      Put_Line ("   Sawmill Supply:" & Building_Supply (Sawmill)'Image);
+      Put_Line ("  Workshop Supply:" & Building_Supply (Sawmill)'Image);
+      Put_Line (" Recruiter Supply:" & Building_Supply (Sawmill)'Image);
       New_Line;
       Put (" Current Order: ");
       case Order is
@@ -148,25 +151,25 @@ package body Root.Marquise is
       declare
          P : Integer;
       begin
-         case Order is
-            when Fox =>
-               P := (if Sawmill_Supply /= 6
-                     then 6 - Sawmill_Supply - 1 else 0);
-            when Mouse =>
-               P := (if Workshop_Supply /= 6
-                     then 6 - Sawmill_Supply - 1 else 0);
-            when Rabbit =>
-               P := (if Recruiter_Supply /= 6
-                     then 6 - Sawmill_Supply - 1 else 0);
-            when Bird =>
-               -- Find building track with least remaining buildings --
-               P := (if Sawmill_Supply < Workshop_Supply
-                     then Sawmill_Supply else Workshop_Supply);
-               P := (if P < Recruiter_Supply then P else Recruiter_Supply);
+         if Order = Bird then
+            -- Find building track with least remaining buildings --
+            P := (if Building_Supply (Sawmill) < Building_Supply (Workshop)
+                  then Building_Supply (Sawmill)
+                  else Building_Supply (Workshop));
+            P := (if P < Building_Supply (Recruiter)
+                  then P
+                  else Building_Supply (Recruiter));
 
-               -- Score for that track --
-               P := (if P /= 6 then 6 - P - 1 else 0);
-         end case;
+            -- Score for that track --
+            P := (if P /= 6 then 6 - P - 1 else 0);
+         else
+            P := (
+              if Building_Supply (Building'Val (Suit'Pos (Order))) /= 6
+              then 6 - Building_Supply (Building'Val (Suit'Pos (Order))) - 1
+              else 0
+              );
+         end if;
+         Put (P'Image);
       end;
       Put_Line (") points for the " & Name);
 
@@ -206,50 +209,24 @@ package body Root.Marquise is
             end if;
          end if;
 
-         -- Sawmills --
-         if Sawmill (I) > 0 then
-            Put_Line ("Do the " & Name & " still have" & Sawmill (I)'Image &
-                      " sawmill(s) in clearing" & I'Image & "? (y/n)");
-            if not Get_Yes_No then
-               Put_Line ("How many sawmills remain?");
-               declare
-                  Val : Integer;
-               begin
-                  Val := Get_Integer (0, Sawmill (I));
-                  Sawmill (I) := Val;
-               end;
+         -- Check Buildings --
+         for J in Building'Range loop
+            if Buildings (J, I) > 0 then
+               Put_Line ("Do the " & Name & " still have " &
+                         Buildings (J, I)'Image & " " &
+                         J'Image & "(s) " & "in cleraing" & I'Image & "?");
+               if not Get_Yes_No then
+                  Put_Line ("How many " & J'Image & "s remain?");
+                  declare
+                     Val : Integer;
+                  begin
+                     Val := Get_Integer (0, Buildings (J, I));
+                     Buildings (J, I) := Val;
+                  end;
+               end if;
             end if;
-         end if;
+         end loop;
 
-         -- Workshop --
-         if Workshops (I) > 0 then
-            Put_Line ("Do the " & Name & " still have" & Workshops (I)'Image &
-                      " workshop(s) in clearing" & I'Image & "? (y/n)");
-            if not Get_Yes_No then
-               Put_Line ("How many workshops remain?");
-               declare
-                  Val : Integer;
-               begin
-                  Val := Get_Integer (0, Workshops (I));
-                  Workshops (I) := Val;
-               end;
-            end if;
-         end if;
-
-         -- Recruiter --
-         if Recruiter (I) > 0 then
-            Put_Line ("Do the " & Name & " still have" & Recruiter (I)'Image &
-                      " recruiter(s) in clearing" & I'Image & "? (y/n)");
-            if not Get_Yes_No then
-               Put_Line ("How many recruiters remain?");
-               declare
-                  Val : Integer;
-               begin
-                  Val := Get_Integer (0, Recruiter (I));
-                  Recruiter (I) := Val;
-               end;
-            end if;
-         end if;
       end loop;
    end Warriors_Lost;
 
@@ -343,7 +320,7 @@ package body Root.Marquise is
             Meeples (I) > 0 and then Check_Rule (I)
          then
             Put_Line ("Are there available building slots in clearing" &
-              I'Image & "? (y/n)");
+              I'Image & "?");
             if Get_Yes_No then
                Max := Meeples (I);
                Max_Idx := I;
@@ -357,57 +334,54 @@ package body Root.Marquise is
          return False;
       end if;
 
-      case S is
-         when Fox =>
-            if Sawmill_Supply /= 0 then
-               Put ("Place a SAWMILL in clearing" & Max_Idx'Image);
-               Sawmill_Supply := Sawmill_Supply - 1;
-               Sawmill (Max_Idx) := Sawmill (Max_Idx) + 1;
+      -- Normal --
+      if S /= Bird then
+         declare
+            B : constant Building := Building'Val (Suit'Pos (S));
+         begin
+            if Building_Supply (B) /= 0 then
+               Put ("Place a " & B'Image &
+                    " in clearing" & Max_Idx'Image & ".");
+               Building_Supply (B) := Building_Supply (B) - 1;
+               Buildings (B, Max_Idx) := Buildings (B, Max_Idx) + 1;
             else
                Put_Line ("The " & Name & " cannot place any buildings.");
                return False;
             end if;
-         when Rabbit =>
-            if Workshop_Supply /= 0 then
-               Put ("Place a WORKSHOP in clearing" & Max_Idx'Image);
-               Workshop_Supply := Workshop_Supply - 1;
-               Workshops (Max_Idx) := Workshops (Max_Idx) + 1;
-            else
-               Put_Line ("The " & Name & " cannot place any buildings.");
-               return False;
+         end;
+
+      -- Escalation --
+      else
+         if Building_Supply (Sawmill) <= Building_Supply (Workshop) and then
+            Building_Supply (Sawmill) <= Building_Supply (Recruiter)
+         then
+            if Building_Supply (Sawmill) > 0 then
+               Put_Line ("Place a SAWMILL in clearing" & Max_Idx'Image);
+               Building_Supply (Sawmill) := Building_Supply (Sawmill) - 1;
+
+               Buildings (Sawmill, Max_Idx) :=
+                 Buildings (Sawmill, Max_Idx) + 1;
             end if;
-         when Mouse =>
-            if Recruiter_Supply /= 0 then
+
+         elsif Building_Supply (Recruiter) <= Building_Supply (Workshop) then
+            if Building_Supply (Recruiter) > 0 then
                Put_Line ("Place a RECRUITER in clearing" & Max_Idx'Image);
-               Recruiter_Supply := Recruiter_Supply - 1;
-               Recruiter (Max_Idx) := Recruiter (Max_Idx) + 1;
-            else
-               Put_Line ("The " & Name & " cannot place any buildings.");
-               return False;
+               Building_Supply (Recruiter) := Building_Supply (Recruiter) - 1;
+
+               Buildings (Recruiter, Max_Idx) :=
+                 Buildings (Recruiter, Max_Idx) + 1;
             end if;
-         when Bird =>
-            if Sawmill_Supply <= Workshop_Supply and then
-               Sawmill_Supply <= Recruiter_Supply
-            then
-               if Sawmill_Supply > 0 then
-                  Put_Line ("Place a SAWMILL in clearing" & Max_Idx'Image);
-                  Sawmill_Supply := Sawmill_Supply - 1;
-                  Sawmill (Max_Idx) := Sawmill (Max_Idx) + 1;
-               end if;
-            elsif Recruiter_Supply <= Workshop_Supply then
-               if Recruiter_Supply > 0 then
-                  Put_Line ("Place a RECRUITER in clearing" & Max_Idx'Image);
-                  Recruiter_Supply := Recruiter_Supply - 1;
-                  Recruiter (Max_Idx) := Recruiter (Max_Idx) + 1;
-               end if;
-            else
-               if Workshop_Supply > 0 then
-                  Put_Line ("Place a WORKSHOP in clearing" & Max_Idx'Image);
-                  Workshop_Supply := Workshop_Supply - 1;
-                  Workshops (Max_Idx) := Workshops (Max_Idx) + 1;
-               end if;
+
+         else
+            if Building_Supply (Workshop) > 0 then
+               Put_Line ("Place a WORKSHOP in clearing" & Max_Idx'Image);
+               Building_Supply (Workshop) := Building_Supply (Workshop) - 1;
+
+               Buildings (Workshop, Max_Idx) :=
+                 Buildings (Workshop, Max_Idx) + 1;
             end if;
-      end case;
+         end if;
+      end if;
 
       return True;
    end Build;

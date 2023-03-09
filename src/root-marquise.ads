@@ -13,17 +13,17 @@ private
    MEEPLE_MAX    : constant := 25;
    BUILDINGS_MAX : constant := 6;
 
-   subtype Building_Supply is Integer range 0 .. BUILDINGS_MAX;
-
    Meeple_Supply    : Integer range 0 .. MEEPLE_MAX := MEEPLE_MAX - 12;
-   Sawmill_Supply   : Building_Supply := BUILDINGS_MAX - 1;
-   Workshop_Supply  : Building_Supply := BUILDINGS_MAX - 1;
-   Recruiter_Supply : Building_Supply := BUILDINGS_MAX - 1;
 
    Meeples   : array (Priority'Range) of Integer range 0 .. MEEPLE_MAX;
    Rule      : array (Priority'Range) of Boolean;
-   Sawmill   : array (Priority'Range) of Integer range 0 .. 3;
-   Workshops : array (Priority'Range) of Integer range 0 .. 3;
-   Recruiter : array (Priority'Range) of Integer range 0 .. 3;
+
+   type Building is (Sawmill, Workshop, Recruiter);
+
+   Buildings : array (Building'Range, Priority'Range) of
+     Integer range 0 .. 3;
+
+   Building_Supply : array (Building'Range) of
+      Integer range 0 .. BUILDINGS_MAX;
 
 end Root.Marquise;
