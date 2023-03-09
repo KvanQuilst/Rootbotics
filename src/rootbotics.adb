@@ -126,7 +126,7 @@ begin
       loop
          if Num_Playing > 1 then
             -- Choose Faction Turn --
-            Put_Line ("Whose turn will you take:");
+            Put_Line ("Whose turn will you take?");
             F_Opt := Get_Option (Options);
             P_Idx := Character'Pos (F_Opt) - 96;
          else
@@ -146,7 +146,7 @@ begin
          New_Line;
 
          -- What's the Order? --
-         Put_Line ("What is the order of this turn:");
+         Put_Line ("What is the order of this turn?");
          Order := Get_Suit_Opts;
          New_Line;
 

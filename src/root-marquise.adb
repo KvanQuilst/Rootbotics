@@ -70,6 +70,7 @@ package body Root.Marquise is
    procedure Move    (S : Suit; M : Map);
 
    procedure Take_Turn (Order : Suit; M : Map) is
+      Curr_Order : Suit := Order;
       Expand : Boolean;
    begin
       for I in Rule'Range loop
@@ -85,11 +86,11 @@ package body Root.Marquise is
       New_Line;
       Put_Line ("    Meeple Supply:" & Meeple_Supply'Image);
       Put_Line ("   Sawmill Supply:" & Building_Supply (Sawmill)'Image);
-      Put_Line ("  Workshop Supply:" & Building_Supply (Sawmill)'Image);
-      Put_Line (" Recruiter Supply:" & Building_Supply (Sawmill)'Image);
+      Put_Line ("  Workshop Supply:" & Building_Supply (Workshop)'Image);
+      Put_Line (" Recruiter Supply:" & Building_Supply (Recruiter)'Image);
       New_Line;
       Put (" Current Order: ");
-      case Order is
+      case Curr_Order is
          when Fox    => Put_Line (Root.IO.Fox);
          when Mouse  => Put_Line (Root.IO.Mouse);
          when Rabbit => Put_Line (Root.IO.Rabbit);
@@ -119,28 +120,33 @@ package body Root.Marquise is
 
          -- Battle --
          Put_Line ("--  Battle");
-         Battle (Order, M);
+         Battle (Curr_Order, M);
          Continue;
 
          -- Recruit --
          Put_Line ("--  Recruit");
-         Recruit (Order, M);
+         Recruit (Curr_Order, M);
          Continue;
 
          -- Build --
          Put_Line ("--  Build");
-         Expand := not Build (Order, M);
+         Expand := not Build (Curr_Order, M);
          Continue;
 
          -- Move --
          Put_Line ("--  Move");
-         Move (Order, M);
+         Move (Curr_Order, M);
          Continue;
 
          exit when not Expand;
 
          Put_Line ("No buildings were placed, the " &
                    Name & " expand!");
+
+         Put_Line ("What is the new order for the " & Name & "?");
+         Curr_Order := Suit'Val (Character'Pos (Get_Suit_Opts) - 97);
+         New_Line;
+
          New_Line;
 
       end loop;

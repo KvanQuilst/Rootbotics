@@ -4,6 +4,7 @@ GENERAL
 - Enable user to quit out of turn at start of turn
 - More with colors
 - Handle False Orders card (Exiles and Partisans Deck)
+- Modify Get_Suit_Opts to return Suit
 - Test
 
 CLOCKWORK 1
@@ -11,9 +12,6 @@ CLOCKWORK 1
 
 Mechanical Marquise 2.0:
   - Finish setup (Place buildings)
-  - Handle Expand Action (Take_Turn)
-    - New Order Card
-  - Implement Escalations
   - Implement Difficulty
   - Test
 
