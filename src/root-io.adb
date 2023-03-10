@@ -157,9 +157,21 @@ package body Root.IO is
    ----------------
 
    procedure Put_Line_Centered (S : String) is
-      Start : Integer;
+      Start, Length : Integer;
+      Escape : Boolean := False;
    begin
-      Start := (WIDTH / 2) - (S'Length / 2);
+      -- Account for terminal escape codes --
+      Length := S'Length;
+      for I in S'Range loop
+         if Escape then
+            Length := Length - 1;
+            Escape := S (I) /= 'm';
+         else
+            Escape := S (I) = ESC;
+         end if;
+      end loop;
+
+      Start := (WIDTH / 2) - (Length / 2);
       for I in 1 .. Start loop
          Put (" ");
       end loop;
