@@ -1,5 +1,6 @@
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Ada.Text_IO; use Ada.Text_IO;
+with Root.Marquise.Help;
 
 package body Root.Marquise is
 
@@ -116,9 +117,7 @@ package body Root.Marquise is
       -- Mechanical Marquise 2.0 State --
       Put_Logo;
       New_Line;
-      Set_Style (Yellow);
-      Put_Line_Centered ("Mechanical Marquise 2.0");
-      Reset_Style;
+      Put_Line_Centered (Name);
       New_Line;
       Put_Line ("    Meeple Supply:" & Meeple_Supply'Image);
       Put_Line ("   Sawmill Supply:" & Building_Supply (Sawmill)'Image);
@@ -354,6 +353,12 @@ package body Root.Marquise is
    function Build (S : Suit; M : Map) return Boolean is
       Max_Idx : Integer := 0;
    begin
+      Root.Help := (if S = Bird
+                    then Root.Marquise.Help.Escalated_Build'Access
+                    else Root.Marquise.Help.Build'Access);
+
+      Root.Help.all;
+
       for I in reverse Priority'Range loop
          -- Check matching clearing or escalation --
          if (M.Clearings (I).C_Suit = S or else S = Bird) and then
@@ -432,6 +437,10 @@ package body Root.Marquise is
       Options : String_Arr (1 .. Neighbor_Arr'Length);
       Count   : Integer range Neighbor_Arr'Range;
    begin
+      Root.Help := (if S = Bird
+                    then Root.Marquise.Help.Escalated_Move'Access
+                    else Root.Marquise.Help.Move'Access);
+
       -- Get Suit Clearings --
       for I in Priority'Range loop
          -- Check matching clearing or escalation --

@@ -3,7 +3,12 @@ GENERAL
 - Handle difficulty query (Root)
 - Enable user to quit out of turn at start of turn
 - More with colors
+- Fix Put_Line_Centered when using terminal escape code
 - Handle False Orders card (Exiles and Partisans Deck)
+- Unify color for faction (one place to change, not many)
+- Enable user to get extra information about current phase of a turn
+   -- Input wrapper? => Filters input according for 'h' or 'q' and passes rest to get_*
+- Terminal magic for stationary output and constant faction heading
 - Test
 
 CLOCKWORK 1
@@ -11,6 +16,7 @@ CLOCKWORK 1
 
 Mechanical Marquise 2.0:
   - Implement Difficulty
+  - Implement Traits
   - Test
 
 Electric Eyrie:
@@ -19,6 +25,7 @@ Electric Eyrie:
   - Finished Battle
   - Make sure Move and Recruit are correct
   - Implement Difficulty
+  - Implement Traits
   - Test
 
 Automated Alliance:
@@ -30,6 +37,7 @@ Vagabot:
   - Implement Take_Turn
   - Implement Explore, Quest, Aid, Battle
   - Implement Difficulty (Setup)
+  - Implement Traits
   - Test
 
 CLOCKWORK 2
