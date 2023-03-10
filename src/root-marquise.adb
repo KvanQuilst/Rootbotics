@@ -60,13 +60,36 @@ package body Root.Marquise is
 
       declare
          Clearing : Priority;
+         Placed   : array (Building'Range)
+           of Integer range 0 .. 12 := (others => 0);
+         Break : Boolean;
       begin
          for I in Building'Range loop
-            Put_Line ("Which clearing is the starting " &
-                      I'Image & " places?");
-            Clearing := Get_Integer (Priority'First, Priority'Last);
+            Outer :
+               loop
+                  Put_Line ("In which clearing is the starting " &
+                            I'Image & " placed?");
+                  Clearing := Get_Integer (Priority'First, Priority'Last);
+
+                  Break := Clearing = Corner;
+
+                  for J in M.Clearings (Corner).Neighbors'Range loop
+                     Break := (if Clearing = M.Clearings (Corner).Neighbors (J)
+                               then True else Break);
+                  end loop;
+
+                  for J in Placed'Range loop
+                     Break := (if Placed (J) = Clearing then False else Break);
+                  end loop;
+
+                  exit Outer when Break;
+
+                  Put_Line ("Invalid response!");
+                  New_Line;
+               end loop Outer;
             New_Line;
-            -- TODO check building validity (Corner neighbor) --
+
+            Placed (I) := Clearing;
             Buildings (I, Clearing) := 1;
          end loop;
       end;
