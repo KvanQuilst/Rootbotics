@@ -124,7 +124,7 @@ package body Root.IO is
       pragma Unreferenced (Line);
    begin
       loop
-         Put ("Response: ");
+         Put ("Response (y/n): ");
          Get (C);
          Line := To_Unbounded_String (Get_Line);
 

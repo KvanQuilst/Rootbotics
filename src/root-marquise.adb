@@ -55,6 +55,9 @@ package body Root.Marquise is
          end case;
       end if;
 
+      Building_Supply := (others => BUILDINGS_MAX - 1);
+      Buildings := (others => (others => 0));
+
       declare
          Clearing : Priority;
       begin
@@ -62,13 +65,11 @@ package body Root.Marquise is
             Put_Line ("Which clearing is the starting " &
                       I'Image & " places?");
             Clearing := Get_Integer (Priority'First, Priority'Last);
+            New_Line;
             -- TODO check building validity (Corner neighbor) --
             Buildings (I, Clearing) := 1;
          end loop;
       end;
-
-      Building_Supply := (others => BUILDINGS_MAX - 1);
-      Buildings := (others => (others => 0));
 
    end Setup;
 
@@ -211,11 +212,9 @@ package body Root.Marquise is
    begin
       -- Determine lost warriors --
       for I in Priority'Range loop
-
-         -- Warriors --
          if Meeples (I) > 0 then
             Put_Line ("Do the " & Name & " still have" & Meeples (I)'Image &
-                      " warrior(s) in clearing" & I'Image & "? (y/n)");
+                      " warrior(s) in clearing" & I'Image & "?");
             if not Get_Yes_No then
                Put_Line ("How many warriors remain?");
                declare
@@ -226,8 +225,10 @@ package body Root.Marquise is
                end;
             end if;
          end if;
+      end loop;
 
-         -- Check Buildings --
+      -- Check Buildings --
+      for I in Priority'Range loop
          for J in Building'Range loop
             if Buildings (J, I) > 0 then
                Put_Line ("Do the " & Name & " still have " &
@@ -244,7 +245,6 @@ package body Root.Marquise is
                end if;
             end if;
          end loop;
-
       end loop;
    end Warriors_Lost;
 
@@ -329,10 +329,9 @@ package body Root.Marquise is
    -- BUILD a building the clearing you rule --
    -- with the most Marquise warriors        --
    function Build (S : Suit; M : Map) return Boolean is
-      Max : Integer := 0;
-      Max_Idx : Integer;
+      Max_Idx : Integer := 0;
    begin
-      for I in Priority'Range loop
+      for I in reverse Priority'Range loop
          -- Check matching clearing or escalation --
          if (M.Clearings (I).C_Suit = S or else S = Bird) and then
             Meeples (I) > 0 and then Check_Rule (I)
@@ -340,14 +339,14 @@ package body Root.Marquise is
             Put_Line ("Are there available building slots in clearing" &
               I'Image & "?");
             if Get_Yes_No then
-               Max := Meeples (I);
                Max_Idx := I;
+               exit;
             end if;
          end if;
       end loop;
       New_Line;
 
-      if Max = 0 then
+      if Max_Idx = 0 then
          Put_Line ("The " & Name & " cannot place any buildings.");
          return False;
       end if;
@@ -460,7 +459,7 @@ package body Root.Marquise is
 
                -- Battle if in escalation --
                if S = Bird then
-                  declare
+                  Max := (if Max = 0 then 1 else Max); declare
                      Lost : Integer;
                   begin
                      Put_Line ("Battle in clearing" &

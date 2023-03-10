@@ -131,6 +131,9 @@ begin
             F_Opt := Get_Option (Options);
             P_Idx := Character'Pos (F_Opt) - 96;
          else
+            New_Line;
+            Put_Line ("Take the " & Root.Marquise.Name & "'s turn.");
+            Continue;
             P_Idx := 1;
          end if;
 
