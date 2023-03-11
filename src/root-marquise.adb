@@ -345,11 +345,21 @@ package body Root.Marquise is
       end case;
 
       if Count /= 0 then
-         Meeple_Supply := 
+         Meeple_Supply :=
            (if Meeple_Supply - 4 > 0 then Meeple_Supply - 4 else 0);
       end if;
 
    end Recruit;
+
+   function Building_Space (Clearing : Priority;
+                            M : Map) return Boolean is
+      Count : Integer := 0;
+   begin
+      for I in Building'Range loop
+         Count := Count + Buildings (I, Clearing);
+      end loop;
+      return Count < M.Clearings (Clearing).Buildings;
+   end Building_Space;
 
    -- BUILD a building the clearing you rule --
    -- with the most Marquise warriors        --
@@ -363,7 +373,8 @@ package body Root.Marquise is
       for I in reverse Priority'Range loop
          -- Check matching clearing or escalation --
          if (M.Clearings (I).C_Suit = S or else S = Bird) and then
-            Meeples (I) > 0 and then Check_Rule (I)
+            Meeples (I) > 0 and then Check_Rule (I) and then
+            Building_Space (I, M)
          then
             Put_Line ("Are there available building slots in clearing" &
               I'Image & "?");
