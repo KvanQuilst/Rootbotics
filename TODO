@@ -1,9 +1,9 @@
 GENERAL
 --------------------
 - Handle difficulty query (Root)
+- End the game
 - Enable user to quit out of turn at start of turn
 - More with colors
-- Fix Put_Line_Centered when using terminal escape code
 - Handle False Orders card (Exiles and Partisans Deck)
 - Unify color for faction (one place to change, not many)
 - Enable user to get extra information about current phase of a turn
@@ -15,6 +15,7 @@ CLOCKWORK 1
 --------------------
 
 Mechanical Marquise 2.0:
+  - Proper Handling if not enough meeple
   - Implement Difficulty
   - Implement Traits
   - Test

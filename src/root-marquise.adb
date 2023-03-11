@@ -100,7 +100,7 @@ package body Root.Marquise is
    ---------------
    -- Take Turn --
    ---------------
-   procedure Warriors_Lost;
+   procedure Pieces_Lost;
    procedure Battle  (S : Suit; M : Map);
    procedure Recruit (S : Suit; M : Map);
    function  Build   (S : Suit; M : Map) return Boolean;
@@ -134,7 +134,7 @@ package body Root.Marquise is
       New_Line;
       Separator;
 
-      Warriors_Lost;
+      Pieces_Lost;
 
       -- Have the marquise lost? --
       if Meeple_Supply = MEEPLE_MAX then
@@ -230,7 +230,7 @@ package body Root.Marquise is
       return Rule (Clearing);
    end Check_Rule;
 
-   procedure Warriors_Lost is
+   procedure Pieces_Lost is
    begin
       -- Determine lost warriors --
       for I in Priority'Range loop
@@ -243,6 +243,7 @@ package body Root.Marquise is
                   Val : Integer;
                begin
                   Val := Get_Integer (0, Meeples (I));
+                  Meeple_Supply := Meeple_Supply + (Meeples (I) - Val);
                   Meeples (I) := Val;
                end;
             end if;
@@ -250,10 +251,10 @@ package body Root.Marquise is
       end loop;
 
       -- Check Buildings --
-      for I in Priority'Range loop
-         for J in Building'Range loop
+      for J in Building'Range loop
+         for I in Priority'Range loop
             if Buildings (J, I) > 0 then
-               Put_Line ("Do the " & Name & " still have " &
+               Put_Line ("Do the " & Name & " still have" &
                          Buildings (J, I)'Image & " " &
                          J'Image & "(s) " & "in cleraing" & I'Image & "?");
                if not Get_Yes_No then
@@ -268,7 +269,7 @@ package body Root.Marquise is
             end if;
          end loop;
       end loop;
-   end Warriors_Lost;
+   end Pieces_Lost;
 
    -- Battle in each ordered clearing --
    procedure Battle (S : Suit; M : Map) is
@@ -283,6 +284,7 @@ package body Root.Marquise is
                       "the most pieces, then the most points.");
             Put_Line ("How many pieces were lost?");
             Lost := Get_Integer (0, Meeples (I));
+            Meeple_Supply := Meeple_Supply + Lost;
             Meeples (I) := Meeples (I) - Lost;
             New_Line;
          end if;
@@ -343,7 +345,8 @@ package body Root.Marquise is
       end case;
 
       if Count /= 0 then
-         Meeple_Supply := Meeple_Supply - 4;
+         Meeple_Supply := 
+           (if Meeple_Supply - 4 > 0 then Meeple_Supply - 4 else 0);
       end if;
 
    end Recruit;
@@ -356,8 +359,6 @@ package body Root.Marquise is
       Root.Help := (if S = Bird
                     then Root.Marquise.Help.Escalated_Build'Access
                     else Root.Marquise.Help.Build'Access);
-
-      Root.Help.all;
 
       for I in reverse Priority'Range loop
          -- Check matching clearing or escalation --
@@ -487,7 +488,7 @@ package body Root.Marquise is
                     Meeples (M.Clearings (I).Neighbors (Max)) + Num_Move;
                   Meeples (I) := 3;
                end if;
-               New_Line;
+               Continue;
 
                -- Battle if in escalation --
                if S = Bird then
@@ -501,9 +502,10 @@ package body Root.Marquise is
                      Put_Line ("How many pieces were lost?");
                      Lost := Get_Integer
                        (0, Meeples (M.Clearings (I).Neighbors (Max)));
+                     Meeple_Supply := Meeple_Supply + Lost;
                      Meeples (M.Clearings (I).Neighbors (Max)) :=
                        Meeples (M.Clearings (I).Neighbors (Max)) - Lost;
-                     New_Line;
+                     Continue;
                   end;
                end if;
             end;
