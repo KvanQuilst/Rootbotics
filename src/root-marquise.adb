@@ -1,6 +1,5 @@
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Ada.Text_IO; use Ada.Text_IO;
-with Root.Marquise.Help;
 
 package body Root.Marquise is
 
@@ -366,9 +365,6 @@ package body Root.Marquise is
    function Build (S : Suit; M : Map) return Boolean is
       Max_Idx : Integer := 0;
    begin
-      Root.Help := (if S = Bird
-                    then Root.Marquise.Help.Escalated_Build'Access
-                    else Root.Marquise.Help.Build'Access);
 
       for I in reverse Priority'Range loop
          -- Check matching clearing or escalation --
@@ -449,9 +445,6 @@ package body Root.Marquise is
       Options : String_Arr (1 .. Neighbor_Arr'Length);
       Count   : Integer range Neighbor_Arr'Range;
    begin
-      Root.Help := (if S = Bird
-                    then Root.Marquise.Help.Escalated_Move'Access
-                    else Root.Marquise.Help.Move'Access);
 
       -- Get Suit Clearings --
       for I in Priority'Range loop
