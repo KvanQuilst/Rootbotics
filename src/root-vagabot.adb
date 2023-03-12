@@ -6,7 +6,7 @@ package body Root.Vagabot is
    procedure Put_Logo is
       Length : constant := 24;
    begin
-      Set_Style (B_Black);
+      Set_Style (White);
       Put_Line_Centered ("    / \           / \    ");
       Put_Line_Centered ("  /     \       /     \  ");
       Put_Line_Centered (" /  |||   \ ^ /   |||  \ ");
@@ -16,11 +16,11 @@ package body Root.Vagabot is
       Put_Line_Centered (" // \ __ //   \\ __ / \\ ");
       Reset_Style;
       Put (To_String ((WIDTH - Length) / 2 * "-"));
-      Set_Style (B_Black);
+      Set_Style (White);
       Put               ("|/_______/     \_______\|");
       Reset_Style;
       Put_Line (To_String ((WIDTH - Length) / 2 * "-"));
-      Set_Style (B_Black);
+      Set_Style (White);
       Put_Line_Centered ("         \     /         ");
       Put_Line_Centered ("          \ _ /          ");
       Put_Line_Centered ("           \ /           ");
@@ -226,7 +226,7 @@ package body Root.Vagabot is
       -- Vagabot Stats --
       Put_Logo;
       New_Line;
-      Set_Style (B_Black);
+      Set_Style (White);
       Put_Line_Centered ("Vagabot");
       Reset_Style;
       New_Line;
