@@ -5,7 +5,9 @@ package Root is
    type Suit is (Fox, Mouse, Rabbit, Bird);
    subtype Priority is Integer range 1 .. 12;
 
-   type Priority_List is array (Integer range 1 .. 12)
+   type Meeple_Arr is array (Priority'Range) of Natural;
+
+   type Priority_List is array (Priority'Range)
      of Integer range 0 .. 12;
 
    type Help_Procedure is access procedure;

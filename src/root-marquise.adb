@@ -132,7 +132,9 @@ package body Root.Marquise is
       end case;
       New_Line;
       Separator;
+      New_Line;
 
+      Print_Map (Fall, Meeples);
       Pieces_Lost;
 
       -- Have the marquise lost? --

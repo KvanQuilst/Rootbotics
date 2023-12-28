@@ -15,7 +15,8 @@ private
 
    Meeple_Supply    : Integer range 0 .. MEEPLE_MAX := MEEPLE_MAX - 12;
 
-   Meeples   : array (Priority'Range) of Integer range 0 .. MEEPLE_MAX;
+   --  Meeples   : array (Priority'Range) of Integer range 0 .. MEEPLE_MAX;
+   Meeples : Meeple_Arr;
    Rule      : array (Priority'Range) of Boolean;
 
    type Building is (Sawmill, Workshop, Recruiter);

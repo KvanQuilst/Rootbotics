@@ -10,7 +10,7 @@ package Root.Maps is
       Neighbors : Neighbor_Arr;
    end record;
 
-   type Clearing_Arr is array (Integer range 1 .. 12) of Clearing;
+   type Clearing_Arr is array (Priority'Range) of Clearing;
    type Map_Name is (Fall, Winter, Lake, Mountain);
 
    type Map is record
@@ -39,6 +39,8 @@ package Root.Maps is
    function Winter_Map   return Map;
    function Lake_Map     return Map;
    function Mountain_Map return Map;
+
+   procedure Print_Map (Map : Map_Name; Units : Meeple_Arr);
 
 private
 

@@ -4,8 +4,7 @@ package body Root.IO is
    package Int_IO is
       new Integer_IO (Integer); use Int_IO;
 
-  ----------------------------
-  -- Get Checked User Input --
+  ---------------------------- -- Get Checked User Input --
   ----------------------------
 
    procedure Put_Options (Options : String_Arr) is
@@ -228,6 +227,60 @@ package body Root.IO is
    begin
       Put (ESC & "[0m");
    end Reset_Style;
+
+   ---------------------
+   -- Cursor Controls --
+   ---------------------
+   procedure Cursor_Home is
+   begin
+      Put (ESC & "[H");
+   end Cursor_Home;
+
+   procedure Cursor_Set (Line : Positive; Column : Natural) is
+   begin
+      Put (ESC & "[");
+      Put (Line, Width => 0);
+      Put (";");
+      Put (Column, Width => 0);
+      Put ("H");
+   end Cursor_Set;
+
+   procedure Cursor_Line_Move (Num_Lines : Integer) is
+      Val : constant Natural := (if Num_Lines < 0
+                                 then Natural (0 - Num_Lines)
+                                 else Natural (Num_Lines));
+   begin
+      Put (ESC & "[");
+      Put (Val, Width => 0);
+      if Num_Lines < 0 then
+         Put ("A");
+      else
+         Put ("B");
+      end if;
+   end Cursor_Line_Move;
+
+   procedure Cursor_Column_Move (Num_Columns : Integer) is
+      Val : constant Natural := (if Num_Columns < 0
+                                 then Natural (0 - Num_Columns)
+                                 else Natural (Num_Columns));
+   begin
+      Put (ESC & "[");
+      Put (Val, Width => 0);
+      if Num_Columns < 0 then
+         Put ("C");
+      else
+         Put ("D");
+      end if;
+   end Cursor_Column_Move;
+
+   ---------------------
+   -- Erase Functions --
+   ---------------------
+
+   procedure Erase_Screen is
+   begin
+      Put (ESC & "[2J");
+   end Erase_Screen;
 
    -------------------
    -- Common Prints --
