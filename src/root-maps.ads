@@ -40,7 +40,7 @@ package Root.Maps is
    function Lake_Map     return Map;
    function Mountain_Map return Map;
 
-   procedure Print_Map (Map : Map_Name; Units : Meeple_Arr);
+   procedure Put_Map (Map : Map_Name; Units : Meeple_Arr);
 
 private
 

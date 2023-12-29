@@ -134,7 +134,7 @@ package body Root.Marquise is
       Separator;
       New_Line;
 
-      Print_Map (Fall, Meeples);
+      Put_Map (Fall, Meeples);
       Pieces_Lost;
 
       -- Have the marquise lost? --

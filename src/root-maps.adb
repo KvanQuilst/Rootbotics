@@ -143,26 +143,30 @@ package body Root.Maps is
       Reset_Style;
    end Clearing_Box;
 
-   procedure Print_Map_Fall (Units : Meeple_Arr) is
+   procedure Put_Map_Fall (Units : Meeple_Arr) is
       type Coordinates is array (Priority'Range, 1 .. 2) of Natural;
       Coords : constant Coordinates :=
          ((1, 0), (3, 26), (12, 27), (11, 0), (1, 16), (7, 27),
           (11, 18), (12, 9), (5, 0), (3, 10), (7, 19), (8, 7));
-      --  B_Line : Positive := Positive (Line);
+      B_Line : constant Positive := Positive (Line);
    begin
-      Erase_Screen;
+      --  Erase_Screen;
+      for I in 1 .. 16 loop
+         New_Line;
+      end loop;
+
       for I in Priority'Range loop
-         Clearing_Box (Coords (I, 1), Coords (I, 2), Units (I),
+         Clearing_Box (B_Line + Coords (I, 1), Coords (I, 2), Units (I),
                        Fall_Map.Clearings (I), I);
       end loop;
-      Cursor_Set (16, 0);
-   end Print_Map_Fall;
+      Cursor_Set (B_Line + 16, 0);
+   end Put_Map_Fall;
 
-   procedure Print_Map (Map : Map_Name; Units : Meeple_Arr) is
+   procedure Put_Map (Map : Map_Name; Units : Meeple_Arr) is
    begin
       if Map = Fall then
-         Print_Map_Fall (Units);
+         Put_Map_Fall (Units);
       end if;
-   end Print_Map;
+   end Put_Map;
 
 end Root.Maps;
