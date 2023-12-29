@@ -41,6 +41,29 @@ package body Root.Lizards is
          Put (Remaining);
          Reset_Style;
       end Garden_State;
+
+      procedure Conspiracy_State is
+      begin
+         for C in Conspiracy_Count'Range loop
+            if C = 3 then
+               New_Line;
+               Put ("                   ");
+            else
+               Put (" ");
+            end if;
+            if C = Next_Conspiracy then
+               Set_Style (Green);
+               Put (Conspiracies (C)'Image);
+               Reset_Style;
+            elsif C = Next_Conspiracy - 1 then
+               Set_Style (B_Black);
+               Put (Conspiracies (C)'Image);
+               Reset_Style;
+            else
+               Put (Conspiracies (C)'Image);
+            end if;
+         end loop;
+      end Conspiracy_State;
    begin
       Erase_Screen;
       Cursor_Home;
@@ -52,7 +75,6 @@ package body Root.Lizards is
       -- Lizards State --
       Put_Line ("    Meeple Supply:" & Meeple_Supply'Image);
       Put_Line ("         Acolytes:" & Acolytes'Image);
-
       Put ("    " & Root.IO.Mouse & " Gardens:");
       Garden_State (Mouse);
       New_Line;
@@ -63,6 +85,10 @@ package body Root.Lizards is
 
       Put ("      " & Root.IO.Fox & " Gardens:");
       Garden_State (Fox);
+      New_Line;
+
+      Put (" Conspiracies:");
+      Conspiracy_State;
       New_Line;
 
       New_Line;
