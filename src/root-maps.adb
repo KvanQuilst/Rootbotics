@@ -27,12 +27,15 @@ package body Root.Maps is
       O : constant Clearing_Order :=
          (1, 5, 6, 2, 10, 11, 12, 7, 4, 9, 8, 3);
       S : Clearing_Suit;
-
-      M : Map;
    begin
+      if Winter_Map_Set then
+         return Winter_Map_Actual;
+      end if;
+
       Query_Suits (S, O);
 
-      M := (Winter,
+      Winter_Map_Actual :=
+         (Winter,
          ((S (1),  1, False, (5, 10, 11, 0, 0, 0)),
           (S (2),  1, False, (6, 7, 12, 0, 0, 0)),
           (S (3),  2, False, (7, 8, 12, 0, 0, 0)),
@@ -45,8 +48,9 @@ package body Root.Maps is
           (S (10), 1, False, (1, 4, 0, 0, 0, 0)),
           (S (11), 2, True,  (1, 4, 9, 0, 0, 0)),
           (S (12), 2, True,  (2, 3, 8, 0, 0, 0))));
+      Winter_Map_Set := True;
 
-      return M;
+      return Winter_Map_Actual;
    end Winter_Map;
 
    function Lake_Map return Map is
@@ -54,12 +58,15 @@ package body Root.Maps is
       O : constant Clearing_Order :=
          (2, 7, 6, 4, 8, 10, 11, 5, 3, 12, 9, 1);
       S : Clearing_Suit;
-
-      M : Map;
    begin
+      if Lake_Map_Set then
+         return Lake_Map_Actual;
+      end if;
+
       Query_Suits (S, O);
 
-      M := (Lake,
+      Lake_Map_Actual :=
+         (Lake,
          ((S (1),  2, False, (5, 9, 0, 0, 0, 0)),
           (S (2),  1, False, (7, 8, 10, 0, 0, 0)),
           (S (3),  1, False, (8, 9, 12, 0, 0, 0)),
@@ -72,8 +79,9 @@ package body Root.Maps is
           (S (10), 2, True,  (2, 7, 8, 0, 0, 0)),
           (S (11), 2, True,  (5, 6, 7, 0, 0, 0)),
           (S (12), 2, True,  (3, 9, 0, 0, 0, 0))));
+      Lake_Map_Set := True;
 
-      return M;
+      return Lake_Map_Actual;
    end Lake_Map;
 
    function Mountain_Map return Map is
@@ -81,12 +89,15 @@ package body Root.Maps is
       O : constant Clearing_Order :=
          (1, 5, 2, 8, 9, 10, 12, 11, 6, 4, 7, 3);
       S : Clearing_Suit;
-
-      M : Map;
    begin
+      if Mountain_Map_Set then
+         return Mountain_Map_Actual;
+      end if;
+
       Query_Suits (S, O);
 
-      M := (Mountain,
+      Mountain_Map_Actual :=
+         (Mountain,
          ((S (1),  2, False, (8, 9, 0, 0, 0, 0)),
           (S (2),  2, False, (5, 6, 11, 0, 0, 0)),
           (S (3),  2, False, (6, 7, 11, 0, 0, 0)),
@@ -99,8 +110,9 @@ package body Root.Maps is
           (S (10), 1, True,  (5, 9, 11, 12, 0, 0)),
           (S (11), 2, True,  (2, 3, 5, 6, 10, 12)),
           (S (12), 2, True,  (4, 7, 9, 10, 11, 0))));
+      Mountain_Map_Set := True;
 
-      return M;
+      return Mountain_Map_Actual;
    end Mountain_Map;
 
    ------------------

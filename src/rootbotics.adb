@@ -9,6 +9,7 @@ with Root.Eyrie;
 with Root.Marquise;
 with Root.Alliance;
 with Root.Vagabot;
+with Root.Lizards;
 
 procedure Rootbotics is
    VERSION : constant String := "v0.1";
@@ -24,6 +25,8 @@ procedure Rootbotics is
 begin
    Put_Line ("Welcome to the Rootbotics Logic Tool " & VERSION & "!");
    New_Line;
+
+   Root.Lizards.Take_Turn (Fall_Map);
 
    -----------------------
    -- Faction Selection --

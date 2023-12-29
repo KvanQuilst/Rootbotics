@@ -25,6 +25,7 @@ package body Root.Lizards is
       Put                 ("\_________________/");
       Reset_Style;
       Put_Line (To_String (((WIDTH - Length) / 2 + 1) * "-"));
+      New_Line;
    end Put_Logo;
 
    procedure Prompt is

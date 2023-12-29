@@ -18,6 +18,8 @@ package Root.Maps is
       Clearings : Clearing_Arr;
    end record;
 
+   Map_Play : Map_Name;
+
    ----------
    -- Fall --
    ----------
@@ -36,9 +38,12 @@ package Root.Maps is
        (Mouse,  2, True,  (3, 6, 12, 0, 0, 0)),   -- 11
        (Fox,    1, True,  (4, 7, 9, 10, 11, 0)))); -- 12
 
-   function Winter_Map   return Map;
-   function Lake_Map     return Map;
-   function Mountain_Map return Map;
+   function Winter_Map   return Map
+      with Inline;
+   function Lake_Map     return Map
+      with Inline;
+   function Mountain_Map return Map
+      with Inline;
 
    procedure Put_Map (Map : Map_Name; Units : Meeple_Arr);
 
@@ -46,5 +51,13 @@ private
 
    type Clearing_Suit  is array (Priority'Range) of Suit;
    type Clearing_Order is array (Priority'Range) of Priority;
+
+   Winter_Map_Set   : Boolean := False;
+   Lake_Map_Set     : Boolean := False;
+   Mountain_Map_Set : Boolean := False;
+
+   Winter_Map_Actual   : Map;
+   Lake_Map_Actual     : Map;
+   Mountain_Map_Actual : Map;
 
 end Root.Maps;
