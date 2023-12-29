@@ -5,7 +5,7 @@ package Root.Lizards is
 
    Name : constant String := String_Style ("Logical Lizards", B_Yellow);
 
-   procedure Take_Turn (Order : Suit; M : Map);
+   procedure Take_Turn (M : Map);
 
 private
 

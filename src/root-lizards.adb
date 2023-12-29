@@ -76,13 +76,13 @@ package body Root.Lizards is
       Separator;
    end Prompt;
 
-   procedure Take_Turn (Order : Suit; M : Map) is
+   procedure Take_Turn (M : Map) is
    begin
       for I in Rule'Range loop
          Rule (I) := False;
       end loop;
 
-      Curr_Order := Order;
+      Curr_Order := Fox;
 
       Prompt;
 
