@@ -52,6 +52,8 @@ private
    type Clearing_Suit  is array (Priority'Range) of Suit;
    type Clearing_Order is array (Priority'Range) of Priority;
 
+   type Coordinates is array (Priority'Range, 1 .. 2) of Natural;
+
    Winter_Map_Set   : Boolean := False;
    Lake_Map_Set     : Boolean := False;
    Mountain_Map_Set : Boolean := False;
@@ -59,5 +61,29 @@ private
    Winter_Map_Actual   : Map;
    Lake_Map_Actual     : Map;
    Mountain_Map_Actual : Map;
+
+   Map_Width : constant := 26;
+   type Map_Text is array (Integer range <>) of String (1 .. 26);
+   -------------------
+   -- Fall Map Data --
+   -------------------
+   Fall_Clearing_Coords : Coordinates :=
+      ((0, 0), (1, 21), (9, 21), (9, 0), (0, 14), (5, 21),
+       (9, 14), (9, 7), (5, 0), (1, 7), (5, 14), (5, 7));
+   Fall_Map_Height : constant := 12;
+   Fall_Map_Width  : constant := Map_Width;
+   Fall_Map_Base   : Map_Text :=
+      ("@---@---------@---@       ",
+       "| _ |  @---@  | _ |--@---@",
+       "F---1--| _ |  R---5  | _ |",
+       "  |    R--10---------M---2",
+       "  |      |             |  ",
+       "@---@  @---@  @---@  @---@",
+       "| _ |--| _ |--| _ |--| _ |",
+       "M---9  F--12  M--11  F---6",
+       "  |  //     \\     \\  |  ",
+       "@---@  @---@  @---@  @---@",
+       "| _ |--| _ |--| _ |--| _ |",
+       "R---4  F---8  M---7  R---3");
 
 end Root.Maps;

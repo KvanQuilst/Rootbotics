@@ -157,42 +157,21 @@ package body Root.Maps is
    end Clearing_Box;
 
    procedure Put_Map_Fall (Units : Meeple_Arr) is
-      type Coordinates is array (Priority'Range, 1 .. 2) of Natural;
-      Coords : constant Coordinates :=
-         ((1, 0), (2, 21), (10, 21), (10, 0), (1, 14), (6, 21),
-          (10, 14), (10, 7), (6, 0), (2, 7), (6, 14), (6, 7));
-
-      Height : constant := 12;
-      Width  : constant := 26;
-      Paths : constant array
-         (Integer range 1 .. Height) of String (1 .. Width) :=
-         ("@---@---------@---@       ",
-          "| _ |  @---@  | _ |--@---@",
-          "F---1--| _ |  R---5  | _ |",
-          "  |    R--10---------M---2",
-          "  |      |             |  ",
-          "@---@  @---@  @---@  @---@",
-          "| _ |--| _ |--| _ |--| _ |",
-          "M---9  F--12  M--11  F---6",
-          "  |  //     \\     \\  |  ",
-          "@---@  @---@  @---@  @---@",
-          "| _ |--| _ |--| _ |--| _ |",
-          "R---4  F---8  M---7  R---3");
-
-      B_Line : constant Positive := Positive (Line) - 2;
-      B_Col  : constant Positive := (Root.IO.WIDTH - Width) / 2 + 1;
+      B_Line : constant Positive := Positive (Line) - 1;
+      B_Col  : constant Positive := (Root.IO.WIDTH - Fall_Map_Width) / 2 + 2;
    begin
       Put_Line_Centered ("FALL");
-      for L of Paths loop
+      for L of Fall_Map_Base loop
          Put (To_String ((B_Col - 1) * ' '));
          Put_Line (L);
       end loop;
 
       for I in Priority'Range loop
-         Clearing_Box (B_Line + Coords (I, 1), B_Col + Coords (I, 2),
+         Clearing_Box (B_Line + Fall_Clearing_Coords (I, 1), 
+                       B_Col  + Fall_Clearing_Coords (I, 2),
                        Units (I), Fall_Map.Clearings (I), I);
       end loop;
-      Cursor_Set (B_Line + Height, 0);
+      Cursor_Set (B_Line + Fall_Map_Height, 0);
    end Put_Map_Fall;
 
    procedure Put_Map (Map : Map_Name; Units : Meeple_Arr) is
