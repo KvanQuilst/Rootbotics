@@ -18,8 +18,6 @@ package Root.Maps is
       Clearings : Clearing_Arr;
    end record;
 
-   Map_In_Play : Map_Name;
-
    ----------
    -- Fall --
    ----------
@@ -45,7 +43,7 @@ package Root.Maps is
    function Mountain_Map return Map
       with Inline;
 
-   procedure Put_Map (Map : Map_Name; Units : Warrior_Arr);
+   procedure Put_Map (Units : Warrior_Arr);
 
 private
 
@@ -57,6 +55,8 @@ private
       y : Natural;
    end record;
    type Coordinates is array (Priority'Range) of Coordinate;
+
+   Map_In_Play : Map_Name := Fall;
 
    Winter_Map_Set   : Boolean := False;
    Lake_Map_Set     : Boolean := False;
@@ -75,7 +75,6 @@ private
       ((0, 0), (1, 21), (9, 21), (9, 0), (0, 14), (5, 21),
        (9, 14), (9, 7), (5, 0), (1, 7), (5, 14), (5, 7));
    Fall_Map_Height : constant := 12;
-   Fall_Map_Width  : constant := Map_Width;
    Fall_Map_Base   : Map_Text :=
       ("@---@---------@---@       ",
        "| _ |  @---@  | _ |--@---@",

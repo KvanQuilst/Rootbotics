@@ -162,29 +162,41 @@ package body Root.Maps is
       Cursor_Column_Set (Col);
    end Clearing_Box;
 
-   procedure Put_Map_Fall (Units : Warrior_Arr) is
-      B_Col  : constant Positive := (Root.IO.WIDTH - Fall_Map_Width) / 2 + 2;
+   procedure Put_Map (Units : Warrior_Arr) is
+      Curr_Map : Map;
+      Coords : Coordinates;
+      Text_Map : constant Map_Text := (case Map_In_Play is
+                                          when Fall => Fall_Map_Base,
+                                          when others => Fall_Map_Base);
+      B_Col : constant Positive := (Root.IO.WIDTH - Map_Width) / 2 + 2;
    begin
-      Put_Line_Centered ("FALL");
-      for L of Fall_Map_Base loop
+      --  if Map = Fall then
+      --     Put_Map_Fall (Units);
+      --  end if;
+
+      case Map_In_Play is
+         when Fall =>
+            Curr_Map := Fall_Map;
+            Coords   := Fall_Clearing_Coords;
+         when others =>
+            null;
+      end case;
+
+      Put_Line_Centered (Map_In_Play'Image);
+
+      -- Print base map and return to TR corner --
+      for L of Text_Map loop
          Put_Line (To_String ((B_Col - 1) * ' ') & L);
       end loop;
-      Cursor_Line_Move (0 - Fall_Map_Base'Length);
+      Cursor_Line_Move (0 - Text_Map'Length);
       Cursor_Column_Move (B_Col);
 
+      -- Print map details and numbers --
       for I in Priority'Range loop
-         Clearing_Box (Fall_Clearing_Coords (I).x,
-                       B_Col + Fall_Clearing_Coords (I).y,
-                       Units (I), Fall_Map.Clearings (I), I);
+         Clearing_Box (Coords (I).x, B_Col + Coords (I).y,
+                       Units (I), Curr_Map.Clearings (I), I);
       end loop;
-      Cursor_Line_Move (Fall_Map_Height);
-   end Put_Map_Fall;
-
-   procedure Put_Map (Map : Map_Name; Units : Warrior_Arr) is
-   begin
-      if Map = Fall then
-         Put_Map_Fall (Units);
-      end if;
+      Cursor_Line_Move (Text_Map'Length);
    end Put_Map;
 
 end Root.Maps;

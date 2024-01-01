@@ -354,7 +354,7 @@ package body Root.IO is
       Put_Logo.all;
 
       -- Map --
-      Put_Map (Map_In_Play, Units);
+      Put_Map (Units);
       New_Line;
       Separator;
 
