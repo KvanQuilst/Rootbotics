@@ -155,7 +155,7 @@ package body Root.Maps is
       if Pri < 10 then
          Put ("-");
       end if;
-      Set_Style (B_Black);
+      Set_Style (B_White);
       Int_IO.Put (Pri, Width => 0);
       Reset_Style;
       Cursor_Line_Move (0 - Line - 2);
