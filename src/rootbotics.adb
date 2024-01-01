@@ -26,8 +26,6 @@ begin
    Put_Line ("Welcome to the Rootbotics Logic Tool " & VERSION & "!");
    New_Line;
 
-   --  Root.Lizards.Take_Turn (Fall_Map);
-
    -----------------------
    -- Faction Selection --
    -----------------------

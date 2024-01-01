@@ -3,6 +3,10 @@ with Ada.Text_IO; use Ada.Text_IO;
 
 package body Root.Lizards is
 
+   ---------------
+   -- Prompt IO --
+   ---------------
+
    procedure Put_Logo is
       B_Col : constant := (WIDTH - Logo_Width) / 2 + 2;
    begin
@@ -18,7 +22,7 @@ package body Root.Lizards is
       New_Line;
    end Put_Logo;
 
-   procedure Prompt is
+   procedure Put_State is
       procedure Garden_State (G : Garden) is
          Used : constant String := (GARDENS_MAX - Garden_Supply (G)) * " **";
          Remaining : constant String := Garden_Supply (G) * " **";
@@ -56,14 +60,6 @@ package body Root.Lizards is
          end loop;
       end Conspiracy_State;
    begin
-      Erase_Screen;
-      Cursor_Home;
-      Put_Logo;
-      Put_Map (Fall, Meeples);
-      New_Line;
-      Separator;
-
-      -- Lizards State --
       Put_Line ("    Meeple Supply:" & Meeple_Supply'Image);
       Put_Line ("         Acolytes:" & Acolytes'Image);
       Put ("    " & Root.IO.Mouse & " Gardens:");
@@ -81,17 +77,7 @@ package body Root.Lizards is
       Put (" Conspiracies:");
       Conspiracy_State;
       New_Line;
-
-      New_Line;
-      Put ("    Current Order: ");
-      Put_Line ((case Curr_Order is
-                 when Fox => Root.IO.Fox,
-                 when Rabbit => Root.IO.Rabbit,
-                 when Mouse => Root.IO.Mouse,
-                 when Bird => Root.IO.Bird));
-
-      Separator;
-   end Prompt;
+   end Put_State;
 
    procedure Setup is
    begin
@@ -106,7 +92,7 @@ package body Root.Lizards is
 
       Curr_Order := Fox;
 
-      Prompt;
+      Put_Prompt (Put_Logo'Access, Put_State'Access, Map_Warriors, Fox);
 
    end Take_Turn;
 

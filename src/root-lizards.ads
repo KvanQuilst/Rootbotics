@@ -21,7 +21,7 @@ private
    type Conspiracy_Count is mod 5;
 
    Meeple_Supply : Integer range 0 .. MEEPLE_MAX := MEEPLE_MAX;
-   Meeples       : Meeple_Arr;
+   Map_Warriors  : Meeple_Arr;
    Rule          : array (Priority'Range) of Boolean;
 
    Acolytes        : Integer range 0 .. MEEPLE_MAX := 0;

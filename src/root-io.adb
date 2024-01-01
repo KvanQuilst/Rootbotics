@@ -1,5 +1,7 @@
 with Ada.Text_IO; use Ada.Text_IO;
 
+with Root.Maps; use Root.Maps;
+
 package body Root.IO is
    package Int_IO is
       new Integer_IO (Integer); use Int_IO;
@@ -340,5 +342,33 @@ package body Root.IO is
       Put_Line_Centered (To_String (15 * "-"));
       New_Line;
    end Put_Evening;
+
+   procedure Put_Prompt (Put_Logo : access procedure;
+                         Put_State : access procedure;
+                         Units : Meeple_Arr;
+                         Current_Order : Suit) is
+   begin
+      -- Logo --
+      Erase_Screen;
+      Cursor_Home;
+      Put_Logo.all;
+
+      -- Map --
+      Put_Map (Map_In_Play, Units);
+      New_Line;
+      Separator;
+
+      -- State --
+      Put_State.all;
+      New_Line;
+      Put ("    Current Order: ");
+      Put_Line ((case Current_Order is
+                  when Root.Fox    => Root.IO.Fox,
+                  when Root.Rabbit => Root.IO.Rabbit,
+                  when Root.Mouse  => Root.IO.Mouse,
+                  when Root.Bird   => Root.IO.Bird));
+      Separator;
+
+   end Put_Prompt;
 
 end Root.IO;

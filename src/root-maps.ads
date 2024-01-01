@@ -18,7 +18,7 @@ package Root.Maps is
       Clearings : Clearing_Arr;
    end record;
 
-   Map_Play : Map_Name;
+   Map_In_Play : Map_Name;
 
    ----------
    -- Fall --

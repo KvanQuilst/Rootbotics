@@ -81,6 +81,14 @@ package Root.IO is
       with Inline;
    procedure Reset_Style;
 
+   --------------------------
+   -- Common Color Strings --
+   --------------------------
+   Fox    : constant String := ESC & "[31mFox" & ESC & "[0m";
+   Mouse  : constant String := ESC & "[33mMouse" & ESC & "[0m";
+   Rabbit : constant String := ESC & "[93mRabbit" & ESC & "[0m";
+   Bird   : constant String := ESC & "[94mBird" & ESC & "[0m";
+
    ---------------------
    -- Cursor Controls --
    ---------------------
@@ -99,14 +107,6 @@ package Root.IO is
    procedure Erase_Screen
       with Inline;
 
-   --------------------------
-   -- Common Color Strings --
-   --------------------------
-   Fox    : constant String := ESC & "[31mFox" & ESC & "[0m";
-   Mouse  : constant String := ESC & "[33mMouse" & ESC & "[0m";
-   Rabbit : constant String := ESC & "[93mRabbit" & ESC & "[0m";
-   Bird   : constant String := ESC & "[94mBird" & ESC & "[0m";
-
    -------------------
    -- Common Prints --
    -------------------
@@ -116,5 +116,10 @@ package Root.IO is
    procedure Put_Birdsong;
    procedure Put_Daylight;
    procedure Put_Evening;
+
+   procedure Put_Prompt (Put_Logo : access procedure;
+                         Put_State : access procedure;
+                         Units : Meeple_Arr;
+                         Current_Order : Suit);
 
 end Root.IO;
