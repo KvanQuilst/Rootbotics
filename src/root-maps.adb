@@ -162,7 +162,7 @@ package body Root.Maps is
       Cursor_Column_Set (Col);
    end Clearing_Box;
 
-   procedure Put_Map_Fall (Units : Meeple_Arr) is
+   procedure Put_Map_Fall (Units : Warrior_Arr) is
       B_Col  : constant Positive := (Root.IO.WIDTH - Fall_Map_Width) / 2 + 2;
    begin
       Put_Line_Centered ("FALL");
@@ -180,7 +180,7 @@ package body Root.Maps is
       Cursor_Line_Move (Fall_Map_Height);
    end Put_Map_Fall;
 
-   procedure Put_Map (Map : Map_Name; Units : Meeple_Arr) is
+   procedure Put_Map (Map : Map_Name; Units : Warrior_Arr) is
    begin
       if Map = Fall then
          Put_Map_Fall (Units);

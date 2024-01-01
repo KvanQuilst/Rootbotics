@@ -13,18 +13,18 @@ package Root.Lizards is
 
 private
 
-   MEEPLE_MAX  : constant Integer := 25;
+   WARRIOR_MAX  : constant Integer := 25;
    GARDENS_MAX : constant Integer := 5;
 
    subtype Garden is Suit range Fox .. Rabbit;
    type Conspiracy is (Convert, Crusade, Sanctify);
    type Conspiracy_Count is mod 5;
 
-   Meeple_Supply : Integer range 0 .. MEEPLE_MAX := MEEPLE_MAX;
-   Map_Warriors  : Meeple_Arr;
+   Warrior_Supply : Integer range 0 .. WARRIOR_MAX := WARRIOR_MAX;
+   Map_Warriors  : Warrior_Arr;
    Rule          : array (Priority'Range) of Boolean;
 
-   Acolytes        : Integer range 0 .. MEEPLE_MAX := 0;
+   Acolytes        : Integer range 0 .. WARRIOR_MAX := 0;
    Conspiracies    : constant array (Conspiracy_Count'Range) of Conspiracy :=
                         (Convert, Crusade, Convert, Crusade, Sanctify);
    Next_Conspiracy : Conspiracy_Count := 0;

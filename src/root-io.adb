@@ -345,7 +345,7 @@ package body Root.IO is
 
    procedure Put_Prompt (Put_Logo : access procedure;
                          Put_State : access procedure;
-                         Units : Meeple_Arr;
+                         Units : Warrior_Arr;
                          Current_Order : Suit) is
    begin
       -- Logo --

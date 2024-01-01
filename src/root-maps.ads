@@ -45,7 +45,7 @@ package Root.Maps is
    function Mountain_Map return Map
       with Inline;
 
-   procedure Put_Map (Map : Map_Name; Units : Meeple_Arr);
+   procedure Put_Map (Map : Map_Name; Units : Warrior_Arr);
 
 private
 

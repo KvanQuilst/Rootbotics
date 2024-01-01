@@ -60,7 +60,7 @@ package body Root.Lizards is
          end loop;
       end Conspiracy_State;
    begin
-      Put_Line ("    Meeple Supply:" & Meeple_Supply'Image);
+      Put_Line ("   Warrior Supply:" & Warrior_Supply'Image);
       Put_Line ("         Acolytes:" & Acolytes'Image);
       Put ("    " & Root.IO.Mouse & " Gardens:");
       Garden_State (Mouse);
