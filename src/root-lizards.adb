@@ -1,30 +1,20 @@
 with Ada.Strings.Fixed; use Ada.Strings.Fixed;
-with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Ada.Text_IO; use Ada.Text_IO;
 
 package body Root.Lizards is
 
    procedure Put_Logo is
-      Length : constant := 21;
+      B_Col : constant := (WIDTH - Logo_Width) / 2 + 2;
    begin
-      --  Put_Line_Centered ("TO BE DESIGNED");
       Put_Line_Centered (Name);
-      New_Line;
-      Set_Style (Yellow);
-      Put_Line_Centered ("      / \     / \      ");
-      Put_Line_Centered ("    / /\  \ /  /\ \    ");
-      Put_Line_Centered ("  /  /  \  ^  /  \  \  ");
-      Put_Line_Centered (" |   __        __    | ");
-      Put_Line_Centered (" | / __ \    / __ \  | ");
-      Put_Line_Centered ("_|| |__| |  | |__| | |_");
-      Put_Line_Centered ("\  \ __ /    \ __ /   /");
-      Put_Line_Centered ("\    ..   /\   ..     /");
-      Reset_Style;
-      Put (To_String (((WIDTH - Length) / 2 + 2) * "-"));
-      Set_Style (Yellow);
-      Put                 ("\_________________/");
-      Reset_Style;
-      Put_Line (To_String (((WIDTH - Length) / 2 + 1) * "-"));
+      Cursor_Line_Move (9);
+      Put_Line (To_String (WIDTH * '-'));
+      Cursor_Line_Move (-9);
+      for L of Logo loop
+         Cursor_Column_Set (B_Col);
+         Put (To_String (L));
+         Cursor_Line_Move (1);
+      end loop;
       New_Line;
    end Put_Logo;
 
@@ -102,6 +92,11 @@ package body Root.Lizards is
 
       Separator;
    end Prompt;
+
+   procedure Setup is
+   begin
+      null;
+   end Setup;
 
    procedure Take_Turn (M : Map) is
    begin

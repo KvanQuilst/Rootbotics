@@ -15,7 +15,7 @@ procedure Rootbotics is
    VERSION : constant String := "v0.1";
 
    -- In order of setup priority --
-   type Faction is (Marquise, Eyrie, Alliance, Vagabot);
+   type Faction is (Marquise, Eyrie, Alliance, Vagabot, Lizards);
 
    Playing : array (Faction'Range) of Boolean := (others => False);
    Num_Playing : Integer := 0;
@@ -26,7 +26,7 @@ begin
    Put_Line ("Welcome to the Rootbotics Logic Tool " & VERSION & "!");
    New_Line;
 
-   Root.Lizards.Take_Turn (Fall_Map);
+   --  Root.Lizards.Take_Turn (Fall_Map);
 
    -----------------------
    -- Faction Selection --
@@ -37,11 +37,11 @@ begin
          To_Unbounded_String (Root.Marquise.Name),
          To_Unbounded_String (Root.Eyrie.Name),
          To_Unbounded_String (Root.Alliance.Name),
-         To_Unbounded_String (Root.Vagabot.Name)
-         -- To_Unbounded_String (Root.Lizards.Name), --
-         -- To_Unbounded_String (Root.Riverfolk.Name), --
-         -- To_Unbounded_String (Root.Corvids.Name), --
-         -- To_Unbounded_String (Root.Duchy.Name) --
+         To_Unbounded_String (Root.Vagabot.Name),
+         To_Unbounded_String (Root.Lizards.Name)
+         --  To_Unbounded_String (Root.Riverfolk.Name),
+         --  To_Unbounded_String (Root.Corvids.Name),
+         --  To_Unbounded_String (Root.Duchy.Name)
          );
       Opts : constant Char_Arr := Get_Options (Options);
    begin
@@ -94,6 +94,7 @@ begin
             when Alliance =>
                Put_Line ("The Automated Alliance is unimplmented!");
             when Vagabot => Root.Vagabot.Setup;
+            when Lizards => Root.Lizards.Setup;
          end case;
       end if;
    end loop;
@@ -122,6 +123,8 @@ begin
                   Options (P_Idx) := To_Unbounded_String (Root.Alliance.Name);
                when Vagabot  =>
                   Options (P_Idx) := To_Unbounded_String (Root.Vagabot.Name);
+               when Lizards =>
+                  Options (P_Idx) := To_Unbounded_String (Root.Lizards.Name);
             end case;
          end if;
       end loop;
@@ -135,12 +138,12 @@ begin
             P_Idx := Character'Pos (F_Opt) - 96;
          else
             New_Line;
-            Put_Line ("Take the " & Root.Marquise.Name & "'s turn.");
+            Put_Line ("Take the " & Root.Lizards.Name & "'s turn.");
             Continue;
             P_Idx := 1;
          end if;
 
-         F := Marquise;
+         F := Lizards;
          loop
             if Playing (F) then
                P_Idx := P_Idx - 1;
@@ -153,9 +156,11 @@ begin
          New_Line;
 
          -- What's the Order? --
-         Put_Line ("What is the order of this turn?");
-         Order := Get_Suit_Opts;
-         New_Line;
+         if F /= Lizards then
+            Put_Line ("What is the order of this turn?");
+            Order := Get_Suit_Opts;
+            New_Line;
+         end if;
 
          -- Handle faction turn --
          case F is
@@ -163,6 +168,7 @@ begin
             when Eyrie    => Root.Eyrie.Take_Turn (Order, M);
             when Alliance => Root.Alliance.Take_Turn (Order, M);
             when Vagabot  => Root.Vagabot.Take_Turn (Order, M);
+            when Lizards  => Root.Lizards.Take_Turn (M);
          end case;
       end loop;
    end;

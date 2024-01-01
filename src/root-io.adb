@@ -254,7 +254,7 @@ package body Root.IO is
       Put (Val, Width => 0);
       if Num_Lines < 0 then
          Put ("A");
-      else
+      elsif Num_Lines > 0 then
          Put ("B");
       end if;
    end Cursor_Line_Move;
@@ -267,11 +267,18 @@ package body Root.IO is
       Put (ESC & "[");
       Put (Val, Width => 0);
       if Num_Columns < 0 then
-         Put ("C");
-      else
          Put ("D");
+      elsif Num_Columns > 0 then
+         Put ("C");
       end if;
    end Cursor_Column_Move;
+
+   procedure Cursor_Column_Set (Column : Natural) is
+   begin
+      Put (ESC & "[");
+      Put (Column, Width => 0);
+      Put ("G");
+   end Cursor_Column_Set;
 
    ---------------------
    -- Erase Functions --

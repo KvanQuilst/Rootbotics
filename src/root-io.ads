@@ -88,8 +88,10 @@ package Root.IO is
       with Inline;
    procedure Cursor_Set (Line : Positive; Column : Natural)
       with Inline;
-   procedure Cursor_Line_Move (Num_Lines : Integer);
+   procedure Cursor_Line_Move   (Num_Lines : Integer);
    procedure Cursor_Column_Move (Num_Columns : Integer);
+   procedure Cursor_Column_Set  (Column : Natural)
+      with Inline;
 
    ----------------------------
    -- Erase Functions --

@@ -119,7 +119,8 @@ package body Root.Maps is
    -- Map Printing --
    ------------------
 
-   procedure Clearing_Box (Line : Positive; Col, Units : Natural;
+   -- Line, Col : Relative Positioning --
+   procedure Clearing_Box (Line : Natural; Col, Units : Natural;
                            Clear : Clearing; Pri : Priority) is
       C : constant Color := (case Clear.C_Suit is
                              when Fox => Red,
@@ -132,10 +133,12 @@ package body Root.Maps is
                                  when Rabbit => 'R',
                                  when Bird => 'B');
    begin
-      Cursor_Set (Line, Col);
+      Cursor_Line_Move (Line);
+      Cursor_Column_Set (Col);
       Set_Style (C);
       Put ("@---@");
-      Cursor_Set (Line + 1, Col);
+      Cursor_Line_Move (1);
+      Cursor_Column_Move (-5);
       Put ("| ");
       Reset_Style;
       if Units >= 10 then
@@ -146,7 +149,8 @@ package body Root.Maps is
       end if;
       Set_Style (C);
       Put ("|");
-      Cursor_Set (Line + 2, Col);
+      Cursor_Line_Move (1);
+      Cursor_Column_Move (-5);
       Put (S & "--");
       if Pri < 10 then
          Put ("-");
@@ -154,24 +158,26 @@ package body Root.Maps is
       Set_Style (B_Black);
       Int_IO.Put (Pri, Width => 0);
       Reset_Style;
+      Cursor_Line_Move (0 - Line - 2);
+      Cursor_Column_Set (Col);
    end Clearing_Box;
 
    procedure Put_Map_Fall (Units : Meeple_Arr) is
-      B_Line : constant Positive := Positive (Line) - 1;
       B_Col  : constant Positive := (Root.IO.WIDTH - Fall_Map_Width) / 2 + 2;
    begin
       Put_Line_Centered ("FALL");
       for L of Fall_Map_Base loop
-         Put (To_String ((B_Col - 1) * ' '));
-         Put_Line (L);
+         Put_Line (To_String ((B_Col - 1) * ' ') & L);
       end loop;
+      Cursor_Line_Move (0 - Fall_Map_Base'Length);
+      Cursor_Column_Move (B_Col);
 
       for I in Priority'Range loop
-         Clearing_Box (B_Line + Fall_Clearing_Coords (I, 1), 
-                       B_Col  + Fall_Clearing_Coords (I, 2),
+         Clearing_Box (Fall_Clearing_Coords (I).x,
+                       B_Col + Fall_Clearing_Coords (I).y,
                        Units (I), Fall_Map.Clearings (I), I);
       end loop;
-      Cursor_Set (B_Line + Fall_Map_Height, 0);
+      Cursor_Line_Move (Fall_Map_Height);
    end Put_Map_Fall;
 
    procedure Put_Map (Map : Map_Name; Units : Meeple_Arr) is

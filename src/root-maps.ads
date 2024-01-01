@@ -52,7 +52,11 @@ private
    type Clearing_Suit  is array (Priority'Range) of Suit;
    type Clearing_Order is array (Priority'Range) of Priority;
 
-   type Coordinates is array (Priority'Range, 1 .. 2) of Natural;
+   type Coordinate is record
+      x : Natural;
+      y : Natural;
+   end record;
+   type Coordinates is array (Priority'Range) of Coordinate;
 
    Winter_Map_Set   : Boolean := False;
    Lake_Map_Set     : Boolean := False;
