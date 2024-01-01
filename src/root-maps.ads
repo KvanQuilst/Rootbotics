@@ -18,6 +18,8 @@ package Root.Maps is
       Clearings : Clearing_Arr;
    end record;
 
+   function Clearings return Clearing_Arr;
+
    ----------
    -- Fall --
    ----------

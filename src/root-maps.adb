@@ -22,6 +22,16 @@ package body Root.Maps is
       end loop;
    end Query_Suits;
 
+   function Clearings return Clearing_Arr is
+   begin
+      case Map_In_Play is
+         when Fall     => return Fall_Map.Clearings;
+         when Winter   => return Winter_Map.Clearings;
+         when Lake     => return Lake_Map.Clearings;
+         when Mountain => return Mountain_Map.Clearings;
+      end case;
+   end Clearings;
+
    function Winter_Map return Map is
       -- Order of map priority left to right, top to bottom --
       O : constant Clearing_Order :=

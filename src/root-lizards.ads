@@ -1,14 +1,13 @@
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 
 with Root.IO; use Root.IO;
-with Root.Maps; use Root.Maps;
 
 package Root.Lizards is
 
    Faction_Color : constant Color := B_Yellow;
    Name : constant String := String_Style ("Logical Lizards", Faction_Color);
 
-   procedure Take_Turn (M : Map);
+   procedure Take_Turn;
    procedure Setup;
 
 private
@@ -29,8 +28,9 @@ private
                         (Convert, Crusade, Convert, Crusade, Sanctify);
    Next_Conspiracy : Conspiracy_Count := 0;
 
-   Garden_Supply : array (Garden'Range) of Integer range 0 .. GARDENS_MAX;
-   Gardens       : array (Priority'Range, Integer range 1 .. 3) of Garden;
+   Garden_Supply : array (Garden'Range) of Integer range 0 .. GARDENS_MAX :=
+                     (GARDENS_MAX, GARDENS_MAX, GARDENS_MAX);
+   Gardens       : array (Priority'Range) of Integer range 0 .. 3;
 
    Curr_Order : Suit;
 

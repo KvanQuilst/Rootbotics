@@ -166,7 +166,7 @@ begin
             when Eyrie    => Root.Eyrie.Take_Turn (Order, M);
             when Alliance => Root.Alliance.Take_Turn (Order, M);
             when Vagabot  => Root.Vagabot.Take_Turn (Order, M);
-            when Lizards  => Root.Lizards.Take_Turn (M);
+            when Lizards  => Root.Lizards.Take_Turn;
          end case;
       end loop;
    end;

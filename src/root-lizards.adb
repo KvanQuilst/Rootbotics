@@ -1,12 +1,13 @@
 with Ada.Strings.Fixed; use Ada.Strings.Fixed;
 with Ada.Text_IO; use Ada.Text_IO;
 
+with Root.Maps; use Root.Maps;
+
 package body Root.Lizards is
 
    ---------------
    -- Prompt IO --
    ---------------
-
    procedure Put_Logo is
       B_Col : constant := (WIDTH - Logo_Width) / 2 + 2;
    begin
@@ -79,12 +80,33 @@ package body Root.Lizards is
       New_Line;
    end Put_State;
 
+   -------------------
+   -- Lizards Setup --
+   -------------------
    procedure Setup is
+      Corner : Integer range 1 .. 4;
    begin
-      null;
+      Put_Line ("Which corner will the " & Name & " start in?");
+      Corner := Get_Integer (1, 4);
+
+      -- Starting Clearing --
+      Map_Warriors (Corner) := 4;
+      Warrior_Supply := Warrior_Supply - 4;
+      Gardens (Corner) := 1;
+      Garden_Supply (Clearings (Corner).C_Suit) := GARDENS_MAX - 1;
+
+      -- Adjacent Clearing Warriros --
+      for C of Clearings (Corner).Neighbors loop
+         exit when C = 0;
+         Map_Warriors (C) := 1;
+         Warrior_Supply := Warrior_Supply - 1;
+      end loop;
    end Setup;
 
-   procedure Take_Turn (M : Map) is
+   ------------------------
+   -- Lizards Turn Logic --
+   ------------------------
+   procedure Take_Turn is
    begin
       for I in Rule'Range loop
          Rule (I) := False;
