@@ -150,13 +150,18 @@ package body Root.Lizards is
 
                Put_Line ("The provided values don't add up, lets try again.");
             end loop;
-            Warrior_Supply := Supply;
+            if Supply > Warrior_Supply then
+               Acolytes := Supply - Warrior_Supply;
+            else
+               Warrior_Supply := Supply;
+            end if;
          end;
       end if;
 
       --------------
       -- Birdsong --
       --------------
+      Prompt;
       if Acolytes > 0 then
          Put_Line ("Which suit most common suit in the Lost Souls pile " &
                    "(Ties go to " & Root.IO.Bird & ")?");
