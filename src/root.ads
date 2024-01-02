@@ -6,7 +6,9 @@ package Root is
    subtype Priority is Integer range 1 .. 12;
 
    type Meeple_Arr is array (Priority'Range) of Natural;
-   type Warrior_Arr is array (Priority'Range) of Natural;
+   type Warrior_Arr  is array (Priority'Range) of Natural;
+   type Building_Arr is array (Priority'Range) of Integer range 0 .. 3;
+   type Rule_Arr     is array (Priority'Range) of Boolean;
 
    type Priority_List is array (Priority'Range)
      of Integer range 0 .. 12;

@@ -386,9 +386,11 @@ package body Root.IO is
       New_Line;
    end Put_Evening;
 
-   procedure Put_Prompt (Put_Logo : access procedure;
-                         Put_State : access procedure;
-                         Units : Warrior_Arr;
+   procedure Put_Prompt (Put_Logo      : access procedure;
+                         Put_State     : access procedure;
+                         Units         : Warrior_Arr;
+                         Buildings     : Building_Arr;
+                         Rule          : Rule_Arr;
                          Current_Order : Suit) is
    begin
       -- Logo --
@@ -397,7 +399,7 @@ package body Root.IO is
       Put_Logo.all;
 
       -- Map --
-      Put_Map (Units);
+      Put_Map (Units, Buildings, Rule);
       New_Line;
       Separator;
 

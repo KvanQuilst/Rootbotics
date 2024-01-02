@@ -130,8 +130,8 @@ package body Root.Maps is
    ------------------
 
    -- Line, Col : Relative Positioning --
-   procedure Clearing_Box (Line : Natural; Col, Units : Natural;
-                           Clear : Clearing; Pri : Priority) is
+   procedure Clearing_Box (Line : Natural; Col, Units, Buildings : Natural;
+                           Rule : Boolean; Clear : Clearing; Pri : Priority) is
       C : constant Color := (case Clear.C_Suit is
                              when Fox => Red,
                              when Mouse => Yellow,
@@ -145,10 +145,23 @@ package body Root.Maps is
    begin
       Cursor_Line_Move (Line);
       Cursor_Column_Set (Col);
+      if Buildings > 0 then
+         Int_IO.Put (Buildings, Width => 0);
+      else
+         Put ("@");
+      end if;
       Set_Style (C);
-      Put ("@---@");
+      Put ("---");
+      if Rule then
+         Reset_Style;
+         Cursor_Column_Move (-2);
+         Put ("^");
+         Set_Style (C);
+         Cursor_Column_Move (-3);
+      else
+         Cursor_Column_Move (-4);
+      end if;
       Cursor_Line_Move (1);
-      Cursor_Column_Move (-5);
       Put ("| ");
       Reset_Style;
       if Units >= 10 then
@@ -172,7 +185,9 @@ package body Root.Maps is
       Cursor_Column_Set (Col);
    end Clearing_Box;
 
-   procedure Put_Map (Units : Warrior_Arr) is
+   procedure Put_Map (Units     : Warrior_Arr;
+                      Buildings : Building_Arr;
+                      Rule      : Rule_Arr) is
       Curr_Map : Map;
       Coords : Coordinates;
       Text_Map : constant Map_Text := (case Map_In_Play is
@@ -204,7 +219,8 @@ package body Root.Maps is
       -- Print map details and numbers --
       for I in Priority'Range loop
          Clearing_Box (Coords (I).x, B_Col + Coords (I).y,
-                       Units (I), Curr_Map.Clearings (I), I);
+                       Units (I), Buildings (I), Rule (I),
+                       Curr_Map.Clearings (I), I);
       end loop;
       Cursor_Line_Move (Text_Map'Length);
    end Put_Map;

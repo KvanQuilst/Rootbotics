@@ -117,9 +117,11 @@ package Root.IO is
    procedure Put_Daylight;
    procedure Put_Evening;
 
-   procedure Put_Prompt (Put_Logo : access procedure;
-                         Put_State : access procedure;
-                         Units : Warrior_Arr;
+   procedure Put_Prompt (Put_Logo      : access procedure;
+                         Put_State     : access procedure;
+                         Units         : Warrior_Arr;
+                         Buildings     : Building_Arr;
+                         Rule          : Rule_Arr;
                          Current_Order : Suit);
 
 end Root.IO;

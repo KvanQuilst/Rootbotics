@@ -24,17 +24,16 @@ private
    function Unbounded (S : String) return Unbounded_String
       renames To_Unbounded_String;
 
-   Warrior_Supply : Integer range 0 .. WARRIOR_MAX := WARRIOR_MAX;
-   Map_Warriors   : Warrior_Arr;
-   Rule           : array (Priority'Range) of Boolean;
-
+   Warrior_Supply  : Integer range 0 .. WARRIOR_MAX := WARRIOR_MAX;
+   Map_Warriors    : Warrior_Arr;
+   Rule            : Rule_Arr;
    Acolytes        : Integer range 0 .. WARRIOR_MAX := 0;
+   Next_Conspiracy : Conspiracy_Count := 0;
    Conspiracies    : constant array (Conspiracy_Count'Range) of Conspiracy :=
                         (Convert, Crusade, Convert, Crusade, Sanctify);
-   Next_Conspiracy : Conspiracy_Count := 0;
+   Gardens         : Building_Arr;
    Garden_Supply   : array (Garden'Range) of Integer range 0 .. GARDENS_MAX :=
                         (GARDENS_MAX, GARDENS_MAX, GARDENS_MAX);
-   Gardens         : array (Priority'Range) of Integer range 0 .. 3;
 
    Curr_Order : Suit;
 

@@ -82,7 +82,8 @@ package body Root.Lizards is
 
    procedure Prompt is
    begin
-      Put_Prompt (Put_Logo'Access, Put_State'Access, Map_Warriors, Curr_Order);
+      Put_Prompt (Put_Logo'Access, Put_State'Access, Map_Warriors,
+                  Gardens, Rule, Curr_Order);
    end Prompt;
 
    -------------------
@@ -99,6 +100,7 @@ package body Root.Lizards is
       Warrior_Supply := Warrior_Supply - 4;
       Gardens (Corner) := 1;
       Garden_Supply (Clearings (Corner).C_Suit) := GARDENS_MAX - 1;
+      Rule (Corner) := True;
 
       -- Adjacent Clearing Warriros --
       for C of Clearings (Corner).Neighbors loop
@@ -116,19 +118,12 @@ package body Root.Lizards is
                                          Unbounded (Root.IO.Rabbit),
                                          Unbounded (Root.IO.Mouse));
    begin
-      for I in Rule'Range loop
-         Rule (I) := False;
-      end loop;
-
       Curr_Order := Bird;
 
       ----------------------
       -- Confirm Warriors --
       ----------------------
       Prompt;
-      Put_Line ("The number in the middle of each clearing is the number " &
-                "of warriors.");
-      New_Line;
       Put_Line ("Does the number of warriors match for each clearing?");
       if not Get_Yes_No then
          Put_Line ("Which clearings are incorrect?");
