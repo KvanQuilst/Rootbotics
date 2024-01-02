@@ -158,12 +158,9 @@ package body Root.Lizards is
       -- Birdsong --
       --------------
       if Acolytes > 0 then
-         Put_Line ("Which suit most common suit in the Lost Souls pile?");
-         Curr_Order := (case Get_Option (Outcasts) is
-                           when 'a' => Fox,
-                           when 'b' => Rabbit,
-                           when 'c' => Mouse,
-                           when others => Bird);
+         Put_Line ("Which suit most common suit in the Lost Souls pile " &
+                   "(Ties go to " & Root.IO.Bird & ")?");
+         Curr_Order := Get_Suit_Opt;
       end if;
 
    end Take_Turn;
