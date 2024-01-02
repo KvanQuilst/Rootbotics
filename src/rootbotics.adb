@@ -156,7 +156,7 @@ begin
          -- What's the Order? --
          if F /= Lizards then
             Put_Line ("What is the order of this turn?");
-            Order := Get_Suit_Opts;
+            Order := Get_Suit_Opt;
             New_Line;
          end if;
 

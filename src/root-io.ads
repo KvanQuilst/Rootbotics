@@ -9,6 +9,9 @@ package Root.IO is
    type Char_Arr   is array (Positive range <>) of Character;
    type String_Arr is array (Positive range <>) of Unbounded_String;
 
+   function Unbounded (S : String) return Unbounded_String
+      renames To_Unbounded_String;
+
    ----------------------------
    -- Get Checked User Input --
    --                        --
@@ -24,7 +27,8 @@ package Root.IO is
    -----------------
    -- Common Gets --
    -----------------
-   function Get_Suit_Opts return Suit;
+   function Get_Suit_Opt return Suit;
+   function Get_Clearing_Suit_Opt return Clearing_Suit;
 
    ----------------
    -- Formatting --

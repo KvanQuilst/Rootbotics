@@ -4,7 +4,7 @@ package Root.Maps is
      of Integer range 0 .. 12;
 
    type Clearing is record
-      C_Suit    : Suit;
+      C_Suit    : Clearing_Suit;
       Buildings : Integer range 1 .. 3;
       Ruins     : Boolean;
       Neighbors : Neighbor_Arr;
@@ -20,9 +20,6 @@ package Root.Maps is
 
    function Clearings return Clearing_Arr;
 
-   ----------
-   -- Fall --
-   ----------
    Fall_Map : constant Map :=
       (Fall,
       ((Fox,    1, False, (5, 9, 10, 0, 0, 0)),   -- 1
@@ -50,10 +47,6 @@ package Root.Maps is
                       Rule      : Rule_Arr);
 
 private
-
-   type Clearing_Suit  is array (Priority'Range) of Suit;
-   type Clearing_Order is array (Priority'Range) of Priority;
-
    type Coordinate is record
       x : Natural;
       y : Natural;
@@ -61,6 +54,7 @@ private
    type Coordinates is array (Priority'Range) of Coordinate;
 
    Map_In_Play : Map_Name := Fall;
+   Set_Clearings : array (Priority'Range) of Suit;
 
    Winter_Map_Set   : Boolean := False;
    Lake_Map_Set     : Boolean := False;
@@ -72,14 +66,15 @@ private
 
    Map_Width : constant := 26;
    type Map_Text is array (Integer range <>) of String (1 .. 26);
+
    -------------------
    -- Fall Map Data --
    -------------------
-   Fall_Clearing_Coords : Coordinates :=
+   Fall_Clearing_Coords : constant Coordinates :=
       ((0, 0), (1, 21), (9, 21), (9, 0), (0, 14), (5, 21),
        (9, 14), (9, 7), (5, 0), (1, 7), (5, 14), (5, 7));
    Fall_Map_Height : constant := 12;
-   Fall_Map_Base   : Map_Text :=
+   Fall_Map_Base   : constant Map_Text :=
       ("@---@---------@---@       ",
        "| _ |  @---@  | _ |--@---@",
        "F---1--| _ |  R---5  | _ |",
@@ -93,4 +88,63 @@ private
        "| _ |--| _ |--| _ |--| _ |",
        "R---4  F---8  M---7  R---3");
 
+   ---------------------
+   -- Winter Map Data --
+   ---------------------
+   Winter_Clearing_Coords : constant Coordinates :=
+      ((0, 0), (0, 21), (8, 21), (8, 0), (0, 7), (0, 14),
+       (4, 21), (8, 14), (8, 7), (4, 0), (4, 7), (4, 14));
+   Winter_Map_Height : constant := 11;
+   Winter_Map_Base   : constant Map_Text :=
+      ("@---@  @---@  @---@  @---@",
+       "| _ |--| _ |--| _ |--| _ |",
+       "*---1  *---5  *---6  *---2",
+       "  |  \\            //  |  ",
+       "@---@  @---@  @---@  @---@",
+       "| _ |  | _ |  | _ |  | _ |",
+       "*--10  *--11  *--12  *---7",
+       "  |  //  |      |  \\  |  ",
+       "@---@  @---@  @---@  @---@",
+       "| _ |--| _ |--| _ |--| _ |",
+       "*---4  *---9  *---8  *---3");
+
+   -------------------
+   -- Lake Map Data --
+   -------------------
+   Lake_Clearing_Coords : constant Coordinates :=
+      ((8, 21), (0, 0), (8, 0), (0, 21), (4, 21), (0, 14),
+       (0, 7), (4, 0), (8, 14), (4, 7), (4, 14), (7, 7));
+   Lake_Map_Height : constant := 11;
+   Lake_Map_Base   : constant Map_Text :=
+      ("@---@  @---@  @---@  @---@",
+       "| _ |--| _ |--| _ |--| _ |",
+       "*---2  *---7  *---6  *---4",
+       "  |  \\  |  \\  |      |  ",
+       "@---@  @---@  @---@  @---@",
+       "| _ |--| _ |  | _ |--| _ |",
+       "*---8  *--10  *--11  *---5",
+       "  |    @---@           |  ",
+       "@---@--| _ |--@---@  @---@",
+       "| _ |  *--12  | _ |--| _ |",
+       "*---3---------*---9  *---1");
+
+   -----------------------
+   -- Mountain Map Data --
+   -----------------------
+   Mountain_Clearing_Coords : constant Coordinates :=
+      ((0, 0), (0, 21), (8, 21), (8, 0), (0, 14), (4, 21),
+       (8, 14), (4, 0), (0, 7), (4, 7), (4, 14), (8, 7));
+   Mountain_Map_Height : constant := 11;
+   Mountain_Map_Base   : constant Map_Text :=
+      ("@---@  @---@  @---@  @---@",
+       "| _ |--| _ |--| _ |--| _ |",
+       "*---1  *---9  *---5  *---2",
+       "  |      |  //  |  //  |  ",
+       "@-^-@  @-^-@  @-^-@  @-^-@",
+       "| _ |  | _ |--| _ |--| _ |",
+       "*---8  *--10  *--11  *---6",
+       "  |      |  //  |  \\  |  ",
+       "@-^-@  @-^-@  @-^-@  @-^-@",
+       "| _ |--| _ |--| _ |--| _ |",
+       "*---4  *--12  *---7  *---3");
 end Root.Maps;

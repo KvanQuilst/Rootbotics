@@ -179,7 +179,7 @@ package body Root.Marquise is
                    Name & " expand!");
 
          Put_Line ("What is the new order for the " & Name & "?");
-         Curr_Order := Get_Suit_Opts;
+         Curr_Order := Get_Suit_Opt;
          New_Line;
 
          New_Line;

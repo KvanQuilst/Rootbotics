@@ -185,7 +185,7 @@ package body Root.IO is
    -- Common Gets --
    -----------------
 
-   function Get_Suit_Opts return Suit is
+   function Get_Suit_Opt return Suit is
       S : constant String_Arr := (
          To_Unbounded_String (Fox),
          To_Unbounded_String (Mouse),
@@ -194,7 +194,17 @@ package body Root.IO is
          );
    begin
       return Suit'Val (Character'Pos (Get_Option (S)) - 97);
-   end Get_Suit_Opts;
+   end Get_Suit_Opt;
+
+   function Get_Clearing_Suit_Opt return Clearing_Suit is
+      S : constant String_Arr := (
+         To_Unbounded_String (Fox),
+         To_Unbounded_String (Mouse),
+         To_Unbounded_String (Rabbit)
+         );
+   begin
+      return Suit'Val (Character'Pos (Get_Option (S)) - 97);
+   end Get_Clearing_Suit_Opt;
 
    ----------------
    -- Formatting --
