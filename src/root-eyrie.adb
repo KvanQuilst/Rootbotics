@@ -1,3 +1,27 @@
+-------------------------------------------------------------------------------
+--                                                                           --
+--                           THE ROOTBOTICS TOOL                             --
+--                                                                           --
+--                           ROOT . EYRIE (Body)                             --
+--                                                                           --
+--                      Copyright (C) 2024 Dylan Eskew                       --
+--                                                                           --
+-- This file contains the implementation of the Electric Eyrie faction from  --
+-- Root: The Clockwork Expansion for use in The Rootbotics Tool.             --
+--                                                                           --
+-- The Rootbotics Tool is free software: you can redistribute it and/or      --
+-- modify it under the terms of the GNU General Public License as published  --
+-- by the Free Software Foundation, either version 3 of the License, or (at  --
+-- your option) any later version.                                           --
+--                                                                           --
+-- GBADA is distributed in the hope that it will be useful, but WITHOUT ANY  --
+-- WARRANTY; wihtout even the implied warranty of MERCHANTABILITY or FITNESS --
+-- FOR A PARTICULAR PURPOSE. See the GNU General Public License for more     --
+-- details.                                                                  --
+--                                                                           --
+-- You should have received a copy of the GNU General Public License along   --
+-- with The Rootbotics Tool. If not, see <https://www.gnu.org/licenses/>.    --
+-------------------------------------------------------------------------------
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Ada.Text_IO; use Ada.Text_IO;
 
