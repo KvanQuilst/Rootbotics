@@ -248,16 +248,8 @@ package body Root.Maps is
    procedure Put_Map (Units     : Warrior_Arr;
                       Buildings : Building_Arr;
                       Rule      : Rule_Arr) is
-      Curr_Map : Map;
       B_Col    : constant := (Root.IO.WIDTH - Map_Width) / 2 + 2;
    begin
-      case Map_In_Play is
-         when Fall =>
-            Curr_Map := Fall_Map;
-         when others =>
-            null;
-      end case;
-
       Put_Line_Centered (Map_In_Play'Image);
 
       -- Print base map and return to TR corner --
@@ -271,7 +263,7 @@ package body Root.Maps is
       for I in Priority'Range loop
          Clearing_Box (Coords (I).x, B_Col + Coords (I).y,
                        Units (I), Buildings (I), Rule (I),
-                       Curr_Map.Clearings (I), I);
+                       Clearings (I), I);
       end loop;
       Cursor_Line_Move (Text_Map'Length);
    end Put_Map;
