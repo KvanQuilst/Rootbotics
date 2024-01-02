@@ -20,7 +20,7 @@
 -- Public License for more details.                                          --
 --                                                                           --
 -- You should have received a copy of the GNU General Public License along   --
--- with The Rootbotics Assistant. If not, see                                -- 
+-- with The Rootbotics Assistant. If not, see                                --
 -- <https://www.gnu.org/licenses/>.                                          --
 -------------------------------------------------------------------------------
 with Ada.Text_IO; use Ada.Text_IO;
