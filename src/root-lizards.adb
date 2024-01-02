@@ -80,6 +80,11 @@ package body Root.Lizards is
       New_Line;
    end Put_State;
 
+   procedure Prompt is
+   begin
+      Put_Prompt (Put_Logo'Access, Put_State'Access, Map_Warriors, Curr_Order);
+   end Prompt;
+
    -------------------
    -- Lizards Setup --
    -------------------
@@ -107,14 +112,64 @@ package body Root.Lizards is
    -- Lizards Turn Logic --
    ------------------------
    procedure Take_Turn is
+      Outcasts : constant String_Arr := (Unbounded (Root.IO.Fox),
+                                         Unbounded (Root.IO.Rabbit),
+                                         Unbounded (Root.IO.Mouse));
    begin
       for I in Rule'Range loop
          Rule (I) := False;
       end loop;
 
-      Curr_Order := Fox;
+      Curr_Order := Bird;
 
-      Put_Prompt (Put_Logo'Access, Put_State'Access, Map_Warriors, Fox);
+      ----------------------
+      -- Confirm Warriors --
+      ----------------------
+      Prompt;
+      Put_Line ("The number in the middle of each clearing is the number " &
+                "of warriors.");
+      New_Line;
+      Put_Line ("Does the number of warriors match for each clearing?");
+      if not Get_Yes_No then
+         Put_Line ("Which clearings are incorrect?");
+         declare
+            Clearings : constant Int_Arr := Get_Integers (1, 12);
+            Warriors  : Integer;
+            Supply    : Integer := Warrior_Supply;
+         begin
+            loop
+               for C of Clearings loop
+                  exit when C = 0;
+
+                  Prompt;
+                  Put_Line ("What is the number of warriors in clearing" &
+                             C'Image & "?");
+                  Warriors := Get_Integer (0, WARRIOR_MAX);
+                  Supply := (if Warriors = 0
+                             then Supply + Map_Warriors (C)
+                             else Supply - Warriors);
+                  Map_Warriors (C) := Warriors;
+               end loop;
+
+               exit when Supply >= 0 and then Supply <= WARRIOR_MAX;
+
+               Put_Line ("The provided values don't add up, lets try again.");
+            end loop;
+            Warrior_Supply := Supply;
+         end;
+      end if;
+
+      --------------
+      -- Birdsong --
+      --------------
+      if Acolytes > 0 then
+         Put_Line ("Which suit most common suit in the Lost Souls pile?");
+         Curr_Order := (case Get_Option (Outcasts) is
+                           when 'a' => Fox,
+                           when 'b' => Rabbit,
+                           when 'c' => Mouse,
+                           when others => Bird);
+      end if;
 
    end Take_Turn;
 

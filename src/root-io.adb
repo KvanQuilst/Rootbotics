@@ -6,7 +6,8 @@ package body Root.IO is
    package Int_IO is
       new Integer_IO (Integer); use Int_IO;
 
-  ---------------------------- -- Get Checked User Input --
+  ----------------------------
+  -- Get Checked User Input --
   ----------------------------
 
    procedure Put_Options (Options : String_Arr) is
@@ -113,8 +114,50 @@ package body Root.IO is
    end Get_Integer;
 
    function Get_Integers (Low, High : Integer) return Int_Arr is
-      Ints : Int_Arr (1 .. 1);
+      Ints    : Int_Arr (1 .. (High - Low + 1));
+      Line    : Unbounded_String;
+      Val     : Integer;
+      Last    : Integer := 1;
+      Count   : Integer := 0;
+      Invalid : Boolean;
    begin
+      Put_Line ("Enter values. Press enter for 'none'");
+
+      loop
+         Invalid := False;
+         Last := 1;
+         Count := 0;
+
+         Put ("Values: ");
+         Line := To_Unbounded_String (Get_Line);
+
+         -- Check if space separated numbers --
+         for C of To_String (Line) loop
+            Invalid := Invalid or else (C /= ' ' and then C not in '0' .. '9');
+         end loop;
+
+         -- Add Numbers to Ints --
+         while Last <= Length (Line) loop
+            if Element (Line, Last) in '0' .. '9' then
+               Get (Slice (Line, Last, Length (Line)), Val, Last);
+               Invalid := Invalid or else Val not in Low .. High;
+               Count := Count + 1;
+
+               exit when Invalid;
+
+               Ints (Count) := Val;
+            end if;
+            Last := Last + 1;
+         end loop;
+
+         exit when Invalid = False;
+         Put_Line ("Invalid response!");
+      end loop;
+
+      if Count /= Ints'Length then
+         Ints (Count + 1) := Low - 1;
+      end if;
+
       return Ints;
    end Get_Integers;
 

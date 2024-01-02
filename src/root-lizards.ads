@@ -13,29 +13,31 @@ package Root.Lizards is
 private
 
    WARRIOR_MAX  : constant Integer := 25;
-   GARDENS_MAX : constant Integer := 5;
+   GARDENS_MAX  : constant Integer := 5;
 
    subtype Garden is Suit range Fox .. Rabbit;
    type Conspiracy is (Convert, Crusade, Sanctify);
    type Conspiracy_Count is mod 5;
 
+   procedure Prompt with Inline;
+
+   function Unbounded (S : String) return Unbounded_String
+      renames To_Unbounded_String;
+
    Warrior_Supply : Integer range 0 .. WARRIOR_MAX := WARRIOR_MAX;
-   Map_Warriors  : Warrior_Arr;
-   Rule          : array (Priority'Range) of Boolean;
+   Map_Warriors   : Warrior_Arr;
+   Rule           : array (Priority'Range) of Boolean;
 
    Acolytes        : Integer range 0 .. WARRIOR_MAX := 0;
    Conspiracies    : constant array (Conspiracy_Count'Range) of Conspiracy :=
                         (Convert, Crusade, Convert, Crusade, Sanctify);
    Next_Conspiracy : Conspiracy_Count := 0;
-
-   Garden_Supply : array (Garden'Range) of Integer range 0 .. GARDENS_MAX :=
-                     (GARDENS_MAX, GARDENS_MAX, GARDENS_MAX);
-   Gardens       : array (Priority'Range) of Integer range 0 .. 3;
+   Garden_Supply   : array (Garden'Range) of Integer range 0 .. GARDENS_MAX :=
+                        (GARDENS_MAX, GARDENS_MAX, GARDENS_MAX);
+   Gardens         : array (Priority'Range) of Integer range 0 .. 3;
 
    Curr_Order : Suit;
 
-   function Unbounded (S : String) return Unbounded_String
-      renames To_Unbounded_String;
    Logo_Width : constant := 24;
    Logo : constant array (Integer range <>) of Unbounded_String :=
       (Unbounded (String_Style ("                        ", Faction_Color)),
