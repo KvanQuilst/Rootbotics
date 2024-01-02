@@ -1,26 +1,27 @@
 -------------------------------------------------------------------------------
 --                                                                           --
---                           THE ROOTBOTICS TOOL                             --
+--                        THE ROOTBOTICS ASSISTANT                           --
 --                                                                           --
 --                          ROOT . LIZARDS (Spec)                            --
 --                                                                           --
 --                      Copyright (C) 2024 Dylan Eskew                       --
 --                                                                           --
 -- This file contains the specification for the Logical Lizards faction from --
--- Root: The Clockwork Expansion 2 for use in The Rootbotics Tool.           --
+-- Root: The Clockwork Expansion 2 for use in The Rootbotics Assistant.      --
 --                                                                           --
--- The Rootbotics Tool is free software: you can redistribute it and/or      --
+-- The Rootbotics Assistant is free software: you can redistribute it and/or --
 -- modify it under the terms of the GNU General Public License as published  --
 -- by the Free Software Foundation, either version 3 of the License, or (at  --
 -- your option) any later version.                                           --
 --                                                                           --
--- GBADA is distributed in the hope that it will be useful, but WITHOUT ANY  --
--- WARRANTY; wihtout even the implied warranty of MERCHANTABILITY or FITNESS --
--- FOR A PARTICULAR PURPOSE. See the GNU General Public License for more     --
--- details.                                                                  --
+-- The Rootbotics Assistant is distributed in the hope that it will be       --
+-- useful, but WITHOUT ANY WARRANTY; wihtout even the implied warranty of    --
+-- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General  --
+-- Public License for more details.                                          --
 --                                                                           --
 -- You should have received a copy of the GNU General Public License along   --
--- with The Rootbotics Tool. If not, see <https://www.gnu.org/licenses/>.    --
+-- with The Rootbotics Assistant. If not, see                                -- 
+-- <https://www.gnu.org/licenses/>.                                          --
 -------------------------------------------------------------------------------
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 
