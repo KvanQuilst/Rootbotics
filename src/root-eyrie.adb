@@ -82,11 +82,11 @@ package body Root.Eyrie is
    ---------------
    -- Take Turn --
    ---------------
-   procedure Recruit (S : Suit; M : Map);
-   procedure Move    (S : Suit; M : Map);
-   procedure Battle  (S : Suit; M : Map; Most : Boolean);
+   procedure Recruit (S : Suit; M : Map_Old);
+   procedure Move    (S : Suit; M : Map_Old);
+   procedure Battle  (S : Suit; M : Map_Old; Most : Boolean);
 
-   procedure Take_Turn (Order : Suit; M : Map) is
+   procedure Take_Turn (Order : Suit; M : Map_Old) is
       Max : Suit;
       Tie : Boolean := False;
    begin
@@ -181,7 +181,7 @@ package body Root.Eyrie is
    end Take_Turn;
 
    -- Recruit phase of daylight --
-   procedure Recruit (S : Suit; M : Map) is
+   procedure Recruit (S : Suit; M : Map_Old) is
       Clearings : array (Integer range 1 .. 7)
          of Integer range 0 .. 12 := (others => 0);
       C_Idx : Integer range 1 .. 7;
@@ -282,7 +282,7 @@ package body Root.Eyrie is
    end Recruit;
 
    -- Move phase of daylight --
-   procedure Move (S : Suit; M : Map) is
+   procedure Move (S : Suit; M : Map_Old) is
       Clearings : Priority_List := (others => 0);
       Count : Integer := 0;
       Max, Max_Idx : Integer := 0;
@@ -363,7 +363,7 @@ package body Root.Eyrie is
       end if;
    end Move;
 
-   procedure Battle (S : Suit; M : Map; Most : Boolean) is
+   procedure Battle (S : Suit; M : Map_Old; Most : Boolean) is
       Clearings : array (Integer range 1 .. 4)
         of Integer range 0 .. 12 := (others => 0);
       Count : Integer := 0;

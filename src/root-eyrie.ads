@@ -31,7 +31,7 @@ package Root.Eyrie is
    Name : constant String := String_Style ("Electric Eyrie", B_Blue);
 
    procedure Setup;
-   procedure Take_Turn (Order : Suit; M : Map);
+   procedure Take_Turn (Order : Suit; M : Map_Old);
 
 private
 

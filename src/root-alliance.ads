@@ -31,7 +31,7 @@ package Root.Alliance is
    Name : constant String := String_Style ("Automated Alliance", Green);
 
    function  Setup (Diff : Difficulty) return Boolean;
-   procedure Take_Turn (Order : Suit; M : Map);
+   procedure Take_Turn (Order : Suit; M : Map_Old);
 
 private
 

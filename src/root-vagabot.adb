@@ -245,7 +245,7 @@ package body Root.Vagabot is
    procedure Aid;
    procedure Battle;
 
-   procedure Take_Turn (Order : Suit; M : Map) is
+   procedure Take_Turn (Order : Suit; M : Map_Old) is
    begin
 
       -- Vagabot Stats --

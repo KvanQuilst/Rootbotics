@@ -91,7 +91,7 @@ begin
       Put_Line ("Which map will you be playing on:");
       Opt := Get_Option (Options);
 
-      Set_Map (case Opt is
+      Init_Map (case Opt is
                   when 'a' => Fall,
                   when 'b' => Winter,
                   when 'c' => Lake,

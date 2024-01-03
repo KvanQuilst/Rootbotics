@@ -53,7 +53,7 @@ package body Root.Marquise is
    -- Faction Setup --
    -------------------
 
-   procedure Setup (M : Map) is
+   procedure Setup (M : Map_Old) is
       Corner : Integer range 1 .. 4;
    begin
       Put_Line ("Which corner clearing will the " & Name & " start in: ");
@@ -126,12 +126,12 @@ package body Root.Marquise is
    -- Take Turn --
    ---------------
    procedure Pieces_Lost;
-   procedure Battle  (S : Suit; M : Map);
-   procedure Recruit (S : Suit; M : Map);
-   function  Build   (S : Suit; M : Map) return Boolean;
-   procedure Move    (S : Suit; M : Map);
+   procedure Battle  (S : Suit; M : Map_Old);
+   procedure Recruit (S : Suit; M : Map_Old);
+   function  Build   (S : Suit; M : Map_Old) return Boolean;
+   procedure Move    (S : Suit; M : Map_Old);
 
-   procedure Take_Turn (Order : Suit; M : Map) is
+   procedure Take_Turn (Order : Suit; M : Map_Old) is
       Curr_Order : Suit := Order;
       Expand : Boolean;
    begin
@@ -298,7 +298,7 @@ package body Root.Marquise is
    end Pieces_Lost;
 
    -- Battle in each ordered clearing --
-   procedure Battle (S : Suit; M : Map) is
+   procedure Battle (S : Suit; M : Map_Old) is
       Lost : Integer;
    begin
       for I in Priority'Range loop
@@ -318,7 +318,7 @@ package body Root.Marquise is
    end Battle;
 
    -- RECRUIT four warriors evenly among ordered clearings you rule --
-   procedure Recruit (S : Suit; M : Map) is
+   procedure Recruit (S : Suit; M : Map_Old) is
       Rule : array (Integer range 1 .. 4) of Integer := (others => 0);
       Count  : Integer range 0 .. 4 := 0;
    begin
@@ -378,7 +378,7 @@ package body Root.Marquise is
    end Recruit;
 
    function Building_Space (Clearing : Priority;
-                            M : Map) return Boolean is
+                            M : Map_Old) return Boolean is
       Count : Integer := 0;
    begin
       for I in Building'Range loop
@@ -389,7 +389,7 @@ package body Root.Marquise is
 
    -- BUILD a building the clearing you rule --
    -- with the most Marquise warriors        --
-   function Build (S : Suit; M : Map) return Boolean is
+   function Build (S : Suit; M : Map_Old) return Boolean is
       Max_Idx : Integer := 0;
    begin
 
@@ -468,7 +468,7 @@ package body Root.Marquise is
 
    -- MOVE all but three of the warriors from each ordered    --
    -- clearing to the adjacent clearing with the most enemies --
-   procedure Move (S : Suit; M : Map) is
+   procedure Move (S : Suit; M : Map_Old) is
       Options : String_Arr (1 .. Neighbor_Arr'Length);
       Count   : Integer range Neighbor_Arr'Range;
    begin

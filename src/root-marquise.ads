@@ -31,8 +31,8 @@ package Root.Marquise is
 
    Name : constant String := String_Style ("Mechanical Marquise 2.0", Yellow);
 
-   procedure Setup     (M : Map);
-   procedure Take_Turn (Order : Suit; M : Map);
+   procedure Setup     (M : Map_Old);
+   procedure Take_Turn (Order : Suit; M : Map_Old);
 
 private
 

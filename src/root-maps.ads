@@ -39,39 +39,17 @@ package Root.Maps is
    type Clearing_Arr is array (Priority'Range) of Clearing;
    type Map_Name is (Fall, Winter, Lake, Mountain);
 
-   type Map is record
+   --  TODO: Remove type Map_Old
+   type Map_Old is record
       Name      : Map_Name;
       Clearings : Clearing_Arr;
    end record;
 
+   procedure Init_Map (Name : Map_Name);
    function Clearings return Clearing_Arr;
-   function Filter_Clearings (S : Suit) return Int_Arr;
-
-   procedure Set_Map (Name : Map_Name);
    --  TODO: Temporary solution
-   function Get_Map return Map;
-
-   Fall_Map : constant Map :=
-      (Fall,
-      ((Fox,    1, False, (5, 9, 10, 0, 0, 0)),   -- 1
-       (Mouse,  2, False, (5, 6, 10, 0, 0, 0)),   -- 2
-       (Rabbit, 1, False, (6, 7, 11, 0, 0, 0)),   -- 3
-       (Rabbit, 1, False, (8, 9, 12, 0, 0, 0)),   -- 4
-       (Rabbit, 2, False, (1, 2, 0, 0, 0, 0)),    -- 5
-       (Fox,    1, True,  (2, 3, 11, 0, 0, 0)),   -- 6
-       (Mouse,  2, False, (3, 8, 12, 0, 0, 0)),   -- 7
-       (Fox,    2, False, (4, 7, 0, 0, 0, 0)),    -- 8
-       (Mouse,  2, False, (1, 4, 12, 0, 0, 0)),   -- 9
-       (Rabbit, 1, True,  (1, 2, 12, 0, 0, 0)),   -- 10
-       (Mouse,  2, True,  (3, 6, 12, 0, 0, 0)),   -- 11
-       (Fox,    1, True,  (4, 7, 9, 10, 11, 0)))); -- 12
-
-   function Winter_Map   return Map
-      with Inline;
-   function Lake_Map     return Map
-      with Inline;
-   function Mountain_Map return Map
-      with Inline;
+   function Get_Map return Map_Old;
+   function Filter_Clearings (S : Suit) return Int_Arr;
 
    procedure Put_Map (Units     : Warrior_Arr;
                       Buildings : Building_Arr;
@@ -87,20 +65,28 @@ private
    Map_In_Play : Map_Name := Fall;
    Set_Clearings : array (Priority'Range) of Suit;
 
-   Winter_Map_Set   : Boolean := False;
-   Lake_Map_Set     : Boolean := False;
-   Mountain_Map_Set : Boolean := False;
-
-   Winter_Map_Actual   : Map;
-   Lake_Map_Actual     : Map;
-   Mountain_Map_Actual : Map;
-
    Map_Width : constant := 26;
    type Map_Text is array (Integer range <>) of String (1 .. 26);
+
+   Map : Clearing_Arr;
 
    -------------------
    -- Fall Map Data --
    -------------------
+   Fall_Map : constant Clearing_Arr :=
+      ((Fox,    1, False, (5, 9, 10, 0, 0, 0)),   -- 1
+       (Mouse,  2, False, (5, 6, 10, 0, 0, 0)),   -- 2
+       (Rabbit, 1, False, (6, 7, 11, 0, 0, 0)),   -- 3
+       (Rabbit, 1, False, (8, 9, 12, 0, 0, 0)),   -- 4
+       (Rabbit, 2, False, (1, 2, 0, 0, 0, 0)),    -- 5
+       (Fox,    1, True,  (2, 3, 11, 0, 0, 0)),   -- 6
+       (Mouse,  2, False, (3, 8, 12, 0, 0, 0)),   -- 7
+       (Fox,    2, False, (4, 7, 0, 0, 0, 0)),    -- 8
+       (Mouse,  2, False, (1, 4, 12, 0, 0, 0)),   -- 9
+       (Rabbit, 1, True,  (1, 2, 12, 0, 0, 0)),   -- 10
+       (Mouse,  2, True,  (3, 6, 12, 0, 0, 0)),   -- 11
+       (Fox,    1, True,  (4, 7, 9, 10, 11, 0))); -- 12
+
    Fall_Clearing_Coords : constant Coordinates :=
       ((0, 0), (1, 21), (9, 21), (9, 0), (0, 14), (5, 21),
        (9, 14), (9, 7), (5, 0), (1, 7), (5, 14), (5, 7));
@@ -122,6 +108,20 @@ private
    ---------------------
    -- Winter Map Data --
    ---------------------
+   Winter_Map_Clean : constant Clearing_Arr :=
+      ((Fox,  1, False, (5, 10, 11, 0, 0, 0)),
+       (Fox,  1, False, (6, 7, 12, 0, 0, 0)),
+       (Fox,  2, False, (7, 8, 12, 0, 0, 0)),
+       (Fox,  2, False, (9, 10, 11, 0, 0, 0)),
+       (Fox,  2, False, (1, 6, 0, 0, 0, 0)),
+       (Fox,  2, False, (5, 2, 0, 0, 0, 0)),
+       (Fox,  1, False, (2, 3, 0, 0, 0, 0)),
+       (Fox,  1, True,  (3, 9, 12, 0, 0, 0)),
+       (Fox,  1, True,  (4, 8, 11, 0, 0, 0)),
+       (Fox, 1, False, (1, 4, 0, 0, 0, 0)),
+       (Fox, 2, True,  (1, 4, 9, 0, 0, 0)),
+       (Fox, 2, True,  (2, 3, 8, 0, 0, 0)));
+
    Winter_Clearing_Coords : constant Coordinates :=
       ((0, 0), (0, 21), (8, 21), (8, 0), (0, 7), (0, 14),
        (4, 21), (8, 14), (8, 7), (4, 0), (4, 7), (4, 14));
@@ -142,6 +142,20 @@ private
    -------------------
    -- Lake Map Data --
    -------------------
+   Lake_Map_Clean : constant Clearing_Arr :=
+      ((Fox,  2, False, (5, 9, 0, 0, 0, 0)),
+       (Fox,  1, False, (7, 8, 10, 0, 0, 0)),
+       (Fox,  1, False, (8, 9, 12, 0, 0, 0)),
+       (Fox,  1, False, (5, 6, 0, 0, 0, 0)),
+       (Fox,  2, True,  (1, 4, 11, 0, 0, 0)),
+       (Fox,  2, False, (4, 7, 11, 0, 0, 0)),
+       (Fox,  1, False, (2, 6, 10, 11, 0, 0)),
+       (Fox,  1, False, (2, 3, 10, 0, 0, 0)),
+       (Fox,  1, False, (1, 3, 12, 0, 0, 0)),
+       (Fox, 2, True,  (2, 7, 8, 0, 0, 0)),
+       (Fox, 2, True,  (5, 6, 7, 0, 0, 0)),
+       (Fox, 2, True,  (3, 9, 0, 0, 0, 0)));
+
    Lake_Clearing_Coords : constant Coordinates :=
       ((8, 21), (0, 0), (8, 0), (0, 21), (4, 21), (0, 14),
        (0, 7), (4, 0), (8, 14), (4, 7), (4, 14), (7, 7));
@@ -162,6 +176,20 @@ private
    -----------------------
    -- Mountain Map Data --
    -----------------------
+   Mountain_Map_Clean : constant Clearing_Arr :=
+      ((Fox,  2, False, (8, 9, 0, 0, 0, 0)),
+       (Fox,  2, False, (5, 6, 11, 0, 0, 0)),
+       (Fox,  2, False, (6, 7, 11, 0, 0, 0)),
+       (Fox,  2, False, (8, 12, 0, 0, 0, 0)),
+       (Fox,  1, False, (2, 9, 10, 11, 0, 0)),
+       (Fox,  1, False, (2, 3, 11, 0, 0, 0)),
+       (Fox,  1, False, (3, 12, 0, 0, 0, 0)),
+       (Fox,  1, False, (1, 4, 9, 0, 0, 0)),
+       (Fox,  2, True,  (1, 5, 8, 10, 12, 0)),
+       (Fox, 1, True,  (5, 9, 11, 12, 0, 0)),
+       (Fox, 2, True,  (2, 3, 5, 6, 10, 12)),
+       (Fox, 2, True,  (4, 7, 9, 10, 11, 0)));
+
    Mountain_Clearing_Coords : constant Coordinates :=
       ((0, 0), (0, 21), (8, 21), (8, 0), (0, 14), (4, 21),
        (8, 14), (4, 0), (0, 7), (4, 7), (4, 14), (8, 7));

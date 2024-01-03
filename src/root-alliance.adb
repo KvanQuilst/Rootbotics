@@ -63,7 +63,7 @@ package body Root.Alliance is
    -- Take Turn --
    ---------------
 
-   procedure Take_Turn (Order : Suit; M : Map) is
+   procedure Take_Turn (Order : Suit; M : Map_Old) is
    begin
 
       -- Alliance State --

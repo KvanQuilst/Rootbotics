@@ -29,12 +29,8 @@ with Ada.Text_IO; use Ada.Text_IO;
 package body Root.Maps is
    package Int_IO is new Integer_IO (Integer);
 
-   function Clearings return Clearing_Arr is
-      (case Map_In_Play is
-         when Fall     => Fall_Map.Clearings,
-         when Winter   => Winter_Map.Clearings,
-         when Lake     => Lake_Map.Clearings,
-         when Mountain => Mountain_Map.Clearings);
+   function Clearings return Clearing_Arr is (Map);
+   function Get_Map return Map_Old is (Map_In_Play, Map);
 
    function Filter_Clearings (S : Suit) return Int_Arr is
       F_Clears : Int_Arr (1 .. 4);
@@ -45,7 +41,7 @@ package body Root.Maps is
       end if;
 
       for I in Priority'Range loop
-         if Clearings (I).C_Suit = S then
+         if Map (I).C_Suit = S then
             F_Clears (I) := I;
             Index := Index + 1;
          end if;
@@ -132,116 +128,27 @@ package body Root.Maps is
       return Set_Clearings (Prio);
    end Query_Suit;
 
-   procedure Set_Map (Name : Map_Name) is
+   procedure Init_Map (Name : Map_Name) is
    begin
       Map_In_Play := Name;
+
       case Name is
-         when Fall     => null;
-         when Winter   => null;
-         when Lake     => null;
-         when Mountain => null;
+         when Fall => Map := Fall_Map;
+         when Winter => Map := Winter_Map_Clean;
+         when Lake => Map := Lake_Map_Clean;
+         when Mountain => Map := Mountain_Map_Clean;
       end case;
-   end Set_Map;
 
-   function Get_Map return Map is
-      (case Map_In_Play is
-         when Fall     => Fall_Map,
-         when Winter   => Winter_Map,
-         when Lake     => Lake_Map,
-         when Mountain => Mountain_Map);
+      if Name /= Fall then
+         for C of Set_Clearings loop
+            C := Bird;
+         end loop;
 
-   function Winter_Map return Map is
-   begin
-      if Winter_Map_Set then
-         return Winter_Map_Actual;
+         for C in Priority'Range loop
+            Map (C).C_Suit := Query_Suit (C);
+         end loop;
       end if;
-
-      for C of Set_Clearings loop
-         C := Bird;
-      end loop;
-
-      Map_In_Play := Winter;
-
-      Winter_Map_Actual :=
-         (Winter,
-         ((Query_Suit (1),  1, False, (5, 10, 11, 0, 0, 0)),
-          (Query_Suit (2),  1, False, (6, 7, 12, 0, 0, 0)),
-          (Query_Suit (3),  2, False, (7, 8, 12, 0, 0, 0)),
-          (Query_Suit (4),  2, False, (9, 10, 11, 0, 0, 0)),
-          (Query_Suit (5),  2, False, (1, 6, 0, 0, 0, 0)),
-          (Query_Suit (6),  2, False, (5, 2, 0, 0, 0, 0)),
-          (Query_Suit (7),  1, False, (2, 3, 0, 0, 0, 0)),
-          (Query_Suit (8),  1, True,  (3, 9, 12, 0, 0, 0)),
-          (Query_Suit (9),  1, True,  (4, 8, 11, 0, 0, 0)),
-          (Query_Suit (10), 1, False, (1, 4, 0, 0, 0, 0)),
-          (Query_Suit (11), 2, True,  (1, 4, 9, 0, 0, 0)),
-          (Query_Suit (12), 2, True,  (2, 3, 8, 0, 0, 0))));
-      Winter_Map_Set := True;
-
-      return Winter_Map_Actual;
-   end Winter_Map;
-
-   function Lake_Map return Map is
-   begin
-      if Lake_Map_Set then
-         return Lake_Map_Actual;
-      end if;
-
-      for C of Set_Clearings loop
-         C := Bird;
-      end loop;
-
-      Map_In_Play := Lake;
-
-      Lake_Map_Actual :=
-         (Lake,
-         ((Query_Suit (1),  2, False, (5, 9, 0, 0, 0, 0)),
-          (Query_Suit (2),  1, False, (7, 8, 10, 0, 0, 0)),
-          (Query_Suit (3),  1, False, (8, 9, 12, 0, 0, 0)),
-          (Query_Suit (4),  1, False, (5, 6, 0, 0, 0, 0)),
-          (Query_Suit (5),  2, True,  (1, 4, 11, 0, 0, 0)),
-          (Query_Suit (6),  2, False, (4, 7, 11, 0, 0, 0)),
-          (Query_Suit (7),  1, False, (2, 6, 10, 11, 0, 0)),
-          (Query_Suit (8),  1, False, (2, 3, 10, 0, 0, 0)),
-          (Query_Suit (9),  1, False, (1, 3, 12, 0, 0, 0)),
-          (Query_Suit (10), 2, True,  (2, 7, 8, 0, 0, 0)),
-          (Query_Suit (11), 2, True,  (5, 6, 7, 0, 0, 0)),
-          (Query_Suit (12), 2, True,  (3, 9, 0, 0, 0, 0))));
-      Lake_Map_Set := True;
-
-      return Lake_Map_Actual;
-   end Lake_Map;
-
-   function Mountain_Map return Map is
-   begin
-      if Mountain_Map_Set then
-         return Mountain_Map_Actual;
-      end if;
-
-      for C of Set_Clearings loop
-         C := Bird;
-      end loop;
-
-      Map_In_Play := Mountain;
-
-      Mountain_Map_Actual :=
-         (Mountain,
-         ((Query_Suit (1),  2, False, (8, 9, 0, 0, 0, 0)),
-          (Query_Suit (2),  2, False, (5, 6, 11, 0, 0, 0)),
-          (Query_Suit (3),  2, False, (6, 7, 11, 0, 0, 0)),
-          (Query_Suit (4),  2, False, (8, 12, 0, 0, 0, 0)),
-          (Query_Suit (5),  1, False, (2, 9, 10, 11, 0, 0)),
-          (Query_Suit (6),  1, False, (2, 3, 11, 0, 0, 0)),
-          (Query_Suit (7),  1, False, (3, 12, 0, 0, 0, 0)),
-          (Query_Suit (8),  1, False, (1, 4, 9, 0, 0, 0)),
-          (Query_Suit (9),  2, True,  (1, 5, 8, 10, 12, 0)),
-          (Query_Suit (10), 1, True,  (5, 9, 11, 12, 0, 0)),
-          (Query_Suit (11), 2, True,  (2, 3, 5, 6, 10, 12)),
-          (Query_Suit (12), 2, True,  (4, 7, 9, 10, 11, 0))));
-      Mountain_Map_Set := True;
-
-      return Mountain_Map_Actual;
-   end Mountain_Map;
+   end Init_Map;
 
    ------------------
    -- Map Printing --
@@ -321,7 +228,7 @@ package body Root.Maps is
       for I in Priority'Range loop
          Clearing_Box (Coords (I).x, B_Col + Coords (I).y,
                        Units (I), Buildings (I), Rule (I),
-                       Clearings (I), I);
+                       Map (I), I);
       end loop;
       Cursor_Line_Move (Text_Map'Length);
    end Put_Map;
