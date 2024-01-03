@@ -308,6 +308,13 @@ package body Root.IO is
       Put (ESC & "[0m");
    end Reset_Style;
 
+   function Suit_Color (S : Suit) return Color is
+      (case S is
+         when Root.Fox => Fox_Color,
+         when Root.Mouse => Mouse_Color,
+         when Root.Rabbit => Rabbit_Color,
+         when Root.Bird => Bird_Color);
+
    ---------------------
    -- Cursor Controls --
    ---------------------

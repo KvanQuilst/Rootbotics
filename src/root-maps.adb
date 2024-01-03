@@ -66,10 +66,7 @@ package body Root.Maps is
    function Query_Suit (Prio : Priority) return Clearing_Suit is
       procedure Put_Clearing (Line, Col : Natural;
                               S : Clearing_Suit; Prio : Priority) is
-         C : constant Color := (case S is
-                                 when Fox    => Red,
-                                 when Mouse  => Yellow,
-                                 when Rabbit => B_Yellow);
+         C : constant Color := Suit_Color (S);
          S_Char : constant Character := (case S is
                                           when Fox    => 'F',
                                           when Mouse  => 'M',
@@ -157,10 +154,7 @@ package body Root.Maps is
    -- Line, Col : Relative Positioning --
    procedure Clearing_Box (Line : Natural; Col, Units, Buildings : Natural;
                            Rule : Boolean; Clear : Clearing; Pri : Priority) is
-      C : constant Color := (case Clear.C_Suit is
-                              when Fox    => Red,
-                              when Mouse  => Yellow,
-                              when Rabbit => B_Yellow);
+      C : constant Color := Suit_Color (Clear.C_Suit);
       S : constant Character := (case Clear.C_Suit is
                                     when Fox    => 'F',
                                     when Mouse  => 'M',
