@@ -26,8 +26,6 @@
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Ada.Text_IO; use Ada.Text_IO;
 
-with Root.IO; use Root.IO;
-
 package body Root.Maps is
    package Int_IO is new Integer_IO (Integer);
 
@@ -37,6 +35,23 @@ package body Root.Maps is
          when Winter   => Winter_Map.Clearings,
          when Lake     => Lake_Map.Clearings,
          when Mountain => Mountain_Map.Clearings);
+
+   function Filter_Clearings (S : Suit) return Int_Arr is
+      F_Clears : Int_Arr (1 .. 4);
+      Index    : Positive := 1;
+   begin
+      if S = Bird then
+         return (1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12);
+      end if;
+
+      for I in Priority'Range loop
+         if Clearings (I).C_Suit = S then
+            F_Clears (I) := I;
+            Index := Index + 1;
+         end if;
+      end loop;
+      return F_Clears;
+   end Filter_Clearings;
 
    function Coords return Coordinates is
       (case Map_In_Play is

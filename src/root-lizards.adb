@@ -20,7 +20,7 @@
 -- Public License for more details.                                          --
 --                                                                           --
 -- You should have received a copy of the GNU General Public License along   --
--- with The Rootbotics Assistant. If not, see                                -- 
+-- with The Rootbotics Assistant. If not, see                                --
 -- <https://www.gnu.org/licenses/>.                                          --
 -------------------------------------------------------------------------------
 with Ada.Strings.Fixed; use Ada.Strings.Fixed;
@@ -138,10 +138,64 @@ package body Root.Lizards is
    ------------------------
    -- Lizards Turn Logic --
    ------------------------
+   procedure Birdsong (Order : Suit) is
+      Idle_Count : Natural := 0;
+      Clears     : constant Int_Arr := Filter_Clearings (Order);
+      Val        : Natural;
+
+      procedure Convert is null;
+
+      procedure Crusade is
+      begin
+         for C of Clears loop
+            if Map_Warriors (C) >= 2 then
+               Put_Line ("Are there enemies in clearing" &
+                         C'Image & "?");
+               if Get_Yes_No then
+                  Put_Line ("Battle the enemy faction with the most points " &
+                            "in clearing" & C'Image);
+                  Put_Line ("How many warriors were lost?");
+                  Val := Get_Integer (0, (if 3 > Map_Warriors (C)
+                                          then Map_Warriors (C)
+                                          else 3));
+                  Map_Warriors (C) := Map_Warriors (C) - Val;
+                  Warrior_Supply := Warrior_Supply + Val;
+                  Idle_Count := 0;
+               end if;
+            end if;
+         end loop;
+      end Crusade;
+
+      procedure Sanctify is
+         Opts : String_Arr (1 .. Clears'Length);
+         Opt  : Character;
+      begin
+         for I in Clears'Range loop
+            Opts (I) := Unbounded (Clears (I)'Image);
+         end loop;
+
+         Put_Line ("Which clearing has an enemy building with the most " &
+                   "points and least warriors?");
+         Opt := Get_Option (Opts);
+
+         --  TODO Finish sanctify
+
+      end Sanctify;
+   begin
+      for A in 0 .. Acolytes loop
+         Idle_Count := Idle_Count + 1;
+         case Conspiracies (Next_Conspiracy) is
+            when Convert => Convert;
+            when Crusade => Crusade;
+            when Sanctify => Sanctify;
+         end case;
+         Next_Conspiracy := Next_Conspiracy + 1;
+
+         exit when Idle_Count = Conspiracies'Length;
+      end loop;
+   end Birdsong;
+
    procedure Take_Turn is
-      Outcasts : constant String_Arr := (Unbounded (Root.IO.Fox),
-                                         Unbounded (Root.IO.Rabbit),
-                                         Unbounded (Root.IO.Mouse));
    begin
       Curr_Order := Bird;
 
@@ -191,8 +245,71 @@ package body Root.Lizards is
          Put_Line ("Which suit most common suit in the Lost Souls pile " &
                    "(Ties go to " & Root.IO.Bird & ")?");
          Curr_Order := Get_Suit_Opt;
+         Birdsong (Curr_Order);
       end if;
 
+      --------------
+      -- Daylight --
+      --------------
+      for I in Integer range 1 .. 4 loop
+         Prompt;
+         Put_Line ("Reveal top card of Lost Souls pile; what is it's suit?");
+         declare
+            S : constant Suit := Get_Suit_Opt;
+            Max : Integer := 0;
+            Max_Clear : Priority := 1;
+         begin
+            if S = Bird then
+               for C in Map_Warriors'Range loop
+                  if Map_Warriors (C) > Max then
+                     Max := Map_Warriors (C);
+                     Max_Clear := C;
+                  end if;
+               end loop;
+               if Max > 0 then
+                  Map_Warriors (Max_Clear) := Map_Warriors (Max_Clear) - 1;
+                  Acolytes := Acolytes + 1;
+                  Put_Line ("Add a warrior from clearing" & Max_Clear'Image &
+                            " to the acolytes box.");
+                  Put_Line ("Discard the " & Root.IO.Bird & " card.");
+               else
+                  Put_Line ("Nothing to do...");
+               end if;
+            else
+               null;
+            end if;
+         end;
+         Continue;
+      end loop;
+
+      -------------
+      -- Evening --
+      -------------
+      Prompt;
+
+      -- Determine scoring garden track --
+      declare
+         Min : Integer := GARDENS_MAX;
+      begin
+         for Num of Garden_Supply loop
+            Min := (if Num < Min then Num else Min);
+         end loop;
+         case Min is
+            when 0      => Put_Line ("Score 4 points for the " & Name);
+            when 1      => Put_Line ("Score 3 points for the " & Name);
+            when 2 | 3  => Put_Line ("Score 2 points for the " & Name);
+            when others => null;
+         end case;
+      end;
+
+      Put_Line ("Discard Lost Souls deck.");
+      Put_Line ("Return revealed cards IN ORDER to Lost Souls.");
+      Put_Line ("Craft the top card of the deck for 1 point and add it " &
+                "to your Lost Souls pile.");
+
+      Continue;
+
+      --  TODO: Final Map Check
    end Take_Turn;
 
 end Root.Lizards;

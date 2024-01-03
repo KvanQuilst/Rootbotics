@@ -23,6 +23,7 @@
 -- with The Rootbotics Assistant. If not, see                                --
 -- <https://www.gnu.org/licenses/>.                                          --
 -------------------------------------------------------------------------------
+with Root.IO; use Root.IO;
 package Root.Maps is
 
    type Neighbor_Arr is array (Integer range 1 .. 6)
@@ -44,6 +45,8 @@ package Root.Maps is
    end record;
 
    function Clearings return Clearing_Arr;
+
+   function Filter_Clearings (S : Suit) return Int_Arr;
 
    Fall_Map : constant Map :=
       (Fall,
