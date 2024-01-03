@@ -143,7 +143,25 @@ package body Root.Lizards is
       Clears     : constant Int_Arr := Filter_Clearings (Order);
       Val        : Natural;
 
-      procedure Convert is null;
+      procedure Convert is
+         Opts : String_Arr (1 .. Clears'Length + 1);
+         Clear : Priority;
+      begin
+         for I in Clears'Range loop
+            Opts (I) := Unbounded (Clears (I)'Image);
+         end loop;
+         Opts (Clears'Length + 1) := Unbounded ("None");
+
+         Put_Line ("Which clearing has an enemy warrior with the most " &
+                   "points and the most enemy buildings?");
+
+         Clear := Character'Pos (Get_Option (Opts)) - Character'Pos ('0');
+         if Clear /= Clears'Length + 1 then
+            Clear := Clears (Clear);
+            Map_Warriors (Clear) := Map_Warriors (Clear) + 1;
+            Acolytes := Acolytes - 1;
+         end if;
+      end Convert;
 
       procedure Crusade is
       begin
@@ -164,11 +182,15 @@ package body Root.Lizards is
                end if;
             end if;
          end loop;
+
+         if Idle_Count = 0 then
+            Acolytes := Acolytes - 1;
+         end if;
       end Crusade;
 
       procedure Sanctify is
-         Opts : String_Arr (1 .. Clears'Length);
-         Opt  : Character;
+         Opts  : String_Arr (1 .. Clears'Length);
+         Clear : Priority;
       begin
          for I in Clears'Range loop
             Opts (I) := Unbounded (Clears (I)'Image);
@@ -176,11 +198,17 @@ package body Root.Lizards is
 
          Put_Line ("Which clearing has an enemy building with the most " &
                    "points and least warriors?");
-         Opt := Get_Option (Opts);
 
-         --  TODO Finish sanctify
-
+         Clear := Character'Pos (Get_Option (Opts)) - Character'Pos ('0');
+         if Clear /= Clears'Length + 1 then
+            Clear := Clears (Clear);
+            Gardens (Clear) := Gardens (Clear) + 1;
+            Garden_Supply (Clearings (Clear).C_Suit) :=
+               Garden_Supply (Clearings (Clear).C_Suit) - 1;
+            Rule (Clear) := True;
+         end if;
       end Sanctify;
+
    begin
       for A in 0 .. Acolytes loop
          Idle_Count := Idle_Count + 1;
