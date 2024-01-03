@@ -45,8 +45,11 @@ package Root.Maps is
    end record;
 
    function Clearings return Clearing_Arr;
-
    function Filter_Clearings (S : Suit) return Int_Arr;
+
+   procedure Set_Map (Name : Map_Name);
+   --  TODO: Temporary solution
+   function Get_Map return Map;
 
    Fall_Map : constant Map :=
       (Fall,

@@ -132,6 +132,24 @@ package body Root.Maps is
       return Set_Clearings (Prio);
    end Query_Suit;
 
+   procedure Set_Map (Name : Map_Name) is
+   begin
+      Map_In_Play := Name;
+      case Name is
+         when Fall     => null;
+         when Winter   => null;
+         when Lake     => null;
+         when Mountain => null;
+      end case;
+   end Set_Map;
+
+   function Get_Map return Map is
+      (case Map_In_Play is
+         when Fall     => Fall_Map,
+         when Winter   => Winter_Map,
+         when Lake     => Lake_Map,
+         when Mountain => Mountain_Map);
+
    function Winter_Map return Map is
    begin
       if Winter_Map_Set then

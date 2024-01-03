@@ -44,9 +44,6 @@ procedure Rootbotics is
 
    Playing : array (Faction'Range) of Boolean := (others => False);
    Num_Playing : Integer := 0;
-
-   M : Map;
-
 begin
    Put_Line ("Welcome to the Rootbotics Logic Tool " & VERSION & "!");
    New_Line;
@@ -94,15 +91,12 @@ begin
       Put_Line ("Which map will you be playing on:");
       Opt := Get_Option (Options);
 
-      case Opt is
-         when 'a' => M := Fall_Map;
-         when 'b' => M := Winter_Map;
-         when 'c' => M := Lake_Map;
-         when 'd' => M := Mountain_Map;
-         when others =>
-            Put_Line ("ERROR: Should never reach here!");
-         return;
-      end case;
+      Set_Map (case Opt is
+                  when 'a' => Fall,
+                  when 'b' => Winter,
+                  when 'c' => Lake,
+                  when 'd' => Mountain,
+                  when others => Fall);
    end;
    New_Line;
 
@@ -112,7 +106,7 @@ begin
    for I in Playing'Range loop
       if Playing (I) then
          case I is
-            when Marquise => Root.Marquise.Setup (M);
+            when Marquise => Root.Marquise.Setup (Get_Map);
             when Eyrie => Root.Eyrie.Setup;
             when Alliance =>
                Put_Line ("The Automated Alliance is unimplmented!");
@@ -154,6 +148,7 @@ begin
       Separator;
 
       loop
+         --  TODO: Grey out factions who've already had a turn this round
          if Num_Playing > 1 then
             -- Choose Faction Turn --
             Put_Line ("Whose turn will you take?");
@@ -187,10 +182,10 @@ begin
 
          -- Handle faction turn --
          case F is
-            when Marquise => Root.Marquise.Take_Turn (Order, M);
-            when Eyrie    => Root.Eyrie.Take_Turn (Order, M);
-            when Alliance => Root.Alliance.Take_Turn (Order, M);
-            when Vagabot  => Root.Vagabot.Take_Turn (Order, M);
+            when Marquise => Root.Marquise.Take_Turn (Order, Get_Map);
+            when Eyrie    => Root.Eyrie.Take_Turn (Order, Get_Map);
+            when Alliance => Root.Alliance.Take_Turn (Order, Get_Map);
+            when Vagabot  => Root.Vagabot.Take_Turn (Order, Get_Map);
             when Lizards  => Root.Lizards.Take_Turn;
          end case;
       end loop;
