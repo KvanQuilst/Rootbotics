@@ -11,13 +11,14 @@ had while managing the automated factions by handling the turn progression and
 some of the decision analysis for the user. **Note:** this tool is used entirely in
 the terminal and lacks a TUI or GUI implementation!
 
-The Rootbotics Assistant is currently in an unfinished state. At this time, the following features are
-remaining for implementation:
+The Rootbotics Assistant is currently in an unfinished state. 
+The following features are finished/in testing:
+- Logical Lizards
+At this time, the following features are remaining for implementation:
 - Mechnical Marquise 2.0
 - Electric Eyrie
 - Automated Alliance
 - Vagabot
-- Logical Lizards
 - Riverfolk Robots
 - Drillbit Duchy
 - Difficulties and Traits
