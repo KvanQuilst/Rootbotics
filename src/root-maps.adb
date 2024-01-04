@@ -42,7 +42,7 @@ package body Root.Maps is
 
       for I in Priority'Range loop
          if Map (I).C_Suit = S then
-            F_Clears (I) := I;
+            F_Clears (Index) := I;
             Index := Index + 1;
          end if;
       end loop;

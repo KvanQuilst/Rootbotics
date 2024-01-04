@@ -8,6 +8,18 @@ GENERAL
    -- Input wrapper? => Filters input according for 'h' or 'q' and passes rest to get_*
 - Test
 
+ROOT . MAPS
+--------------------
+- Check that there are four clearings for each suit (Fox, Mouse, Rabbit)
+
+ROOT . FACTION
+--------------------
+- Transition faction related stuff from root.ads
+
+ROOT . IO
+--------------------
+- Transition multioption responses to Sets (remove duplicate answers)
+
 CLOCKWORK 1
 --------------------
 

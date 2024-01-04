@@ -54,6 +54,7 @@ package Root.IO is
    -----------------
    function Get_Suit_Opt return Suit;
    function Get_Clearing_Suit_Opt return Clearing_Suit;
+   function Get_Rule (Name : String; Clear : Priority) return Boolean;
 
    ----------------
    -- Formatting --
@@ -158,6 +159,7 @@ package Root.IO is
                          Units         : Warrior_Arr;
                          Buildings     : Building_Arr;
                          Rule          : Rule_Arr;
-                         Current_Order : Suit);
+                         Current_Order : Suit;
+                         Time          : Phase := None);
 
 end Root.IO;

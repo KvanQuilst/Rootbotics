@@ -27,7 +27,8 @@ package Root is
 
    type Difficulty is (Easy, Default, Challenging, Nightmare);
 
-   type Suit is (Fox, Mouse, Rabbit, Bird);
+   type Suit  is (Fox, Mouse, Rabbit, Bird);
+   type Phase is (Birdsong, Daylight, Evening, None);
    subtype Clearing_Suit is Suit range Fox .. Rabbit;
    subtype Priority is Integer range 1 .. 12;
 
@@ -41,6 +42,16 @@ package Root is
 
    type Help_Procedure is access procedure;
    Help : Help_Procedure := null;
+
+   -- Faction Resource Management --
+   procedure Deploy_Warriors (Supply       : in out Integer;
+                              Map_Warriors : in out Warrior_Arr;
+                              Clear        :        Priority;
+                              Num_Warriors :        Integer);
+   procedure Deploy_Building (Supply     : in out Integer;
+                              Map_Builds : in out Building_Arr;
+                              Clear      :        Priority;
+                              Build_Type :        String);
 
    function  Get_List (Values : String) return Priority_List;
 

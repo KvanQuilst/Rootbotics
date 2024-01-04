@@ -29,6 +29,41 @@ with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 package body Root is
    package Int_IO is new Integer_IO (Integer); use Int_IO;
 
+   procedure Deploy_Warriors (Supply       : in out Integer;
+                              Map_Warriors : in out Warrior_Arr;
+                              Clear        :        Priority;
+                              Num_Warriors :        Integer) is
+   begin
+      if Supply >= Num_Warriors then
+         Put_Line ("Place" & Num_Warriors'Image & " warriors in clearing" &
+                   Clear'Image & ".");
+         Map_Warriors (Clear) := Map_Warriors (Clear) + Num_Warriors;
+         Supply := Supply - Num_Warriors;
+      elsif Supply > 0 then
+         Put_Line ("Place" & Supply'Image & " warriors in clearing" &
+                   Clear'Image & ".");
+         Map_Warriors (Clear) := Map_Warriors (Clear) + Supply;
+         Supply := 0;
+      else
+         Put_Line ("Unable to place warriors: warrior supply is depleted!");
+      end if;
+   end Deploy_Warriors;
+
+   procedure Deploy_Building (Supply     : in out Integer;
+                              Map_Builds : in out Building_Arr;
+                              Clear      :        Priority;
+                              Build_Type :        String) is
+   begin
+      if Supply > 0 and then Map_Builds (Clear) < 3 then
+         Put_Line ("Place a " & Build_Type & " in clearing" &
+                   Clear'Image & ".");
+         Map_Builds (Clear) := Map_Builds (Clear) + 1;
+         Supply := Supply - 1;
+      else
+         Put_Line ("Unable to place building: building supply is depleted!");
+      end if;
+   end Deploy_Building;
+
    function Get_List_Internal (PL : out Priority_List) return Boolean is
       Line : Unbounded_String;
       Last : Integer := 0;

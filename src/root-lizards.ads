@@ -44,7 +44,7 @@ private
    type Conspiracy is (Convert, Crusade, Sanctify);
    type Conspiracy_Count is mod 5;
 
-   procedure Prompt with Inline;
+   procedure Prompt (Time : Phase := None) with Inline;
 
    function Unbounded (S : String) return Unbounded_String
       renames To_Unbounded_String;

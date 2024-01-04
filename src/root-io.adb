@@ -231,6 +231,12 @@ package body Root.IO is
       return Suit'Val (Character'Pos (Get_Option (S)) - 97);
    end Get_Clearing_Suit_Opt;
 
+   function Get_Rule (Name : String; Clear : Priority) return Boolean is
+   begin
+      Put_Line ("Does the " & Name & " rule clearing" & Clear'Image & "?");
+      return Get_Yes_No;
+   end Get_Rule;
+
    ----------------
    -- Formatting --
    ----------------
@@ -399,7 +405,7 @@ package body Root.IO is
    begin
       New_Line;
       Put_Line_Centered (To_String (16 * "-"));
-      Set_Style (FG => Yellow, S => Italic);
+      Set_Style (FG => Yellow);
       Put_Line_Centered ("Birdsong");
       Reset_Style;
       Put_Line_Centered (To_String (16 * "-"));
@@ -410,7 +416,7 @@ package body Root.IO is
    begin
       New_Line;
       Put_Line_Centered (To_String (16 * "-"));
-      Set_Style (FG => B_Cyan, S => Italic);
+      Set_Style (FG => B_Cyan);
       Put_Line_Centered ("Daylight");
       Reset_Style;
       Put_Line_Centered (To_String (16 * "-"));
@@ -421,7 +427,7 @@ package body Root.IO is
    begin
       New_Line;
       Put_Line_Centered (To_String (15 * "-"));
-      Set_Style (FG => B_Blue, S => Italic);
+      Set_Style (FG => B_Black);
       Put_Line_Centered ("Evening");
       Reset_Style;
       Put_Line_Centered (To_String (15 * "-"));
@@ -433,7 +439,8 @@ package body Root.IO is
                          Units         : Warrior_Arr;
                          Buildings     : Building_Arr;
                          Rule          : Rule_Arr;
-                         Current_Order : Suit) is
+                         Current_Order : Suit;
+                         Time          : Phase := None) is
    begin
       -- Logo --
       Erase_Screen;
@@ -455,7 +462,12 @@ package body Root.IO is
                   when Root.Mouse  => Root.IO.Mouse,
                   when Root.Bird   => Root.IO.Bird));
       Separator;
-
+      case Time is
+         when Birdsong => Put_Birdsong;
+         when Daylight => Put_Daylight;
+         when Evening  => Put_Evening;
+         when None     => null;
+      end case;
    end Put_Prompt;
 
 end Root.IO;

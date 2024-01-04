@@ -105,10 +105,10 @@ package body Root.Lizards is
       New_Line;
    end Put_State;
 
-   procedure Prompt is
+   procedure Prompt (Time : Phase := None) is
    begin
       Put_Prompt (Put_Logo'Access, Put_State'Access, Map_Warriors,
-                  Gardens, Rule, Curr_Order);
+                  Gardens, Rule, Curr_Order, Time);
    end Prompt;
 
    -------------------
@@ -135,93 +135,25 @@ package body Root.Lizards is
       end loop;
    end Setup;
 
+   ----------------------------
+   -- Lizards Common Actions --
+   ----------------------------
+   procedure Deploy_Building (Clear : Priority) is
+      S : constant Suit := Clearings (Clear).C_Suit;
+   begin
+      if Garden_Supply (S) > 0 then
+         Root.Deploy_Building (Garden_Supply (S), Gardens,
+                               Clear, S'Image & " Garden");
+         Rule (Clear) := True;
+      end if;
+   end Deploy_Building;
+
    ------------------------
    -- Lizards Turn Logic --
    ------------------------
-   procedure Birdsong (Order : Suit) is
-      Idle_Count : Natural := 0;
-      Clears     : constant Int_Arr := Filter_Clearings (Order);
-      Val        : Natural;
-
-      procedure Convert is
-         Opts : String_Arr (1 .. Clears'Length + 1);
-         Clear : Priority;
-      begin
-         for I in Clears'Range loop
-            Opts (I) := Unbounded (Clears (I)'Image);
-         end loop;
-         Opts (Clears'Length + 1) := Unbounded ("None");
-
-         Put_Line ("Which clearing has an enemy warrior with the most " &
-                   "points and the most enemy buildings?");
-
-         Clear := Character'Pos (Get_Option (Opts)) - Character'Pos ('0');
-         if Clear /= Clears'Length + 1 then
-            Clear := Clears (Clear);
-            Map_Warriors (Clear) := Map_Warriors (Clear) + 1;
-            Acolytes := Acolytes - 1;
-         end if;
-      end Convert;
-
-      procedure Crusade is
-      begin
-         for C of Clears loop
-            if Map_Warriors (C) >= 2 then
-               Put_Line ("Are there enemies in clearing" &
-                         C'Image & "?");
-               if Get_Yes_No then
-                  Put_Line ("Battle the enemy faction with the most points " &
-                            "in clearing" & C'Image);
-                  Put_Line ("How many warriors were lost?");
-                  Val := Get_Integer (0, (if 3 > Map_Warriors (C)
-                                          then Map_Warriors (C)
-                                          else 3));
-                  Map_Warriors (C) := Map_Warriors (C) - Val;
-                  Warrior_Supply := Warrior_Supply + Val;
-                  Idle_Count := 0;
-               end if;
-            end if;
-         end loop;
-
-         if Idle_Count = 0 then
-            Acolytes := Acolytes - 1;
-         end if;
-      end Crusade;
-
-      procedure Sanctify is
-         Opts  : String_Arr (1 .. Clears'Length);
-         Clear : Priority;
-      begin
-         for I in Clears'Range loop
-            Opts (I) := Unbounded (Clears (I)'Image);
-         end loop;
-
-         Put_Line ("Which clearing has an enemy building with the most " &
-                   "points and least warriors?");
-
-         Clear := Character'Pos (Get_Option (Opts)) - Character'Pos ('0');
-         if Clear /= Clears'Length + 1 then
-            Clear := Clears (Clear);
-            Gardens (Clear) := Gardens (Clear) + 1;
-            Garden_Supply (Clearings (Clear).C_Suit) :=
-               Garden_Supply (Clearings (Clear).C_Suit) - 1;
-            Rule (Clear) := True;
-         end if;
-      end Sanctify;
-
-   begin
-      for A in 0 .. Acolytes loop
-         Idle_Count := Idle_Count + 1;
-         case Conspiracies (Next_Conspiracy) is
-            when Convert => Convert;
-            when Crusade => Crusade;
-            when Sanctify => Sanctify;
-         end case;
-         Next_Conspiracy := Next_Conspiracy + 1;
-
-         exit when Idle_Count = Conspiracies'Length;
-      end loop;
-   end Birdsong;
+   procedure Birdsong (Order : Suit);
+   procedure Daylight (S : Suit);
+   procedure Evening;
 
    procedure Take_Turn is
    begin
@@ -268,7 +200,7 @@ package body Root.Lizards is
       --------------
       -- Birdsong --
       --------------
-      Prompt;
+      Prompt (Birdsong);
       if Acolytes > 0 then
          Put_Line ("Which suit most common suit in the Lost Souls pile " &
                    "(Ties go to " & Root.IO.Bird & ")?");
@@ -280,64 +212,183 @@ package body Root.Lizards is
       -- Daylight --
       --------------
       for I in Integer range 1 .. 4 loop
-         Prompt;
+         Prompt (Daylight);
          Put_Line ("Reveal top card of Lost Souls pile; what is it's suit?");
-         declare
-            S : constant Suit := Get_Suit_Opt;
-            Max : Integer := 0;
-            Max_Clear : Priority := 1;
-         begin
-            if S = Bird then
-               for C in Map_Warriors'Range loop
-                  if Map_Warriors (C) > Max then
-                     Max := Map_Warriors (C);
-                     Max_Clear := C;
-                  end if;
-               end loop;
-               if Max > 0 then
-                  Map_Warriors (Max_Clear) := Map_Warriors (Max_Clear) - 1;
-                  Acolytes := Acolytes + 1;
-                  Put_Line ("Add a warrior from clearing" & Max_Clear'Image &
-                            " to the acolytes box.");
-                  Put_Line ("Discard the " & Root.IO.Bird & " card.");
-               else
-                  Put_Line ("Nothing to do...");
-               end if;
-            else
-               null;
-            end if;
-         end;
+         Daylight (Get_Suit_Opt);
          Continue;
       end loop;
 
       -------------
       -- Evening --
       -------------
-      Prompt;
+      Prompt (Evening);
+      Evening;
+      Continue;
 
-      -- Determine scoring garden track --
-      declare
-         Min : Integer := GARDENS_MAX;
+   end Take_Turn;
+
+   procedure Birdsong (Order : Suit) is
+      Idle_Count : Natural := 0;
+      Clears     : constant Int_Arr := Filter_Clearings (Order);
+      Val        : Natural;
+
+      procedure Convert is
+         Opts : String_Arr (1 .. Clears'Length + 1);
+         Clear : Priority;
       begin
-         for Num of Garden_Supply loop
-            Min := (if Num < Min then Num else Min);
+         for I in Clears'Range loop
+            Opts (I) := Unbounded (Clears (I)'Image);
          end loop;
-         case Min is
-            when 0      => Put_Line ("Score 4 points for the " & Name);
-            when 1      => Put_Line ("Score 3 points for the " & Name);
-            when 2 | 3  => Put_Line ("Score 2 points for the " & Name);
-            when others => null;
+         Opts (Clears'Length + 1) := Unbounded ("None");
+
+         Put_Line ("Which clearing has an enemy warrior with the most " &
+                   "points and the most enemy buildings?");
+
+         Clear := Character'Pos (Get_Option (Opts)) - Character'Pos ('a') + 1;
+         if Clear /= Clears'Length + 1 then
+            Put_Line ("Replace 1 warrior in clearing" & Clear'Image &
+                      " with a warrior from the acolytes box.");
+            Clear := Clears (Clear);
+            Map_Warriors (Clear) := Map_Warriors (Clear) + 1;
+            Idle_Count := 0;
+            Continue;
+         end if;
+      end Convert;
+
+      procedure Crusade is
+      begin
+         for C of Clears loop
+            if Map_Warriors (C) >= 2 then
+               Put_Line ("Are there enemies in clearing" &
+                         C'Image & "?");
+               if Get_Yes_No then
+                  Put_Line ("Battle the enemy faction with the most points " &
+                            "in clearing" & C'Image);
+                  Put_Line ("How many warriors were lost?");
+                  Val := Get_Integer (0, (if 3 > Map_Warriors (C)
+                                          then Map_Warriors (C)
+                                          else 3));
+                  Map_Warriors (C) := Map_Warriors (C) - Val;
+                  Warrior_Supply := Warrior_Supply + Val;
+                  Idle_Count := 0;
+               end if;
+            end if;
+         end loop;
+         if Idle_Count = 0 then
+            Continue;
+         end if;
+      end Crusade;
+
+      procedure Sanctify is
+         Opts  : String_Arr (1 .. Clears'Length);
+         Clear : Priority;
+      begin
+         for I in Clears'Range loop
+            Opts (I) := Unbounded (Clears (I)'Image);
+         end loop;
+
+         Put_Line ("Which clearing has an enemy building with the most " &
+                   "points and least warriors?");
+         Clear := Character'Pos (Get_Option (Opts)) - Character'Pos ('a') + 1;
+         if Clear /= Clears'Length + 1 then
+            Clear := Clears (Clear);
+            Gardens (Clear) := Gardens (Clear) + 1;
+            Garden_Supply (Clearings (Clear).C_Suit) :=
+               Garden_Supply (Clearings (Clear).C_Suit) - 1;
+            Rule (Clear) := True;
+            Idle_Count := 0;
+            Continue;
+         end if;
+      end Sanctify;
+
+   begin
+      for A in 0 .. Acolytes loop
+         Prompt (Birdsong);
+         Idle_Count := Idle_Count + 1;
+         case Conspiracies (Next_Conspiracy) is
+            when Convert => Convert;
+            when Crusade => Crusade;
+            when Sanctify => Sanctify;
          end case;
-      end;
+         Next_Conspiracy := Next_Conspiracy + 1;
+
+         exit when Idle_Count = Conspiracies'Length;
+         if Idle_Count = 0 then
+            Acolytes := Acolytes - 1;
+         end if;
+      end loop;
+   end Birdsong;
+
+   procedure Daylight (S : Suit) is
+      Max       : Integer  := 0;
+      Max_Clear : Priority := 1;
+      Clears    : constant Int_Arr  :=  Filter_Clearings (S);
+   begin
+      if S = Bird then
+         for C in Map_Warriors'Range loop
+            if Map_Warriors (C) > Max then
+               Max := Map_Warriors (C);
+               Max_Clear := C;
+            end if;
+         end loop;
+         if Max > 0 then
+            Map_Warriors (Max_Clear) := Map_Warriors (Max_Clear) - 1;
+            Acolytes := Acolytes + 1;
+            Put_Line ("Add a warrior from clearing" & Max_Clear'Image &
+                      " to the acolytes box.");
+            Put_Line ("Discard the " & Root.IO.Bird & " card.");
+         else
+            Put_Line ("Nothing to do...");
+         end if;
+
+      -- Fox, Rabbit, Mouse Suit --
+      else
+         declare
+            Opts : String_Arr (1 .. Clears'Length + 1);
+            Clear : Priority;
+         begin
+            for I in Clears'Range loop
+               Opts (I) := Unbounded (Clears (I)'Image);
+            end loop;
+            Opts (Clears'Length + 1) := Unbounded ("None");
+
+            Put_Line ("Which clearing has an open building slots AND the " &
+                      "most enemy buildings?");
+
+            Clear := Character'Pos (Get_Option (Opts)) -
+                                                      Character'Pos ('a') + 1;
+            if Clear /= Clears'Length + 1 then
+               Clear := Clears (Clear);
+               Deploy_Warriors (Warrior_Supply, Map_Warriors, Clear, 1);
+
+               if Rule (Clear) or else Get_Rule (Name, Clear) then
+                  Deploy_Building (Clear);
+               end if;
+            else
+               Deploy_Warriors (Warrior_Supply, Map_Warriors, Clears (1), 1);
+            end if;
+         end;
+      end if;
+   end Daylight;
+
+   procedure Evening is
+      Min : Integer := GARDENS_MAX;
+   begin
+      -- Determine scoring garden track --
+      for Num of Garden_Supply loop
+         Min := (if Num < Min then Num else Min);
+      end loop;
+      case Min is
+         when 0      => Put_Line ("Score 4 points for the " & Name);
+         when 1      => Put_Line ("Score 3 points for the " & Name);
+         when 2 | 3  => Put_Line ("Score 2 points for the " & Name);
+         when others => null;
+      end case;
 
       Put_Line ("Discard Lost Souls deck.");
       Put_Line ("Return revealed cards IN ORDER to Lost Souls.");
       Put_Line ("Craft the top card of the deck for 1 point and add it " &
                 "to your Lost Souls pile.");
-
-      Continue;
-
-      --  TODO: Final Map Check
-   end Take_Turn;
+   end Evening;
 
 end Root.Lizards;
