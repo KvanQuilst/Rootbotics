@@ -190,20 +190,6 @@ package body Root.Lizards is
 
       Check_Rule (Prompt'Access, Rule);
 
-      --  Prompt;
-      --  Put_Line ("Does the rule match for each clearings?");
-      --  if not Get_Yes_No then
-      --     Prompt;
-      --     Put_Line ("Which clearings are incorrect?");
-      --     declare
-      --        Clearings : constant Int_Arr := Get_Integers (1, 12);
-      --     begin
-      --        for C of Clearings loop
-      --           Rule (C) := not Rule (C);
-      --        end loop;
-      --     end;
-      --  end if;
-
       --------------
       -- Birdsong --
       --------------
