@@ -41,7 +41,7 @@ private
    WARRIOR_MAX  : constant Integer := 25;
    GARDENS_MAX  : constant Integer := 5;
 
-   subtype Garden is Suit range Fox .. Rabbit;
+   subtype Garden is Building_Suit;
    type Conspiracy is (Convert, Crusade, Sanctify);
    type Conspiracy_Count is mod 5;
 
@@ -58,8 +58,8 @@ private
    Conspiracies    : constant array (Conspiracy_Count'Range) of Conspiracy :=
                         (Convert, Crusade, Convert, Crusade, Sanctify);
    Gardens         : Building_Arr;
-   Garden_Supply   : array (Garden'Range) of Integer range 0 .. GARDENS_MAX :=
-                        (GARDENS_MAX, GARDENS_MAX, GARDENS_MAX);
+   Garden_Supply   : Suit_Build_Supply :=
+                     (GARDENS_MAX, GARDENS_MAX, GARDENS_MAX);
 
    Curr_Order : Suit;
 

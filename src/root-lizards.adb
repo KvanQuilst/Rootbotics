@@ -162,83 +162,63 @@ package body Root.Lizards is
       ----------------------
       -- Confirm Warriors --
       ----------------------
-      Prompt;
-      Put_Line ("Does the number of warriors match for each clearing?");
-      if not Get_Yes_No then
-         Prompt;
-         Put_Line ("Which clearings are incorrect?");
-         declare
-            Clearings : constant Int_Arr := Get_Integers (1, 12);
-            Warriors  : Integer;
-            Supply    : Integer := Warrior_Supply;
-         begin
-            loop
-               for C of Clearings loop
-                  exit when C = 0;
-
-                  Prompt;
-                  Put_Line ("What is the number of warriors in clearing" &
-                             C'Image & "?");
-                  Warriors := Get_Integer (0, WARRIOR_MAX);
-                  Supply := Supply + (Map_Warriors (C) - Warriors);
-                  Map_Warriors (C) := Warriors;
-               end loop;
-
-               exit when Supply >= 0 and then Supply <= WARRIOR_MAX;
-
-               Put_Line ("The provided values don't add up, let's try again.");
-               Continue;
-            end loop;
-            if Supply > Warrior_Supply then
-               Acolytes := Supply - Warrior_Supply;
-            else
-               Warrior_Supply := Supply;
-            end if;
-         end;
-      end if;
+      declare
+         Lost : Natural;
+      begin
+         Lost := Check_Warriors (Prompt'Access, Warrior_Supply,
+                                 Map_Warriors, WARRIOR_MAX);
+         Acolytes := Acolytes + Lost;
+         Warrior_Supply := Warrior_Supply - Lost;
+      end;
 
       -----------------------
       -- Confirm Buildings --
       -----------------------
-      Prompt;
-      Put_Line ("Does the number of buildings match for each clearing?");
-      if not Get_Yes_No then
-         Prompt;
-         Put_Line ("Which clearings are incorrect?");
-         declare
-            Clearings : constant Int_Arr := Get_Integers (1, 12);
-            S         : Suit;
-            Buildings : Integer;
-            Supply    : array (Garden'Range) of Integer :=
-                           (Garden_Supply (Fox),
-                            Garden_Supply (Mouse),
-                            Garden_Supply (Rabbit));
-         begin
-            loop
-               for C of Clearings loop
-                  exit when C = 0;
-                  S := Root.Maps.Clearings (C).C_Suit;
+      declare
+         Lost : constant Natural :=
+            Check_Buildings (Prompt'Access, Garden_Supply,
+                             Gardens, GARDENS_MAX);
+            pragma Unreferenced (Lost);
+      begin null; end;
+      --  Prompt;
+      --  Put_Line ("Does the number of buildings match for each clearing?");
+      --  if not Get_Yes_No then
+      --     Prompt;
+      --     Put_Line ("Which clearings are incorrect?");
+      --     declare
+      --        Clearings : constant Int_Arr := Get_Integers (1, 12);
+      --        S         : Suit;
+      --        Buildings : Integer;
+      --        Supply    : array (Garden'Range) of Integer :=
+      --                       (Garden_Supply (Fox),
+      --                        Garden_Supply (Mouse),
+      --                        Garden_Supply (Rabbit));
+      --     begin
+      --        loop
+      --           for C of Clearings loop
+      --              exit when C = 0;
+      --              S := Root.Maps.Clearings (C).C_Suit;
 
-                  Prompt;
-                  Put_Line ("What is the number of buildings in clearing" &
-                            C'Image & "?");
-                  Buildings :=
-                     Get_Integer (0, Root.Maps.Clearings (C).Buildings);
-                  Supply (S) := Supply (S) + (Gardens (C) - Buildings);
-                  Gardens (C) := Buildings;
-               end loop;
+      --              Prompt;
+      --              Put_Line ("What is the number of buildings in clearing" &
+      --                        C'Image & "?");
+      --              Buildings :=
+      --                 Get_Integer (0, Root.Maps.Clearings (C).Buildings);
+      --              Supply (S) := Supply (S) + (Gardens (C) - Buildings);
+      --              Gardens (C) := Buildings;
+      --           end loop;
 
-               exit when
-                  (for all I of Supply => I >= 0 and then I <= GARDENS_MAX);
+      --           exit when
+      --             (for all I of Supply => I >= 0 and then I <= GARDENS_MAX);
 
-               Put_Line ("The provided values don't add up, let's try again.");
-               Continue;
-            end loop;
-            for S in Supply'Range loop
-               Garden_Supply (S) := Supply (S);
-            end loop;
-         end;
-      end if;
+      --       Put_Line ("The provided values don't add up, let's try again.");
+      --           Continue;
+      --        end loop;
+      --        for S in Supply'Range loop
+      --           Garden_Supply (S) := Supply (S);
+      --        end loop;
+      --     end;
+      --  end if;
 
       ------------------
       -- Confirm Rule --

@@ -24,7 +24,105 @@
 -- <https://www.gnu.org/licenses/>.                                          --
 -------------------------------------------------------------------------------
 with Ada.Text_IO; use Ada.Text_IO;
+
+with Root.IO; use Root.IO;
+with Root.Maps; use Root.Maps;
+
 package body Root.Faction is
+
+   function Check_Warriors (Prompt : access procedure (Time : Phase := None);
+                            Supply       : in out   Integer;
+                            Map_Warriors : in out   Warrior_Arr;
+                            Max_Warriors :          Integer) return Natural is
+      Lost : Natural := 0;
+   begin
+      Prompt.all;
+      Put_Line ("Does the number of warriors match for each clearing?");
+      if not Get_Yes_No then
+         Prompt.all;
+         Put_Line ("Which clearings are incorrect?");
+         declare
+            Clearings : constant Int_Arr := Get_Integers (1, 12);
+            Warriors  : Integer;
+            S         : Integer := Supply;
+         begin
+            loop
+               Lost := 0;
+               for C of Clearings loop
+                  exit when C = 0;
+
+                  Prompt.all;
+                  Put_Line ("What is the number of warriors in clearing" &
+                             C'Image & "?");
+                  Warriors := Get_Integer (0, Max_Warriors);
+                  if Warriors < Map_Warriors (C) then
+                     Lost := Lost + (Map_Warriors (C) - Warriors);
+                  end if;
+                  S := S + (Map_Warriors (C) - Warriors);
+                  Map_Warriors (C) := Warriors;
+               end loop;
+
+               exit when S >= 0 and then S <= Max_Warriors;
+
+               Put_Line ("The provided values don't add up, let's try again.");
+               Continue;
+            end loop;
+            Supply := S;
+         end;
+      end if;
+      return Lost;
+   end Check_Warriors;
+
+   function Check_Buildings (Prompt : access procedure (Time : Phase := None);
+                             Supply : in out Suit_Build_Supply;
+                             Builds : in out Building_Arr;
+                             Max_Builds : Integer) return Natural is
+      Lost : Natural := 0;
+   begin
+      Prompt.all;
+      Put_Line ("Does the number of buildings match for each clearing?");
+      if not Get_Yes_No then
+         Prompt.all;
+         Put_Line ("Which clearings are incorrect?");
+         declare
+            Clearings : constant Int_Arr := Get_Integers (1, 12);
+            S         : Suit;
+            Buildings : Integer;
+            New_Supply : Suit_Build_Supply := (Supply (Fox),
+                                               Supply (Mouse),
+                                               Supply (Rabbit));
+         begin
+            loop
+               Lost := 0;
+               for C of Clearings loop
+                  exit when C = 0;
+                  S := Root.Maps.Clearings (C).C_Suit;
+
+                  Prompt.all;
+                  Put_Line ("What is the number of buildings in clearing" &
+                            C'Image & "?");
+                  Buildings :=
+                     Get_Integer (0, Root.Maps.Clearings (C).Buildings);
+                  if Buildings < Builds (C) then
+                     Lost := Lost + (Builds (C) - Buildings);
+                  end if;
+                  New_Supply (S) := New_Supply (S) + (Builds (C) - Buildings);
+                  Builds (C) := Buildings;
+               end loop;
+
+               exit when
+                  (for all I of New_Supply => I >= 0 and then I <= Max_Builds);
+
+               Put_Line ("The provided values don't add up, let's try again.");
+               Continue;
+            end loop;
+            for S in New_Supply'Range loop
+               Supply (S) := New_Supply (S);
+            end loop;
+         end;
+      end if;
+      return Lost;
+   end Check_Buildings;
 
    procedure Deploy_Warriors (Supply       : in out Integer;
                               Map_Warriors : in out Warrior_Arr;

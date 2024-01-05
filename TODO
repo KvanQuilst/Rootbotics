@@ -14,11 +14,11 @@ ROOT . MAPS
 
 ROOT . FACTION
 --------------------
-- Transition faction related stuff from root.ads
 
 ROOT . IO
 --------------------
 - Transition multioption responses to Sets (remove duplicate answers)
+- ^D causes exception
 
 CLOCKWORK 1
 --------------------
