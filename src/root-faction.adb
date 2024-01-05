@@ -42,15 +42,13 @@ package body Root.Faction is
          Prompt.all;
          Put_Line ("Which clearings are incorrect?");
          declare
-            Clearings : constant Int_Arr := Get_Integers (1, 12);
+            Clearings : constant Int_Set := Get_Integers (1, 12);
             Warriors  : Integer;
             S         : Integer := Supply;
          begin
             loop
                Lost := 0;
                for C of Clearings loop
-                  exit when C = 0;
-
                   Prompt.all;
                   Put_Line ("What is the number of warriors in clearing" &
                              C'Image & "?");
@@ -85,7 +83,7 @@ package body Root.Faction is
          Prompt.all;
          Put_Line ("Which clearings are incorrect?");
          declare
-            Clearings : constant Int_Arr := Get_Integers (1, 12);
+            Clearings : constant Int_Set := Get_Integers (1, 12);
             S         : Suit;
             Buildings : Integer;
             New_Supply : Suit_Build_Supply := (Supply (Fox),
@@ -95,7 +93,6 @@ package body Root.Faction is
             loop
                Lost := 0;
                for C of Clearings loop
-                  exit when C = 0;
                   S := Root.Maps.Clearings (C).C_Suit;
 
                   Prompt.all;
@@ -133,10 +130,9 @@ package body Root.Faction is
          Prompt.all;
          Put_Line ("Which clearings are incorrect?");
          declare
-            Clearings : constant Int_Arr := Get_Integers (1, 12);
+            Clearings : constant Int_Set := Get_Integers (1, 12);
          begin
             for C of Clearings loop
-               exit when C = 0;
                Rule (C) := not Rule (C);
             end loop;
          end;

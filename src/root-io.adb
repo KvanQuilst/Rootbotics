@@ -62,7 +62,7 @@ package body Root.IO is
          Get (C);
          Line := To_Unbounded_String (Get_Line);
          exit when Character'Pos (C) - 96 > 0 and then
-           Character'Pos (C) - 96 <= Options'Length;
+                   Character'Pos (C) - 96 <= Options'Length;
          Put_Line ("Invalid option!");
       end loop;
 
@@ -138,12 +138,11 @@ package body Root.IO is
       return Val;
    end Get_Integer;
 
-   function Get_Integers (Low, High : Integer) return Int_Arr is
-      Ints    : Int_Arr (1 .. (High - Low + 1));
-      Line    : Unbounded_String;
-      Val     : Integer;
-      Last    : Integer := 1;
-      Count   : Integer := 0;
+   function Get_Integers (Low, High : Integer) return Int_Set is
+      Ints  : Int_Set;
+      Line  : Unbounded_String;
+      Val   : Integer;
+      Last  : Integer := 1;
       Invalid : Boolean;
    begin
       Put_Line ("Enter values. Press enter for 'none'");
@@ -151,7 +150,6 @@ package body Root.IO is
       loop
          Invalid := False;
          Last := 1;
-         Count := 0;
 
          Put ("Values: ");
          Line := To_Unbounded_String (Get_Line);
@@ -161,16 +159,15 @@ package body Root.IO is
             Invalid := Invalid or else (C /= ' ' and then C not in '0' .. '9');
          end loop;
 
-         -- Add Numbers to Ints --
+         -- Add values to Ints --
          while Last <= Length (Line) loop
             if Element (Line, Last) in '0' .. '9' then
                Get (Slice (Line, Last, Length (Line)), Val, Last);
                Invalid := Invalid or else Val not in Low .. High;
-               Count := Count + 1;
 
                exit when Invalid;
 
-               Ints (Count) := Val;
+               Ints.Include (Val);
             end if;
             Last := Last + 1;
          end loop;
@@ -178,10 +175,6 @@ package body Root.IO is
          exit when Invalid = False;
          Put_Line ("Invalid response!");
       end loop;
-
-      if Count /= Ints'Length then
-         Ints (Count + 1) := Low - 1;
-      end if;
 
       return Ints;
    end Get_Integers;

@@ -24,17 +24,22 @@
 -- <https://www.gnu.org/licenses/>.                                          --
 -------------------------------------------------------------------------------
 with Ada.Characters.Latin_1; use Ada.Characters.Latin_1;
+with Ada.Containers.Ordered_Sets;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 
 with Root.Faction; use Root.Faction;
 
 package Root.IO is
+   package Integer_Set is
+      new Ada.Containers.Ordered_Sets (Element_Type => Integer);
 
    WIDTH : constant Integer := 40;
 
    type Int_Arr    is array (Positive range <>) of Integer;
    type Char_Arr   is array (Positive range <>) of Character;
    type String_Arr is array (Positive range <>) of Unbounded_String;
+
+   subtype Int_Set is Integer_Set.Set;
 
    function Unbounded (S : String) return Unbounded_String
       renames To_Unbounded_String;
@@ -48,7 +53,7 @@ package Root.IO is
    function Get_Option   (Options   : String_Arr) return Character;
    function Get_Options  (Options   : String_Arr) return Char_Arr;
    function Get_Integer  (Low, High : Integer)    return Integer;
-   function Get_Integers (Low, High : Integer)    return Int_Arr;
+   function Get_Integers (Low, High : Integer)    return Int_Set;
    function Get_Yes_No  return Boolean;
 
    -----------------
