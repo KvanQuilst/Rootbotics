@@ -23,6 +23,7 @@
 -- with The Rootbotics Assistant. If not, see                                --
 -- <https://www.gnu.org/licenses/>.                                          --
 -------------------------------------------------------------------------------
+with Root.Faction; use Root.Faction;
 with Root.IO; use Root.IO;
 package Root.Maps is
 

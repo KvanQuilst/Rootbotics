@@ -142,8 +142,8 @@ package body Root.Lizards is
       S : constant Suit := Clearings (Clear).C_Suit;
    begin
       if Garden_Supply (S) > 0 then
-         Root.Deploy_Building (Garden_Supply (S), Gardens,
-                               Clear, S'Image & " Garden");
+         Root.Faction.Deploy_Building (Garden_Supply (S), Gardens,
+                                       Clear, S'Image & " Garden");
          Rule (Clear) := True;
       end if;
    end Deploy_Building;

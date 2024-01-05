@@ -26,6 +26,8 @@
 with Ada.Characters.Latin_1; use Ada.Characters.Latin_1;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 
+with Root.Faction; use Root.Faction;
+
 package Root.IO is
 
    WIDTH : constant Integer := 40;

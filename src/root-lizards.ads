@@ -25,6 +25,7 @@
 -------------------------------------------------------------------------------
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 
+with Root.Faction; use Root.Faction;
 with Root.IO; use Root.IO;
 
 package Root.Lizards is
