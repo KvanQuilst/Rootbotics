@@ -74,7 +74,7 @@ private
    -------------------
    -- Fall Map Data --
    -------------------
-   Fall_Map : constant Clearing_Arr :=
+   Fall_Map_Clean : constant Clearing_Arr :=
       ((Fox,    1, False, (5, 9, 10, 0, 0, 0)),   -- 1
        (Mouse,  2, False, (5, 6, 10, 0, 0, 0)),   -- 2
        (Rabbit, 1, False, (6, 7, 11, 0, 0, 0)),   -- 3

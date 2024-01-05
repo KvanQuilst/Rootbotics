@@ -126,11 +126,12 @@ package body Root.Maps is
    end Query_Suit;
 
    procedure Init_Map (Name : Map_Name) is
+      Counts : array (Suit range Fox .. Rabbit) of Natural := (others => 0);
    begin
       Map_In_Play := Name;
 
       case Name is
-         when Fall => Map := Fall_Map;
+         when Fall => Map := Fall_Map_Clean;
          when Winter => Map := Winter_Map_Clean;
          when Lake => Map := Lake_Map_Clean;
          when Mountain => Map := Mountain_Map_Clean;
@@ -141,8 +142,19 @@ package body Root.Maps is
             C := Bird;
          end loop;
 
-         for C in Priority'Range loop
-            Map (C).C_Suit := Query_Suit (C);
+         loop
+            for C in Priority'Range loop
+               Map (C).C_Suit := Query_Suit (C);
+               Counts (Map (C).C_Suit) := Counts (Map (C).C_Suit) + 1;
+            end loop;
+
+            exit when (for all S of Counts => S = 4);
+
+            Put_Line ("Each suit should have 4 associated clearings...");
+            for S of Counts loop
+               S := 0;
+            end loop;
+            Continue;
          end loop;
       end if;
    end Init_Map;
