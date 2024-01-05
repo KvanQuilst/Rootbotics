@@ -124,6 +124,25 @@ package body Root.Faction is
       return Lost;
    end Check_Buildings;
 
+   procedure Check_Rule (Prompt : access procedure (Time : Phase := None);
+                         Rule   : in out Rule_Arr) is
+   begin
+      Prompt.all;
+      Put_Line ("Does the rule match for each clearings?");
+      if not Get_Yes_No then
+         Prompt.all;
+         Put_Line ("Which clearings are incorrect?");
+         declare
+            Clearings : constant Int_Arr := Get_Integers (1, 12);
+         begin
+            for C of Clearings loop
+               exit when C = 0;
+               Rule (C) := not Rule (C);
+            end loop;
+         end;
+      end if;
+   end Check_Rule;
+
    procedure Deploy_Warriors (Supply       : in out Integer;
                               Map_Warriors : in out Warrior_Arr;
                               Clear        :        Priority;

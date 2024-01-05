@@ -180,45 +180,6 @@ package body Root.Lizards is
                              Gardens, GARDENS_MAX);
             pragma Unreferenced (Lost);
       begin null; end;
-      --  Prompt;
-      --  Put_Line ("Does the number of buildings match for each clearing?");
-      --  if not Get_Yes_No then
-      --     Prompt;
-      --     Put_Line ("Which clearings are incorrect?");
-      --     declare
-      --        Clearings : constant Int_Arr := Get_Integers (1, 12);
-      --        S         : Suit;
-      --        Buildings : Integer;
-      --        Supply    : array (Garden'Range) of Integer :=
-      --                       (Garden_Supply (Fox),
-      --                        Garden_Supply (Mouse),
-      --                        Garden_Supply (Rabbit));
-      --     begin
-      --        loop
-      --           for C of Clearings loop
-      --              exit when C = 0;
-      --              S := Root.Maps.Clearings (C).C_Suit;
-
-      --              Prompt;
-      --              Put_Line ("What is the number of buildings in clearing" &
-      --                        C'Image & "?");
-      --              Buildings :=
-      --                 Get_Integer (0, Root.Maps.Clearings (C).Buildings);
-      --              Supply (S) := Supply (S) + (Gardens (C) - Buildings);
-      --              Gardens (C) := Buildings;
-      --           end loop;
-
-      --           exit when
-      --             (for all I of Supply => I >= 0 and then I <= GARDENS_MAX);
-
-      --       Put_Line ("The provided values don't add up, let's try again.");
-      --           Continue;
-      --        end loop;
-      --        for S in Supply'Range loop
-      --           Garden_Supply (S) := Supply (S);
-      --        end loop;
-      --     end;
-      --  end if;
 
       ------------------
       -- Confirm Rule --
@@ -227,19 +188,21 @@ package body Root.Lizards is
          Rule (C) := Rule (C) or else Gardens (C) > 0;
       end loop;
 
-      Prompt;
-      Put_Line ("Does the rule match for each clearings?");
-      if not Get_Yes_No then
-         Prompt;
-         Put_Line ("Which clearings are incorrect?");
-         declare
-            Clearings : constant Int_Arr := Get_Integers (1, 12);
-         begin
-            for C of Clearings loop
-               Rule (C) := not Rule (C);
-            end loop;
-         end;
-      end if;
+      Check_Rule (Prompt'Access, Rule);
+
+      --  Prompt;
+      --  Put_Line ("Does the rule match for each clearings?");
+      --  if not Get_Yes_No then
+      --     Prompt;
+      --     Put_Line ("Which clearings are incorrect?");
+      --     declare
+      --        Clearings : constant Int_Arr := Get_Integers (1, 12);
+      --     begin
+      --        for C of Clearings loop
+      --           Rule (C) := not Rule (C);
+      --        end loop;
+      --     end;
+      --  end if;
 
       --------------
       -- Birdsong --
