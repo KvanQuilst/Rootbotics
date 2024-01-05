@@ -16,7 +16,6 @@ ROOT . FACTION
 
 ROOT . IO
 --------------------
-- Transition multioption responses to Sets (remove duplicate answers)
 - ^D causes exception
 
 CLOCKWORK 1
