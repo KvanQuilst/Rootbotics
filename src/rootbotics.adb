@@ -30,17 +30,17 @@ with Root; use Root;
 with Root.IO; use Root.IO;
 with Root.Maps; use Root.Maps;
 
-with Root.Eyrie;
 with Root.Marquise;
-with Root.Alliance;
-with Root.Vagabot;
+--  with Root.Eyrie;
+--  with Root.Alliance;
+--  with Root.Vagabot;
 with Root.Lizards;
 
 procedure Rootbotics is
    VERSION : constant String := "v0.1";
 
    -- In order of setup priority --
-   type Faction is (Marquise, Eyrie, Alliance, Vagabot, Lizards);
+   type Faction is (Marquise, Lizards);
 
    Playing : array (Faction'Range) of Boolean := (others => False);
    Num_Playing : Integer := 0;
@@ -55,9 +55,9 @@ begin
    declare
       Options : constant String_Arr := (
          To_Unbounded_String (Root.Marquise.Name),
-         To_Unbounded_String (Root.Eyrie.Name),
-         To_Unbounded_String (Root.Alliance.Name),
-         To_Unbounded_String (Root.Vagabot.Name),
+         --  To_Unbounded_String (Root.Eyrie.Name),
+         --  To_Unbounded_String (Root.Alliance.Name),
+         --  To_Unbounded_String (Root.Vagabot.Name),
          To_Unbounded_String (Root.Lizards.Name)
          --  To_Unbounded_String (Root.Riverfolk.Name),
          --  To_Unbounded_String (Root.Corvids.Name),
@@ -107,10 +107,9 @@ begin
       if Playing (I) then
          case I is
             when Marquise => Root.Marquise.Setup (Get_Map);
-            when Eyrie => Root.Eyrie.Setup;
-            when Alliance =>
-               Put_Line ("The Automated Alliance is unimplmented!");
-            when Vagabot => Root.Vagabot.Setup;
+            --  when Eyrie => Root.Eyrie.Setup;
+            --  when Alliance => Root.Alliance.Setup;
+            --  when Vagabot => Root.Vagabot.Setup;
             when Lizards => Root.Lizards.Setup;
          end case;
       end if;
@@ -134,12 +133,6 @@ begin
             case I is
                when Marquise =>
                   Options (P_Idx) := To_Unbounded_String (Root.Marquise.Name);
-               when Eyrie    =>
-                  Options (P_Idx) := To_Unbounded_String (Root.Eyrie.Name);
-               when Alliance =>
-                  Options (P_Idx) := To_Unbounded_String (Root.Alliance.Name);
-               when Vagabot  =>
-                  Options (P_Idx) := To_Unbounded_String (Root.Vagabot.Name);
                when Lizards =>
                   Options (P_Idx) := To_Unbounded_String (Root.Lizards.Name);
             end case;
@@ -183,9 +176,6 @@ begin
          -- Handle faction turn --
          case F is
             when Marquise => Root.Marquise.Take_Turn (Order, Get_Map);
-            when Eyrie    => Root.Eyrie.Take_Turn (Order, Get_Map);
-            when Alliance => Root.Alliance.Take_Turn (Order, Get_Map);
-            when Vagabot  => Root.Vagabot.Take_Turn (Order, Get_Map);
             when Lizards  => Root.Lizards.Take_Turn;
          end case;
       end loop;
