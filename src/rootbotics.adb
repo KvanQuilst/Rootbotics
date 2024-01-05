@@ -23,6 +23,7 @@
 -- with The Rootbotics Assistant. If not, see                                --
 -- <https://www.gnu.org/licenses/>.                                          --
 -------------------------------------------------------------------------------
+with Ada.Containers; use Ada.Containers;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Ada.Text_IO; use Ada.Text_IO;
 
@@ -63,16 +64,16 @@ begin
          --  To_Unbounded_String (Root.Corvids.Name),
          --  To_Unbounded_String (Root.Duchy.Name)
          );
-      Opts : constant Char_Arr := Get_Options (Options);
+      Opts : constant Char_Set := Get_Options (Options);
    begin
-      if Opts'Length = 0 then
+      if Opts.Length = 0 then
          return;
       end if;
 
-      for I in Opts'Range loop
-         Playing (Faction'Val (Character'Pos (Opts (I)) - 97)) := True;
+      for C of Opts loop
+         Playing (Faction'Val (Character'Pos (C) - 97)) := True;
       end loop;
-      Num_Playing := Opts'Length;
+      Num_Playing := Integer (Opts.Length);
    end;
    New_Line;
 

@@ -24,6 +24,7 @@
 -- with The Rootbotics Assistant. If not, see                                --
 -- <https://www.gnu.org/licenses/>.                                          --
 -------------------------------------------------------------------------------
+with Ada.Containers; use Ada.Containers;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Ada.Text_IO; use Ada.Text_IO;
 
@@ -491,14 +492,14 @@ package body Root.Marquise is
 
             Put_Line ("Which clearing has the most enemies?");
             declare
-               Opts : constant Char_Arr :=
+               Opts : constant Char_Set :=
                   Get_Options (Options (1 .. Count - 1));
                Num_Move : constant Integer := Meeples (I) - 3;
                Max : Integer := 0;
             begin
                New_Line;
 
-               if Opts'Length = 0 then
+               if Opts.Length = 0 then
                   Put_Line ("Move" & Num_Move'Image & " " & Name &
                             " warriors from clearing" & I'Image &
                             " to clearing" &
@@ -507,9 +508,9 @@ package body Root.Marquise is
                     Meeples (M.Clearings (I).Neighbors (1)) + Num_Move;
                   Meeples (I) := 3;
                else
-                  for J in Opts'Range loop
-                     Max := (if Character'Pos (Opts (J)) - 96 > Max then
-                       Character'Pos (Opts (J)) - 96 else Max);
+                  for C of Opts loop
+                     Max := (if Character'Pos (C) - 96 > Max then
+                       Character'Pos (C) - 96 else Max);
                   end loop;
                   Put_Line ("Move" & Num_Move'Image & " " & Name &
                             " warriors from clearing" & I'Image &

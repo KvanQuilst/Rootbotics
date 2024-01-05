@@ -69,10 +69,9 @@ package body Root.IO is
       return C;
    end Get_Option;
 
-   function Get_Options (Options  : String_Arr) return Char_Arr is
-      Opts    : Char_Arr (1 .. Options'Length);
+   function Get_Options (Options  : String_Arr) return Char_Set is
+      Opts    : Char_Set;
       Line    : Unbounded_String;
-      Count   : Integer := 0;
       Invalid : Boolean;
    begin
       Put_Options (Options);
@@ -81,37 +80,26 @@ package body Root.IO is
 
       loop
          Invalid := False;
-         Count   := 0;
 
          Put ("Options: ");
 
          Line := To_Unbounded_String (Get_Line);
 
          -- Get number of options / determine invalid --
-         for I in 1 .. Length (Line) loop
-            if Element (Line, I) >= 'a' and then
-              Element (Line, I) <= Character'Val (96 + Options'Length)
+         for C of To_String (Line) loop
+            if C >= 'a' and then C <= Character'Val (96 + Options'Length)
             then
-               Count := Count + 1;
-               Opts (Count) := Element (Line, I);
-            elsif Element (Line, I) /= ' ' then
+               Opts.Include (C);
+            elsif C /= ' ' then
                Invalid := True;
             end if;
-         end loop;
-
-         Invalid := (if Count > Options'Length then True else Invalid);
-
-         for I in 1 .. Count - 1 loop
-            for J in I + 1 .. Count loop
-               Invalid := (if Opts (I) = Opts (J) then True else Invalid);
-            end loop;
          end loop;
 
          exit when Invalid = False;
          Put_Line ("Invalid response!");
       end loop;
 
-      return Opts (1 .. Count);
+      return Opts;
    end Get_Options;
 
    function Get_Integer (Low, High : Integer) return Integer is
