@@ -30,6 +30,29 @@ with Root.Maps; use Root.Maps;
 
 package body Root.Faction is
 
+   ----------------
+   -- Faction IO --
+   ----------------
+   procedure Put_Logo (Name       : String;
+                       Logo       : Logo_Arr;
+                       Logo_Width : Positive) is
+      B_Col : constant Integer := (WIDTH - Logo_Width) / 2 + 2;
+   begin
+      Put_Line_Centered (Name);
+      Cursor_Line_Move (9);
+      Put_Line (To_String (WIDTH * '-'));
+      Cursor_Line_Move (-9);
+      for L of Logo loop
+         Cursor_Column_Set (B_Col);
+         Put (To_String (L));
+         Cursor_Line_Move (1);
+      end loop;
+      New_Line;
+   end Put_Logo;
+
+   ---------------------------------
+   -- Faction Resrouce Management --
+   ---------------------------------
    function Check_Warriors (Prompt : access procedure (Time : Phase := None);
                             Supply       : in out   Integer;
                             Map_Warriors : in out   Warrior_Arr;

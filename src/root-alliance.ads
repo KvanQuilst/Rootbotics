@@ -60,17 +60,17 @@ private
    Curr_Order : Suit;
 
    Logo_Width : constant := 21;
-   Logo : constant array (Integer range <>) of Unbounded_String :=
+   Logo : Logo_Arr :=
       (Unbounded (String_Style ("      _       _      ", Faction_Color)),
        Unbounded (String_Style ("     / \     / \     ", Faction_Color)),
        Unbounded (String_Style ("    |/ \|   |/ \|    ", Faction_Color)),
        Unbounded (String_Style ("    || ||   || ||    ", Faction_Color)),
        Unbounded (String_Style ("   _|| ||___|| ||_   ", Faction_Color)),
-       Unbounded (String_Style ("  /  __       __   \ ", Faction_Color)),
-       Unbounded (String_Style (" / /   /\   /   /\  \", Faction_Color)),
+       Unbounded (String_Style ("  /  __       __  \  ", Faction_Color)),
+       Unbounded (String_Style (" / /   /\   /   /\ \ ", Faction_Color)),
        Unbounded (String_Style ("| |   <  | |   <  | |", Faction_Color)),
        Unbounded (String_Style ("|  \ __\/   \ __\/  |", Faction_Color)),
-       Unbounded (String_Style (" \  . .   |    . .  /", Faction_Color)),
-       Unbounded (String_Style ("  \________________/ ", Faction_Color)));
+       Unbounded (String_Style (" \  . .   |   . .  / ", Faction_Color)),
+       Unbounded (String_Style ("  \_______________/  ", Faction_Color)));
 
 end Root.Alliance;

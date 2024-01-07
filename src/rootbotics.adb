@@ -155,7 +155,7 @@ begin
             P_Idx := 1;
          end if;
 
-         F := Lizards;
+         F := Alliance;
          loop
             if Playing (F) then
                P_Idx := P_Idx - 1;

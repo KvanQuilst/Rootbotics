@@ -23,6 +23,8 @@
 -- with The Rootbotics Assistant. If not, see                                --
 -- <https://www.gnu.org/licenses/>.                                          --
 -------------------------------------------------------------------------------
+with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
+
 package Root.Faction is
 
    type Warrior_Arr  is array (Priority'Range) of Natural;
@@ -31,6 +33,14 @@ package Root.Faction is
 
    subtype Building_Suit is Suit range Fox .. Rabbit;
    type Suit_Build_Supply is array (Building_Suit'Range) of Integer;
+
+   ----------------
+   -- Faction IO --
+   ----------------
+   type Logo_Arr is array (Integer range <>) of Unbounded_String;
+   procedure Put_Logo (Name       : String;
+                       Logo       : Logo_Arr;
+                       Logo_Width : Positive);
 
    ---------------------------------
    -- Faction Resource Management --

@@ -23,26 +23,14 @@
 -- with The Rootbotics Assistant. If not, see                                --
 -- <https://www.gnu.org/licenses/>.                                          --
 -------------------------------------------------------------------------------
-with Ada.Text_IO; use Ada.Text_IO;
-
 package body Root.Alliance is
 
    ---------------
    -- Prompt IO --
    ---------------
    procedure Put_Logo is
-      B_Col : constant := (WIDTH - Logo_Width) / 2 + 2;
    begin
-      Put_Line_Centered (Name);
-      Cursor_Line_Move (9);
-      Put_Line (To_String (WIDTH * '-'));
-      Cursor_Line_Move (-9);
-      for L of Logo loop
-         Cursor_Column_Set (B_Col);
-         Put (To_String (L));
-         Cursor_Line_Move (1);
-      end loop;
-      New_Line;
+      Root.Faction.Put_Logo (Name, Logo, Logo_Width);
    end Put_Logo;
 
    procedure Put_State is null;

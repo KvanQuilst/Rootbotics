@@ -64,7 +64,8 @@ private
    Curr_Order : Suit;
 
    Logo_Width : constant := 24;
-   Logo : constant array (Integer range <>) of Unbounded_String :=
+   --  Logo : constant array (Integer range <>) of Unbounded_String :=
+   Logo : Logo_Arr :=
       (Unbounded (String_Style ("                        ", Faction_Color)),
        Unbounded (String_Style ("      ___               ", Faction_Color)),
        Unbounded (String_Style ("    / ___ \___          ", Faction_Color)),
