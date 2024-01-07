@@ -33,8 +33,8 @@ package Root.Lizards is
    Faction_Color : constant Color := B_Yellow;
    Name : constant String := String_Style ("Logical Lizards", Faction_Color);
 
-   procedure Take_Turn;
    procedure Setup;
+   procedure Take_Turn;
 
 private
 
@@ -73,7 +73,6 @@ private
        Unbounded (String_Style (" | .   ________________\", Faction_Color)),
        Unbounded (String_Style ("<|    ___    | |      / ", Faction_Color)),
        Unbounded (String_Style (" <|  /   \    ^      /  ", Faction_Color)),
-       Unbounded (String_Style ("   |_\___/_________/    ", Faction_Color))
-      );
+       Unbounded (String_Style ("   |_\___/_________/    ", Faction_Color)));
 
 end Root.Lizards;

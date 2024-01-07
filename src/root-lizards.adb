@@ -178,7 +178,7 @@ package body Root.Lizards is
          Lost : constant Natural :=
             Check_Buildings (Prompt'Access, Garden_Supply,
                              Gardens, GARDENS_MAX);
-            pragma Unreferenced (Lost);
+         pragma Unreferenced (Lost);
       begin null; end;
 
       ------------------
