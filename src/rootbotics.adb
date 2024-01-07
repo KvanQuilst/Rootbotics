@@ -31,9 +31,9 @@ with Root; use Root;
 with Root.IO; use Root.IO;
 with Root.Maps; use Root.Maps;
 
-with Root.Marquise;
+--  with Root.Marquise;
 --  with Root.Eyrie;
---  with Root.Alliance;
+with Root.Alliance;
 --  with Root.Vagabot;
 with Root.Lizards;
 
@@ -41,7 +41,7 @@ procedure Rootbotics is
    VERSION : constant String := "v0.1.2";
 
    -- In order of setup priority --
-   type Faction is (Marquise, Lizards);
+   type Faction is (Alliance, Lizards);
 
    Playing : array (Faction'Range) of Boolean := (others => False);
    Num_Playing : Integer := 0;
@@ -55,9 +55,9 @@ begin
    Put_Line ("Which factions will you play with?");
    declare
       Options : constant String_Arr := (
-         To_Unbounded_String (Root.Marquise.Name),
+         --  To_Unbounded_String (Root.Marquise.Name),
          --  To_Unbounded_String (Root.Eyrie.Name),
-         --  To_Unbounded_String (Root.Alliance.Name),
+         To_Unbounded_String (Root.Alliance.Name),
          --  To_Unbounded_String (Root.Vagabot.Name),
          To_Unbounded_String (Root.Lizards.Name)
          --  To_Unbounded_String (Root.Riverfolk.Name),
@@ -107,9 +107,9 @@ begin
    for I in Playing'Range loop
       if Playing (I) then
          case I is
-            when Marquise => Root.Marquise.Setup (Get_Map);
+            --  when Marquise => Root.Marquise.Setup (Get_Map);
             --  when Eyrie => Root.Eyrie.Setup;
-            --  when Alliance => Root.Alliance.Setup;
+            when Alliance => Root.Alliance.Setup;
             --  when Vagabot => Root.Vagabot.Setup;
             when Lizards => Root.Lizards.Setup;
          end case;
@@ -132,8 +132,8 @@ begin
          if Playing (I) then
             P_Idx := P_Idx + 1;
             case I is
-               when Marquise =>
-                  Options (P_Idx) := To_Unbounded_String (Root.Marquise.Name);
+               when Alliance =>
+                  Options (P_Idx) := To_Unbounded_String (Root.Alliance.Name);
                when Lizards =>
                   Options (P_Idx) := To_Unbounded_String (Root.Lizards.Name);
             end case;
@@ -176,7 +176,7 @@ begin
 
          -- Handle faction turn --
          case F is
-            when Marquise => Root.Marquise.Take_Turn (Order, Get_Map);
+            when Alliance => Root.Alliance.Take_Turn (Order);
             when Lizards  => Root.Lizards.Take_Turn;
          end case;
       end loop;

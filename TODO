@@ -8,11 +8,16 @@ GENERAL
    -- Input wrapper? => Filters input according for 'h' or 'q' and passes rest to get_*
 - Test
 
+ROOTBOTICS
+--------------------
+- Grey out factions which have had a turn this round
+
 ROOT . MAPS
 --------------------
 
 ROOT . FACTION
 --------------------
+- Put_Logo
 
 ROOT . IO
 --------------------

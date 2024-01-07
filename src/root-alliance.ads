@@ -23,25 +23,54 @@
 -- with The Rootbotics Assistant. If not, see                                --
 -- <https://www.gnu.org/licenses/>.                                          --
 -------------------------------------------------------------------------------
+with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
+
+with Root.Faction; use Root.Faction;
 with Root.IO; use Root.IO;
-with Root.Maps; use Root.Maps;
 
 package Root.Alliance is
 
+   Faction_Color : constant Color := Green;
    Name : constant String := String_Style ("Automated Alliance", Green);
 
-   function  Setup (Diff : Difficulty) return Boolean;
-   procedure Take_Turn (Order : Suit; M : Map_Old);
+   procedure  Setup;
+   procedure Take_Turn (Order : Suit);
 
 private
 
-   MEEPLE_MAX : constant := 10;
-   SYMPATHY_MAX : constant := 10;
+   WARRIOR_MAX  : constant Integer := 10;
+   SYMPATHY_MAX : constant Integer := 10;
+   FORTS_MAX    : constant Integer := 1;
 
-   Meeple_Supply   : Integer range 0 .. MEEPLE_MAX  := MEEPLE_MAX;
+   subtype Fort is Building_Suit;
+
+   procedure Prompt (Time : Phase := None) with Inline;
+
+   function Unbounded (S : String) return Unbounded_String
+      renames To_Unbounded_String;
+
+   Warrior_Supply  : Integer range 0 .. WARRIOR_MAX := WARRIOR_MAX;
+   Map_Warriors    : Warrior_Arr;
+   Rule            : Rule_Arr;
    Sympathy_Supply : Integer range 0 .. SYMPATHY_MAX := SYMPATHY_MAX;
+   Map_Sympathy    : array (Priority'Range) of Boolean;
+   Forts           : Building_Arr;
+   Fort_Supply     : Suit_Build_Supply := (FORTS_MAX, FORTS_MAX, FORTS_MAX);
 
-   Meeples    : array (Priority'Range) of Natural;
-   Sympathies : array (Priority'Range) of Boolean;
+   Curr_Order : Suit;
+
+   Logo_Width : constant := 21;
+   Logo : constant array (Integer range <>) of Unbounded_String :=
+      (Unbounded (String_Style ("      _       _      ", Faction_Color)),
+       Unbounded (String_Style ("     / \     / \     ", Faction_Color)),
+       Unbounded (String_Style ("    |/ \|   |/ \|    ", Faction_Color)),
+       Unbounded (String_Style ("    || ||   || ||    ", Faction_Color)),
+       Unbounded (String_Style ("   _|| ||___|| ||_   ", Faction_Color)),
+       Unbounded (String_Style ("  /  __       __   \ ", Faction_Color)),
+       Unbounded (String_Style (" / /   /\   /   /\  \", Faction_Color)),
+       Unbounded (String_Style ("| |   <  | |   <  | |", Faction_Color)),
+       Unbounded (String_Style ("|  \ __\/   \ __\/  |", Faction_Color)),
+       Unbounded (String_Style (" \  . .   |    . .  /", Faction_Color)),
+       Unbounded (String_Style ("  \________________/ ", Faction_Color)));
 
 end Root.Alliance;
