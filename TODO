@@ -1,6 +1,5 @@
 GENERAL
 --------------------
-- Handle difficulty query (Root)
 - End the game
 - Enable user to quit out of turn at start of turn
 - More with colors
@@ -17,6 +16,7 @@ ROOT . MAPS
 
 ROOT . FACTION
 --------------------
+- Difficulty query?
 
 ROOT . IO
 --------------------
@@ -24,6 +24,7 @@ ROOT . IO
 
 CLOCKWORK 1
 --------------------
+- Traits
 
 Mechanical Marquise 2.0:
   - Proper Handling if not enough meeple
@@ -54,6 +55,7 @@ Vagabot:
 
 CLOCKWORK 2
 --------------------
+- Traits
 
 Logical Lizards:
   - Difficulty
@@ -69,4 +71,4 @@ Cogwheel Corvids:
   - Implement All
 
 Vagabot:
-  - Implement Vagrant, Scoundrel, Arbiter_Special
+  - Implement Vagrant, Scoundrel, Arbiter (Special)

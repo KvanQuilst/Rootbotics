@@ -38,7 +38,7 @@ with Root.Alliance;
 with Root.Lizards;
 
 procedure Rootbotics is
-   VERSION : constant String := "v0.1.2";
+   VERSION : constant String := "v0.2";
 
    -- In order of setup priority --
    type Faction is (Alliance, Lizards);
