@@ -31,7 +31,7 @@ package Root.Faction is
    type Building_Arr is array (Priority'Range) of Integer range 0 .. 3;
    type Rule_Arr     is array (Priority'Range) of Boolean;
 
-   subtype Building_Suit is Suit range Fox .. Rabbit;
+   subtype Building_Suit is Suit range Fox .. Mouse;
    type Suit_Build_Supply is array (Building_Suit'Range) of Integer;
 
    ----------------

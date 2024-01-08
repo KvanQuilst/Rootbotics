@@ -27,9 +27,9 @@ package Root is
 
    type Difficulty is (Easy, Default, Challenging, Nightmare);
 
-   type Suit  is (Fox, Mouse, Rabbit, Bird);
+   type Suit  is (Fox, Rabbit, Mouse, Bird);
    type Phase is (Birdsong, Daylight, Evening, None);
-   subtype Clearing_Suit is Suit range Fox .. Rabbit;
+   subtype Clearing_Suit is Suit range Fox .. Mouse;
    subtype Priority is Integer range 1 .. 12;
 
    type Meeple_Arr is array (Priority'Range) of Natural;
