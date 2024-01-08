@@ -52,7 +52,8 @@ private
    Warrior_Supply  : Integer range 0 .. WARRIOR_MAX := WARRIOR_MAX;
    Map_Warriors    : Warrior_Arr;
    Rule            : Rule_Arr;
-   Sympathy_Supply : Integer range 0 .. SYMPATHY_MAX := SYMPATHY_MAX;
+   Officers        : Integer range 0 .. WARRIOR_MAX := 0;
+   Sympathy_Supply : Integer range 0 .. SYMPATHY_MAX := 4;
    Map_Sympathy    : array (Priority'Range) of Boolean;
    Forts           : Building_Arr;
    Fort_Supply     : Suit_Build_Supply := (FORTS_MAX, FORTS_MAX, FORTS_MAX);

@@ -23,6 +23,8 @@
 -- with The Rootbotics Assistant. If not, see                                --
 -- <https://www.gnu.org/licenses/>.                                          --
 -------------------------------------------------------------------------------
+with Ada.Text_IO; use Ada.Text_IO;
+
 package body Root.Alliance is
 
    ---------------
@@ -33,7 +35,61 @@ package body Root.Alliance is
       Root.Faction.Put_Logo (Name, Logo, Logo_Width);
    end Put_Logo;
 
-   procedure Put_State is null;
+   procedure Put_State is
+      procedure Forts_State is
+         Fort : constant String := "|^|";
+      begin
+         Put ("             Forts:");
+         for S in Clearing_Suit'Range loop
+            Set_Style ((if Fort_Supply (S) > 0
+                        then (case S is
+                                 when Fox    => Fox_Color,
+                                 when Mouse  => Mouse_Color,
+                                 when Rabbit => Rabbit_Color)
+                        else B_Black));
+            Put (" " & Fort);
+         end loop;
+         Reset_Style;
+         New_Line;
+      end Forts_State;
+
+      procedure Sympathy_State is
+         Sympathy : constant String := "*";
+      begin
+         Put ("          Sympathy:");
+         for I in reverse 1 .. SYMPATHY_MAX loop
+            if I mod 2 = 0 then
+               if Sympathy_Supply >= I then
+                  Set_Style (Green);
+               else
+                  Set_Style (B_Black);
+               end if;
+               Put ("   " & Sympathy);
+            end if;
+         end loop;
+         New_Line;
+         Put ("                 ");
+         for I in reverse 1 .. SYMPATHY_MAX loop
+            if I mod 2 = 1 then
+               if Sympathy_Supply >= I then
+                  Set_Style (Green);
+               else
+                  Set_Style (B_Black);
+               end if;
+               if I /= SYMPATHY_MAX then
+                  Put ("   " & Sympathy);
+               end if;
+            end if;
+         end loop;
+         Reset_Style;
+         New_Line;
+      end Sympathy_State;
+   begin
+      Put_Line ("    Warrior Supply:" & Warrior_Supply'Image);
+      Put_Line ("          Officers:" & Officers'Image);
+      Forts_State;
+      Sympathy_State;
+   end Put_State;
 
    procedure Prompt (Time : Phase := None) is
    begin
