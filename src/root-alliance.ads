@@ -59,6 +59,7 @@ private
    Fort_Supply     : Suit_Build_Supply := (FORTS_MAX, FORTS_MAX, FORTS_MAX);
 
    Curr_Order : Suit;
+   Curr_Phase : Phase;
 
    Logo_Width : constant := 21;
    Logo : Logo_Arr :=

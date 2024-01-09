@@ -163,7 +163,7 @@ package body Root.Alliance is
 
    end Take_Turn;
 
-   procedure Revolt (Clears : Int_Arr; Time : Phase) is
+   procedure Revolt (Clears : Int_Arr) is
 
       function Count_Sym return Natural is
          Count : Natural := 0;
@@ -178,7 +178,7 @@ package body Root.Alliance is
 
       Num_Sym : constant Natural := Count_Sym;
       Clear : Natural;
-      Opts  : String_Arr (1 .. Num_Sym + 1);
+      Opts  : String_Arr (1 .. Num_Sym);
       Idx   : Positive := 1;
    begin
       if Num_Sym = 0 then
@@ -191,37 +191,86 @@ package body Root.Alliance is
             Idx := Idx + 1;
          end if;
       end loop;
-      Opts (Num_Sym + 1) := Unbounded ("None");
 
-      Prompt (Time);
+      Prompt (Curr_Phase);
       Put_Line ("Which clearing has the most enemy pieces?");
 
       Clear := Character'Pos (Get_Option (Opts)) - Character'Pos ('a') + 1;
-      if Clear <= Clears'Length then
-         Clear := Clears (Clear);
-         Prompt (Time);
-         Put_Line ("Remove all enemy pieces from clearing" & Clear'Image &
-                   ".");
-         Put_Line ("Place the" & Curr_Order'Image & " fort in clearing" &
-                   Clear'Image & ".");
-         Forts (Clear) := Forts (Clear) + 1;
-         Fort_Supply (Curr_Order) := Fort_Supply (Curr_Order) - 1;
-         Continue;
-      end if;
+      Clear := Clears (Clear);
+      Prompt (Curr_Phase);
+      Put_Line ("Remove all enemy pieces from clearing" & Clear'Image &
+                ".");
+      Put_Line ("Place the" & Curr_Order'Image & " fort in clearing" &
+                Clear'Image & ".");
+      Forts (Clear) := Forts (Clear) + 1;
+      Fort_Supply (Curr_Order) := Fort_Supply (Curr_Order) - 1;
+      Continue;
    end Revolt;
+
+   procedure Spread_Sympathy is
+      Adj_Clears : array (Priority'Range) of Boolean := (others => False);
+      Count      : Natural := 0;
+
+      function Unsym_Order (Clear : Priority) return Boolean is
+         (Clearings (Clear).C_Suit = Curr_Order and then Adj_Clears (Clear));
+   begin
+      for P in Map_Sympathy'Range loop
+         if Map_Sympathy (P) then
+            for C of Clearings (P).Neighbors loop
+               exit when C = 0;
+               Adj_Clears (C) := Adj_Clears (C) or else not Map_Sympathy (C);
+            end loop;
+         end if;
+      end loop;
+
+      -- Cannot spread sympathy --
+      Prompt (Curr_Phase);
+      if (for all C of Adj_Clears => not C) then
+         Put_Line ("Cannot spread sympathy. Score +5 points for the " &
+                   Name & ".");
+         return;
+      end if;
+
+      -- Try ordered clearings --
+      --  TODO: Account for one clearing
+      Put_Line ("Which clearing has the least enemy pieces?");
+      if (for some C in Adj_Clears'Range => Unsym_Order (C)) then
+         for C in Adj_Clears'Range loop
+            Count := Count + (if Unsym_Order (C) then 1 else 0);
+         end loop;
+
+         --  TODO Sympathy
+
+      -- Try all clearings --
+      else
+         for C of Adj_Clears loop
+            Count := Count + (if C then 1 else 0);
+         end loop;
+
+         --  TODO Sympathy
+
+      end if;
+   end Spread_Sympathy;
 
    procedure Birdsong is
       Clears : constant Int_Arr := Filter_Clearings (Curr_Order);
    begin
+      Curr_Phase := Birdsong;
+
       Prompt (Birdsong);
-      Put_Line ("Craft the order card for +1 points.");
+      Put_Line ("Craft the order card for +1 points for the ." & Name & ".");
       Continue;
 
+      -- Revolt --
       if Curr_Order /= Bird and then Fort_Supply (Curr_Order) > 0 then
-         Revolt (Clears, Birdsong);
+         Revolt (Clears);
+
+      -- Public Pity --
       else
-         --  TODO Public Pity
-         null;
+         if Sympathy_Supply >= SYMPATHY_MAX - 4 then
+            Spread_Sympathy;
+         end if;
+         Spread_Sympathy;
       end if;
 
    end Birdsong;
