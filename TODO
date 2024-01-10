@@ -13,6 +13,7 @@ ROOTBOTICS
 
 ROOT . MAPS
 --------------------
+- Add support for token counting
 
 ROOT . FACTION
 --------------------

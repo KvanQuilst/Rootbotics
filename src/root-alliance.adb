@@ -145,7 +145,6 @@ package body Root.Alliance is
       --------------
       Prompt (Birdsong);
       Birdsong;
-      Continue;
 
       --------------
       -- Daylight --
@@ -163,7 +162,7 @@ package body Root.Alliance is
 
    end Take_Turn;
 
-   procedure Revolt (Clears : Int_Arr) is
+   function Revolt (Clears : Int_Arr) return Boolean is
 
       function Count_Sym return Natural is
          Count : Natural := 0;
@@ -181,8 +180,8 @@ package body Root.Alliance is
       Opts  : String_Arr (1 .. Num_Sym);
       Idx   : Positive := 1;
    begin
-      if Num_Sym = 0 then
-         return;
+      if Fort_Supply (Curr_Order) = 0 or else Num_Sym = 0 then
+         return False;
       end if;
 
       for C of Clears loop
@@ -205,15 +204,45 @@ package body Root.Alliance is
       Forts (Clear) := Forts (Clear) + 1;
       Fort_Supply (Curr_Order) := Fort_Supply (Curr_Order) - 1;
       Continue;
+
+      return True;
    end Revolt;
 
    procedure Spread_Sympathy is
       Adj_Clears : array (Priority'Range) of Boolean := (others => False);
       Count      : Natural := 0;
+      Clear      : Priority;
 
       function Unsym_Order (Clear : Priority) return Boolean is
          (Clearings (Clear).C_Suit = Curr_Order and then Adj_Clears (Clear));
+
+      procedure Score_Sympathy is
+      begin
+         if Sympathy_Supply >= 9 then
+            return;
+         end if;
+
+         Put ("Score +");
+         Put ((case Sympathy_Supply is
+                  when 0      => "4",
+                  when 1 .. 2 => "3",
+                  when 3 .. 4 => "2",
+                  when 5 .. 8 => "1",
+                  when others => "0"));
+         Put_Line (" points for the " & Name & ".");
+      end Score_Sympathy;
+
    begin
+      Prompt (Curr_Phase);
+
+      -- Cannot spread sympathy --
+      if Sympathy_Supply = 0 then
+         Put_Line ("Cannot spread sympathy. Score +5 points for the " &
+                   Name & ".");
+         Continue;
+         return;
+      end if;
+
       for P in Map_Sympathy'Range loop
          if Map_Sympathy (P) then
             for C of Clearings (P).Neighbors loop
@@ -223,33 +252,91 @@ package body Root.Alliance is
          end if;
       end loop;
 
-      -- Cannot spread sympathy --
-      Prompt (Curr_Phase);
-      if (for all C of Adj_Clears => not C) then
-         Put_Line ("Cannot spread sympathy. Score +5 points for the " &
-                   Name & ".");
-         return;
-      end if;
-
       -- Try ordered clearings --
-      --  TODO: Account for one clearing
-      Put_Line ("Which clearing has the least enemy pieces?");
       if (for some C in Adj_Clears'Range => Unsym_Order (C)) then
          for C in Adj_Clears'Range loop
             Count := Count + (if Unsym_Order (C) then 1 else 0);
          end loop;
 
-         --  TODO Sympathy
+         -- Just one clearing --
+         if Count = 1 then
+            Put_Line ("1_1");
+            for C in Adj_Clears'Range loop
+               if Unsym_Order (C) then
+                  Clear := C;
+                  exit;
+               end if;
+            end loop;
+
+         -- More than one clearing --
+         else
+            Put_Line ("1_2");
+            declare
+               F_Clears : Int_Arr (1 .. Count);
+               Opts     : String_Arr (1 .. Count);
+               Idx      : Positive := 1;
+            begin
+               for C in Adj_Clears'Range loop
+                  if Unsym_Order (C) then
+                     F_Clears (Idx) := C;
+                     Opts (Idx) := Unbounded (C'Image);
+                     Idx := Idx + 1;
+                  end if;
+               end loop;
+
+               Put_Line ("Which clearing has the least enemy pieces?");
+               Clear := Character'Pos (Get_Option (Opts)) -
+                                                      Character'Pos ('a') + 1;
+               Clear := F_Clears (Clear);
+            end;
+         end if;
 
       -- Try all clearings --
       else
-         for C of Adj_Clears loop
-            Count := Count + (if C then 1 else 0);
+         for C of Map_Sympathy loop
+            Count := Count + (if not C then 1 else 0);
          end loop;
 
-         --  TODO Sympathy
+         -- Just one clearing --
+         if Count = 1 then
+            Put_Line ("2_1");
+            for C in Map_Sympathy'Range loop
+               if not Map_Sympathy (C) then
+                  Clear := C;
+                  exit;
+               end if;
+            end loop;
 
+         -- More than one clearing --
+         else
+            Put_Line ("2_2");
+            declare
+               F_Clears : Int_Arr (1 .. Count);
+               Opts     : String_Arr (1 .. Count);
+               Idx      : Positive := 1;
+            begin
+               for C in Map_Sympathy'Range loop
+                  if not Map_Sympathy (C) then
+                     F_Clears (Idx) := C;
+                     Opts (Idx) := Unbounded (C'Image);
+                     Idx := Idx + 1;
+                  end if;
+               end loop;
+
+               Put_Line ("Which clearing has the least enemy pieces?");
+               Clear := Character'Pos (Get_Option (Opts)) -
+                                                      Character'Pos ('a') + 1;
+               Clear := F_Clears (Clear);
+            end;
+         end if;
       end if;
+
+      Prompt (Curr_Phase);
+      Map_Sympathy (Clear) := True;
+      Sympathy_Supply := Sympathy_Supply - 1;
+      Put_Line ("Place a sympathy token in clearing" & Clear'Image & ".");
+      Score_Sympathy;
+      Continue;
    end Spread_Sympathy;
 
    procedure Birdsong is
@@ -258,18 +345,16 @@ package body Root.Alliance is
       Curr_Phase := Birdsong;
 
       Prompt (Birdsong);
-      Put_Line ("Craft the order card for +1 points for the ." & Name & ".");
+      Put_Line ("Craft the order card for +1 points for the " & Name & ".");
       Continue;
 
       -- Revolt --
-      if Curr_Order /= Bird and then Fort_Supply (Curr_Order) > 0 then
-         Revolt (Clears);
+      if Curr_Order = Bird or else not Revolt (Clears) then
 
-      -- Public Pity --
-      else
-         if Sympathy_Supply >= SYMPATHY_MAX - 4 then
+         if Sympathy_Supply >= 6 then
             Spread_Sympathy;
          end if;
+
          Spread_Sympathy;
       end if;
 
