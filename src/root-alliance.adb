@@ -109,7 +109,7 @@ package body Root.Alliance is
    -- Take Turn --
    ---------------
    procedure Birdsong;
-   procedure Daylight is null;
+   procedure Daylight;
    procedure Evening  is null;
 
    procedure Take_Turn (Order : Suit) is
@@ -151,7 +151,6 @@ package body Root.Alliance is
       --------------
       Prompt (Daylight);
       Daylight;
-      Continue;
 
       -------------
       -- Evening --
@@ -162,6 +161,7 @@ package body Root.Alliance is
 
    end Take_Turn;
 
+   --  TODO: Account for Bird order!
    function Revolt (Clears : Int_Arr) return Boolean is
 
       function Count_Sym return Natural is
@@ -359,5 +359,19 @@ package body Root.Alliance is
       end if;
 
    end Birdsong;
+
+   procedure Daylight is
+      Clears : constant Int_Arr := Filter_Clearings (Bird);
+      B      : Boolean;
+      pragma Unreferenced (B);
+   begin
+      Curr_Phase := Daylight;
+
+      Spread_Sympathy;
+
+      if Curr_Order = Bird then
+         B := Revolt (Clears);
+      end if;
+   end Daylight;
 
 end Root.Alliance;
