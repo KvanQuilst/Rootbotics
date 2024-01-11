@@ -180,7 +180,11 @@ package body Root.Alliance is
       Opts  : String_Arr (1 .. Num_Sym);
       Idx   : Positive := 1;
    begin
-      if Fort_Supply (Curr_Order) = 0 or else Num_Sym = 0 then
+      if Curr_Order = Bird then
+         if (for some F of Fort_Supply => F = 0) then
+            return False;
+         end if;
+      elsif Fort_Supply (Curr_Order) = 0 or else Num_Sym = 0 then
          return False;
       end if;
 
@@ -199,10 +203,12 @@ package body Root.Alliance is
       Prompt (Curr_Phase);
       Put_Line ("Remove all enemy pieces from clearing" & Clear'Image &
                 ".");
-      Put_Line ("Place the" & Curr_Order'Image & " fort in clearing" &
-                Clear'Image & ".");
+      Put_Line ("Place the " &
+                To_String (Suit_Str (Clearings (Clear).C_Suit)) &
+                " Fort in clearing" & Clear'Image & ".");
       Forts (Clear) := Forts (Clear) + 1;
-      Fort_Supply (Curr_Order) := Fort_Supply (Curr_Order) - 1;
+      Fort_Supply (Clearings (Clear).C_Suit) :=
+                                    Fort_Supply (Clearings (Clear).C_Suit) - 1;
       Continue;
 
       return True;

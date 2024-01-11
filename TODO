@@ -26,6 +26,7 @@ ROOT . IO
 CLOCKWORK 1
 --------------------
 - Traits
+- Action Names
 
 Mechanical Marquise 2.0:
   - Proper Handling if not enough meeple
@@ -43,7 +44,8 @@ Electric Eyrie:
   - Test
 
 Automated Alliance:
-  - Implement All
+  - Implement Evening
+  - Add Action Names
 
 Vagabot:
   - Implement Damaged Items
@@ -57,8 +59,10 @@ Vagabot:
 CLOCKWORK 2
 --------------------
 - Traits
+- Action Names
 
 Logical Lizards:
+  - Action Names
   - Difficulty
   - Traits
 

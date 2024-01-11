@@ -129,6 +129,12 @@ package Root.IO is
    Rabbit : constant String := ESC & "[93mRabbit" & ESC & "[0m";
    Bird   : constant String := ESC & "[94mBird" & ESC & "[0m";
 
+   Suit_Str : constant array (Suit'Range) of Unbounded_String :=
+      (Unbounded (ESC & "[31mFox" & ESC & "[0m"),
+       Unbounded (ESC & "[33mMouse" & ESC & "[0m"),
+       Unbounded (ESC & "[93mRabbit" & ESC & "[0m"),
+       Unbounded (ESC & "[94mBird" & ESC & "[0m"));
+
    Fox_Color    : constant Color := Red;
    Mouse_Color  : constant Color := Yellow;
    Rabbit_Color : constant Color := B_Yellow;
