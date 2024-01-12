@@ -42,7 +42,7 @@ private
    SYMPATHY_MAX : constant Integer := 10;
    FORTS_MAX    : constant Integer := 1;
 
-   type    Action is (Revolt, Spread_Sympathy, Organize, Recruit, None);
+   type    Action is (Revolt, Spread_Sympathy, Organize, Recruit, Craft, None);
    subtype Fort is Building_Suit;
 
    procedure Put_Phase with Inline;
@@ -58,7 +58,7 @@ private
    Sympathy_Supply : Integer range 0 .. SYMPATHY_MAX := SYMPATHY_MAX;
    Map_Sympathy    : Token_Arr;
    Forts           : Building_Arr;
-   Fort_Supply     : Suit_Build_Supply := (FORTS_MAX, FORTS_MAX, FORTS_MAX);
+   Fort_Supply     : Suit_Build_Supply := (others => FORTS_MAX);
 
    Curr_Order  : Suit;
    Curr_Phase  : Phase := None;

@@ -60,8 +60,7 @@ private
    Conspiracies    : constant array (Conspiracy_Count'Range) of Conspiracy :=
                         (Convert, Crusade, Convert, Crusade, Sanctify);
    Gardens         : Building_Arr;
-   Garden_Supply   : Suit_Build_Supply :=
-                     (GARDENS_MAX, GARDENS_MAX, GARDENS_MAX);
+   Garden_Supply   : Suit_Build_Supply := (others => GARDENS_MAX);
 
    Curr_Order  : Suit;
    Curr_Phase  : Phase;
@@ -79,5 +78,15 @@ private
        Unbounded (String_Style ("<|    ___    | |      / ", Faction_Color)),
        Unbounded (String_Style (" <|  /   \    ^      /  ", Faction_Color)),
        Unbounded (String_Style ("   |_\___/_________/    ", Faction_Color)));
+
+   -- Phases --
+   procedure Birdsong;
+   procedure Daylight;
+   procedure Evening;
+
+   -- Actions --
+   procedure Outcasts;
+   procedure Do_Conspiracies;
+   procedure Ritual (S : Suit);
 
 end Root.Lizards;

@@ -101,6 +101,7 @@ package body Root.Alliance is
                            when Spread_Sympathy => "Spread Sympathy",
                            when Organize        => "Organize",
                            when Recruit         => "Recuit",
+                           when Craft           => "Craft",
                            when None            => ""));
    end Put_Phase;
 
@@ -116,15 +117,16 @@ package body Root.Alliance is
 
    procedure Setup is null;
 
-   ---------------
-   -- Take Turn --
-   ---------------
+   -------------------------
+   -- Alliance Turn Logic --
+   -------------------------
    procedure Take_Turn (Order : Suit) is
    begin
       Curr_Order  := Order;
       Curr_Phase  := None;
       Curr_Action := None;
 
+      -- Check Warriors --
       declare
          Lost : constant Natural :=
             Check_Warriors (Prompt'Access, Warrior_Supply,
@@ -132,14 +134,17 @@ package body Root.Alliance is
          pragma Unreferenced (Lost);
       begin null; end;
 
+      -- Check Buildings --
       declare
          Lost : constant Natural :=
             Check_Buildings (Prompt'Access, Fort_Supply, Forts, FORTS_MAX);
          pragma Unreferenced (Lost);
       begin null; end;
 
+      -- Check Tokens --
       Check_Tokens (Prompt'Access, Sympathy_Supply, Map_Sympathy);
 
+      -- Check Rule --
       Check_Rule (Prompt'Access, Rule);
 
       Birdsong;
@@ -158,6 +163,7 @@ package body Root.Alliance is
    begin
       Curr_Phase := Birdsong;
 
+      Curr_Action := Craft;
       Prompt;
       Put_Line ("Craft the order card for +1 points for the " & Name & ".");
       Continue;

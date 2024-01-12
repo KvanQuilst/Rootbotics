@@ -153,19 +153,13 @@ package body Root.Lizards is
    ------------------------
    -- Lizards Turn Logic --
    ------------------------
-   procedure Birdsong (Order : Suit);
-   procedure Daylight (S : Suit);
-   procedure Evening;
-
    procedure Take_Turn is
    begin
       Curr_Order  := Bird;
       Curr_Phase  := None;
       Curr_Action := None;
 
-      ----------------------
       -- Confirm Warriors --
-      ----------------------
       declare
          Lost : Natural;
       begin
@@ -175,9 +169,7 @@ package body Root.Lizards is
          Warrior_Supply := Warrior_Supply - Lost;
       end;
 
-      -----------------------
       -- Confirm Buildings --
-      -----------------------
       declare
          Lost : constant Natural :=
             Check_Buildings (Prompt'Access, Garden_Supply,
@@ -185,53 +177,85 @@ package body Root.Lizards is
          pragma Unreferenced (Lost);
       begin null; end;
 
-      ------------------
       -- Confirm Rule --
-      ------------------
       for C in Gardens'Range loop
          Rule (C) := Rule (C) or else Gardens (C) > 0;
       end loop;
-
       Check_Rule (Prompt'Access, Rule);
 
-      --------------
-      -- Birdsong --
-      --------------
-      Curr_Phase := Birdsong;
-      if Acolytes > 0 then
-         Curr_Action := Outcasts;
-         Prompt;
-         Put_Line ("Which suit most common suit in the Lost Souls pile " &
-                   "(Ties go to " & Root.IO.Bird & ")?");
-         Curr_Order := Get_Suit_Opt;
-         Birdsong (Curr_Order);
-      end if;
+      Birdsong;
 
-      --------------
-      -- Daylight --
-      --------------
-      Curr_Phase  := Daylight;
-      Curr_Action := Rituals;
-      for I in Integer range 1 .. 4 loop
-         Prompt;
-         Put_Line ("Reveal top card of Lost Souls pile; what is it's suit?");
-         Daylight (Get_Suit_Opt);
-         Continue;
-      end loop;
+      Daylight;
 
-      -------------
-      -- Evening --
-      -------------
-      Curr_Phase := Evening;
-      Prompt;
       Evening;
-      Continue;
 
    end Take_Turn;
 
-   procedure Birdsong (Order : Suit) is
+   ------------
+   -- Phases --
+   ------------
+   procedure Birdsong is
+   begin
+      Curr_Phase := Birdsong;
+      if Acolytes > 0 then
+         Outcasts;
+         Do_Conspiracies;
+      end if;
+   end Birdsong;
+
+   procedure Daylight is
+   begin
+      Curr_Phase := Daylight;
+      Curr_Action := Rituals;
+
+      for I in Integer range 1 .. 4 loop
+         Prompt;
+         Put_Line ("Reveal top card of Lost Souls pile; what is it's suit?");
+         Ritual (Get_Suit_Opt);
+         Continue;
+      end loop;
+   end Daylight;
+
+   procedure Evening is
+      Min : Integer := GARDENS_MAX;
+   begin
+      Curr_Phase := Evening;
+      Curr_Action := None;
+      Prompt;
+
+      -- Determine scoring garden track --
+      for Num of Garden_Supply loop
+         Min := (if Num < Min then Num else Min);
+      end loop;
+      case Min is
+         when 0      => Put_Line ("Score 4 points for the " & Name);
+         when 1      => Put_Line ("Score 3 points for the " & Name);
+         when 2 | 3  => Put_Line ("Score 2 points for the " & Name);
+         when others => null;
+      end case;
+
+      Put_Line ("Discard Lost Souls deck.");
+      Put_Line ("Return revealed cards IN ORDER to Lost Souls.");
+      Put_Line ("Craft the top card of the deck for 1 point and add it " &
+                "to your Lost Souls pile.");
+      Continue;
+   end Evening;
+
+   -------------
+   -- Actions --
+   -------------
+   procedure Outcasts is
+   begin
+      Curr_Action := Outcasts;
+      Prompt;
+      Put_Line ("Which suit is the most common suit in the Lost Souls pile" &
+                "(Ties go to " & To_String (Suit_Str (Bird)) & ")?");
+      Curr_Order := Get_Suit_Opt;
+   end Outcasts;
+
+   procedure Do_Conspiracies is
       Idle_Count : Natural := 0;
-      Clears     : constant Int_Arr := Filter_Clearings (Order);
+      Clears     : constant Int_Arr := Filter_Clearings (Curr_Order);
       Val        : Natural;
 
       procedure Convert is
@@ -322,9 +346,9 @@ package body Root.Lizards is
             Acolytes := Acolytes - 1;
          end if;
       end loop;
-   end Birdsong;
+   end Do_Conspiracies;
 
-   procedure Daylight (S : Suit) is
+   procedure Ritual (S : Suit) is
       Max       : Integer  := 0;
       Max_Clear : Priority := 1;
       Clears    : constant Int_Arr  :=  Filter_Clearings (S);
@@ -374,26 +398,6 @@ package body Root.Lizards is
             end if;
          end;
       end if;
-   end Daylight;
-
-   procedure Evening is
-      Min : Integer := GARDENS_MAX;
-   begin
-      -- Determine scoring garden track --
-      for Num of Garden_Supply loop
-         Min := (if Num < Min then Num else Min);
-      end loop;
-      case Min is
-         when 0      => Put_Line ("Score 4 points for the " & Name);
-         when 1      => Put_Line ("Score 3 points for the " & Name);
-         when 2 | 3  => Put_Line ("Score 2 points for the " & Name);
-         when others => null;
-      end case;
-
-      Put_Line ("Discard Lost Souls deck.");
-      Put_Line ("Return revealed cards IN ORDER to Lost Souls.");
-      Put_Line ("Craft the top card of the deck for 1 point and add it " &
-                "to your Lost Souls pile.");
-   end Evening;
+   end Ritual;
 
 end Root.Lizards;
