@@ -54,7 +54,7 @@ package body Root.Faction is
    -- Faction Resrouce Management --
    ---------------------------------
    function Check_Warriors (Prompt : access procedure (Time : Phase := None);
-                            Supply       : in out   Integer;
+                            Supply       : in out   Natural;
                             Map_Warriors : in out   Warrior_Arr;
                             Max_Warriors :          Integer) return Natural is
       Lost : Natural := 0;
@@ -144,6 +144,10 @@ package body Root.Faction is
       return Lost;
    end Check_Buildings;
 
+   procedure Check_Tokens (Prompt : access procedure (Time : Phase := None);
+                           Supply : in out Natural;
+                           Tokens : in out Token_Arr) is null;
+
    procedure Check_Rule (Prompt : access procedure (Time : Phase := None);
                          Rule   : in out Rule_Arr) is
    begin
@@ -162,10 +166,10 @@ package body Root.Faction is
       end if;
    end Check_Rule;
 
-   procedure Deploy_Warriors (Supply       : in out Integer;
+   procedure Deploy_Warriors (Supply       : in out Natural;
                               Map_Warriors : in out Warrior_Arr;
                               Clear        :        Priority;
-                              Num_Warriors :        Integer) is
+                              Num_Warriors :        Positive) is
    begin
       if Supply >= Num_Warriors then
          Put_Line ("Place" & Num_Warriors'Image & " warriors in clearing" &
@@ -182,7 +186,7 @@ package body Root.Faction is
       end if;
    end Deploy_Warriors;
 
-   procedure Deploy_Building (Supply     : in out Integer;
+   procedure Deploy_Building (Supply     : in out Natural;
                               Map_Builds : in out Building_Arr;
                               Clear      :        Priority;
                               Build_Type :        String) is

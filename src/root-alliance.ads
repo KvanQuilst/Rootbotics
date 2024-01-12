@@ -33,7 +33,7 @@ package Root.Alliance is
    Faction_Color : constant Color := Green;
    Name : constant String := String_Style ("Automated Alliance", Green);
 
-   procedure  Setup;
+   procedure Setup;
    procedure Take_Turn (Order : Suit);
 
 private

@@ -135,6 +135,11 @@ package body Root.Alliance is
          pragma Unreferenced (Lost);
       begin null; end;
 
+      --------------------
+      -- Confirm Tokens --
+      --------------------
+      --  TODO: Confirm tokens
+
       ------------------
       -- Confirm Rule --
       ------------------
@@ -272,14 +277,28 @@ package body Root.Alliance is
             return;
          end if;
 
-         Put ("Score +");
-         Put ((case Sympathy_Supply is
-                  when 0      => "4",
-                  when 1 .. 2 => "3",
-                  when 3 .. 4 => "2",
-                  when 5 .. 8 => "1",
-                  when others => "0"));
-         Put_Line (" points for the " & Name & ".");
+         Prompt (Curr_Phase);
+         Put_Line ("Are there three or more warriors from one enemy in " &
+                   "clearing" & Clear'Image & "?");
+
+         if Get_Yes_No then
+            Put ("Score +");
+            Put ((case Sympathy_Supply is
+                     when 0      => "3",
+                     when 1 .. 2 => "2",
+                     when 3 .. 4 => "1",
+                     when others => "0"));
+            Put_Line (" points for the " & Name & ".");
+         else
+            Put ("Score +");
+            Put ((case Sympathy_Supply is
+                     when 0      => "4",
+                     when 1 .. 2 => "3",
+                     when 3 .. 4 => "2",
+                     when 5 .. 8 => "1",
+                     when others => "0"));
+            Put_Line (" points for the " & Name & ".");
+         end if;
       end Score_Sympathy;
 
    begin

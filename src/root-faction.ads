@@ -29,6 +29,7 @@ package Root.Faction is
 
    type Warrior_Arr  is array (Priority'Range) of Natural;
    type Building_Arr is array (Priority'Range) of Integer range 0 .. 3;
+   type Token_Arr    is array (Priority'Range) of Natural;
    type Rule_Arr     is array (Priority'Range) of Boolean;
 
    subtype Building_Suit is Suit range Fox .. Mouse;
@@ -46,21 +47,24 @@ package Root.Faction is
    -- Faction Resource Management --
    ---------------------------------
    function Check_Warriors  (Prompt : access procedure (Time : Phase := None);
-                             Supply       : in out   Integer;
+                             Supply       : in out   Natural;
                              Map_Warriors : in out   Warrior_Arr;
                              Max_Warriors :          Integer) return Natural;
    function Check_Buildings (Prompt : access procedure (Time : Phase := None);
                              Supply : in out Suit_Build_Supply;
                              Builds : in out Building_Arr;
                              Max_Builds : Integer) return Natural;
+   procedure Check_Tokens   (Prompt : access procedure (Time : Phase := None);
+                             Supply : in out Natural;
+                             Tokens : in out Token_Arr);
    procedure Check_Rule     (Prompt : access procedure (Time : Phase := None);
                              Rule   : in out Rule_Arr);
 
-   procedure Deploy_Warriors (Supply       : in out Integer;
+   procedure Deploy_Warriors (Supply       : in out Natural;
                               Map_Warriors : in out Warrior_Arr;
                               Clear        :        Priority;
-                              Num_Warriors :        Integer);
-   procedure Deploy_Building (Supply     : in out Integer;
+                              Num_Warriors :        Positive);
+   procedure Deploy_Building (Supply     : in out Natural;
                               Map_Builds : in out Building_Arr;
                               Clear      :        Priority;
                               Build_Type :        String);
