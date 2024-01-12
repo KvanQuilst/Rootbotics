@@ -41,11 +41,13 @@ private
    WARRIOR_MAX  : constant Integer := 25;
    GARDENS_MAX  : constant Integer := 5;
 
-   subtype Garden is Building_Suit;
    type Conspiracy is (Convert, Crusade, Sanctify);
    type Conspiracy_Count is mod 5;
+   type Action is (Outcasts, Convert, Crusade, Sanctify, Rituals, None);
+   subtype Garden is Building_Suit;
 
-   procedure Prompt with Inline;
+   procedure Put_Phase with Inline;
+   procedure Prompt    with Inline;
 
    function Unbounded (S : String) return Unbounded_String
       renames To_Unbounded_String;
@@ -61,8 +63,9 @@ private
    Garden_Supply   : Suit_Build_Supply :=
                      (GARDENS_MAX, GARDENS_MAX, GARDENS_MAX);
 
-   Curr_Order : Suit;
-   Curr_Phase : Phase;
+   Curr_Order  : Suit;
+   Curr_Phase  : Phase;
+   Curr_Action : Action;
 
    Logo_Width : constant := 24;
    --  Logo : constant array (Integer range <>) of Unbounded_String :=

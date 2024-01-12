@@ -28,31 +28,15 @@ CLOCKWORK 1
 - Action Names
 
 Mechanical Marquise 2.0:
-  - Proper Handling if not enough meeple
-  - Implement Difficulty
-  - Implement Traits
-  - Test
+  - Implement All
 
 Electric Eyrie:
-  - Implement Lost Warriors/Buildings
-  - Implement Build
-  - Finished Battle
-  - Make sure Move and Recruit are correct
-  - Implement Difficulty
-  - Implement Traits
-  - Test
+  - Implement All
 
 Automated Alliance:
-  - Add Action Names
 
 Vagabot:
-  - Implement Damaged Items
-  - Implement Thief, Tinker, Ranger (Special)
-  - Implement Take_Turn
-  - Implement Explore, Quest, Aid, Battle
-  - Implement Difficulty (Setup)
-  - Implement Traits
-  - Test
+  - Implement All
 
 CLOCKWORK 2
 --------------------
@@ -61,6 +45,7 @@ CLOCKWORK 2
 
 Logical Lizards:
   - Action Names
+  - Restructuring (Mirror Alliance)
   - Difficulty
   - Traits
 

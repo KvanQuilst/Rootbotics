@@ -97,7 +97,14 @@ package body Root.Lizards is
 
    procedure Put_Phase is
    begin
-      Root.IO.Put_Phase (Curr_Phase);
+      Root.IO.Put_Phase (Curr_Phase,
+                        (case Curr_Action is
+                           when Outcasts => "Outcasts",
+                           when Convert  => "Convert",
+                           when Crusade  => "Crusade",
+                           when Sanctify => "Sanctify",
+                           when Rituals  => "Rituals",
+                           when None     => ""));
    end Put_Phase;
 
    procedure Prompt is
@@ -152,8 +159,9 @@ package body Root.Lizards is
 
    procedure Take_Turn is
    begin
-      Curr_Order := Bird;
-      Curr_Phase := None;
+      Curr_Order  := Bird;
+      Curr_Phase  := None;
+      Curr_Action := None;
 
       ----------------------
       -- Confirm Warriors --
@@ -190,8 +198,9 @@ package body Root.Lizards is
       -- Birdsong --
       --------------
       Curr_Phase := Birdsong;
-      Prompt;
       if Acolytes > 0 then
+         Curr_Action := Outcasts;
+         Prompt;
          Put_Line ("Which suit most common suit in the Lost Souls pile " &
                    "(Ties go to " & Root.IO.Bird & ")?");
          Curr_Order := Get_Suit_Opt;
@@ -201,7 +210,8 @@ package body Root.Lizards is
       --------------
       -- Daylight --
       --------------
-      Curr_Phase := Daylight;
+      Curr_Phase  := Daylight;
+      Curr_Action := Rituals;
       for I in Integer range 1 .. 4 loop
          Prompt;
          Put_Line ("Reveal top card of Lost Souls pile; what is it's suit?");
@@ -228,6 +238,7 @@ package body Root.Lizards is
          Opts : String_Arr (1 .. Clears'Length + 1);
          Clear : Priority;
       begin
+         Curr_Action := Convert;
          for I in Clears'Range loop
             Opts (I) := Unbounded (Clears (I)'Image);
          end loop;
@@ -249,6 +260,7 @@ package body Root.Lizards is
 
       procedure Crusade is
       begin
+         Curr_Action := Crusade;
          for C of Clears loop
             if Map_Warriors (C) >= 2 then
                Put_Line ("Are there enemies in clearing" &
@@ -275,6 +287,7 @@ package body Root.Lizards is
          Opts  : String_Arr (1 .. Clears'Length);
          Clear : Priority;
       begin
+         Curr_Action := Sanctify;
          for I in Clears'Range loop
             Opts (I) := Unbounded (Clears (I)'Image);
          end loop;
