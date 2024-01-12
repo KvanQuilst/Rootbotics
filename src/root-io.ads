@@ -140,6 +140,12 @@ package Root.IO is
    Rabbit_Color : constant Color := B_Yellow;
    Bird_Color   : constant Color := B_Blue;
 
+   Phase_Color : constant array (Phase'Range) of Color :=
+      (Birdsong => Yellow,
+       Daylight => B_Cyan,
+       Evening  => B_Black,
+       None     => White);
+
    function Suit_Color (S : Suit) return Color;
 
    ---------------------
@@ -166,17 +172,14 @@ package Root.IO is
    procedure Continue;
    procedure Separator;
 
-   procedure Put_Birdsong;
-   procedure Put_Daylight;
-   procedure Put_Evening;
-
+   procedure Put_Phase (Time : Phase; Action : String := "");
    procedure Put_Prompt (Put_Logo      : access procedure;
                          Put_State     : access procedure;
                          Units         : Warrior_Arr;
                          Buildings     : Building_Arr;
                          Rule          : Rule_Arr;
                          Current_Order : Suit;
-                         Time          : Phase := None;
+                         Phase         : access procedure := null;
                          Tokens        : Token_Arr := (others => False));
 
 end Root.IO;

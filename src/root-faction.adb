@@ -53,7 +53,7 @@ package body Root.Faction is
    ---------------------------------
    -- Faction Resrouce Management --
    ---------------------------------
-   function Check_Warriors (Prompt : access procedure (Time : Phase := None);
+   function Check_Warriors (Prompt       : access procedure;
                             Supply       : in out   Natural;
                             Map_Warriors : in out   Warrior_Arr;
                             Max_Warriors :          Integer) return Natural is
@@ -94,7 +94,7 @@ package body Root.Faction is
       return Lost;
    end Check_Warriors;
 
-   function Check_Buildings (Prompt : access procedure (Time : Phase := None);
+   function Check_Buildings (Prompt : access procedure;
                              Supply : in out Suit_Build_Supply;
                              Builds : in out Building_Arr;
                              Max_Builds : Integer) return Natural is
@@ -144,7 +144,7 @@ package body Root.Faction is
       return Lost;
    end Check_Buildings;
 
-   procedure Check_Tokens (Prompt : access procedure (Time : Phase := None);
+   procedure Check_Tokens (Prompt : access procedure;
                            Supply : in out Natural;
                            Tokens : in out Token_Arr) is
    begin
@@ -164,7 +164,7 @@ package body Root.Faction is
       end if;
    end Check_Tokens;
 
-   procedure Check_Rule (Prompt : access procedure (Time : Phase := None);
+   procedure Check_Rule (Prompt : access procedure;
                          Rule   : in out Rule_Arr) is
    begin
       Prompt.all;

@@ -95,10 +95,15 @@ package body Root.Lizards is
       New_Line;
    end Put_State;
 
-   procedure Prompt (Time : Phase := None) is
+   procedure Put_Phase is
+   begin
+      Root.IO.Put_Phase (Curr_Phase);
+   end Put_Phase;
+
+   procedure Prompt is
    begin
       Put_Prompt (Put_Logo'Access, Put_State'Access, Map_Warriors,
-                  Gardens, Rule, Curr_Order, Time);
+                  Gardens, Rule, Curr_Order, Put_Phase'Access);
    end Prompt;
 
    -------------------
@@ -148,6 +153,7 @@ package body Root.Lizards is
    procedure Take_Turn is
    begin
       Curr_Order := Bird;
+      Curr_Phase := None;
 
       ----------------------
       -- Confirm Warriors --
@@ -183,7 +189,8 @@ package body Root.Lizards is
       --------------
       -- Birdsong --
       --------------
-      Prompt (Birdsong);
+      Curr_Phase := Birdsong;
+      Prompt;
       if Acolytes > 0 then
          Put_Line ("Which suit most common suit in the Lost Souls pile " &
                    "(Ties go to " & Root.IO.Bird & ")?");
@@ -194,8 +201,9 @@ package body Root.Lizards is
       --------------
       -- Daylight --
       --------------
+      Curr_Phase := Daylight;
       for I in Integer range 1 .. 4 loop
-         Prompt (Daylight);
+         Prompt;
          Put_Line ("Reveal top card of Lost Souls pile; what is it's suit?");
          Daylight (Get_Suit_Opt);
          Continue;
@@ -204,7 +212,8 @@ package body Root.Lizards is
       -------------
       -- Evening --
       -------------
-      Prompt (Evening);
+      Curr_Phase := Evening;
+      Prompt;
       Evening;
       Continue;
 
@@ -286,7 +295,7 @@ package body Root.Lizards is
 
    begin
       for A in 0 .. Acolytes loop
-         Prompt (Birdsong);
+         Prompt;
          Idle_Count := Idle_Count + 1;
          case Conspiracies (Next_Conspiracy) is
             when Convert => Convert;

@@ -382,38 +382,33 @@ package body Root.IO is
       Put_Line (To_String (WIDTH * "-"));
    end Separator;
 
-   procedure Put_Birdsong is
+   procedure Put_Phase (Time : Phase; Action : String := "") is
+      Width : constant Positive := (if   Action'Length > 12
+                                    then Action'Length + 4
+                                    else 16);
    begin
-      New_Line;
-      Put_Line_Centered (To_String (16 * "-"));
-      Set_Style (FG => Yellow);
-      Put_Line_Centered ("Birdsong");
-      Reset_Style;
-      Put_Line_Centered (To_String (16 * "-"));
-      New_Line;
-   end Put_Birdsong;
+      if Time = None then
+         return;
+      end if;
 
-   procedure Put_Daylight is
-   begin
       New_Line;
-      Put_Line_Centered (To_String (16 * "-"));
-      Set_Style (FG => B_Cyan);
-      Put_Line_Centered ("Daylight");
+      Set_Style (Phase_Color (Time));
+      Put_Line_Centered (To_String (Width * "-"));
+      case Time is
+         when Birdsong => Put_Line_Centered ("Birdsong");
+         when Daylight => Put_Line_Centered ("Daylight");
+         when Evening  => Put_Line_Centered ("Evening");
+         when None     => null;
+      end case;
+      if Action'Length > 0 then
+         Reset_Style;
+         Put_Line_Centered (Action);
+         Set_Style (Phase_Color (Time));
+      end if;
+      Put_Line_Centered (To_String (Width * "-"));
       Reset_Style;
-      Put_Line_Centered (To_String (16 * "-"));
       New_Line;
-   end Put_Daylight;
-
-   procedure Put_Evening is
-   begin
-      New_Line;
-      Put_Line_Centered (To_String (15 * "-"));
-      Set_Style (FG => B_Black);
-      Put_Line_Centered ("Evening");
-      Reset_Style;
-      Put_Line_Centered (To_String (15 * "-"));
-      New_Line;
-   end Put_Evening;
+   end Put_Phase;
 
    procedure Put_Prompt (Put_Logo      : access procedure;
                          Put_State     : access procedure;
@@ -421,7 +416,7 @@ package body Root.IO is
                          Buildings     : Building_Arr;
                          Rule          : Rule_Arr;
                          Current_Order : Suit;
-                         Time          : Phase := None;
+                         Phase         : access procedure := null;
                          Tokens        : Token_Arr := (others => False)) is
    begin
       -- Logo --
@@ -444,12 +439,9 @@ package body Root.IO is
                   when Root.Mouse  => Root.IO.Mouse,
                   when Root.Bird   => Root.IO.Bird));
       Separator;
-      case Time is
-         when Birdsong => Put_Birdsong;
-         when Daylight => Put_Daylight;
-         when Evening  => Put_Evening;
-         when None     => null;
-      end case;
+      if Phase /= null then
+         Phase.all;
+      end if;
    end Put_Prompt;
 
 end Root.IO;

@@ -93,10 +93,21 @@ package body Root.Alliance is
       Sympathy_State;
    end Put_State;
 
-   procedure Prompt (Time : Phase := None) is
+   procedure Put_Phase is
+   begin
+      Root.IO.Put_Phase (Curr_Phase,
+                        (case Curr_Action is
+                           when Revolt          => "Revolt",
+                           when Spread_Sympathy => "Spread Sympathy",
+                           when Organize        => "Organize",
+                           when Recruit         => "Recuit",
+                           when None            => ""));
+   end Put_Phase;
+
+   procedure Prompt is
    begin
       Put_Prompt (Put_Logo'Access, Put_State'Access, Map_Warriors,
-                  Forts, Rule, Curr_Order, Time, Map_Sympathy);
+                  Forts, Rule, Curr_Order, Put_Phase'Access, Map_Sympathy);
    end Prompt;
 
    --------------------
@@ -110,7 +121,9 @@ package body Root.Alliance is
    ---------------
    procedure Take_Turn (Order : Suit) is
    begin
-      Curr_Order := Order;
+      Curr_Order  := Order;
+      Curr_Phase  := None;
+      Curr_Action := None;
 
       declare
          Lost : constant Natural :=
@@ -145,7 +158,7 @@ package body Root.Alliance is
    begin
       Curr_Phase := Birdsong;
 
-      Prompt (Birdsong);
+      Prompt;
       Put_Line ("Craft the order card for +1 points for the " & Name & ".");
       Continue;
 
@@ -204,6 +217,8 @@ package body Root.Alliance is
       Opts  : String_Arr (1 .. Num_Sym);
       Idx   : Positive := 1;
    begin
+      Curr_Action := Revolt;
+
       if Curr_Order = Bird then
          if (for some F of Fort_Supply => F = 0) then
             return False;
@@ -219,12 +234,12 @@ package body Root.Alliance is
          end if;
       end loop;
 
-      Prompt (Curr_Phase);
+      Prompt;
       Put_Line ("Which clearing has the most enemy pieces?");
 
       Clear := Character'Pos (Get_Option (Opts)) - Character'Pos ('a') + 1;
       Clear := Clears (Clear);
-      Prompt (Curr_Phase);
+      Prompt;
       Put_Line ("Remove all enemy pieces from clearing" & Clear'Image &
                 ".");
       Put_Line ("Place the " &
@@ -252,7 +267,7 @@ package body Root.Alliance is
             return;
          end if;
 
-         Prompt (Curr_Phase);
+         Prompt;
          Put_Line ("Are there three or more warriors from one enemy in " &
                    "clearing" & Clear'Image & "?");
 
@@ -277,7 +292,8 @@ package body Root.Alliance is
       end Score_Sympathy;
 
    begin
-      Prompt (Curr_Phase);
+      Curr_Action := Spread_Sympathy;
+      Prompt;
 
       -- Cannot spread sympathy --
       if Sympathy_Supply = 0 then
@@ -371,7 +387,7 @@ package body Root.Alliance is
          end if;
       end if;
 
-      Prompt (Curr_Phase);
+      Prompt;
       Map_Sympathy (Clear) := True;
       Sympathy_Supply := Sympathy_Supply - 1;
       Put_Line ("Place a sympathy token in clearing" & Clear'Image & ".");
@@ -381,9 +397,10 @@ package body Root.Alliance is
 
    procedure Organize is
    begin
+      Curr_Action := Organize;
       for C in Priority'Range loop
          if Forts (C) = 1 and then Map_Warriors (C) >= 3 then
-            Prompt (Curr_Phase);
+            Prompt;
             Put_Line ("Remove all " & Name & " warriors from clearing" &
                        C'Image & ".");
             Warrior_Supply := Warrior_Supply + Map_Warriors (C);
@@ -397,9 +414,10 @@ package body Root.Alliance is
 
    procedure Recruit is
    begin
+      Curr_Action := Recruit;
       for C in Priority'Range loop
          if Forts (C) = 1 then
-            Prompt (Curr_Phase);
+            Prompt;
             Deploy_Warriors (Warrior_Supply, Map_Warriors, C, 1);
             Continue;
          end if;

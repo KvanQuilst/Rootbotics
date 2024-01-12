@@ -46,18 +46,18 @@ package Root.Faction is
    ---------------------------------
    -- Faction Resource Management --
    ---------------------------------
-   function Check_Warriors  (Prompt : access procedure (Time : Phase := None);
+   function Check_Warriors  (Prompt       : access procedure;
                              Supply       : in out   Natural;
                              Map_Warriors : in out   Warrior_Arr;
                              Max_Warriors :          Integer) return Natural;
-   function Check_Buildings (Prompt : access procedure (Time : Phase := None);
+   function Check_Buildings (Prompt : access procedure;
                              Supply : in out Suit_Build_Supply;
                              Builds : in out Building_Arr;
                              Max_Builds : Integer) return Natural;
-   procedure Check_Tokens   (Prompt : access procedure (Time : Phase := None);
+   procedure Check_Tokens   (Prompt : access procedure;
                              Supply : in out Natural;
                              Tokens : in out Token_Arr);
-   procedure Check_Rule     (Prompt : access procedure (Time : Phase := None);
+   procedure Check_Rule     (Prompt : access procedure;
                              Rule   : in out Rule_Arr);
 
    procedure Deploy_Warriors (Supply       : in out Natural;

@@ -45,7 +45,7 @@ private
    type Conspiracy is (Convert, Crusade, Sanctify);
    type Conspiracy_Count is mod 5;
 
-   procedure Prompt (Time : Phase := None) with Inline;
+   procedure Prompt with Inline;
 
    function Unbounded (S : String) return Unbounded_String
       renames To_Unbounded_String;
@@ -62,6 +62,7 @@ private
                      (GARDENS_MAX, GARDENS_MAX, GARDENS_MAX);
 
    Curr_Order : Suit;
+   Curr_Phase : Phase;
 
    Logo_Width : constant := 24;
    --  Logo : constant array (Integer range <>) of Unbounded_String :=

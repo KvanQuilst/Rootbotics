@@ -42,9 +42,11 @@ private
    SYMPATHY_MAX : constant Integer := 10;
    FORTS_MAX    : constant Integer := 1;
 
+   type    Action is (Revolt, Spread_Sympathy, Organize, Recruit, None);
    subtype Fort is Building_Suit;
 
-   procedure Prompt (Time : Phase := None) with Inline;
+   procedure Put_Phase with Inline;
+   procedure Prompt    with Inline;
 
    function Unbounded (S : String) return Unbounded_String
       renames To_Unbounded_String;
@@ -58,8 +60,9 @@ private
    Forts           : Building_Arr;
    Fort_Supply     : Suit_Build_Supply := (FORTS_MAX, FORTS_MAX, FORTS_MAX);
 
-   Curr_Order : Suit;
-   Curr_Phase : Phase;
+   Curr_Order  : Suit;
+   Curr_Phase  : Phase := None;
+   Curr_Action : Action := None;
 
    Logo_Width : constant := 21;
    Logo : Logo_Arr :=
