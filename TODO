@@ -34,6 +34,8 @@ Electric Eyrie:
   - Implement All
 
 Automated Alliance:
+  - Difficulty
+  - Traits
 
 Vagabot:
   - Implement All
@@ -44,7 +46,6 @@ CLOCKWORK 2
 - Action Names
 
 Logical Lizards:
-  - Restructuring (Mirror Alliance)
   - Add Craft Action
   - Difficulty
   - Traits
