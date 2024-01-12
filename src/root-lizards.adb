@@ -23,7 +23,6 @@
 -- with The Rootbotics Assistant. If not, see                                --
 -- <https://www.gnu.org/licenses/>.                                          --
 -------------------------------------------------------------------------------
-with Ada.Strings.Fixed; use Ada.Strings.Fixed;
 with Ada.Text_IO; use Ada.Text_IO;
 
 with Root.Maps; use Root.Maps;
@@ -40,8 +39,10 @@ package body Root.Lizards is
 
    procedure Put_State is
       procedure Garden_State (G : Garden) is
-         Used : constant String := (GARDENS_MAX - Garden_Supply (G)) * " **";
-         Remaining : constant String := Garden_Supply (G) * " **";
+         Used : constant String :=
+            To_String ((GARDENS_MAX - Garden_Supply (G)) * " **");
+         Remaining : constant String :=
+            To_String (Garden_Supply (G) * " **");
       begin
          Set_Style (B_Black);
          Put (Used);
