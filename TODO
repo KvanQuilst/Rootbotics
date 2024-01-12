@@ -13,7 +13,6 @@ ROOTBOTICS
 
 ROOT . MAPS
 --------------------
-- Add support for token counting
 
 ROOT . FACTION
 --------------------
@@ -44,7 +43,6 @@ Electric Eyrie:
   - Test
 
 Automated Alliance:
-  - Implement Evening
   - Add Action Names
 
 Vagabot:
