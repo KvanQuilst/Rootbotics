@@ -75,4 +75,15 @@ private
        Unbounded (String_Style (" \  . .   |   . .  / ", Faction_Color)),
        Unbounded (String_Style ("  \_______________/  ", Faction_Color)));
 
+   -- Phases --
+   procedure Birdsong;
+   procedure Daylight;
+   procedure Evening;
+
+   -- Actions --
+   function  Revolt (Clears : Int_Arr) return Boolean;
+   procedure Spread_Sympathy;
+   procedure Organize;
+   procedure Recruit;
+
 end Root.Alliance;

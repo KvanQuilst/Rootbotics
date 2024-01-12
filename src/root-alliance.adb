@@ -108,10 +108,6 @@ package body Root.Alliance is
    ---------------
    -- Take Turn --
    ---------------
-   procedure Birdsong;
-   procedure Daylight;
-   procedure Evening;
-
    procedure Take_Turn (Order : Suit) is
    begin
       Curr_Order := Order;
@@ -141,9 +137,9 @@ package body Root.Alliance is
 
    end Take_Turn;
 
-   function Revolt (Clears : Int_Arr) return Boolean;
-   procedure Spread_Sympathy;
-
+   ------------
+   -- Phases --
+   ------------
    procedure Birdsong is
       Clears : constant Int_Arr := Filter_Clearings (Curr_Order);
    begin
@@ -179,9 +175,6 @@ package body Root.Alliance is
       end if;
    end Daylight;
 
-   procedure Organize;
-   procedure Recruit;
-
    procedure Evening is
    begin
       Curr_Phase := Evening;
@@ -190,6 +183,9 @@ package body Root.Alliance is
       Recruit;
    end Evening;
 
+   -------------
+   -- Actions --
+   -------------
    function Revolt (Clears : Int_Arr) return Boolean is
 
       function Count_Sym return Natural is
