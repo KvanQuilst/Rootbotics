@@ -54,7 +54,8 @@ package Root.Maps is
 
    procedure Put_Map (Units     : Warrior_Arr;
                       Buildings : Building_Arr;
-                      Rule      : Rule_Arr);
+                      Rule      : Rule_Arr;
+                      Tokens    : Token_Arr := (others => False));
 
 private
    type Coordinate is record

@@ -165,7 +165,8 @@ package body Root.Maps is
 
    -- Line, Col : Relative Positioning --
    procedure Clearing_Box (Line : Natural; Col, Units, Buildings : Natural;
-                           Rule : Boolean; Clear : Clearing; Pri : Priority) is
+                           Rule : Boolean; Tok : Boolean;
+                           Clear : Clearing; Pri : Priority) is
       C : constant Color := Suit_Color (Clear.C_Suit);
       S : constant Character := (case Clear.C_Suit is
                                     when Fox    => 'F',
@@ -186,10 +187,18 @@ package body Root.Maps is
          Cursor_Column_Move (-2);
          Put ("^");
          Set_Style (C);
-         Cursor_Column_Move (-3);
+         Cursor_Column_Move (2);
+      end if;
+
+      if Tok then
+         Reset_Style;
+         Put ("T");
+         Set_Style (C);
+         Cursor_Column_Move (-5);
       else
          Cursor_Column_Move (-4);
       end if;
+
       Cursor_Line_Move (1);
 
       Put ("| ");
@@ -218,7 +227,8 @@ package body Root.Maps is
 
    procedure Put_Map (Units     : Warrior_Arr;
                       Buildings : Building_Arr;
-                      Rule      : Rule_Arr) is
+                      Rule      : Rule_Arr;
+                      Tokens    : Token_Arr := (others => False)) is
       B_Col    : constant := (Root.IO.WIDTH - Map_Width) / 2 + 2;
    begin
       Put_Line_Centered (Map_In_Play'Image);
@@ -234,7 +244,7 @@ package body Root.Maps is
       for I in Priority'Range loop
          Clearing_Box (Coords (I).x, B_Col + Coords (I).y,
                        Units (I), Buildings (I), Rule (I),
-                       Map (I), I);
+                       Tokens (I), Map (I), I);
       end loop;
       Cursor_Line_Move (Text_Map'Length);
    end Put_Map;

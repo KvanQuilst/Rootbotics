@@ -146,7 +146,7 @@ package body Root.Faction is
 
    procedure Check_Tokens (Prompt : access procedure (Time : Phase := None);
                            Supply : in out Natural;
-                           Tokens : in out Tok_Bool_Arr) is
+                           Tokens : in out Token_Arr) is
    begin
       Prompt.all;
       Put_Line ("Does the number of tokens match for each clearaing?");

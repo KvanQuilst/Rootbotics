@@ -54,7 +54,7 @@ private
    Rule            : Rule_Arr;
    Officers        : Integer range 0 .. WARRIOR_MAX := 0;
    Sympathy_Supply : Integer range 0 .. SYMPATHY_MAX := SYMPATHY_MAX;
-   Map_Sympathy    : Tok_Bool_Arr;
+   Map_Sympathy    : Token_Arr;
    Forts           : Building_Arr;
    Fort_Supply     : Suit_Build_Supply := (FORTS_MAX, FORTS_MAX, FORTS_MAX);
 

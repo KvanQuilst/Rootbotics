@@ -421,7 +421,8 @@ package body Root.IO is
                          Buildings     : Building_Arr;
                          Rule          : Rule_Arr;
                          Current_Order : Suit;
-                         Time          : Phase := None) is
+                         Time          : Phase := None;
+                         Tokens        : Token_Arr := (others => False)) is
    begin
       -- Logo --
       Erase_Screen;
@@ -429,7 +430,7 @@ package body Root.IO is
       Put_Logo.all;
 
       -- Map --
-      Put_Map (Units, Buildings, Rule);
+      Put_Map (Units, Buildings, Rule, Tokens);
       New_Line;
       Separator;
 

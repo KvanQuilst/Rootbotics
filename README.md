@@ -40,9 +40,9 @@ design constructs represent.
 
 ### Map - Clearings
 ```
-                            -- Rule?
-                           /
-Number of Buildings --- 2-^-@   - Number of Warriors
+                Rule? --       -- Token? (Yes = 'T', No = '@')
+                         \   /
+Number of Buildings --- 2-^-@    - Number of Warriors
                         | 5 | -/
                Suit --- F---1 --- Priority
 ```

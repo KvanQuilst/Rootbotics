@@ -96,7 +96,7 @@ package body Root.Alliance is
    procedure Prompt (Time : Phase := None) is
    begin
       Put_Prompt (Put_Logo'Access, Put_State'Access, Map_Warriors,
-                  Forts, Rule, Curr_Order, Time);
+                  Forts, Rule, Curr_Order, Time, Map_Sympathy);
    end Prompt;
 
    --------------------

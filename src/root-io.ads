@@ -176,6 +176,7 @@ package Root.IO is
                          Buildings     : Building_Arr;
                          Rule          : Rule_Arr;
                          Current_Order : Suit;
-                         Time          : Phase := None);
+                         Time          : Phase := None;
+                         Tokens        : Token_Arr := (others => False));
 
 end Root.IO;
