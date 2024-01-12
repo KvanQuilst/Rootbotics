@@ -15,6 +15,7 @@ The Rootbotics Assistant is currently in an unfinished state.
 The following features are finished/in testing:
 - Logical Lizards (no traits or difficulty yet)
 - Automated Alliance (no traits or difficulty yet)
+
 At this time, the following features are remaining for implementation:
 - Mechnical Marquise 2.0
 - Electric Eyrie
