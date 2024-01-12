@@ -116,9 +116,6 @@ package body Root.Alliance is
    begin
       Curr_Order := Order;
 
-      ----------------------
-      -- Confirm Warriors --
-      ----------------------
       declare
          Lost : constant Natural :=
             Check_Warriors (Prompt'Access, Warrior_Supply,
@@ -126,38 +123,20 @@ package body Root.Alliance is
          pragma Unreferenced (Lost);
       begin null; end;
 
-      -----------------------
-      -- Confirm Buildings --
-      -----------------------
       declare
          Lost : constant Natural :=
             Check_Buildings (Prompt'Access, Fort_Supply, Forts, FORTS_MAX);
          pragma Unreferenced (Lost);
       begin null; end;
 
-      --------------------
-      -- Confirm Tokens --
-      --------------------
-      --  TODO: Confirm tokens
+      Check_Tokens (Prompt'Access, Sympathy_Supply, Map_Sympathy);
 
-      ------------------
-      -- Confirm Rule --
-      ------------------
       Check_Rule (Prompt'Access, Rule);
 
-      --------------
-      -- Birdsong --
-      --------------
       Birdsong;
 
-      --------------
-      -- Daylight --
-      --------------
       Daylight;
 
-      -------------
-      -- Evening --
-      -------------
       Evening;
 
    end Take_Turn;

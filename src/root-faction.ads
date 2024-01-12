@@ -29,7 +29,7 @@ package Root.Faction is
 
    type Warrior_Arr  is array (Priority'Range) of Natural;
    type Building_Arr is array (Priority'Range) of Integer range 0 .. 3;
-   type Token_Arr    is array (Priority'Range) of Natural;
+   type Tok_Bool_Arr is array (Priority'Range) of Boolean;
    type Rule_Arr     is array (Priority'Range) of Boolean;
 
    subtype Building_Suit is Suit range Fox .. Mouse;
@@ -56,7 +56,7 @@ package Root.Faction is
                              Max_Builds : Integer) return Natural;
    procedure Check_Tokens   (Prompt : access procedure (Time : Phase := None);
                              Supply : in out Natural;
-                             Tokens : in out Token_Arr);
+                             Tokens : in out Tok_Bool_Arr);
    procedure Check_Rule     (Prompt : access procedure (Time : Phase := None);
                              Rule   : in out Rule_Arr);
 

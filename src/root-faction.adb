@@ -146,7 +146,23 @@ package body Root.Faction is
 
    procedure Check_Tokens (Prompt : access procedure (Time : Phase := None);
                            Supply : in out Natural;
-                           Tokens : in out Token_Arr) is null;
+                           Tokens : in out Tok_Bool_Arr) is
+   begin
+      Prompt.all;
+      Put_Line ("Does the number of tokens match for each clearaing?");
+      if not Get_Yes_No then
+         Prompt.all;
+         Put_Line ("Which clearings are incorrect?");
+         declare
+            Clearings : constant Int_Set := Get_Integers (1, 12);
+         begin
+            for C of Clearings loop
+               Supply := Supply + (if Tokens (C) then 1 else (-1));
+               Tokens (C) := not Tokens (C);
+            end loop;
+         end;
+      end if;
+   end Check_Tokens;
 
    procedure Check_Rule (Prompt : access procedure (Time : Phase := None);
                          Rule   : in out Rule_Arr) is
