@@ -2,7 +2,7 @@
 --                                                                           --
 --                        THE ROOTBOTICS ASSISTANT                           --
 --                                                                           --
---                          ROOT . ALLIANCE (Spec)                           --
+--                         ROOT . ALLIANCE (Spec)                            --
 --                                                                           --
 --                      Copyright (C) 2024 Dylan Eskew                       --
 --                                                                           --

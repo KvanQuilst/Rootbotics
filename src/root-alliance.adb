@@ -2,7 +2,7 @@
 --                                                                           --
 --                        THE ROOTBOTICS ASSISTANT                           --
 --                                                                           --
---                          ROOT . ALLIANCE (Body)                           --
+--                         ROOT . ALLIANCE (Body)                            --
 --                                                                           --
 --                      Copyright (C) 2024 Dylan Eskew                       --
 --                                                                           --
@@ -110,7 +110,7 @@ package body Root.Alliance is
    ---------------
    procedure Birdsong;
    procedure Daylight;
-   procedure Evening  is null;
+   procedure Evening;
 
    procedure Take_Turn (Order : Suit) is
    begin
@@ -143,25 +143,69 @@ package body Root.Alliance is
       --------------
       -- Birdsong --
       --------------
-      Prompt (Birdsong);
       Birdsong;
 
       --------------
       -- Daylight --
       --------------
-      Prompt (Daylight);
       Daylight;
 
       -------------
       -- Evening --
       -------------
-      Prompt (Evening);
       Evening;
-      Continue;
 
    end Take_Turn;
 
-   --  TODO: Account for Bird order!
+   function Revolt (Clears : Int_Arr) return Boolean;
+   procedure Spread_Sympathy;
+
+   procedure Birdsong is
+      Clears : constant Int_Arr := Filter_Clearings (Curr_Order);
+   begin
+      Curr_Phase := Birdsong;
+
+      Prompt (Birdsong);
+      Put_Line ("Craft the order card for +1 points for the " & Name & ".");
+      Continue;
+
+      -- Revolt --
+      if Curr_Order = Bird or else not Revolt (Clears) then
+
+         if Sympathy_Supply >= 6 then
+            Spread_Sympathy;
+         end if;
+
+         Spread_Sympathy;
+      end if;
+
+   end Birdsong;
+
+   procedure Daylight is
+      Clears : constant Int_Arr := Filter_Clearings (Bird);
+      B      : Boolean;
+      pragma Unreferenced (B);
+   begin
+      Curr_Phase := Daylight;
+
+      Spread_Sympathy;
+
+      if Curr_Order = Bird then
+         B := Revolt (Clears);
+      end if;
+   end Daylight;
+
+   procedure Organize;
+   procedure Recruit;
+
+   procedure Evening is
+   begin
+      Curr_Phase := Evening;
+
+      Organize;
+      Recruit;
+   end Evening;
+
    function Revolt (Clears : Int_Arr) return Boolean is
 
       function Count_Sym return Natural is
@@ -266,7 +310,6 @@ package body Root.Alliance is
 
          -- Just one clearing --
          if Count = 1 then
-            Put_Line ("1_1");
             for C in Adj_Clears'Range loop
                if Unsym_Order (C) then
                   Clear := C;
@@ -276,7 +319,6 @@ package body Root.Alliance is
 
          -- More than one clearing --
          else
-            Put_Line ("1_2");
             declare
                F_Clears : Int_Arr (1 .. Count);
                Opts     : String_Arr (1 .. Count);
@@ -305,7 +347,6 @@ package body Root.Alliance is
 
          -- Just one clearing --
          if Count = 1 then
-            Put_Line ("2_1");
             for C in Map_Sympathy'Range loop
                if not Map_Sympathy (C) then
                   Clear := C;
@@ -315,7 +356,6 @@ package body Root.Alliance is
 
          -- More than one clearing --
          else
-            Put_Line ("2_2");
             declare
                F_Clears : Int_Arr (1 .. Count);
                Opts     : String_Arr (1 .. Count);
@@ -345,39 +385,31 @@ package body Root.Alliance is
       Continue;
    end Spread_Sympathy;
 
-   procedure Birdsong is
-      Clears : constant Int_Arr := Filter_Clearings (Curr_Order);
+   procedure Organize is
    begin
-      Curr_Phase := Birdsong;
+      for C in Priority'Range loop
+         if Forts (C) = 1 and then Map_Warriors (C) >= 3 then
+            Prompt (Curr_Phase);
+            Put_Line ("Remove all " & Name & " warriors from clearing" &
+                       C'Image & ".");
+            Warrior_Supply := Warrior_Supply + Map_Warriors (C);
+            Map_Warriors (C) := 0;
+            Continue;
 
-      Prompt (Birdsong);
-      Put_Line ("Craft the order card for +1 points for the " & Name & ".");
-      Continue;
-
-      -- Revolt --
-      if Curr_Order = Bird or else not Revolt (Clears) then
-
-         if Sympathy_Supply >= 6 then
             Spread_Sympathy;
          end if;
+      end loop;
+   end Organize;
 
-         Spread_Sympathy;
-      end if;
-
-   end Birdsong;
-
-   procedure Daylight is
-      Clears : constant Int_Arr := Filter_Clearings (Bird);
-      B      : Boolean;
-      pragma Unreferenced (B);
+   procedure Recruit is
    begin
-      Curr_Phase := Daylight;
-
-      Spread_Sympathy;
-
-      if Curr_Order = Bird then
-         B := Revolt (Clears);
-      end if;
-   end Daylight;
+      for C in Priority'Range loop
+         if Forts (C) = 1 then
+            Prompt (Curr_Phase);
+            Deploy_Warriors (Warrior_Supply, Map_Warriors, C, 1);
+            Continue;
+         end if;
+      end loop;
+   end Recruit;
 
 end Root.Alliance;
