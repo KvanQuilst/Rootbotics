@@ -79,15 +79,15 @@ package body Root.Lizards is
    begin
       Put_Line ("   Warrior Supply:" & Warrior_Supply'Image);
       Put_Line ("         Acolytes:" & Acolytes'Image);
-      Put ("    " & Root.IO.Mouse & " Gardens:");
+      Put ("    " & To_String (Suit_Str (Mouse)) & " Gardens:");
       Garden_State (Mouse);
       New_Line;
 
-      Put ("   " & Root.IO.Rabbit & " Gardens:");
+      Put ("   " & To_String (Suit_Str (Rabbit)) & " Gardens:");
       Garden_State (Rabbit);
       New_Line;
 
-      Put ("      " & Root.IO.Fox & " Gardens:");
+      Put ("      " & To_String (Suit_Str (Fox)) & " Gardens:");
       Garden_State (Fox);
       New_Line;
 
@@ -366,7 +366,7 @@ package body Root.Lizards is
             Acolytes := Acolytes + 1;
             Put_Line ("Add a warrior from clearing" & Max_Clear'Image &
                       " to the acolytes box.");
-            Put_Line ("Discard the " & Root.IO.Bird & " card.");
+            Put_Line ("Discard the " & To_String (Suit_Str (Bird)) & " card.");
          else
             Put_Line ("Nothing to do...");
          end if;

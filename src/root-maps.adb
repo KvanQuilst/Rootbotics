@@ -126,7 +126,7 @@ package body Root.Maps is
    end Query_Suit;
 
    procedure Init_Map (Name : Map_Name) is
-      Counts : array (Suit range Fox .. Rabbit) of Natural := (others => 0);
+      Counts : array (Clearing_Suit'Range) of Natural := (others => 0);
    begin
       Map_In_Play := Name;
 

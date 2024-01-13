@@ -124,29 +124,23 @@ package Root.IO is
    --------------------------
    -- Common Color Strings --
    --------------------------
-   Fox    : constant String := ESC & "[31mFox" & ESC & "[0m";
-   Mouse  : constant String := ESC & "[33mMouse" & ESC & "[0m";
-   Rabbit : constant String := ESC & "[93mRabbit" & ESC & "[0m";
-   Bird   : constant String := ESC & "[94mBird" & ESC & "[0m";
-
    Suit_Str : constant array (Suit'Range) of Unbounded_String :=
-      (Root.Fox    => Unbounded (ESC & "[31mFox" & ESC & "[0m"),
-       Root.Mouse  => Unbounded (ESC & "[33mMouse" & ESC & "[0m"),
-       Root.Rabbit => Unbounded (ESC & "[93mRabbit" & ESC & "[0m"),
-       Root.Bird   => Unbounded (ESC & "[94mBird" & ESC & "[0m"));
+      (Fox    => Unbounded (ESC & "[31mFox" & ESC & "[0m"),
+       Mouse  => Unbounded (ESC & "[33mMouse" & ESC & "[0m"),
+       Rabbit => Unbounded (ESC & "[93mRabbit" & ESC & "[0m"),
+       Bird   => Unbounded (ESC & "[94mBird" & ESC & "[0m"));
 
-   Fox_Color    : constant Color := Red;
-   Mouse_Color  : constant Color := Yellow;
-   Rabbit_Color : constant Color := B_Yellow;
-   Bird_Color   : constant Color := B_Blue;
+   Suit_Color : constant array (Suit'Range) of Color :=
+      (Fox    => Red,
+       Mouse  => Yellow,
+       Rabbit => B_Yellow,
+       Bird   => B_Blue);
 
    Phase_Color : constant array (Phase'Range) of Color :=
       (Birdsong => Yellow,
        Daylight => B_Cyan,
        Evening  => B_Black,
        None     => White);
-
-   function Suit_Color (S : Suit) return Color;
 
    ---------------------
    -- Cursor Controls --
