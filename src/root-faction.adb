@@ -200,6 +200,7 @@ package body Root.Faction is
       else
          Put_Line ("Unable to place warriors: warrior supply is depleted!");
       end if;
+      Continue;
    end Deploy_Warriors;
 
    procedure Deploy_Building (Supply     : in out Natural;
@@ -215,6 +216,7 @@ package body Root.Faction is
       else
          Put_Line ("Unable to place building: building supply is depleted!");
       end if;
+      Continue;
    end Deploy_Building;
 
 end Root.Faction;

@@ -205,6 +205,12 @@ package body Root.Lizards is
    end Birdsong;
 
    procedure Daylight is
+      Opts : constant String_Arr := (Suit_Str  (Fox),
+                                     Suit_Str  (Rabbit),
+                                     Suit_Str  (Mouse),
+                                     Suit_Str  (Bird),
+                                     Unbounded ("None"));
+      C : Character;
    begin
       Curr_Phase := Daylight;
       Curr_Action := Rituals;
@@ -212,8 +218,17 @@ package body Root.Lizards is
       for I in Integer range 1 .. 4 loop
          Prompt;
          Put_Line ("Reveal top card of Lost Souls pile; what is it's suit?");
-         Ritual (Get_Suit_Opt);
-         Continue;
+         C := Get_Option (Opts);
+         if C /= 'e' then
+            Ritual ((case C is
+                     when 'a' => Fox,
+                     when 'b' => Rabbit,
+                     when 'c' => Mouse,
+                     when 'd' => Bird,
+                     when others => Bird));
+         else
+            return;
+         end if;
       end loop;
    end Daylight;
 
