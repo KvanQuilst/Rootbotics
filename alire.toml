@@ -1,6 +1,6 @@
 name = "rootbotics"
 description = "Rootbotics automated faction assistant."
-version = "0.2.1"
+version = "0.3-dev"
 
 authors = ["Dylan E."]
 maintainers = ["Dylan E. <76961140+KvanQuilst@users.noreply.github.com>"]

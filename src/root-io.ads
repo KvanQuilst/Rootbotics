@@ -134,7 +134,7 @@ package Root.IO is
       (Fox    => Red,
        Mouse  => Yellow,
        Rabbit => B_Yellow,
-       Bird   => B_Blue);
+       Bird   => Blue);
 
    Phase_Color : constant array (Phase'Range) of Color :=
       (Birdsong => Yellow,
