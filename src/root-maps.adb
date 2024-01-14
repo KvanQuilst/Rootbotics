@@ -187,7 +187,7 @@ package body Root.Maps is
          Cursor_Column_Move (-2);
          Put ("^");
          Set_Style (C);
-         Cursor_Column_Move (2);
+         Cursor_Column_Move (1);
       end if;
 
       if Tok then
