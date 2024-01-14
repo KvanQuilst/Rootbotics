@@ -38,14 +38,62 @@ with Root.Alliance;
 with Root.Lizards;
 
 procedure Rootbotics is
-   VERSION : constant String := "v0.2";
+   VERSION : constant String := "v0.3-dev";
 
    -- In order of setup priority --
    type Faction is (Alliance, Lizards);
 
    Playing : array (Faction'Range) of Boolean := (others => False);
    Num_Playing : Integer := 0;
+
+   procedure Put_Logo is
+      First : Boolean := True;
+      Title : constant array (Integer range 1 .. 9) of String (1 .. 40) :=
+       ("  ____________________________________  ",
+        "//                                    \\",
+        "| \=====\\     ---       ---  \======/ |",
+        "|  ||    ||  //   \\   //   \\   ||    |",
+        "|  || /==<  ||     || ||     ||  ||    |",
+        "|  ||    ||  \\   //   \\   //   ||    |",
+        "|  |\_    \\   ---       ---     /\=/  |",
+        "|  A Game of Woodland Might and Right  |",
+        "\\____________________________________//");
+   begin
+      Set_Style (Yellow);
+      Put_Line (Title (1));
+      Put_Line (Title (2));
+      for L of Title (3 .. Title'Last - 2) loop
+         Put (L (1 .. 2));
+         Set_Style (Suit_Color (Fox));
+         Put (L (3 .. 12));
+         Set_Style (Suit_Color (Rabbit));
+         Put (L (13 .. 22));
+         Set_Style (Suit_Color (Mouse));
+         if First then
+            Put (L (23 .. 30));
+            Set_Style (Suit_Color (Bird));
+            Put (L (31 .. 38));
+            First := False;
+         else
+            Put (L (23 .. 31));
+            Set_Style (Suit_Color (Bird));
+            Put (L (32 .. 38));
+         end if;
+         Set_Style (Yellow);
+         Put (L (39 .. 40));
+         New_Line;
+      end loop;
+      Put (Title (Title'Last - 1) (1 .. 2));
+      Reset_Style;
+      Put (Title (Title'Last - 1) (3 .. 38));
+      Set_Style (Yellow);
+      Put_Line (Title (Title'Last - 1) (39 .. 40));
+      Put_Line (Title (Title'Last));
+      Reset_Style;
+   end Put_Logo;
+
 begin
+   Put_Logo;
    Put_Line ("Welcome to the Rootbotics Logic Tool " & VERSION & "!");
    New_Line;
 
