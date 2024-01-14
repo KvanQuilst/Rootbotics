@@ -192,22 +192,18 @@ package body Root.IO is
    -----------------
 
    function Get_Suit_Opt return Suit is
-      S : constant String_Arr := (
-         To_Unbounded_String (Fox),
-         To_Unbounded_String (Mouse),
-         To_Unbounded_String (Rabbit),
-         To_Unbounded_String (Bird)
-         );
+      S : constant String_Arr := (Suit_Str (Fox),
+                                  Suit_Str (Rabbit),
+                                  Suit_Str (Mouse),
+                                  Suit_Str (Bird));
    begin
       return Suit'Val (Character'Pos (Get_Option (S)) - 97);
    end Get_Suit_Opt;
 
    function Get_Clearing_Suit_Opt return Clearing_Suit is
-      S : constant String_Arr := (
-         To_Unbounded_String (Fox),
-         To_Unbounded_String (Mouse),
-         To_Unbounded_String (Rabbit)
-         );
+      S : constant String_Arr := (Suit_Str (Fox),
+                                  Suit_Str (Rabbit),
+                                  Suit_Str (Mouse));
    begin
       return Suit'Val (Character'Pos (Get_Option (S)) - 97);
    end Get_Clearing_Suit_Opt;
@@ -294,13 +290,6 @@ package body Root.IO is
    begin
       Put (ESC & "[0m");
    end Reset_Style;
-
-   function Suit_Color (S : Suit) return Color is
-      (case S is
-         when Root.Fox => Fox_Color,
-         when Root.Mouse => Mouse_Color,
-         when Root.Rabbit => Rabbit_Color,
-         when Root.Bird => Bird_Color);
 
    ---------------------
    -- Cursor Controls --
@@ -433,11 +422,7 @@ package body Root.IO is
       Put_State.all;
       New_Line;
       Put ("    Current Order: ");
-      Put_Line ((case Current_Order is
-                  when Root.Fox    => Root.IO.Fox,
-                  when Root.Rabbit => Root.IO.Rabbit,
-                  when Root.Mouse  => Root.IO.Mouse,
-                  when Root.Bird   => Root.IO.Bird));
+      Put_Line (To_String (Suit_Str (Current_Order)));
       Separator;
       if Phase /= null then
          Phase.all;

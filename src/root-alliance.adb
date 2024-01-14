@@ -44,10 +44,7 @@ package body Root.Alliance is
          Put ("             Forts:");
          for S in Clearing_Suit'Range loop
             Set_Style ((if Fort_Supply (S) > 0
-                        then (case S is
-                                 when Fox    => Fox_Color,
-                                 when Mouse  => Mouse_Color,
-                                 when Rabbit => Rabbit_Color)
+                        then Suit_Color (S)
                         else B_Black));
             Put (" " & Fort);
          end loop;
@@ -397,6 +394,7 @@ package body Root.Alliance is
       Map_Sympathy (Clear) := True;
       Sympathy_Supply := Sympathy_Supply - 1;
       Put_Line ("Place a sympathy token in clearing" & Clear'Image & ".");
+      Continue;
       Score_Sympathy;
       Continue;
    end Spread_Sympathy;

@@ -79,15 +79,15 @@ package body Root.Lizards is
    begin
       Put_Line ("   Warrior Supply:" & Warrior_Supply'Image);
       Put_Line ("         Acolytes:" & Acolytes'Image);
-      Put ("    " & Root.IO.Mouse & " Gardens:");
+      Put ("    " & To_String (Suit_Str (Mouse)) & " Gardens:");
       Garden_State (Mouse);
       New_Line;
 
-      Put ("   " & Root.IO.Rabbit & " Gardens:");
+      Put ("   " & To_String (Suit_Str (Rabbit)) & " Gardens:");
       Garden_State (Rabbit);
       New_Line;
 
-      Put ("      " & Root.IO.Fox & " Gardens:");
+      Put ("      " & To_String (Suit_Str (Fox)) & " Gardens:");
       Garden_State (Fox);
       New_Line;
 
@@ -205,6 +205,12 @@ package body Root.Lizards is
    end Birdsong;
 
    procedure Daylight is
+      Opts : constant String_Arr := (Suit_Str  (Fox),
+                                     Suit_Str  (Rabbit),
+                                     Suit_Str  (Mouse),
+                                     Suit_Str  (Bird),
+                                     Unbounded ("None"));
+      C : Character;
    begin
       Curr_Phase := Daylight;
       Curr_Action := Rituals;
@@ -212,8 +218,17 @@ package body Root.Lizards is
       for I in Integer range 1 .. 4 loop
          Prompt;
          Put_Line ("Reveal top card of Lost Souls pile; what is it's suit?");
-         Ritual (Get_Suit_Opt);
-         Continue;
+         C := Get_Option (Opts);
+         if C /= 'e' then
+            Ritual ((case C is
+                     when 'a' => Fox,
+                     when 'b' => Rabbit,
+                     when 'c' => Mouse,
+                     when 'd' => Bird,
+                     when others => Bird));
+         else
+            return;
+         end if;
       end loop;
    end Daylight;
 
@@ -366,7 +381,7 @@ package body Root.Lizards is
             Acolytes := Acolytes + 1;
             Put_Line ("Add a warrior from clearing" & Max_Clear'Image &
                       " to the acolytes box.");
-            Put_Line ("Discard the " & Root.IO.Bird & " card.");
+            Put_Line ("Discard the " & To_String (Suit_Str (Bird)) & " card.");
          else
             Put_Line ("Nothing to do...");
          end if;
