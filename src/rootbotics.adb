@@ -36,12 +36,13 @@ with Root.Maps; use Root.Maps;
 with Root.Alliance;
 --  with Root.Vagabot;
 with Root.Lizards;
+with Root.Riverfolk;
 
 procedure Rootbotics is
    VERSION : constant String := "v0.3-dev";
 
    -- In order of setup priority --
-   type Faction is (Alliance, Lizards);
+   type Faction is (Alliance, Lizards, Riverfolk);
 
    Playing : array (Faction'Range) of Boolean := (others => False);
    Num_Playing : Integer := 0;
@@ -107,8 +108,8 @@ begin
          --  To_Unbounded_String (Root.Eyrie.Name),
          To_Unbounded_String (Root.Alliance.Name),
          --  To_Unbounded_String (Root.Vagabot.Name),
-         To_Unbounded_String (Root.Lizards.Name)
-         --  To_Unbounded_String (Root.Riverfolk.Name),
+         To_Unbounded_String (Root.Lizards.Name),
+         To_Unbounded_String (Root.Riverfolk.Name)
          --  To_Unbounded_String (Root.Corvids.Name),
          --  To_Unbounded_String (Root.Duchy.Name)
          );
@@ -157,9 +158,10 @@ begin
          case I is
             --  when Marquise => Root.Marquise.Setup (Get_Map);
             --  when Eyrie => Root.Eyrie.Setup;
-            when Alliance => Root.Alliance.Setup;
+            when Alliance  => Root.Alliance.Setup;
             --  when Vagabot => Root.Vagabot.Setup;
-            when Lizards => Root.Lizards.Setup;
+            when Lizards   => Root.Lizards.Setup;
+            when Riverfolk => Root.Riverfolk.Setup;
          end case;
       end if;
    end loop;
@@ -184,6 +186,8 @@ begin
                   Options (P_Idx) := To_Unbounded_String (Root.Alliance.Name);
                when Lizards =>
                   Options (P_Idx) := To_Unbounded_String (Root.Lizards.Name);
+               when Riverfolk =>
+                  Options (P_Idx) := To_Unbounded_String (Root.Riverfolk.Name);
             end case;
          end if;
       end loop;
@@ -224,8 +228,9 @@ begin
 
          -- Handle faction turn --
          case F is
-            when Alliance => Root.Alliance.Take_Turn (Order);
-            when Lizards  => Root.Lizards.Take_Turn;
+            when Alliance  => Root.Alliance.Take_Turn (Order);
+            when Lizards   => Root.Lizards.Take_Turn;
+            when Riverfolk => Root.Riverfolk.Take_Turn;
          end case;
       end loop;
    end;
