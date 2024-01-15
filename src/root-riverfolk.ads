@@ -31,7 +31,7 @@ with Root.IO; use Root.IO;
 
 package Root.Riverfolk is
 
-   Faction_Color : constant Color := B_Blue;
+   Faction_Color : constant Color := Cyan;
    Name : constant String := String_Style ("Riverfolk Robots", Faction_Color);
 
    procedure Setup;
