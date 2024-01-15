@@ -380,7 +380,6 @@ package body Root.IO is
          return;
       end if;
 
-      New_Line;
       Set_Style (Phase_Color (Time));
       Put_Line_Centered (To_String (Width * "-"));
       case Time is
@@ -424,9 +423,58 @@ package body Root.IO is
       Put ("    Current Order: ");
       Put_Line (To_String (Suit_Str (Current_Order)));
       Separator;
+      New_Line;
       if Phase /= null then
          Phase.all;
       end if;
    end Put_Prompt;
+
+   -------------------
+   -- Rootbotics IO --
+   -------------------
+   procedure Put_Title is
+      First : Boolean := True;
+   begin
+      Set_Style (Yellow);
+      Put_Line (Title (1));
+      Put_Line (Title (2));
+      for L of Title (3 .. Title'Last - 2) loop
+         Put (L (1 .. 2));
+         Set_Style (Suit_Color (Fox));
+         Put (L (3 .. 12));
+         Set_Style (Suit_Color (Rabbit));
+         Put (L (13 .. 22));
+         Set_Style (Suit_Color (Mouse));
+         if First then
+            Put (L (23 .. 30));
+            Set_Style (Suit_Color (Bird));
+            Put (L (31 .. 38));
+            First := False;
+         else
+            Put (L (23 .. 31));
+            Set_Style (Suit_Color (Bird));
+            Put (L (32 .. 38));
+         end if;
+         Set_Style (Yellow);
+         Put (L (39 .. 40));
+         New_Line;
+      end loop;
+      Put (Title (Title'Last - 1) (1 .. 2));
+      Reset_Style;
+      Put (Title (Title'Last - 1) (3 .. 38));
+      Set_Style (Yellow);
+      Put_Line (Title (Title'Last - 1) (39 .. 40));
+      Put_Line (Title (Title'Last));
+      Reset_Style;
+   end Put_Title;
+
+   procedure Put_Title_Prompt is
+   begin
+      -- Title --
+      Erase_Screen;
+      Cursor_Home;
+      Put_Title;
+      New_Line;
+   end Put_Title_Prompt;
 
 end Root.IO;

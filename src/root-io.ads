@@ -176,4 +176,21 @@ package Root.IO is
                          Phase         : access procedure := null;
                          Tokens        : Token_Arr := (others => False));
 
+   -------------------
+   -- Rootbotics IO --
+   -------------------
+   procedure Put_Title;
+   procedure Put_Title_Prompt;
+
+   Title : constant array (Integer range 1 .. 9) of String (1 .. 40) :=
+      ("  ____________________________________  ",
+       "//                                    \\",
+       "| \=====\\     ---       ---  \======/ |",
+       "|  ||    ||  //   \\   //   \\   ||    |",
+       "|  || /==<  ||     || ||     ||  ||    |",
+       "|  ||    ||  \\   //   \\   //   ||    |",
+       "|  |\_    \\   ---       ---     /\_/  |",
+       "|  A Game of Woodland Might and Right  |",
+       "\\____________________________________//");
+
 end Root.IO;

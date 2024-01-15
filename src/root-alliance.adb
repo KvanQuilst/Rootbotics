@@ -117,9 +117,11 @@ package body Root.Alliance is
    -------------------------
    -- Alliance Turn Logic --
    -------------------------
-   procedure Take_Turn (Order : Suit) is
+   procedure Take_Turn is
    begin
-      Curr_Order  := Order;
+      Prompt;
+      Put_Line ("What is the order of this turn?");
+      Curr_Order  := Get_Suit_Opt;
       Curr_Phase  := None;
       Curr_Action := None;
 

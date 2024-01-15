@@ -120,6 +120,11 @@ package body Root.Lizards is
    procedure Setup is
       Corner : Integer range 1 .. 4;
    begin
+      Erase_Screen;
+      Cursor_Home;
+      Put_Logo;
+      New_Line;
+
       Put_Line ("Which corner will the " & Name & " start in?");
       Corner := Get_Integer (1, 4);
 
