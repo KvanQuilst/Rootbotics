@@ -39,7 +39,7 @@ package body Root.Marquise is
       Put_Line_Centered ("  /  /  \  ^  /  \  \  ");
       Put_Line_Centered (" |   __        __    | ");
       Put_Line_Centered (" | / __ \    / __ \  | ");
-      Put_Line_Centered ("_|| |__| |  | |__| | |_");
+      Put_Line_Centered ("_\| |__| |  | |__| | /_");
       Put_Line_Centered ("\  \ __ /    \ __ /   /");
       Put_Line_Centered ("\    ..   /\   ..     /");
       Reset_Style;
