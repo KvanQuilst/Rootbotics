@@ -26,6 +26,8 @@ At this time, the following features are remaining for implementation:
 - Difficulties and Traits
 - Lake Map Raft Logic
 
+![ASCII Factions](img/factions.png)
+
 ## Installation
 ### Requirements
 - Alire ([Ada LIbrary REpository](https://alire.ada.dev/))
