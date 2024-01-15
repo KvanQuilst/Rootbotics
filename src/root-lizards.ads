@@ -53,14 +53,16 @@ private
       renames To_Unbounded_String;
 
    Warrior_Supply  : Integer range 0 .. WARRIOR_MAX := WARRIOR_MAX;
-   Map_Warriors    : Warrior_Arr;
-   Rule            : Rule_Arr;
    Acolytes        : Integer range 0 .. WARRIOR_MAX := 0;
+   Garden_Supply   : Suit_Build_Supply := (others => GARDENS_MAX);
+
+   Map_Warriors    : Warrior_Arr   := (others => 0);
+   Gardens         : Building_Arr  := (others => 0);
+   Rule            : Rule_Arr      := (others => False);
+
    Next_Conspiracy : Conspiracy_Count := 0;
    Conspiracies    : constant array (Conspiracy_Count'Range) of Conspiracy :=
                         (Convert, Crusade, Convert, Crusade, Sanctify);
-   Gardens         : Building_Arr;
-   Garden_Supply   : Suit_Build_Supply := (others => GARDENS_MAX);
 
    Curr_Order  : Suit;
    Curr_Phase  : Phase;

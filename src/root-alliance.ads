@@ -52,17 +52,18 @@ private
    function Unbounded (S : String) return Unbounded_String
       renames To_Unbounded_String;
 
-   Warrior_Supply  : Integer range 0 .. WARRIOR_MAX := WARRIOR_MAX;
-   Map_Warriors    : Warrior_Arr;
-   Rule            : Rule_Arr;
-   Officers        : Integer range 0 .. WARRIOR_MAX := 0;
+   Warrior_Supply  : Integer range 0 .. WARRIOR_MAX  := WARRIOR_MAX;
    Sympathy_Supply : Integer range 0 .. SYMPATHY_MAX := SYMPATHY_MAX;
-   Map_Sympathy    : Token_Arr;
-   Forts           : Building_Arr;
+   Officers        : Integer range 0 .. WARRIOR_MAX  := 0;
    Fort_Supply     : Suit_Build_Supply := (others => FORTS_MAX);
 
+   Map_Warriors    : Warrior_Arr  := (others => 0);
+   Forts           : Building_Arr := (others => 0);
+   Map_Sympathy    : Token_Arr    := (others => False);
+   Rule            : Rule_Arr     := (others => False);
+
    Curr_Order  : Suit;
-   Curr_Phase  : Phase := None;
+   Curr_Phase  : Phase  := None;
    Curr_Action : Action := None;
 
    Logo_Width : constant := 21;
