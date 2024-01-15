@@ -31,10 +31,7 @@ with Root; use Root;
 with Root.IO; use Root.IO;
 with Root.Maps; use Root.Maps;
 
---  with Root.Marquise;
---  with Root.Eyrie;
 with Root.Alliance;
---  with Root.Vagabot;
 with Root.Lizards;
 with Root.Riverfolk;
 
@@ -47,54 +44,10 @@ procedure Rootbotics is
    Playing : array (Faction'Range) of Boolean := (others => False);
    Num_Playing : Integer := 0;
 
-   procedure Put_Logo is
-      First : Boolean := True;
-      Title : constant array (Integer range 1 .. 9) of String (1 .. 40) :=
-       ("  ____________________________________  ",
-        "//                                    \\",
-        "| \=====\\     ---       ---  \======/ |",
-        "|  ||    ||  //   \\   //   \\   ||    |",
-        "|  || /==<  ||     || ||     ||  ||    |",
-        "|  ||    ||  \\   //   \\   //   ||    |",
-        "|  |\_    \\   ---       ---     /\=/  |",
-        "|  A Game of Woodland Might and Right  |",
-        "\\____________________________________//");
-   begin
-      Set_Style (Yellow);
-      Put_Line (Title (1));
-      Put_Line (Title (2));
-      for L of Title (3 .. Title'Last - 2) loop
-         Put (L (1 .. 2));
-         Set_Style (Suit_Color (Fox));
-         Put (L (3 .. 12));
-         Set_Style (Suit_Color (Rabbit));
-         Put (L (13 .. 22));
-         Set_Style (Suit_Color (Mouse));
-         if First then
-            Put (L (23 .. 30));
-            Set_Style (Suit_Color (Bird));
-            Put (L (31 .. 38));
-            First := False;
-         else
-            Put (L (23 .. 31));
-            Set_Style (Suit_Color (Bird));
-            Put (L (32 .. 38));
-         end if;
-         Set_Style (Yellow);
-         Put (L (39 .. 40));
-         New_Line;
-      end loop;
-      Put (Title (Title'Last - 1) (1 .. 2));
-      Reset_Style;
-      Put (Title (Title'Last - 1) (3 .. 38));
-      Set_Style (Yellow);
-      Put_Line (Title (Title'Last - 1) (39 .. 40));
-      Put_Line (Title (Title'Last));
-      Reset_Style;
-   end Put_Logo;
-
+   function Unbounded (S : String) return Unbounded_String
+      renames To_Unbounded_String;
 begin
-   Put_Logo;
+   Put_Title_Prompt;
    Put_Line ("Welcome to the Rootbotics Logic Tool " & VERSION & "!");
    New_Line;
 
@@ -103,16 +56,10 @@ begin
    -----------------------
    Put_Line ("Which factions will you play with?");
    declare
-      Options : constant String_Arr := (
-         --  To_Unbounded_String (Root.Marquise.Name),
-         --  To_Unbounded_String (Root.Eyrie.Name),
-         To_Unbounded_String (Root.Alliance.Name),
-         --  To_Unbounded_String (Root.Vagabot.Name),
-         To_Unbounded_String (Root.Lizards.Name),
-         To_Unbounded_String (Root.Riverfolk.Name)
-         --  To_Unbounded_String (Root.Corvids.Name),
-         --  To_Unbounded_String (Root.Duchy.Name)
-         );
+      Options : constant String_Arr :=
+         (Unbounded (Root.Alliance.Name),
+          Unbounded (Root.Lizards.Name),
+          Unbounded (Root.Riverfolk.Name));
       Opts : constant Char_Set := Get_Options (Options);
    begin
       if Opts.Length = 0 then
@@ -124,24 +71,20 @@ begin
       end loop;
       Num_Playing := Integer (Opts.Length);
    end;
-   New_Line;
 
    -------------------
    -- Map Selection --
    -------------------
    declare
-      Options : constant String_Arr := (
-         To_Unbounded_String (String_Style ("Fall", Green)),
-         To_Unbounded_String (String_Style ("Winter", B_Cyan)),
-         To_Unbounded_String (String_Style ("Lake", Blue)),
-         To_Unbounded_String (String_Style ("Mountain", Yellow))
-         );
-      Opt : Character;
+      Options : constant String_Arr :=
+         (Unbounded (String_Style ("Fall", Green)),
+          Unbounded (String_Style ("Winter", B_Cyan)),
+          Unbounded (String_Style ("Lake", Blue)),
+          Unbounded (String_Style ("Mountain", Yellow)));
    begin
+      Put_Title_Prompt;
       Put_Line ("Which map will you be playing on:");
-      Opt := Get_Option (Options);
-
-      Init_Map (case Opt is
+      Init_Map (case Get_Option (Options) is
                   when 'a' => Fall,
                   when 'b' => Winter,
                   when 'c' => Lake,
@@ -153,13 +96,10 @@ begin
    ----------------------------
    -- Faction Setup in Order --
    ----------------------------
-   for I in Playing'Range loop
-      if Playing (I) then
-         case I is
-            --  when Marquise => Root.Marquise.Setup (Get_Map);
-            --  when Eyrie => Root.Eyrie.Setup;
+   for F in Faction'Range loop
+      if Playing (F) then
+         case F is
             when Alliance  => Root.Alliance.Setup;
-            --  when Vagabot => Root.Vagabot.Setup;
             when Lizards   => Root.Lizards.Setup;
             when Riverfolk => Root.Riverfolk.Setup;
          end case;
@@ -170,24 +110,53 @@ begin
    ---------------------
    -- Manage the Game --
    ---------------------
+
+   -- There's one faction --
+   if Num_Playing = 1 then
+      declare
+         Fact : Faction;
+      begin
+         for F in Faction'Range loop
+            Fact := F;
+            exit when Playing (F);
+         end loop;
+
+         Put_Title_Prompt;
+         Put_Line ("Take the " &
+                   (case Fact is
+                     when Alliance  => Root.Alliance.Name,
+                     when Lizards   => Root.Lizards.Name,
+                     when Riverfolk => Root.Riverfolk.Name) &
+                   "'s turn.");
+         Continue;
+
+         loop
+            case Fact is
+               when Alliance  => Root.Alliance.Take_Turn;
+               when Lizards   => Root.Lizards.Take_Turn;
+               when Riverfolk => Root.Riverfolk.Take_Turn;
+            end case;
+         end loop;
+      end;
+   end if;
+
+   -- There's multiple factions --
    declare
       Options : String_Arr (1 .. Num_Playing);
       P_Idx : Integer := 0;
       F_Opt : Character;
-      Order : Suit;
-      F : Faction;
    begin
 
-      for I in Playing'Range loop
-         if Playing (I) then
+      for F in Faction'Range loop
+         if Playing (F) then
             P_Idx := P_Idx + 1;
-            case I is
+            case F is
                when Alliance =>
-                  Options (P_Idx) := To_Unbounded_String (Root.Alliance.Name);
+                  Options (P_Idx) := Unbounded (Root.Alliance.Name);
                when Lizards =>
-                  Options (P_Idx) := To_Unbounded_String (Root.Lizards.Name);
+                  Options (P_Idx) := Unbounded (Root.Lizards.Name);
                when Riverfolk =>
-                  Options (P_Idx) := To_Unbounded_String (Root.Riverfolk.Name);
+                  Options (P_Idx) := Unbounded (Root.Riverfolk.Name);
             end case;
          end if;
       end loop;
@@ -195,42 +164,17 @@ begin
 
       loop
          --  TODO: Grey out factions who've already had a turn this round
-         if Num_Playing > 1 then
-            -- Choose Faction Turn --
-            Put_Line ("Whose turn will you take?");
-            F_Opt := Get_Option (Options);
-            P_Idx := Character'Pos (F_Opt) - 96;
-         else
-            New_Line;
-            Put_Line ("Take the " & Root.Lizards.Name & "'s turn.");
-            Continue;
-            P_Idx := 1;
-         end if;
 
-         F := Alliance;
-         loop
-            if Playing (F) then
-               P_Idx := P_Idx - 1;
-            end if;
+         -- Choose Faction Turn --
+         Put_Title_Prompt;
+         Put_Line ("Whose turn will you take?");
+         F_Opt := Get_Option (Options);
 
-            exit when P_Idx = 0;
-            F := Faction'Succ (F);
-         end loop;
-
-         New_Line;
-
-         -- What's the Order? --
-         if F /= Lizards then
-            Put_Line ("What is the order of this turn?");
-            Order := Get_Suit_Opt;
-            New_Line;
-         end if;
-
-         -- Handle faction turn --
-         case F is
-            when Alliance  => Root.Alliance.Take_Turn (Order);
-            when Lizards   => Root.Lizards.Take_Turn;
-            when Riverfolk => Root.Riverfolk.Take_Turn;
+         case F_Opt is
+            when 'a' => Root.Alliance.Take_Turn;
+            when 'b' => Root.Lizards.Take_Turn;
+            when 'c' => Root.Riverfolk.Take_Turn;
+            when others => return;
          end case;
       end loop;
    end;

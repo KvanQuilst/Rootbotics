@@ -34,7 +34,7 @@ package Root.Alliance is
    Name : constant String := String_Style ("Automated Alliance", Green);
 
    procedure Setup;
-   procedure Take_Turn (Order : Suit);
+   procedure Take_Turn;
 
 private
 
