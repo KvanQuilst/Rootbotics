@@ -444,6 +444,7 @@ package body Root.IO is
          Put (L (3 .. 12));
          Set_Style (Suit_Color (Rabbit));
          Put (L (13 .. 22));
+         Reset_Style;
          Set_Style (Suit_Color (Mouse));
          if First then
             Put (L (23 .. 30));
