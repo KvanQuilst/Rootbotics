@@ -2,7 +2,7 @@
 --                                                                           --
 --                        THE ROOTBOTICS ASSISTANT                           --
 --                                                                           --
---                         ROOT . ALLIANCE (Spec)                            --
+--                           ROOT . DUCHY (Spec)                             --
 --                                                                           --
 --                      Copyright (C) 2024 Dylan Eskew                       --
 --                                                                           --
@@ -27,67 +27,35 @@ with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 
 with Root.Faction; use Root.Faction;
 with Root.IO; use Root.IO;
+package Root.Duchy is
 
-package Root.Alliance is
-
-   Faction_Color : constant Color := Green;
-   Name : constant String :=
-      String_Style ("Automated Alliance", Faction_Color);
+   Faction_Color : constant Color := B_Magenta;
+   Name : constant String := String_Style ("Drillbit Duchy", Faction_Color);
 
    procedure Setup;
    procedure Take_Turn;
 
 private
 
-   WARRIOR_MAX  : constant Integer := 10;
-   SYMPATHY_MAX : constant Integer := 10;
-   FORTS_MAX    : constant Integer := 1;
-
-   type    Action is (Revolt, Spread_Sympathy, Organize, Recruit, Craft, None);
-   subtype Fort is Building_Suit;
-
-   procedure Put_Phase with Inline;
-   procedure Prompt    with Inline;
+   type Action is (Craft);
 
    function Unbounded (S : String) return Unbounded_String
       renames To_Unbounded_String;
 
-   Warrior_Supply  : Integer range 0 .. WARRIOR_MAX := WARRIOR_MAX;
-   Map_Warriors    : Warrior_Arr;
-   Rule            : Rule_Arr;
-   Officers        : Integer range 0 .. WARRIOR_MAX := 0;
-   Sympathy_Supply : Integer range 0 .. SYMPATHY_MAX := SYMPATHY_MAX;
-   Map_Sympathy    : Token_Arr;
-   Forts           : Building_Arr;
-   Fort_Supply     : Suit_Build_Supply := (others => FORTS_MAX);
-
    Curr_Order  : Suit;
-   Curr_Phase  : Phase := None;
-   Curr_Action : Action := None;
+   Curr_Phase  : Phase;
+   Curr_Action : Action;
 
-   Logo_Width : constant := 21;
+   Logo_Width : constant := 24;
    Logo : Logo_Arr :=
-      (Unbounded (String_Style ("      _       _      ", Faction_Color)),
-       Unbounded (String_Style ("     / \     / \     ", Faction_Color)),
-       Unbounded (String_Style ("    |/ \|   |/ \|    ", Faction_Color)),
-       Unbounded (String_Style ("    || ||   || ||    ", Faction_Color)),
-       Unbounded (String_Style ("   _|| ||___|| ||_   ", Faction_Color)),
-       Unbounded (String_Style ("  /  __       __  \  ", Faction_Color)),
-       Unbounded (String_Style (" / /   /\   /   /\ \ ", Faction_Color)),
-       Unbounded (String_Style ("| |   <  | |   <  | |", Faction_Color)),
-       Unbounded (String_Style ("|  \ __\/   \ __\/  |", Faction_Color)),
-       Unbounded (String_Style (" \  . .   |   . .  / ", Faction_Color)),
-       Unbounded (String_Style ("  \_______________/  ", Faction_Color)));
+      (Unbounded (String_Style ("                        ", Faction_Color)),
+       Unbounded (String_Style ("   ____________         ", Faction_Color)),
+       Unbounded (String_Style ("  /            \   \\/\ ", Faction_Color)),
+       Unbounded (String_Style (" /     __        \_/ //|", Faction_Color)),
+       Unbounded (String_Style ("|     /               /=", Faction_Color)),
+       Unbounded (String_Style ("|           _________|  ", Faction_Color)),
+       Unbounded (String_Style ("|           V       |   ", Faction_Color)),
+       Unbounded (String_Style ("|                   |   ", Faction_Color)),
+       Unbounded (String_Style (" \__________________\   ", Faction_Color)));
 
-   -- Phases --
-   procedure Birdsong;
-   procedure Daylight;
-   procedure Evening;
-
-   -- Actions --
-   function  Revolt (Clears : Int_Arr) return Boolean;
-   procedure Spread_Sympathy;
-   procedure Organize;
-   procedure Recruit;
-
-end Root.Alliance;
+end Root.Duchy;

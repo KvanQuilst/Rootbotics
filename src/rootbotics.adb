@@ -33,13 +33,13 @@ with Root.Maps; use Root.Maps;
 
 with Root.Alliance;
 with Root.Lizards;
-with Root.Riverfolk;
+with Root.Duchy;
 
 procedure Rootbotics is
    VERSION : constant String := "v0.3-dev";
 
    -- In order of setup priority --
-   type Faction is (Alliance, Lizards, Riverfolk);
+   type Faction is (Alliance, Lizards, Duchy);
 
    Playing : array (Faction'Range) of Boolean := (others => False);
    Num_Playing : Integer := 0;
@@ -59,7 +59,7 @@ begin
       Options : constant String_Arr :=
          (Unbounded (Root.Alliance.Name),
           Unbounded (Root.Lizards.Name),
-          Unbounded (Root.Riverfolk.Name));
+          Unbounded (Root.Duchy.Name));
       Opts : constant Char_Set := Get_Options (Options);
    begin
       if Opts.Length = 0 then
@@ -101,7 +101,7 @@ begin
          case F is
             when Alliance  => Root.Alliance.Setup;
             when Lizards   => Root.Lizards.Setup;
-            when Riverfolk => Root.Riverfolk.Setup;
+            when Duchy     => Root.Duchy.Setup;
          end case;
       end if;
    end loop;
@@ -126,7 +126,7 @@ begin
                    (case Fact is
                      when Alliance  => Root.Alliance.Name,
                      when Lizards   => Root.Lizards.Name,
-                     when Riverfolk => Root.Riverfolk.Name) &
+                     when Duchy     => Root.Duchy.Name) &
                    "'s turn.");
          Continue;
 
@@ -134,7 +134,7 @@ begin
             case Fact is
                when Alliance  => Root.Alliance.Take_Turn;
                when Lizards   => Root.Lizards.Take_Turn;
-               when Riverfolk => Root.Riverfolk.Take_Turn;
+               when Duchy     => Root.Duchy.Take_Turn;
             end case;
          end loop;
       end;
@@ -153,10 +153,10 @@ begin
             case F is
                when Alliance =>
                   Options (P_Idx) := Unbounded (Root.Alliance.Name);
-               when Lizards =>
+               when Lizards  =>
                   Options (P_Idx) := Unbounded (Root.Lizards.Name);
-               when Riverfolk =>
-                  Options (P_Idx) := Unbounded (Root.Riverfolk.Name);
+               when Duchy    =>
+                  Options (P_Idx) := Unbounded (Root.Duchy.Name);
             end case;
          end if;
       end loop;
@@ -173,7 +173,7 @@ begin
          case F_Opt is
             when 'a' => Root.Alliance.Take_Turn;
             when 'b' => Root.Lizards.Take_Turn;
-            when 'c' => Root.Riverfolk.Take_Turn;
+            when 'c' => Root.Duchy.Take_Turn;
             when others => return;
          end case;
       end loop;
