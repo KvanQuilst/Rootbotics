@@ -30,16 +30,10 @@ package Root is
    type Suit  is (Fox, Rabbit, Mouse, Bird);
    type Phase is (Birdsong, Daylight, Evening, None);
    subtype Clearing_Suit is Suit range Fox .. Mouse;
+
    subtype Priority is Integer range 1 .. 12;
 
-   type Meeple_Arr is array (Priority'Range) of Natural;
-
-   type Priority_List is array (Priority'Range)
-     of Integer range 0 .. 12;
-
-   type Help_Procedure is access procedure;
-   Help : Help_Procedure := null;
-
-   function  Get_List (Values : String) return Priority_List;
+   type Meeple_Arr    is array (Priority'Range) of Natural;
+   type Priority_List is array (Priority'Range) of Integer range 0 .. 12;
 
 end Root;
