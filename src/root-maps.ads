@@ -40,16 +40,8 @@ package Root.Maps is
    type Clearing_Arr is array (Priority'Range) of Clearing;
    type Map_Name is (Fall, Winter, Lake, Mountain);
 
-   --  TODO: Remove type Map_Old
-   type Map_Old is record
-      Name      : Map_Name;
-      Clearings : Clearing_Arr;
-   end record;
-
    procedure Init_Map (Name : Map_Name);
    function Clearings return Clearing_Arr;
-   --  TODO: Temporary solution
-   function Get_Map return Map_Old;
    function Filter_Clearings (S : Suit) return Int_Arr;
 
    procedure Put_Map (Units     : Warrior_Arr;
