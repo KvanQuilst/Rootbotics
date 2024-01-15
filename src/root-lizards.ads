@@ -67,7 +67,6 @@ private
    Curr_Action : Action;
 
    Logo_Width : constant := 24;
-   --  Logo : constant array (Integer range <>) of Unbounded_String :=
    Logo : Logo_Arr :=
       (Unbounded (String_Style ("                        ", Faction_Color)),
        Unbounded (String_Style ("      ___               ", Faction_Color)),
