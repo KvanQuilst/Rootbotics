@@ -30,7 +30,6 @@ package body Root.Maps is
    package Int_IO is new Integer_IO (Integer);
 
    function Clearings return Clearing_Arr is (Map);
-   function Get_Map return Map_Old is (Map_In_Play, Map);
 
    function Filter_Clearings (S : Suit) return Int_Arr is
       F_Clears : Int_Arr (1 .. 4);

@@ -1,3 +1,4 @@
+![ASCII Root Logo](img/title.png)
 # The Rootbotics Assistant - Take the thinking out of managing automated factions!
 
 ## About
