@@ -42,7 +42,9 @@ package body Root.Duchy is
 
    procedure Prompt is
    begin
-      Put_Logo;
+      Put_Prompt (Put_Logo'Access, Put_State'Access, Map_Warriors,
+                  Map_Buildings, Rule, Curr_Order, Put_Phase'Access, 
+                  Map_Tunnels);
    end Prompt;
 
    -----------------
@@ -57,7 +59,7 @@ package body Root.Duchy is
    procedure Take_Turn is
    begin
       Prompt;
-
+      Continue;
    end Take_Turn;
 
 end Root.Duchy;
