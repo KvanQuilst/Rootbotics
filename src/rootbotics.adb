@@ -38,14 +38,26 @@ with Root.Duchy;
 procedure Rootbotics is
    VERSION : constant String := "v0.3-dev";
 
+   function Unbounded (S : String) return Unbounded_String
+      renames To_Unbounded_String;
+
    -- In order of setup priority --
    type Faction is (Alliance, Lizards, Duchy);
+   Name      : constant array (Faction'Range) of Unbounded_String :=
+      (Unbounded (Root.Alliance.Name),
+       Unbounded (Root.Lizards.Name),
+       Unbounded (Root.Duchy.Name));
+   Setup     : constant array (Faction'Range) of access procedure :=
+      (Root.Alliance.Setup'Access,
+       Root.Lizards.Setup'Access,
+       Root.Duchy.Setup'Access);
+   Take_Turn : constant array (Faction'Range) of access procedure :=
+      (Root.Alliance.Take_Turn'Access,
+       Root.Lizards.Take_Turn'Access,
+       Root.Duchy.Take_Turn'Access);
 
    Playing : array (Faction'Range) of Boolean := (others => False);
    Num_Playing : Integer := 0;
-
-   function Unbounded (S : String) return Unbounded_String
-      renames To_Unbounded_String;
 begin
    Put_Title_Prompt;
    Put_Line ("Welcome to the Rootbotics Logic Tool " & VERSION & "!");
@@ -56,11 +68,10 @@ begin
    -----------------------
    Put_Line ("Which factions will you play with?");
    declare
-      Options : constant String_Arr :=
-         (Unbounded (Root.Alliance.Name),
-          Unbounded (Root.Lizards.Name),
-          Unbounded (Root.Duchy.Name));
-      Opts : constant Char_Set := Get_Options (Options);
+      Opts : constant Char_Set := Get_Options (
+         (Name (Alliance),
+          Name (Lizards),
+          Name (Duchy)));
    begin
       if Opts.Length = 0 then
          return;
@@ -98,11 +109,7 @@ begin
    ----------------------------
    for F in Faction'Range loop
       if Playing (F) then
-         case F is
-            when Alliance  => Root.Alliance.Setup;
-            when Lizards   => Root.Lizards.Setup;
-            when Duchy     => Root.Duchy.Setup;
-         end case;
+         Setup (F).all;
       end if;
    end loop;
    New_Line;
@@ -122,20 +129,11 @@ begin
          end loop;
 
          Put_Title_Prompt;
-         Put_Line ("Take the " &
-                   (case Fact is
-                     when Alliance  => Root.Alliance.Name,
-                     when Lizards   => Root.Lizards.Name,
-                     when Duchy     => Root.Duchy.Name) &
-                   "'s turn.");
+         Put_Line ("Take the " & To_String (Name (Fact)) & "'s turn.");
          Continue;
 
          loop
-            case Fact is
-               when Alliance  => Root.Alliance.Take_Turn;
-               when Lizards   => Root.Lizards.Take_Turn;
-               when Duchy     => Root.Duchy.Take_Turn;
-            end case;
+            Take_Turn (Fact).all;
          end loop;
       end;
    end if;
@@ -150,14 +148,7 @@ begin
       for F in Faction'Range loop
          if Playing (F) then
             P_Idx := P_Idx + 1;
-            case F is
-               when Alliance =>
-                  Options (P_Idx) := Unbounded (Root.Alliance.Name);
-               when Lizards  =>
-                  Options (P_Idx) := Unbounded (Root.Lizards.Name);
-               when Duchy    =>
-                  Options (P_Idx) := Unbounded (Root.Duchy.Name);
-            end case;
+            Options (P_Idx) := Name (F);
          end if;
       end loop;
       Separator;
@@ -171,9 +162,9 @@ begin
          F_Opt := Get_Option (Options);
 
          case F_Opt is
-            when 'a' => Root.Alliance.Take_Turn;
-            when 'b' => Root.Lizards.Take_Turn;
-            when 'c' => Root.Duchy.Take_Turn;
+            when 'a' => Take_Turn (Alliance).all;
+            when 'b' => Take_Turn (Lizards).all;
+            when 'c' => Take_Turn (Duchy).all;
             when others => return;
          end case;
       end loop;
