@@ -24,6 +24,9 @@
 -- <https://www.gnu.org/licenses/>.                                          --
 -------------------------------------------------------------------------------
 with Ada.Text_IO; use Ada.Text_IO;
+
+with Root.Maps; use Root.Maps;
+
 package body Root.Duchy is
 
    ---------------
@@ -61,6 +64,33 @@ package body Root.Duchy is
 
       Put_Line ("Which clearing will the " & Name & " start in?");
       C := Get_Integer (1, 12);
+
+      -- Starting Clearing --
+      Map_Warriors (C) := 2;
+      Warrior_Supply   := Warrior_Supply - 2;
+      Map_Tunnels (C)  := True;
+      Tunnel_Supply    := Tunnel_Supply - 1;
+
+      for Neighbor of Clearings (C).Neighbors loop
+         exit when Neighbor = 0;
+         Map_Warriors (Neighbor) := 2;
+         Warrior_Supply := Warrior_Supply - 2;
+      end loop;
+
+      Erase_Screen;
+      Cursor_Home;
+      Put_Logo;
+      New_Line;
+      Put_Line ("Draw two cards. What is the suit of the first card?");
+      Sway_Minister (Get_Suit_Opt);
+
+      Erase_Screen;
+      Cursor_Home;
+      Put_Logo;
+      New_Line;
+      Put_Line ("What is the suit of the second card?");
+      Sway_Minister (Get_Suit_Opt);
+      Put_Line ("Discard the cards.");
    end Setup;
 
    ----------------------
@@ -80,5 +110,33 @@ package body Root.Duchy is
    procedure Daylight is null;
 
    procedure Evening is null;
+
+   -------------
+   -- Actions --
+   -------------
+
+   procedure Sway_Minister (S : Suit) is
+   begin
+      if S = Bird then
+         for M in Minister'Range loop
+            if not Swayed_Ministers (M) then
+               Swayed_Ministers (M) := True;
+               Put_Line ("Place a crown on the " &
+                         To_String (Minister_Str (M)) & ".");
+               exit;
+            end if;
+         end loop;
+      else
+         for M of Suit_Ministers (S) loop
+            if not Swayed_Ministers (M) then
+               Swayed_Ministers (M) := True;
+               Put_Line ("Place a crown on the " &
+                         To_String (Minister_Str (M)) & ".");
+               exit;
+            end if;
+         end loop;
+      end if;
+      Continue;
+   end Sway_Minister;
 
 end Root.Duchy;

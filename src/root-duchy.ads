@@ -42,7 +42,9 @@ private
    TUNNEL_MAX  : constant Integer := 3;
    BUILD_MAX   : constant Integer := 3;
 
-   type Action is (Craft, None);
+   type Action   is (Craft, None);
+   type Minister is (Captain, Marshal, Foremole, Brigadier, Banker,
+                     Mayor, Earl_of_Stone, Baron_of_Dirt, Duchess_of_Mud);
 
    procedure Put_Phase with Inline;
    procedure Prompt    with Inline;
@@ -50,7 +52,7 @@ private
    function Unbounded (S : String) return Unbounded_String
       renames To_Unbounded_String;
 
-   Warrior_Sypply : Integer range 0 .. WARRIOR_MAX := WARRIOR_MAX;
+   Warrior_Supply : Integer range 0 .. WARRIOR_MAX := WARRIOR_MAX;
    Crown_Supply   : Integer range 0 .. CROWN_MAX   := CROWN_MAX;
    Citadel_Supply : Integer range 0 .. BUILD_MAX   := BUILD_MAX;
    Market_Supply  : Integer range 0 .. BUILD_MAX   := BUILD_MAX;
@@ -65,6 +67,23 @@ private
    Curr_Order  : Suit;
    Curr_Phase  : Phase  := None;
    Curr_Action : Action := None;
+
+   type Minister_Arr is array (Integer range 1 .. 3) of Minister;
+   Swayed_Ministers : array (Minister'Range) of Boolean := (others => False);
+   Suit_Ministers : array (Clearing_Suit'Range) of Minister_Arr :=
+         (Fox    => (Captain, Brigadier, Earl_of_Stone),
+          Rabbit => (Marshal, Banker, Baron_of_Dirt),
+          Mouse  => (Foremole, Mayor, Duchess_of_Mud));
+   Minister_Str : array (Minister'Range) of Unbounded_String :=
+      (Unbounded ("Captain"),
+       Unbounded ("Marshal"),
+       Unbounded ("Foremole"),
+       Unbounded ("Brigadier"),
+       Unbounded ("Banker"),
+       Unbounded ("Mayor"),
+       Unbounded ("Earl of Stone"),
+       Unbounded ("Baron of Dirt"),
+       Unbounded ("Duchess of Mud"));
 
    Logo_Width : constant := 24;
    Logo : Logo_Arr :=
@@ -82,5 +101,8 @@ private
    procedure Birdsong;
    procedure Daylight;
    procedure Evening;
+
+   -- Actions --
+   procedure Sway_Minister (S : Suit);
 
 end Root.Duchy;
