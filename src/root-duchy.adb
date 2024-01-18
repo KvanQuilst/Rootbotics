@@ -23,6 +23,7 @@
 -- with The Rootbotics Assistant. If not, see                                --
 -- <https://www.gnu.org/licenses/>.                                          --
 -------------------------------------------------------------------------------
+with Ada.Text_IO; use Ada.Text_IO;
 package body Root.Duchy is
 
    ---------------
@@ -43,15 +44,24 @@ package body Root.Duchy is
    procedure Prompt is
    begin
       Put_Prompt (Put_Logo'Access, Put_State'Access, Map_Warriors,
-                  Map_Buildings, Rule, Curr_Order, Put_Phase'Access, 
+                  Map_Buildings, Rule, Curr_Order, Put_Phase'Access,
                   Map_Tunnels);
    end Prompt;
 
    -----------------
    -- Duchy Setup --
    -----------------
+   procedure Setup is
+      C : Priority;
+   begin
+      Erase_Screen;
+      Cursor_Home;
+      Put_Logo;
+      New_Line;
 
-   procedure Setup is null;
+      Put_Line ("Which clearing will the " & Name & " start in?");
+      C := Get_Integer (1, 12);
+   end Setup;
 
    ----------------------
    -- Duchy Turn Logic --
@@ -61,5 +71,14 @@ package body Root.Duchy is
       Prompt;
       Continue;
    end Take_Turn;
+
+   -----------
+   -- Phase --
+   -----------
+   procedure Birdsong is null;
+
+   procedure Daylight is null;
+
+   procedure Evening is null;
 
 end Root.Duchy;

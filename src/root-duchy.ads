@@ -55,6 +55,7 @@ private
    Citadel_Supply : Integer range 0 .. BUILD_MAX   := BUILD_MAX;
    Market_Supply  : Integer range 0 .. BUILD_MAX   := BUILD_MAX;
    Tunnel_Supply  : Integer range 0 .. TUNNEL_MAX  := TUNNEL_MAX;
+   Burrow         : Integer range 0 .. WARRIOR_MAX := 0;
 
    Map_Warriors   : Warrior_Arr   := (others => 0);
    Map_Buildings  : Building_Arr  := (others => 0);
@@ -76,5 +77,10 @@ private
        Unbounded (String_Style ("|           V       |   ", Faction_Color)),
        Unbounded (String_Style ("|                   |   ", Faction_Color)),
        Unbounded (String_Style (" \__________________\   ", Faction_Color)));
+
+   -- PHase --
+   procedure Birdsong;
+   procedure Daylight;
+   procedure Evening;
 
 end Root.Duchy;
