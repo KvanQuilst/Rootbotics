@@ -41,7 +41,12 @@ package body Root.Duchy is
 
    procedure Put_Phase is
    begin
-      Root.IO.Put_Phase (Curr_Phase, "");
+      Root.IO.Put_Phase (Curr_Phase,
+                        (case Curr_Action is
+                           when Order   => "Order",
+                           when Craft   => "Craft",
+                           when Recruit => "Recruit",
+                           when None    => ""));
    end Put_Phase;
 
    procedure Prompt is
@@ -111,7 +116,7 @@ package body Root.Duchy is
       begin null; end;
 
       -- Confirm Buildings --
-      --  TODO: Deal with buildings  --
+      --  TODO: Deal with buildings w/ Cost of Errors
 
       -- Confirm Tokens --
       Check_Tokens (Prompt'Access, Tunnel_Supply, Map_Tunnels);
