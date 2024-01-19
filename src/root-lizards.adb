@@ -314,7 +314,7 @@ package body Root.Lizards is
                   Put_Line ("Battle the enemy faction with the most points " &
                             "in clearing" & C'Image);
                   Put_Line ("How many warriors were lost?");
-                  Val := Get_Integer (0, Integer'Min (Map_Warriors (C), 3));
+                  Val := Get_Integer (0, Map_Warriors (C));
                   Map_Warriors (C) := Map_Warriors (C) - Val;
                   Warrior_Supply := Warrior_Supply + Val;
                   Idle_Count := 0;
