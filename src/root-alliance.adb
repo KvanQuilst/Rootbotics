@@ -98,6 +98,7 @@ package body Root.Alliance is
                            when Spread_Sympathy => "Spread Sympathy",
                            when Organize        => "Organize",
                            when Recruit         => "Recuit",
+                           when Order           => "Order",
                            when Craft           => "Craft",
                            when None            => ""));
    end Put_Phase;
@@ -119,9 +120,7 @@ package body Root.Alliance is
    -------------------------
    procedure Take_Turn is
    begin
-      Prompt;
-      Put_Line ("What is the order of this turn?");
-      Curr_Order  := Get_Suit_Opt;
+      Curr_Order  := Bird;
       Curr_Phase  := None;
       Curr_Action := None;
 
@@ -161,6 +160,12 @@ package body Root.Alliance is
       Clears : constant Int_Arr := Filter_Clearings (Curr_Order);
    begin
       Curr_Phase := Birdsong;
+
+      Curr_Action := Order;
+      Prompt;
+      Put_Line ("What is the orer of this turn?");
+      Curr_Order := Get_Suit_Opt;
+      Continue;
 
       Curr_Action := Craft;
       Prompt;

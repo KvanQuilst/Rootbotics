@@ -43,7 +43,8 @@ private
    SYMPATHY_MAX : constant Integer := 10;
    FORTS_MAX    : constant Integer := 1;
 
-   type    Action is (Revolt, Spread_Sympathy, Organize, Recruit, Craft, None);
+   type    Action is (Revolt, Spread_Sympathy, Organize, Recruit,
+                      Order, Craft, None);
    subtype Fort is Building_Suit;
 
    procedure Put_Phase with Inline;
