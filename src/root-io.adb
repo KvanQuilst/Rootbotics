@@ -372,9 +372,7 @@ package body Root.IO is
    end Separator;
 
    procedure Put_Phase (Time : Phase; Action : String := "") is
-      Width : constant Positive := (if   Action'Length > 12
-                                    then Action'Length + 4
-                                    else 16);
+      Width : constant Positive := Positive'Max (Action'Length, 12) + 4;
    begin
       if Time = None then
          return;

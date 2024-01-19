@@ -246,7 +246,7 @@ package body Root.Lizards is
 
       -- Determine scoring garden track --
       for Num of Garden_Supply loop
-         Min := (if Num < Min then Num else Min);
+         Min := Integer'Min (Min, Num);
       end loop;
       case Min is
          when 0      => Put_Line ("Score 4 points for the " & Name);
@@ -314,9 +314,7 @@ package body Root.Lizards is
                   Put_Line ("Battle the enemy faction with the most points " &
                             "in clearing" & C'Image);
                   Put_Line ("How many warriors were lost?");
-                  Val := Get_Integer (0, (if 3 > Map_Warriors (C)
-                                          then Map_Warriors (C)
-                                          else 3));
+                  Val := Get_Integer (0, Integer'Min (Map_Warriors (C), 3));
                   Map_Warriors (C) := Map_Warriors (C) - Val;
                   Warrior_Supply := Warrior_Supply + Val;
                   Idle_Count := 0;
