@@ -98,14 +98,56 @@ package body Root.Duchy is
    ----------------------
    procedure Take_Turn is
    begin
-      Prompt;
-      Continue;
+      Curr_Order  := Bird;
+      Curr_Phase  := None;
+      Curr_Action := None;
+
+      -- Confirm Warriors --
+      declare
+         Lost : constant Natural :=
+            Check_Warriors (Prompt'Access, Warrior_Supply,
+                            Map_Warriors, WARRIOR_MAX);
+         pragma Unreferenced (Lost);
+      begin null; end;
+
+      -- Confirm Buildings --
+      --  TODO: Deal with buildings  --
+
+      -- Confirm Tokens --
+      Check_Tokens (Prompt'Access, Tunnel_Supply, Map_Tunnels);
+
+      -- Confirm Rule --
+      Check_Rule (Prompt'Access, Rule);
+
+      Birdsong;
+
+      Daylight;
+
+      Evening;
+
    end Take_Turn;
 
    -----------
    -- Phase --
    -----------
-   procedure Birdsong is null;
+   procedure Birdsong is
+   begin
+      Curr_Phase := Birdsong;
+
+      Curr_Action := Order;
+      Prompt;
+      Put_Line ("What is the order of this turn?");
+      Curr_Order := Get_Suit_Opt;
+      Continue;
+
+      Curr_Action := Craft;
+      Prompt;
+      Put_Line ("Craft the order card for +1 points for the " & Name & ".");
+      Continue;
+
+      Curr_Action := Recruit;
+      Recruit;
+   end Birdsong;
 
    procedure Daylight is null;
 
@@ -114,7 +156,6 @@ package body Root.Duchy is
    -------------
    -- Actions --
    -------------
-
    procedure Sway_Minister (S : Suit) is
    begin
       if S = Bird then
@@ -138,5 +179,29 @@ package body Root.Duchy is
       end if;
       Continue;
    end Sway_Minister;
+
+   procedure Recruit is
+      Total : constant Natural := 2 + (case Citadel_Supply is
+                                          when BUILD_MAX     => 0,
+                                          when BUILD_MAX - 1 => 1,
+                                          when BUILD_MAX - 2 => 2,
+                                          when others        => 4);
+   begin
+      Prompt;
+      if Warrior_Supply >= Total then
+         Put_Line ("Place" & Total'Image & " warriors in the Burrow.");
+         Burrow := Burrow + Total;
+         Warrior_Supply := Warrior_Supply - Total;
+      elsif Warrior_Supply > 0 then
+         Put_Line ("Place" & Warrior_Supply'Image &
+                   " warriors in the Burrow.");
+         Burrow := Burrow + Warrior_Supply;
+         Warrior_Supply := 0;
+      else
+         Put_Line ("Unable to recruit warriors to the Burrow: warrior supply" &
+                   " is depleted!");
+      end if;
+      Continue;
+   end Recruit;
 
 end Root.Duchy;
