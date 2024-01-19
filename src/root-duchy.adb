@@ -43,9 +43,10 @@ package body Root.Duchy is
    begin
       Root.IO.Put_Phase (Curr_Phase,
                         (case Curr_Action is
-                           when Order   => "Order",
+                           when Order   => "Set Order",
                            when Craft   => "Craft",
                            when Recruit => "Recruit",
+                           when Dig     => "Dig",
                            when None    => ""));
    end Put_Phase;
 
@@ -208,5 +209,20 @@ package body Root.Duchy is
       end if;
       Continue;
    end Recruit;
+
+   procedure Dig is
+      Clears : constant Int_Arr := Filter_Clearings (Curr_Order);
+   begin
+      if Burrow < 4 then
+         return;
+      end if;
+
+      Curr_Action := Dig;
+
+      for C of Clears loop
+         --  TODO: Finish!
+         null;
+      end loop;
+   end Dig;
 
 end Root.Duchy;

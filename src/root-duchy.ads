@@ -42,7 +42,7 @@ private
    TUNNEL_MAX  : constant Integer := 3;
    BUILD_MAX   : constant Integer := 3;
 
-   type Action   is (Order, Craft, Recruit, None);
+   type Action   is (Order, Craft, Recruit, Dig, None);
    type Minister is (Captain, Marshal, Foremole, Brigadier, Banker,
                      Mayor, Earl_of_Stone, Baron_of_Dirt, Duchess_of_Mud);
 
@@ -105,5 +105,6 @@ private
    -- Actions --
    procedure Sway_Minister (S : Suit);
    procedure Recruit;
+   procedure Dig;
 
 end Root.Duchy;
