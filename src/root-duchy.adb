@@ -229,7 +229,10 @@ package body Root.Duchy is
    end Recruit;
 
    procedure Dig is
-      Clears : constant Int_Arr := Filter_Clearings (Curr_Order);
+      Clears  : constant Int_Arr := Filter_Clearings (Curr_Order);
+      Count   :          Natural := 0;
+      Clear   :          Priority;
+      T_Clear :          Natural := 0;
    begin
       if Burrow < 4 then
          return;
@@ -237,10 +240,68 @@ package body Root.Duchy is
 
       Curr_Action := Dig;
 
+      -- Determine if one clearing --
       for C of Clears loop
-         --  TODO: Finish!
-         null;
+         if not Map_Tunnels (C) and then Map_Buildings (C) = 0 then
+            Clear := C;
+            Count := Count + 1;
+         end if;
       end loop;
+
+      -- Are we moving a tunnel? --
+      if Tunnel_Supply = 0 then
+         declare
+            Min : Natural := WARRIOR_MAX;
+         begin
+            for C in Priority'Range loop
+               if Map_Tunnels (C) and then Map_Warriors (C) < Min then
+                  Min := Map_Warriors (C);
+                  T_Clear := C;
+               end if;
+            end loop;
+         end;
+      end if;
+
+      -- Player input needed --
+      if Count > 1 then
+         Prompt;
+         declare
+            Opts : String_Arr (1 .. Count);
+            Idx  : Positive := 1;
+         begin
+            for C of Clears loop
+               if not Map_Tunnels (C) and then Map_Buildings (C) = 0 then
+                  Opts (Idx) := Unbounded (C'Image);
+                  Idx := Idx + 1;
+               end if;
+            end loop;
+
+            if Curr_Order = Bird then
+               Put_Line ("Which clearing has the most enemy buildings and " &
+                         "tokens?");
+            else
+               Put_Line ("Which clearing has the most buildings slots, then " &
+                         "the fewest warriors?");
+            end if;
+            Clear := Character'Pos (Get_Option (Opts)) -
+                                                      Character'Pos ('a') + 1;
+         end;
+      end if;
+
+      Prompt;
+      if T_Clear = 0 then
+         Put_Line ("Place a tunnel in clearing" & Clear'Image & ".");
+         Map_Tunnels (Clear) := True;
+      else
+         Put_Line ("Move the tunnel from clearing" & T_Clear'Image &
+                   " to clearing" & Clear'Image & ".");
+         Map_Tunnels (Clear) := True;
+         Map_Tunnels (T_Clear) := False;
+      end if;
+      Put_Line ("Move 4 warriors from the Burrow to clearing" &
+                Clear'Image & ".");
+      Map_Warriors (Clear) := Map_Warriors (Clear) + 4;
+      Burrow := Burrow - 4;
    end Dig;
 
 end Root.Duchy;
