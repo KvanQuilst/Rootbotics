@@ -37,7 +37,11 @@ package body Root.Duchy is
       Root.Faction.Put_Logo (Name, Logo, Logo_Width);
    end Put_Logo;
 
-   procedure Put_State is null;
+   procedure Put_State is
+   begin
+      Put_Line ("   Warrior Supply:" & Warrior_Supply'Image);
+      Put_Line ("  Burrow Warriors:" & Burrow'Image);
+   end Put_State;
 
    procedure Put_Phase is
    begin
