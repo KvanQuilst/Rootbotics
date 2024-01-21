@@ -208,7 +208,9 @@ package body Root.Faction is
                               Clear      :        Priority;
                               Build_Type :        String) is
    begin
-      if Supply > 0 and then Map_Builds (Clear) < 3 then
+      if Supply > 0 and then
+         Map_Builds (Clear) < Clearings (Clear).Buildings
+      then
          Put_Line ("Place a " & Build_Type & " in clearing" &
                    Clear'Image & ".");
          Map_Builds (Clear) := Map_Builds (Clear) + 1;

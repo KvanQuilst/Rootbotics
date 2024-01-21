@@ -99,6 +99,24 @@ package body Root.Duchy is
       Put_Line ("Discard the cards.");
    end Setup;
 
+   --------------------------
+   -- Duchy Common Actions --
+   --------------------------
+   procedure Deploy_Building (Build : Building; Clear : Priority) is
+   begin
+      if Map_Buildings (Clear) < Clearings (Clear).Buildings then
+         case Build is
+            when Citadel => Root.Faction.Deploy_Building
+                              (Citadel_Supply, Map_Citadels, Clear,
+                               String_Style ("Citadel", Faction_Color));
+            when Market => Root.Faction.Deploy_Building
+                              (Market_Supply, Map_Markets, Clear,
+                               String_Style ("Market", Faction_Color));
+         end case;
+         Map_Buildings (Clear) := Map_Buildings (Clear) + 1;
+      end if;
+   end Deploy_Building;
+
    ----------------------
    -- Duchy Turn Logic --
    ----------------------

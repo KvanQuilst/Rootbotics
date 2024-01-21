@@ -45,6 +45,7 @@ private
    type Action   is (Order, Craft, Recruit, Dig, None);
    type Minister is (Captain, Marshal, Foremole, Brigadier, Banker,
                      Mayor, Earl_of_Stone, Baron_of_Dirt, Duchess_of_Mud);
+   type Building is (Citadel, Market);
 
    procedure Put_Phase with Inline;
    procedure Prompt    with Inline;
@@ -61,6 +62,8 @@ private
 
    Map_Warriors   : Warrior_Arr   := (others => 0);
    Map_Buildings  : Building_Arr  := (others => 0);
+   Map_Citadels   : Building_Arr  := (others => 0);
+   Map_Markets    : Building_Arr  := (others => 0);
    Map_Tunnels    : Token_Arr     := (others => False);
    Rule           : Rule_Arr      := (others => False);
 
@@ -97,7 +100,7 @@ private
        Unbounded (String_Style ("|                   |   ", Faction_Color)),
        Unbounded (String_Style (" \__________________\   ", Faction_Color)));
 
-   -- PHase --
+   -- Phase --
    procedure Birdsong;
    procedure Daylight;
    procedure Evening;
