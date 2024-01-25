@@ -38,9 +38,65 @@ package body Root.Duchy is
    end Put_Logo;
 
    procedure Put_State is
+      procedure Building_State (Build : Building) is
+         B_Str     : constant String := (case Build is
+                                          when Citadel => " ^n",
+                                          when Market  => " ()");
+         Used      : constant String :=
+            To_String ((BUILD_MAX - Market_Supply) * B_Str);
+         Remaining : constant String :=
+            To_String (Market_Supply * B_Str);
+      begin
+         case Build is
+            when Citadel =>
+               Put ("         Citadels:");
+            when Market =>
+               Put ("          Markets:");
+         end case;
+         Set_Style (B_Black);
+         Put (Used);
+         Set_Style (Faction_Color);
+         Put (Remaining);
+         Reset_Style;
+         New_Line;
+      end Building_State;
+
+      procedure Minister_State is
+      begin
+         Put_Line ("     Ministers:");
+         for I in Integer range 1 .. 3 loop
+            if Swayed_Ministers (Suit_Ministers (Fox) (I)) then
+               Set_Style (B_Black);
+            else
+               Set_Style (Suit_Color (Fox));
+            end if;
+            Put (To_String (Minister_Str (Suit_Ministers (Fox) (I))) & " ");
+            Cursor_Column_Set (16);
+            if Swayed_Ministers (Suit_Ministers (Rabbit) (I)) then
+               Set_Style (B_Black);
+            else
+               Set_Style (Suit_Color (Rabbit));
+            end if;
+            Put (To_String (Minister_Str (Suit_Ministers (Rabbit) (I))) & " ");
+            Cursor_Column_Set (32);
+            if Swayed_Ministers (Suit_Ministers (Mouse) (I)) then
+               Set_Style (B_Black);
+            else
+               Set_Style (Suit_Color (Mouse));
+            end if;
+            Put (To_String (Minister_Str (Suit_Ministers (Mouse) (I))) & " ");
+            New_Line;
+         end loop;
+         Reset_Style;
+      end Minister_State;
    begin
       Put_Line ("   Warrior Supply:" & Warrior_Supply'Image);
       Put_Line ("  Burrow Warriors:" & Burrow'Image);
+      Building_State (Citadel);
+      Building_State (Market);
+      New_Line;
+      Put_Line ("     Crown Supply:" & Crown_Supply'Image);
+      Minister_State;
    end Put_State;
 
    procedure Put_Phase is
