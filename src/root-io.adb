@@ -187,6 +187,15 @@ package body Root.IO is
       return C = 'y' or else C = 'Y';
    end Get_Yes_No;
 
+   function Get_Secret return Character is
+      C : Character;
+   begin
+      Put (ESC & "[8m");
+      Get_Immediate (C);
+      Put (ESC & "[28m");
+      return C;
+   end Get_Secret;
+
    -----------------
    -- Common Gets --
    -----------------

@@ -59,6 +59,8 @@ package Root.IO is
    function Get_Integers (Low, High : Integer)    return Int_Set;
    function Get_Yes_No  return Boolean;
 
+   function Get_Secret return Character;
+
    -----------------
    -- Common Gets --
    -----------------
