@@ -31,7 +31,8 @@ with Root.IO; use Root.IO;
 package Root.Lizards is
 
    Faction_Color : constant Color := B_Yellow;
-   Name : constant String := String_Style ("Logical Lizards", Faction_Color);
+   Name_Plain : constant String := "Logical Lizards";
+   Name : constant String := String_Style (Name_Plain, Faction_Color);
 
    procedure Setup;
    procedure Take_Turn;

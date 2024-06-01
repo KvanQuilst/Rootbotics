@@ -31,8 +31,9 @@ with Root.IO; use Root.IO;
 package Root.Alliance is
 
    Faction_Color : constant Color := Green;
+   Name_Plain : constant String := "Automated Alliance";
    Name : constant String :=
-      String_Style ("Automated Alliance", Faction_Color);
+      String_Style (Name_Plain, Faction_Color);
 
    procedure Setup;
    procedure Take_Turn;

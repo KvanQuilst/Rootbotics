@@ -44,9 +44,9 @@ procedure Rootbotics is
    -- In order of setup priority --
    type Faction is (Alliance, Lizards, Duchy);
    Name      : constant array (Faction'Range) of Unbounded_String :=
-      (Unbounded (Root.Alliance.Name),
-       Unbounded (Root.Lizards.Name),
-       Unbounded (Root.Duchy.Name));
+      (Unbounded (Root.Alliance.Name_Plain),
+       Unbounded (Root.Lizards.Name_Plain),
+       Unbounded (Root.Duchy.Name_Plain));
    Setup     : constant array (Faction'Range) of access procedure :=
       (Root.Alliance.Setup'Access,
        Root.Lizards.Setup'Access,
@@ -68,10 +68,13 @@ begin
    -----------------------
    Put_Line ("Which factions will you play with?");
    declare
-      Opts : constant Char_Set := Get_Options (
-         (Name (Alliance),
-          Name (Lizards),
-          Name (Duchy)));
+      Opts : constant Char_Set := Get_Options_HL
+         ((Name (Alliance),
+           Name (Lizards),
+           Name (Duchy)),
+          (Root.Alliance.Faction_Color,
+           Root.Lizards.Faction_Color,
+           Root.Duchy.Faction_Color));
    begin
       if Opts.Length = 0 then
          return;

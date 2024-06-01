@@ -30,7 +30,8 @@ with Root.IO; use Root.IO;
 package Root.Duchy is
 
    Faction_Color : constant Color := B_Magenta;
-   Name : constant String := String_Style ("Drillbit Duchy", Faction_Color);
+   Name_Plain : constant String := "Drillbit Duchy";
+   Name : constant String := String_Style (Name_Plain, Faction_Color);
 
    procedure Setup;
    procedure Take_Turn;
