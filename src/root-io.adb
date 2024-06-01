@@ -43,7 +43,7 @@ package body Root.IO is
       Separator;
       for I in Options'Range loop
          Put_Line (" " & Character'Val (96 + I) & ". " &
-           To_String (Options (I)));
+                   To_String (Options (I)));
       end loop;
       Separator;
    end Put_Options;
@@ -101,6 +101,49 @@ package body Root.IO is
 
       return Opts;
    end Get_Options;
+
+   function Get_Options_HL (Options : String_Arr;
+                            Opt_Colors : Color_Arr) return Char_Set is
+      C        : Character;
+      Opts     : Char_Set;
+      Set_Opts : Boolean_Arr (Options'Range) := (others => False);
+   begin
+      pragma Assert (Options'Length /= 0);
+      pragma Assert (Options'Length = Opt_Colors'Length);
+
+      loop
+         Separator;
+         Put_Line ("Select from these options");
+         New_Line;
+         for I in Options'Range loop
+            Put (" " & Character'Val (96 + I) & ". ");
+            Set_Style (if Set_Opts (I) then Opt_Colors (I) else B_Black);
+            Put (To_String (Options (I)));
+            Reset_Style;
+            New_Line;
+         end loop;
+         Separator;
+
+         Get_Immediate (C);
+         exit when (for some I in Set_Opts'Range => Set_Opts (I)) and then
+                   Character'Pos (C) = 10;
+
+         if C >= 'a' and then C <= Character'Val (96 + Options'Length)
+         then
+            Set_Opts (Character'Pos (C) - 96) :=
+               not Set_Opts (Character'Pos (C) - 96);
+         end if;
+
+         Cursor_Line_Move (0 - (Options'Length + 4));
+      end loop;
+
+      for I in Set_Opts'Range loop
+         if Set_Opts (I) then
+            Opts.Include (Character'Val (96 + I));
+         end if;
+      end loop;
+      return Opts;
+   end Get_Options_HL;
 
    function Get_Integer (Low, High : Integer) return Integer is
       C    : Character;

@@ -37,36 +37,16 @@ package Root.IO is
 
    WIDTH : constant Integer := 40;
 
-   type Int_Arr    is array (Positive range <>) of Integer;
-   type Char_Arr   is array (Positive range <>) of Character;
-   type String_Arr is array (Positive range <>) of Unbounded_String;
+   type Int_Arr     is array (Positive range <>) of Integer;
+   type Char_Arr    is array (Positive range <>) of Character;
+   type String_Arr  is array (Positive range <>) of Unbounded_String;
+   type Boolean_Arr is array (Positive range <>) of Boolean;
 
    subtype Int_Set  is Integer_Set.Set;
    subtype Char_Set is Character_Set.Set;
 
    function Unbounded (S : String) return Unbounded_String
       renames To_Unbounded_String;
-
-   ----------------------------
-   -- Get Checked User Input --
-   --                        --
-   -- General Format:        --
-   --  $ Input: <user input> --
-   ----------------------------
-   function Get_Option   (Options   : String_Arr) return Character;
-   function Get_Options  (Options   : String_Arr) return Char_Set;
-   function Get_Integer  (Low, High : Integer)    return Integer;
-   function Get_Integers (Low, High : Integer)    return Int_Set;
-   function Get_Yes_No  return Boolean;
-
-   function Get_Secret return Character;
-
-   -----------------
-   -- Common Gets --
-   -----------------
-   function Get_Suit_Opt return Suit;
-   function Get_Clearing_Suit_Opt return Clearing_Suit;
-   function Get_Rule (Name : String; Clear : Priority) return Boolean;
 
    ----------------
    -- Formatting --
@@ -76,7 +56,6 @@ package Root.IO is
                   Blue, Magenta, Cyan, White, Default,
                   B_Black, B_Red, B_Green, B_Yellow,
                   B_Blue, B_Magenta, B_Cyan, B_White);
-
    for Color use (
       Black     => 30,
       Red       => 31,
@@ -96,6 +75,8 @@ package Root.IO is
       B_Cyan    => 96,
       B_White   => 97
       );
+
+   type Color_Arr  is array (Positive range <>) of Color;
 
    type Style is (None, Dim, Italic, Underline, Strikethrough,
                   Not_Dim, Not_Italic, Not_Underline, Not_Strikethrough);
@@ -143,6 +124,30 @@ package Root.IO is
        Daylight => B_Cyan,
        Evening  => B_Black,
        None     => White);
+
+   ----------------------------
+   -- Get Checked User Input --
+   --                        --
+   -- General Format:        --
+   --  $ Input: <user input> --
+   ----------------------------
+   function Get_Option     (Options   : String_Arr) return Character;
+   function Get_Options    (Options   : String_Arr) return Char_Set;
+   -- Assumes Options are uncolored --
+   function Get_Options_HL (Options : String_Arr;
+                            Opt_Colors : Color_Arr) return Char_Set;
+   function Get_Integer    (Low, High : Integer)    return Integer;
+   function Get_Integers   (Low, High : Integer)    return Int_Set;
+
+   function Get_Yes_No return Boolean;
+   function Get_Secret return Character;
+
+   -----------------
+   -- Common Gets --
+   -----------------
+   function Get_Suit_Opt return Suit;
+   function Get_Clearing_Suit_Opt return Clearing_Suit;
+   function Get_Rule (Name : String; Clear : Priority) return Boolean;
 
    ---------------------
    -- Cursor Controls --
