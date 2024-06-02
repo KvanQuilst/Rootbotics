@@ -341,20 +341,23 @@ package body Root.Alliance is
          else
             declare
                F_Clears : Int_Arr (1 .. Count);
+               F_Colors : Color_Arr (1 .. Count);
                Opts     : String_Arr (1 .. Count);
                Idx      : Positive := 1;
+               Opt      : Character;
             begin
                for C in Adj_Clears'Range loop
                   if Unsym_Order (C) then
                      F_Clears (Idx) := C;
                      Opts (Idx) := Unbounded (C'Image);
+                     F_Colors (Idx) := Suit_Color (Clearings (C).C_Suit);
                      Idx := Idx + 1;
                   end if;
                end loop;
 
                Put_Line ("Which clearing has the least enemy pieces?");
-               Clear := Character'Pos (Get_Option (Opts)) -
-                                                      Character'Pos ('a') + 1;
+               Opt := Get_Option_HL (Opts, F_Colors);
+               Clear := Character'Pos (Opt) - Character'Pos ('a') + 1;
                Clear := F_Clears (Clear);
             end;
          end if;
@@ -378,20 +381,23 @@ package body Root.Alliance is
          else
             declare
                F_Clears : Int_Arr (1 .. Count);
+               F_Colors : Color_Arr (1 .. Count);
                Opts     : String_Arr (1 .. Count);
                Idx      : Positive := 1;
+               Opt      : Character;
             begin
                for C in Map_Sympathy'Range loop
                   if not Map_Sympathy (C) then
                      F_Clears (Idx) := C;
                      Opts (Idx) := Unbounded (C'Image);
+                     F_Colors (Idx) := Suit_Color (Clearings (C).C_Suit);
                      Idx := Idx + 1;
                   end if;
                end loop;
 
                Put_Line ("Which clearing has the least enemy pieces?");
-               Clear := Character'Pos (Get_Option (Opts)) -
-                                                      Character'Pos ('a') + 1;
+               Opt := Get_Option_HL (Opts, F_Colors);
+               Clear := Character'Pos (Opt) - Character'Pos ('a') + 1;
                Clear := F_Clears (Clear);
             end;
          end if;
