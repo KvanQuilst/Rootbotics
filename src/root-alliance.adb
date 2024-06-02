@@ -163,7 +163,7 @@ package body Root.Alliance is
 
       Curr_Action := Order;
       Prompt;
-      Put_Line ("What is the orer of this turn?");
+      Put_Line ("What is the order of this turn?");
       Curr_Order := Get_Suit_Opt;
       Continue;
 
