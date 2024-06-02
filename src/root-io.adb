@@ -102,6 +102,45 @@ package body Root.IO is
       return Opts;
    end Get_Options;
 
+   function Get_Option_HL (Options : String_Arr;
+                           Opt_Colors : Color_Arr) return Character is
+      C : Character;
+      Opt : Character := '0';
+   begin
+      pragma Assert (Options'Length /= 0);
+      pragma Assert (Options'Length = Opt_Colors'Length);
+
+      loop
+         Separator;
+         Put_Line ("Select from these options");
+         New_Line;
+         for I in Options'Range loop
+            Put (" " & Character'Val (96 + I) & ". ");
+            Set_Style (if Character'Pos (Opt) - 96 = I
+                       then Opt_Colors (I)
+                       else B_Black);
+            Put (To_String (Options (I)));
+            Reset_Style;
+            New_Line;
+         end loop;
+         Separator;
+
+         Get_Immediate (C);
+         exit when Opt >= 'a' and then
+                   Opt <= Character'Val (96 + Options'Length) and then
+                   Character'Pos (C) = 10;
+
+         if C >= 'a' and then C <= Character'Val (96 + Options'Length)
+         then
+            Opt := C;
+         end if;
+
+         Cursor_Line_Move (0 - (Options'Length + 4));
+      end loop;
+
+      return Opt;
+   end Get_Option_HL;
+
    function Get_Options_HL (Options : String_Arr;
                             Opt_Colors : Color_Arr) return Char_Set is
       C        : Character;
@@ -244,20 +283,28 @@ package body Root.IO is
    -----------------
 
    function Get_Suit_Opt return Suit is
-      S : constant String_Arr := (Suit_Str (Fox),
-                                  Suit_Str (Rabbit),
-                                  Suit_Str (Mouse),
-                                  Suit_Str (Bird));
+      C : constant Character := Get_Option_HL ((Suit_Str_Plain (Fox),
+                                                Suit_Str_Plain (Rabbit),
+                                                Suit_Str_Plain (Mouse),
+                                                Suit_Str_Plain (Bird)),
+                                               (Suit_Color (Fox),
+                                                Suit_Color (Rabbit),
+                                                Suit_Color (Mouse),
+                                                Suit_Color (Bird)));
    begin
-      return Suit'Val (Character'Pos (Get_Option (S)) - 97);
+      return Suit'Val (Character'Pos (C) - 97);
    end Get_Suit_Opt;
 
    function Get_Clearing_Suit_Opt return Clearing_Suit is
-      S : constant String_Arr := (Suit_Str (Fox),
-                                  Suit_Str (Rabbit),
-                                  Suit_Str (Mouse));
+      C : constant Character := Get_Option_HL ((Suit_Str_Plain (Fox),
+                                                Suit_Str_Plain (Rabbit),
+                                                Suit_Str_Plain (Mouse)),
+                                               (Suit_Color (Fox),
+                                                Suit_Color (Rabbit),
+                                                Suit_Color (Mouse),
+                                                Suit_Color (Bird)));
    begin
-      return Suit'Val (Character'Pos (Get_Option (S)) - 97);
+      return Suit'Val (Character'Pos (C) - 97);
    end Get_Clearing_Suit_Opt;
 
    function Get_Rule (Name : String; Clear : Priority) return Boolean is

@@ -113,6 +113,12 @@ package Root.IO is
        Rabbit => Unbounded (ESC & "[93mRabbit" & ESC & "[0m"),
        Bird   => Unbounded (ESC & "[94mBird" & ESC & "[0m"));
 
+   Suit_Str_Plain : constant array (Suit'Range) of Unbounded_String :=
+      (Fox    => Unbounded ("Fox"),
+       Mouse  => Unbounded ("Mouse"),
+       Rabbit => Unbounded ("Rabbit"),
+       Bird   => Unbounded ("Bird"));
+
    Suit_Color : constant array (Suit'Range) of Color :=
       (Fox    => Red,
        Mouse  => Yellow,
@@ -134,7 +140,9 @@ package Root.IO is
    function Get_Option     (Options   : String_Arr) return Character;
    function Get_Options    (Options   : String_Arr) return Char_Set;
    -- Assumes Options are uncolored --
-   function Get_Options_HL (Options : String_Arr;
+   function Get_Option_HL  (Options    : String_Arr;
+                            Opt_Colors : Color_Arr) return Character;
+   function Get_Options_HL (Options    : String_Arr;
                             Opt_Colors : Color_Arr) return Char_Set;
    function Get_Integer    (Low, High : Integer)    return Integer;
    function Get_Integers   (Low, High : Integer)    return Int_Set;
