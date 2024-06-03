@@ -115,10 +115,13 @@ package body Root.IO is
          Put_Line ("Select from these options");
          New_Line;
          for I in Options'Range loop
-            Put (" " & Character'Val (96 + I) & ". ");
-            Set_Style (if Character'Pos (Opt) - 96 = I
-                       then Opt_Colors (I)
-                       else B_Black);
+            if Character'Pos (Opt) - 96 = I then
+               Put ("[" & Character'Val (96 + I) & "] ");
+               Set_Style (Opt_Colors (I));
+            else
+               Put (" " & Character'Val (96 + I) & ". ");
+               Set_Style (B_Black);
+            end if;
             Put (To_String (Options (I)));
             Reset_Style;
             New_Line;
@@ -155,8 +158,13 @@ package body Root.IO is
          Put_Line ("Select from these options");
          New_Line;
          for I in Options'Range loop
-            Put (" " & Character'Val (96 + I) & ". ");
-            Set_Style (if Set_Opts (I) then Opt_Colors (I) else B_Black);
+            if Set_Opts (I) then
+               Put ("[" & Character'Val (96 + I) & "] ");
+               Set_Style (Opt_Colors (I));
+            else
+               Put (" " & Character'Val (96 + I) & ". ");
+               Set_Style (B_Black);
+            end if;
             Put (To_String (Options (I)));
             Reset_Style;
             New_Line;
