@@ -89,16 +89,20 @@ begin
    -------------------
    -- Map Selection --
    -------------------
+   Put_Title_Prompt;
+   Put_Line ("Which map will you be playing on:");
    declare
-      Options : constant String_Arr :=
-         (Unbounded (String_Style ("Fall", Green)),
-          Unbounded (String_Style ("Winter", B_Cyan)),
-          Unbounded (String_Style ("Lake", Blue)),
-          Unbounded (String_Style ("Mountain", Yellow)));
+      Opt : constant Character :=
+         Get_Option_HL ((Unbounded ("Fall"),
+                         Unbounded ("Winter"),
+                         Unbounded ("Lake"),
+                         Unbounded ("Mountain")),
+                        (Green,
+                         B_Cyan,
+                         Blue,
+                         Yellow));
    begin
-      Put_Title_Prompt;
-      Put_Line ("Which map will you be playing on:");
-      Init_Map (case Get_Option (Options) is
+      Init_Map (case Opt is
                   when 'a' => Fall,
                   when 'b' => Winter,
                   when 'c' => Lake,
