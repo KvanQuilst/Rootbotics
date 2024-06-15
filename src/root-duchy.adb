@@ -103,7 +103,7 @@ package body Root.Duchy is
    begin
       Root.IO.Put_Phase (Curr_Phase,
                         (case Curr_Action is
-                           when Order   => "Set Order",
+                           when Reveal  => "Reveal",
                            when Craft   => "Craft",
                            when Recruit => "Recruit",
                            when Dig     => "Dig",
@@ -117,12 +117,12 @@ package body Root.Duchy is
                   Map_Tunnels);
    end Prompt;
 
-   function Get_Turn_Order return Suit is
+   procedure Reveal is
    begin
-      Curr_Action := Order;
+      Curr_Action := Reveal;
       Prompt;
-      return Root.IO.Get_Turn_Order;
-   end Get_Turn_Order;
+      Curr_Order := Root.IO.Get_Turn_Order;
+   end Reveal;
 
    -----------------
    -- Duchy Setup --
@@ -225,7 +225,7 @@ package body Root.Duchy is
    begin
       Curr_Phase := Birdsong;
 
-      Curr_Order := Get_Turn_Order;
+      Reveal;
 
       Curr_Action := Craft;
       Prompt;

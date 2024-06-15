@@ -43,14 +43,13 @@ private
    TUNNEL_MAX  : constant Integer := 3;
    BUILD_MAX   : constant Integer := 3;
 
-   type Action   is (Order, Craft, Recruit, Dig, None);
+   type Action   is (Reveal, Craft, Recruit, Dig, None);
    type Minister is (Captain, Marshal, Foremole, Brigadier, Banker,
                      Mayor, Earl_of_Stone, Baron_of_Dirt, Duchess_of_Mud);
    type Building is (Citadel, Market);
 
-   procedure Put_Phase      with Inline;
-   procedure Prompt         with Inline;
-   function Get_Turn_Order return Suit with Inline;
+   procedure Put_Phase with Inline;
+   procedure Prompt    with Inline;
 
    function Unbounded (S : String) return Unbounded_String
       renames To_Unbounded_String;
@@ -108,6 +107,7 @@ private
    procedure Evening;
 
    -- Actions --
+   procedure Reveal;
    procedure Recruit;
 
    procedure Dig (S : Suit);

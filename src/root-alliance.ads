@@ -45,7 +45,7 @@ private
    FORTS_MAX    : constant Integer := 1;
 
    type    Action is (Revolt, Spread_Sympathy, Organize, Recruit,
-                      Order, Craft, None);
+                      Reveal, Craft, None);
    subtype Fort is Building_Suit;
 
    procedure Put_Phase with Inline;
@@ -88,6 +88,7 @@ private
    procedure Evening;
 
    -- Actions --
+   procedure Reveal;
    function  Revolt (Clears : Int_Arr) return Boolean;
    procedure Spread_Sympathy;
    procedure Organize;

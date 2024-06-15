@@ -98,7 +98,7 @@ package body Root.Alliance is
                            when Spread_Sympathy => "Spread Sympathy",
                            when Organize        => "Organize",
                            when Recruit         => "Recuit",
-                           when Order           => "Order",
+                           when Reveal          => "Reveal",
                            when Craft           => "Craft",
                            when None            => ""));
    end Put_Phase;
@@ -108,6 +108,13 @@ package body Root.Alliance is
       Put_Prompt (Put_Logo'Access, Put_State'Access, Map_Warriors,
                   Forts, Rule, Curr_Order, Put_Phase'Access, Map_Sympathy);
    end Prompt;
+
+   procedure Reveal is
+   begin
+      Curr_Action := Reveal;
+      Prompt;
+      Curr_Order := Root.IO.Get_Turn_Order;
+   end Reveal;
 
    --------------------
    -- Alliance Setup --
@@ -161,11 +168,7 @@ package body Root.Alliance is
    begin
       Curr_Phase := Birdsong;
 
-      Curr_Action := Order;
-      Prompt;
-      Put_Line ("What is the order of this turn?");
-      Curr_Order := Get_Suit_Opt;
-      Continue;
+      Reveal;
 
       Curr_Action := Craft;
       Prompt;
