@@ -107,8 +107,14 @@ private
    procedure Evening;
 
    -- Actions --
-   procedure Sway_Minister (S : Suit);
    procedure Recruit;
-   procedure Dig;
+
+   procedure Dig (S : Suit);
+   procedure Battle;
+   procedure Build;
+   procedure Ministers;
+
+   procedure Rally;
+   procedure Sway_Minister (S : Suit);
 
 end Root.Duchy;

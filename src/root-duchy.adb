@@ -229,41 +229,19 @@ package body Root.Duchy is
       Put_Line ("Craft the order card for +1 points for the " & Name & ".");
       Continue;
 
-      Curr_Action := Recruit;
       Recruit;
    end Birdsong;
 
-   procedure Daylight is null;
+   procedure Daylight is
+   begin
+      null;
+   end Daylight;
 
    procedure Evening is null;
 
    -------------
    -- Actions --
    -------------
-   procedure Sway_Minister (S : Suit) is
-   begin
-      if S = Bird then
-         for M in Minister'Range loop
-            if not Swayed_Ministers (M) then
-               Swayed_Ministers (M) := True;
-               Put_Line ("Place a crown on the " &
-                         To_String (Minister_Str (M)) & ".");
-               exit;
-            end if;
-         end loop;
-      else
-         for M of Suit_Ministers (S) loop
-            if not Swayed_Ministers (M) then
-               Swayed_Ministers (M) := True;
-               Put_Line ("Place a crown on the " &
-                         To_String (Minister_Str (M)) & ".");
-               exit;
-            end if;
-         end loop;
-      end if;
-      Continue;
-   end Sway_Minister;
-
    procedure Recruit is
       Total : constant Natural := 2 + (case Citadel_Supply is
                                           when BUILD_MAX     => 0,
@@ -271,6 +249,7 @@ package body Root.Duchy is
                                           when BUILD_MAX - 2 => 2,
                                           when others        => 4);
    begin
+      Curr_Action := Recruit;
       Prompt;
       if Warrior_Supply >= Total then
          Put_Line ("Place" & Total'Image & " warriors in the Burrow.");
@@ -288,8 +267,8 @@ package body Root.Duchy is
       Continue;
    end Recruit;
 
-   procedure Dig is
-      Clears  : constant Int_Arr := Filter_Clearings (Curr_Order);
+   procedure Dig (S : Suit) is
+      Clears  : constant Int_Arr := Filter_Clearings (S);
       Count   :          Natural := 0;
       Clear   :          Priority;
       T_Clear :          Natural := 0;
@@ -336,7 +315,7 @@ package body Root.Duchy is
                end if;
             end loop;
 
-            if Curr_Order = Bird then
+            if S = Bird then
                Put_Line ("Which clearing has the most enemy buildings and " &
                          "tokens?");
             else
@@ -363,5 +342,131 @@ package body Root.Duchy is
       Map_Warriors (Clear) := Map_Warriors (Clear) + 4;
       Burrow := Burrow - 4;
    end Dig;
+
+   procedure Battle is null;
+
+   procedure Build is null;
+
+   procedure Ministers is
+      procedure Marshal_Action is
+         Min_Set      : Boolean  := False;
+         Min_Clear    : Priority := Priority'Last;
+         Min_Warriors : Integer  := Integer'Last;
+      begin
+         for C in Map_Buildings'Range loop
+            if Map_Buildings (C) > 0 then
+               Min_Set := True;
+               if Map_Warriors (C) < Min_Warriors then
+                  Min_Clear := C;
+                  Min_Warriors := Map_Warriors (C);
+               end if;
+            end if;
+         end loop;
+
+         if Min_Set then
+            Deploy_Warriors (Warrior_Supply, Map_Warriors, Min_Clear, 1);
+         end if;
+      end Marshal_Action;
+
+      procedure Brigadier_Action is
+      begin
+         if Burrow >= 3 then
+            Dig (Bird);
+         end if;
+      end Brigadier_Action;
+
+      procedure Banker_Action is
+      begin
+         Build;
+      end Banker_Action;
+
+      procedure Mayor_Action is
+         Max_Set      : Boolean  := False;
+         Max_Clear    : Priority := Priority'First;
+         Max_Warriors : Integer  := 0;
+      begin
+         for C in Map_Warriors'Range loop
+            if Map_Warriors (C) > 0 then
+               Max_Set := True;
+               if Map_Warriors (C) > Max_Warriors then
+                  Max_Clear := C;
+                  Max_Warriors := Map_Warriors (C);
+               end if;
+            end if;
+         end loop;
+
+         if Max_Set then
+            Put_Line ("Remove 1 warrior from clearing" & Max_Clear'Image);
+            Put_Score (1, Name);
+            Continue;
+         end if;
+      end Mayor_Action;
+
+      procedure Earl_of_Stone_Action is
+         Citadels : constant Integer := BUILD_MAX - Citadel_Supply;
+      begin
+         if Citadels > 0 then
+            Put_Score (Citadels, Name);
+         end if;
+      end Earl_of_Stone_Action;
+
+      procedure Baron_of_Dirt_Action is
+         Markets : constant Integer := BUILD_MAX - Market_Supply;
+      begin
+         if Markets > 0 then
+            Put_Score (Markets, Name);
+         end if;
+      end Baron_of_Dirt_Action;
+
+      procedure Duchess_of_Mud_Action is
+      begin
+         if Tunnel_Supply = 0 then
+            Put_Score (2, Name);
+         end if;
+      end Duchess_of_Mud_Action;
+   begin
+      for M in Minister'Range loop
+         -- null entries mark ministers which give new abilities --
+         if Swayed_Ministers (M) then
+            case M is
+               when Captain        => null;
+               when Marshal        => Marshal_Action;
+               when Foremole        => null;
+               when Brigadier      => Brigadier_Action;
+               when Banker         => Banker_Action;
+               when Mayor          => Mayor_Action;
+               when Earl_of_Stone  => Earl_of_Stone_Action;
+               when Baron_of_Dirt  => Baron_of_Dirt_Action;
+               when Duchess_of_Mud => Duchess_of_Mud_Action;
+            end case;
+         end if;
+      end loop;
+   end Ministers;
+
+   procedure Rally is null;
+
+   procedure Sway_Minister (S : Suit) is
+   begin
+      if S = Bird then
+         for M in Minister'Range loop
+            if not Swayed_Ministers (M) then
+               Swayed_Ministers (M) := True;
+               Put_Line ("Place a crown on the " &
+                         To_String (Minister_Str (M)) & ".");
+               exit;
+            end if;
+         end loop;
+      else
+         for M of Suit_Ministers (S) loop
+            if not Swayed_Ministers (M) then
+               Swayed_Ministers (M) := True;
+               Put_Line ("Place a crown on the " &
+                         To_String (Minister_Str (M)) & ".");
+               exit;
+            end if;
+         end loop;
+      end if;
+      Continue;
+   end Sway_Minister;
 
 end Root.Duchy;

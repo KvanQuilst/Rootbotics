@@ -6,6 +6,7 @@ GENERAL
 - More with colors
 - Enable user to get extra information about current phase of a turn
    -- Input wrapper? => Filters input according for 'h' or 'q' and passes rest to get_*
+- v0.4 -> Move to OO model?
 
 ROOTBOTICS
 --------------------
