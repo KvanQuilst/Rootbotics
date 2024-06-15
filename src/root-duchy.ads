@@ -48,8 +48,9 @@ private
                      Mayor, Earl_of_Stone, Baron_of_Dirt, Duchess_of_Mud);
    type Building is (Citadel, Market);
 
-   procedure Put_Phase with Inline;
-   procedure Prompt    with Inline;
+   procedure Put_Phase      with Inline;
+   procedure Prompt         with Inline;
+   function Get_Turn_Order return Suit with Inline;
 
    function Unbounded (S : String) return Unbounded_String
       renames To_Unbounded_String;
@@ -69,7 +70,7 @@ private
    Rule           : Rule_Arr      := (others => False);
 
    Curr_Order  : Suit;
-   Curr_Phase  : Phase  := None;
+   Curr_Phase  : Phase := None;
    Curr_Action : Action := None;
 
    type Minister_Arr is array (Integer range 1 .. 3) of Minister;

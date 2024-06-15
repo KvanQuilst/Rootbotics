@@ -117,6 +117,13 @@ package body Root.Duchy is
                   Map_Tunnels);
    end Prompt;
 
+   function Get_Turn_Order return Suit is
+   begin
+      Curr_Action := Order;
+      Prompt;
+      return Root.IO.Get_Turn_Order;
+   end Get_Turn_Order;
+
    -----------------
    -- Duchy Setup --
    -----------------
@@ -218,11 +225,7 @@ package body Root.Duchy is
    begin
       Curr_Phase := Birdsong;
 
-      Curr_Action := Order;
-      Prompt;
-      Put_Line ("What is the order of this turn?");
-      Curr_Order := Get_Suit_Opt;
-      Continue;
+      Curr_Order := Get_Turn_Order;
 
       Curr_Action := Craft;
       Prompt;
@@ -234,7 +237,15 @@ package body Root.Duchy is
 
    procedure Daylight is
    begin
-      null;
+      Curr_Phase := Daylight;
+
+      Dig (Curr_Order);
+
+      Battle;
+
+      Build;
+
+      Ministers;
    end Daylight;
 
    procedure Evening is null;
@@ -396,7 +407,8 @@ package body Root.Duchy is
          end loop;
 
          if Max_Set then
-            Put_Line ("Remove 1 warrior from clearing" & Max_Clear'Image);
+            Put_Line ("Remove 1 warrior from clearing"
+                    & Max_Clear'Image & ".");
             Put_Score (1, Name);
             Continue;
          end if;
