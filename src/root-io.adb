@@ -583,4 +583,16 @@ package body Root.IO is
       New_Line;
    end Put_Title_Prompt;
 
+   procedure Put_Score (Score : Integer;
+                        Name  : String) is
+   begin
+      Put ("Score +");
+      Put (Score);
+      if Score = 1 then
+         Put_Line (" point for the " & Name & ".");
+      else
+         Put_Line (" points for the " & Name & ".");
+      end if;
+   end Put_Score;
+
 end Root.IO;

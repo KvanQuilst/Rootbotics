@@ -196,6 +196,8 @@ package Root.IO is
    -------------------
    procedure Put_Title;
    procedure Put_Title_Prompt;
+   procedure Put_Score (Score : Integer;
+                        Name  : String);
 
    Title : constant array (Integer range 1 .. 9) of String (1 .. 40) :=
       ("  ____________________________________  ",
