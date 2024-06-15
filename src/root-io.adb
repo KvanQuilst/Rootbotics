@@ -303,6 +303,15 @@ package body Root.IO is
       return Suit'Val (Character'Pos (C) - 97);
    end Get_Suit_Opt;
 
+   function Get_Turn_Order return Suit is
+      S : Suit;
+   begin
+      Put_Line ("What is the order of this turn?");
+      S := Get_Suit_Opt;
+      Continue;
+      return S;
+   end Get_Turn_Order;
+
    function Get_Clearing_Suit_Opt return Clearing_Suit is
       C : constant Character := Get_Option_HL ((Suit_Str_Plain (Fox),
                                                 Suit_Str_Plain (Rabbit),
@@ -534,6 +543,18 @@ package body Root.IO is
       end if;
    end Put_Prompt;
 
+   procedure Put_Score (Score : Integer;
+                        Name  : String) is
+   begin
+      Put ("Score +");
+      Put (Score);
+      if Score = 1 then
+         Put_Line (" point for the " & Name & ".");
+      else
+         Put_Line (" points for the " & Name & ".");
+      end if;
+   end Put_Score;
+
    -------------------
    -- Rootbotics IO --
    -------------------
@@ -582,17 +603,4 @@ package body Root.IO is
       Put_Title;
       New_Line;
    end Put_Title_Prompt;
-
-   procedure Put_Score (Score : Integer;
-                        Name  : String) is
-   begin
-      Put ("Score +");
-      Put (Score);
-      if Score = 1 then
-         Put_Line (" point for the " & Name & ".");
-      else
-         Put_Line (" points for the " & Name & ".");
-      end if;
-   end Put_Score;
-
 end Root.IO;

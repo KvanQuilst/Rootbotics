@@ -154,6 +154,7 @@ package Root.IO is
    -- Common Gets --
    -----------------
    function Get_Suit_Opt return Suit;
+   function Get_Turn_Order return Suit;
    function Get_Clearing_Suit_Opt return Clearing_Suit;
    function Get_Rule (Name : String; Clear : Priority) return Boolean;
 
@@ -190,15 +191,14 @@ package Root.IO is
                          Current_Order : Suit;
                          Phase         : access procedure := null;
                          Tokens        : Token_Arr := (others => False));
+   procedure Put_Score (Score : Integer;
+                        Name  : String);
 
    -------------------
    -- Rootbotics IO --
    -------------------
    procedure Put_Title;
    procedure Put_Title_Prompt;
-   procedure Put_Score (Score : Integer;
-                        Name  : String);
-
    Title : constant array (Integer range 1 .. 9) of String (1 .. 40) :=
       ("  ____________________________________  ",
        "//                                    \\",
