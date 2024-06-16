@@ -103,11 +103,17 @@ package body Root.Duchy is
    begin
       Root.IO.Put_Phase (Curr_Phase,
                         (case Curr_Action is
-                           when Reveal  => "Reveal",
-                           when Craft   => "Craft",
-                           when Recruit => "Recruit",
-                           when Dig     => "Dig",
-                           when None    => ""));
+                           when Reveal    => "Reveal",
+                           when Craft     => "Craft",
+                           when Recruit   => "Recruit",
+                           when Dig       => "Dig",
+                           when Battle    => "Battle",
+                           when Build     => "Build",
+                           when Ministers => "Ministers",
+                           when Rally     => "Rally",
+                           when Score     => "Score",
+                           when Sway      => "Sway",
+                           when None      => ""));
    end Put_Phase;
 
    procedure Prompt is
@@ -354,7 +360,28 @@ package body Root.Duchy is
       Burrow := Burrow - 4;
    end Dig;
 
-   procedure Battle is null;
+   procedure Battle is
+      Lost : Integer;
+   begin
+      Curr_Action := Battle;
+
+      for C of Filter_Clearings (Curr_Order) loop
+         if Map_Warriors (C) > 0 then
+            Put_Line ("Battle the enemy faction with the most buildings, "
+                    & "then the most pieces, then the most points "
+                    & "in clearing" & C'Image & ".");
+            if Swayed_Ministers (Captain) and then Map_Tunnels (C) 
+            then
+               Put_Line ("Deal an extra hit with the Captain Minister.");
+            end if;
+            Put_Line ("How many warriors were lost?");
+            Lost := Get_Integer (0, Map_Warriors (C));
+            Map_Warriors (C) := Map_Warriors (C) - Lost;
+            Warrior_Supply := Warrior_Supply + Lost;
+            Continue;
+         end if;
+      end loop;
+   end Battle;
 
    procedure Build is null;
 
@@ -386,10 +413,7 @@ package body Root.Duchy is
          end if;
       end Brigadier_Action;
 
-      procedure Banker_Action is
-      begin
-         Build;
-      end Banker_Action;
+      procedure Banker_Action renames Build;
 
       procedure Mayor_Action is
          Max_Set      : Boolean  := False;
@@ -422,13 +446,7 @@ package body Root.Duchy is
          end if;
       end Earl_of_Stone_Action;
 
-      procedure Baron_of_Dirt_Action is
-         Markets : constant Integer := BUILD_MAX - Market_Supply;
-      begin
-         if Markets > 0 then
-            Put_Score (Markets, Name);
-         end if;
-      end Baron_of_Dirt_Action;
+      procedure Baron_of_Dirt_Action renames Score;
 
       procedure Duchess_of_Mud_Action is
       begin
@@ -437,6 +455,8 @@ package body Root.Duchy is
          end if;
       end Duchess_of_Mud_Action;
    begin
+      Curr_Action := Ministers;
+
       for M in Minister'Range loop
          -- null entries mark ministers which give new abilities --
          if Swayed_Ministers (M) then
@@ -457,8 +477,20 @@ package body Root.Duchy is
 
    procedure Rally is null;
 
+   procedure Score is
+      Markets : constant Integer := BUILD_MAX - Market_Supply;
+   begin
+      Curr_Action := Score;
+
+      if Markets > 0 then
+         Put_Score (Markets, Name);
+      end if;
+   end Score;
+
    procedure Sway_Minister (S : Suit) is
    begin
+      Curr_Action := Sway;
+
       if S = Bird then
          for M in Minister'Range loop
             if not Swayed_Ministers (M) then
