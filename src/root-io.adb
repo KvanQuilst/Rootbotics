@@ -324,8 +324,13 @@ package body Root.IO is
       return Suit'Val (Character'Pos (C) - 97);
    end Get_Clearing_Suit_Opt;
 
-   function Get_Rule (Name : String; Clear : Priority) return Boolean is
+   function Get_Rule (Name  : String;
+                      Clear : Priority;
+                      Rule  : Rule_Arr) return Boolean is
    begin
+      if Rule (Clear) then
+         return True;
+      end if;
       Put_Line ("Does the " & Name & " rule clearing" & Clear'Image & "?");
       return Get_Yes_No;
    end Get_Rule;

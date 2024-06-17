@@ -409,7 +409,9 @@ package body Root.Lizards is
                Clear := Clears (Clear);
                Deploy_Warriors (Warrior_Supply, Map_Warriors, Clear, 1);
 
-               if Rule (Clear) or else Get_Rule (Name, Clear) then
+               if Rule (Clear) or else
+                  Get_Rule (Name, Clear, Rule)
+               then
                   Deploy_Building (Clear);
                end if;
             else

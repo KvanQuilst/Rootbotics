@@ -367,17 +367,24 @@ package body Root.Duchy is
 
       for C of Filter_Clearings (Curr_Order) loop
          if Map_Warriors (C) > 0 then
-            Put_Line ("Battle the enemy faction with the most buildings, "
-                    & "then the most pieces, then the most points "
-                    & "in clearing" & C'Image & ".");
-            if Swayed_Ministers (Captain) and then Map_Tunnels (C) 
-            then
-               Put_Line ("Deal an extra hit with the Captain Minister.");
+            Put_Line ("Are there enemy pieces in clearing" & C'Image & "?");
+            if Get_Yes_No then
+               Put_Line ("Battle the enemy faction with the most buildings, "
+                       & "then the most pieces, then the most points "
+                       & "in clearing" & C'Image & ".");
+               if Swayed_Ministers (Captain) and then Map_Tunnels (C)
+               then
+                  Put_Line ("Deal an extra hit with the Captain Minister.");
+               end if;
+               Put_Line ("How many warriors were lost?");
+               Lost := Get_Integer (0, Map_Warriors (C));
+               Map_Warriors (C) := Map_Warriors (C) - Lost;
+               Warrior_Supply := Warrior_Supply + Lost;
+
+               Put_Line ("Do the " & Name & " rule clearing" & C'Image & "?");
+               Rule (C) := Get_Yes_No;
+               return;
             end if;
-            Put_Line ("How many warriors were lost?");
-            Lost := Get_Integer (0, Map_Warriors (C));
-            Map_Warriors (C) := Map_Warriors (C) - Lost;
-            Warrior_Supply := Warrior_Supply + Lost;
             Continue;
          end if;
       end loop;

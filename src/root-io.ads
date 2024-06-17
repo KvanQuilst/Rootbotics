@@ -156,7 +156,9 @@ package Root.IO is
    function Get_Suit_Opt return Suit;
    function Get_Turn_Order return Suit;
    function Get_Clearing_Suit_Opt return Clearing_Suit;
-   function Get_Rule (Name : String; Clear : Priority) return Boolean;
+   function Get_Rule (Name  : String;
+                      Clear : Priority;
+                      Rule  : Rule_Arr) return Boolean;
 
    ---------------------
    -- Cursor Controls --
