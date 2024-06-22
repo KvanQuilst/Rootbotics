@@ -59,10 +59,10 @@ package Root.IO is
        Bird   => Unbounded ("Bird"));
 
    Suit_Color : constant array (Suit'Range) of Color_Elem :=
-      (Fox    => (Color_T, Red),
-       Mouse  => (Color_T, Yellow),
-       Rabbit => (Color_T, B_Yellow),
-       Bird   => (Color_T, Blue));
+      (Fox    => (Color_RGB_T, (221, 79, 57)),
+       Mouse  => (Color_RGB_T, (255, 232, 100)),
+       Rabbit => (Color_RGB_T, (251, 157, 105)),
+       Bird   => (Color_RGB_T, (105, 190, 193)));
 
    Phase_Color : constant array (Phase'Range) of Color_Elem :=
       (Birdsong => (Color_T, Yellow),

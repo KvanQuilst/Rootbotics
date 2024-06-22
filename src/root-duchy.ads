@@ -30,7 +30,7 @@ with IO_Utils.Strings; use IO_Utils.Strings;
 with Root.Faction; use Root.Faction;
 package Root.Duchy is
 
-   Faction_Color : constant Color_Elem  := (Color_T, B_Magenta);
+   Faction_Color : constant Color_Elem  := (Color_RGB_T, (237, 195, 163));
    Name_Plain    : constant String      := "Drillbit Duchy";
    Name          : constant String      := Set_Fg (Name_Plain, Faction_Color);
 

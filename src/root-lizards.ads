@@ -31,7 +31,7 @@ with Root.Faction; use Root.Faction;
 
 package Root.Lizards is
 
-   Faction_Color : constant Color_Elem  := (Color_T, B_Yellow);
+   Faction_Color : constant Color_Elem  := (Color_RGB_T, (249, 240, 100));
    Name_Plain    : constant String      := "Logical Lizards";
    Name          : constant String      := Set_Fg (Name_Plain, Faction_Color);
 
