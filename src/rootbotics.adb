@@ -23,9 +23,10 @@
 -- with The Rootbotics Assistant. If not, see                                --
 -- <https://www.gnu.org/licenses/>.                                          --
 -------------------------------------------------------------------------------
-with Ada.Containers; use Ada.Containers;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Ada.Text_IO; use Ada.Text_IO;
+with IO_Utils.Ansi; use IO_Utils.Ansi;
+with IO_Utils.User_IO; use IO_Utils.User_IO;
 
 with Root; use Root;
 with Root.IO; use Root.IO;
@@ -68,22 +69,23 @@ begin
    -----------------------
    Put_Line ("Which factions will you play with?");
    declare
-      Opts : constant Char_Set := Get_Options_HL
-         ((Name (Alliance),
-           Name (Lizards),
-           Name (Duchy)),
-          (Root.Alliance.Faction_Color,
-           Root.Lizards.Faction_Color,
-           Root.Duchy.Faction_Color));
+      Opts : constant Char_Arr :=
+         Get_Options ((Name (Alliance),
+                       Name (Lizards),
+                       Name (Duchy)),
+                      (Root.Alliance.Faction_Color,
+                       Root.Lizards.Faction_Color,
+                       Root.Duchy.Faction_Color));
    begin
-      if Opts.Length = 0 then
+      if Opts'Length = 0 then
          return;
       end if;
 
       for C of Opts loop
+         Put_Line (C & "");
          Playing (Faction'Val (Character'Pos (C) - 97)) := True;
       end loop;
-      Num_Playing := Integer (Opts.Length);
+      Num_Playing := Integer (Opts'Length);
    end;
 
    -------------------
@@ -93,14 +95,14 @@ begin
    Put_Line ("Which map will you be playing on:");
    declare
       Opt : constant Character :=
-         Get_Option_HL ((Unbounded ("Fall"),
-                         Unbounded ("Winter"),
-                         Unbounded ("Lake"),
-                         Unbounded ("Mountain")),
-                        (Green,
-                         B_Cyan,
-                         Blue,
-                         Yellow));
+         Get_Option ((Unbounded ("Fall"),
+                      Unbounded ("Winter"),
+                      Unbounded ("Lake"),
+                      Unbounded ("Mountain")),
+                     ((Color_T, Green),
+                      (Color_T, B_Cyan),
+                      (Color_T, Blue),
+                      (Color_T, Yellow)));
    begin
       Init_Map (case Opt is
                   when 'a' => Fall,
@@ -147,7 +149,7 @@ begin
 
    -- There's multiple factions --
    declare
-      Options : String_Arr (1 .. Num_Playing);
+      Options : Str_Arr (1 .. Num_Playing);
       P_Idx : Integer := 0;
       F_Opt : Character;
    begin

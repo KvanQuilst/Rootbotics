@@ -24,7 +24,9 @@
 -- <https://www.gnu.org/licenses/>.                                          --
 -------------------------------------------------------------------------------
 with Ada.Text_IO; use Ada.Text_IO;
+with IO_Utils.User_IO; use IO_Utils.User_IO;
 
+with Root.IO; use Root.IO;
 with Root.Maps; use Root.Maps;
 
 package body Root.Duchy is
@@ -53,11 +55,11 @@ package body Root.Duchy is
             when Market =>
                Put ("          Markets:");
          end case;
-         Set_Style (B_Black);
+         Set_Fg (B_Black);
          Put (Used);
-         Set_Style (Faction_Color);
+         Set_Fg (Faction_Color);
          Put (Remaining);
-         Reset_Style;
+         Reset_All;
          New_Line;
       end Building_State;
 
@@ -66,28 +68,28 @@ package body Root.Duchy is
          Put_Line ("     Ministers:");
          for I in Integer range 1 .. 3 loop
             if Swayed_Ministers (Suit_Ministers (Fox) (I)) then
-               Set_Style (B_Black);
+               Set_Fg (B_Black);
             else
-               Set_Style (Suit_Color (Fox));
+               Set_Fg (Suit_Color (Fox));
             end if;
             Put (To_String (Minister_Str (Suit_Ministers (Fox) (I))) & " ");
-            Cursor_Column_Set (16);
+            Cursor_Col_Set (16);
             if Swayed_Ministers (Suit_Ministers (Rabbit) (I)) then
-               Set_Style (B_Black);
+               Set_Fg (B_Black);
             else
-               Set_Style (Suit_Color (Rabbit));
+               Set_Fg (Suit_Color (Rabbit));
             end if;
             Put (To_String (Minister_Str (Suit_Ministers (Rabbit) (I))) & " ");
-            Cursor_Column_Set (32);
+            Cursor_Col_Set (32);
             if Swayed_Ministers (Suit_Ministers (Mouse) (I)) then
-               Set_Style (B_Black);
+               Set_Fg (B_Black);
             else
-               Set_Style (Suit_Color (Mouse));
+               Set_Fg (Suit_Color (Mouse));
             end if;
             Put (To_String (Minister_Str (Suit_Ministers (Mouse) (I))) & " ");
             New_Line;
          end loop;
-         Reset_Style;
+         Reset_All;
       end Minister_State;
    begin
       Put_Line ("   Warrior Supply:" & Warrior_Supply'Image);
@@ -181,10 +183,10 @@ package body Root.Duchy is
          case Build is
             when Citadel => Root.Faction.Deploy_Building
                               (Citadel_Supply, Map_Citadels, Clear,
-                               String_Style ("Citadel", Faction_Color));
+                               Set_Fg ("Citadel", Faction_Color));
             when Market => Root.Faction.Deploy_Building
                               (Market_Supply, Map_Markets, Clear,
-                               String_Style ("Market", Faction_Color));
+                               Set_Fg ("Market", Faction_Color));
          end case;
          Map_Buildings (Clear) := Map_Buildings (Clear) + 1;
       end if;
@@ -322,7 +324,7 @@ package body Root.Duchy is
       if Count > 1 then
          Prompt;
          declare
-            Opts : String_Arr (1 .. Count);
+            Opts : Str_Arr (1 .. Count);
             Idx  : Positive := 1;
          begin
             for C of Clears loop

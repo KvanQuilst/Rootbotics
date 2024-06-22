@@ -24,6 +24,8 @@
 -- <https://www.gnu.org/licenses/>.                                          --
 -------------------------------------------------------------------------------
 with Ada.Text_IO; use Ada.Text_IO;
+with IO_Utils.Ansi; use IO_Utils.Ansi;
+with IO_Utils.User_IO; use IO_Utils.User_IO;
 
 with Root.IO; use Root.IO;
 with Root.Maps; use Root.Maps;
@@ -43,7 +45,7 @@ package body Root.Faction is
       Put_Line (To_String (WIDTH * '-'));
       Cursor_Line_Move (-9);
       for L of Logo loop
-         Cursor_Column_Set (B_Col);
+         Cursor_Col_Set (B_Col);
          Put (To_String (L));
          Cursor_Line_Move (1);
       end loop;

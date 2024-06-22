@@ -24,16 +24,17 @@
 -- <https://www.gnu.org/licenses/>.                                          --
 -------------------------------------------------------------------------------
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
+with IO_Utils.Ansi; use IO_Utils.Ansi;
+with IO_Utils.Strings; use IO_Utils.Strings;
+with IO_Utils.User_IO; use IO_Utils.User_IO;
 
 with Root.Faction; use Root.Faction;
-with Root.IO; use Root.IO;
 
 package Root.Alliance is
 
-   Faction_Color : constant Color := Green;
-   Name_Plain : constant String := "Automated Alliance";
-   Name : constant String :=
-      String_Style (Name_Plain, Faction_Color);
+   Faction_Color : constant Color_Elem  := (Color_RGB_T, (19, 162, 85));
+   Name_Plain    : constant String      := "Automated Alliance";
+   Name          : constant String      := Set_Fg (Name_Plain, Faction_Color);
 
    procedure Setup;
    procedure Take_Turn;
@@ -70,17 +71,17 @@ private
 
    Logo_Width : constant := 21;
    Logo : Logo_Arr :=
-      (Unbounded (String_Style ("      _       _      ", Faction_Color)),
-       Unbounded (String_Style ("     / \     / \     ", Faction_Color)),
-       Unbounded (String_Style ("    |/ \|   |/ \|    ", Faction_Color)),
-       Unbounded (String_Style ("    || ||   || ||    ", Faction_Color)),
-       Unbounded (String_Style ("   _|| ||___|| ||_   ", Faction_Color)),
-       Unbounded (String_Style ("  /  __       __  \  ", Faction_Color)),
-       Unbounded (String_Style (" / /   /\   /   /\ \ ", Faction_Color)),
-       Unbounded (String_Style ("| |   <  | |   <  | |", Faction_Color)),
-       Unbounded (String_Style ("|  \ __\/   \ __\/  |", Faction_Color)),
-       Unbounded (String_Style (" \  . .   |   . .  / ", Faction_Color)),
-       Unbounded (String_Style ("  \_______________/  ", Faction_Color)));
+      (Unbounded (Set_Fg ("      _       _      ", Faction_Color)),
+       Unbounded (Set_Fg ("     / \     / \     ", Faction_Color)),
+       Unbounded (Set_Fg ("    |/ \|   |/ \|    ", Faction_Color)),
+       Unbounded (Set_Fg ("    || ||   || ||    ", Faction_Color)),
+       Unbounded (Set_Fg ("   _|| ||___|| ||_   ", Faction_Color)),
+       Unbounded (Set_Fg ("  /  __       __  \  ", Faction_Color)),
+       Unbounded (Set_Fg (" / /   /\   /   /\ \ ", Faction_Color)),
+       Unbounded (Set_Fg ("| |   <  | |   <  | |", Faction_Color)),
+       Unbounded (Set_Fg ("|  \ __\/   \ __\/  |", Faction_Color)),
+       Unbounded (Set_Fg (" \  . .   |   . .  / ", Faction_Color)),
+       Unbounded (Set_Fg ("  \_______________/  ", Faction_Color)));
 
    -- Phases --
    procedure Birdsong;

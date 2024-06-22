@@ -25,6 +25,9 @@
 -------------------------------------------------------------------------------
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Ada.Text_IO; use Ada.Text_IO;
+with IO_Utils.Ansi; use IO_Utils.Ansi;
+
+with Root.IO; use Root.IO;
 
 package body Root.Maps is
    package Int_IO is new Integer_IO (Integer);
@@ -65,36 +68,36 @@ package body Root.Maps is
    function Query_Suit (Prio : Priority) return Clearing_Suit is
       procedure Put_Clearing (Line, Col : Natural;
                               S : Clearing_Suit; Prio : Priority) is
-         C : constant Color := Suit_Color (S);
-         S_Char : constant Character := (case S is
-                                          when Fox    => 'F',
-                                          when Mouse  => 'M',
-                                          when Rabbit => 'R');
+         C      : constant Color_Elem := Suit_Color (S);
+         S_Char : constant Character  := (case S is
+                                             when Fox    => 'F',
+                                             when Mouse  => 'M',
+                                             when Rabbit => 'R');
       begin
          Cursor_Line_Move (Line);
-         Cursor_Column_Set (Col);
-         Set_Style (C);
+         Cursor_Col_Set (Col);
+         Set_Fg (C);
          Put ("@---@");
          Cursor_Line_Move (1);
-         Cursor_Column_Set (Col);
+         Cursor_Col_Set (Col);
 
          Put ("|");
-         Reset_Style;
+         Reset_All;
          Put (" _ ");
-         Set_Style (C);
+         Set_Fg (C);
          Put ("|");
          Cursor_Line_Move (1);
-         Cursor_Column_Set (Col);
+         Cursor_Col_Set (Col);
 
          Put (S_Char & "--");
          if Prio < 10 then
             Put ("-");
          end if;
-         Set_Style (B_White);
+         Set_Fg (B_White);
          Int_IO.Put (Prio, Width => 0);
-         Reset_Style;
+         Reset_All;
          Cursor_Line_Move (0 - Line - 2);
-         Cursor_Column_Set (Col);
+         Cursor_Col_Set (Col);
       end Put_Clearing;
 
       B_Col : constant := (Root.IO.WIDTH - Map_Width) / 2 + 2;
@@ -106,7 +109,7 @@ package body Root.Maps is
          Put_Line (To_String ((B_Col - 1) * ' ') & L);
       end loop;
       Cursor_Line_Move (0 - Text_Map'Length);
-      Cursor_Column_Move (B_Col);
+      Cursor_Col_Move (B_Col);
 
       for I in Priority'Range loop
          if Set_Clearings (I) /= Bird then
@@ -166,62 +169,62 @@ package body Root.Maps is
    procedure Clearing_Box (Line : Natural; Col, Units, Buildings : Natural;
                            Rule : Boolean; Tok : Boolean;
                            Clear : Clearing; Pri : Priority) is
-      C : constant Color := Suit_Color (Clear.C_Suit);
-      S : constant Character := (case Clear.C_Suit is
+      C : constant Color_Elem := Suit_Color (Clear.C_Suit);
+      S : constant Character  := (case Clear.C_Suit is
                                     when Fox    => 'F',
                                     when Mouse  => 'M',
                                     when Rabbit => 'R');
    begin
       Cursor_Line_Move (Line);
-      Cursor_Column_Set (Col);
+      Cursor_Col_Set (Col);
       if Buildings > 0 then
          Int_IO.Put (Buildings, Width => 0);
       else
          Put ("@");
       end if;
-      Set_Style (C);
+      Set_Fg (C);
       Put ("---");
       if Rule then
-         Reset_Style;
-         Cursor_Column_Move (-2);
+         Reset_All;
+         Cursor_Col_Move (-2);
          Put ("^");
-         Set_Style (C);
-         Cursor_Column_Move (1);
+         Set_Fg (C);
+         Cursor_Col_Move (1);
       end if;
 
       if Tok then
-         Reset_Style;
+         Reset_All;
          Put ("T");
-         Set_Style (C);
-         Cursor_Column_Move (-5);
+         Set_Fg (C);
+         Cursor_Col_Move (-5);
       else
-         Cursor_Column_Move (-4);
+         Cursor_Col_Move (-4);
       end if;
 
       Cursor_Line_Move (1);
 
       Put ("| ");
-      Reset_Style;
+      Reset_All;
       if Units >= 10 then
          Int_IO.Put (Units, Width => 0);
       else
          Int_IO.Put (Units, Width => 0);
          Put (" ");
       end if;
-      Set_Style (C);
+      Set_Fg (C);
       Put ("|");
       Cursor_Line_Move (1);
-      Cursor_Column_Move (-5);
+      Cursor_Col_Move (-5);
 
       Put (S & "--");
       if Pri < 10 then
          Put ("-");
       end if;
-      Set_Style (B_White);
+      Set_Fg (B_White);
       Int_IO.Put (Pri, Width => 0);
-      Reset_Style;
+      Reset_All;
       Cursor_Line_Move (0 - Line - 2);
-      Cursor_Column_Set (Col);
+      Cursor_Col_Set (Col);
    end Clearing_Box;
 
    procedure Put_Map (Units     : Warrior_Arr;
@@ -237,7 +240,7 @@ package body Root.Maps is
          Put_Line (To_String ((B_Col - 1) * ' ') & L);
       end loop;
       Cursor_Line_Move (0 - Text_Map'Length);
-      Cursor_Column_Move (B_Col);
+      Cursor_Col_Move (B_Col);
 
       -- Print map details and numbers --
       for I in Priority'Range loop

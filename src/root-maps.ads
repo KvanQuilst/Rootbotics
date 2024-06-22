@@ -23,8 +23,10 @@
 -- with The Rootbotics Assistant. If not, see                                --
 -- <https://www.gnu.org/licenses/>.                                          --
 -------------------------------------------------------------------------------
+with IO_Utils.User_IO; use IO_Utils.User_IO;
+
 with Root.Faction; use Root.Faction;
-with Root.IO; use Root.IO;
+
 package Root.Maps is
 
    type Neighbor_Arr is array (Integer range 1 .. 6)

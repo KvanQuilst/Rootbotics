@@ -24,7 +24,9 @@
 -- <https://www.gnu.org/licenses/>.                                          --
 -------------------------------------------------------------------------------
 with Ada.Text_IO; use Ada.Text_IO;
+with IO_Utils.User_IO; use IO_Utils.User_IO;
 
+with Root.IO; use Root.IO;
 with Root.Maps; use Root.Maps;
 
 package body Root.Lizards is
@@ -44,14 +46,14 @@ package body Root.Lizards is
          Remaining : constant String :=
             To_String (Garden_Supply (G) * " **");
       begin
-         Set_Style (B_Black);
+         Set_Fg (B_Black);
          Put (Used);
-         Set_Style ((case G is
+         Set_Fg ((case G is
                      when Fox => Red,
                      when Rabbit => B_Yellow,
                      when Mouse => Yellow));
          Put (Remaining);
-         Reset_Style;
+         Reset_All;
       end Garden_State;
 
       procedure Conspiracy_State is
@@ -64,13 +66,13 @@ package body Root.Lizards is
                Put (" ");
             end if;
             if C = Next_Conspiracy then
-               Set_Style (Green);
+               Set_Fg (Green);
                Put (Conspiracies (C)'Image);
-               Reset_Style;
+               Reset_All;
             elsif C = Next_Conspiracy - 1 then
-               Set_Style (B_Black);
+               Set_Fg (B_Black);
                Put (Conspiracies (C)'Image);
-               Reset_Style;
+               Reset_All;
             else
                Put (Conspiracies (C)'Image);
             end if;
@@ -210,7 +212,7 @@ package body Root.Lizards is
    end Birdsong;
 
    procedure Daylight is
-      Opts : constant String_Arr := (Suit_Str  (Fox),
+      Opts : constant Str_Arr := (Suit_Str  (Fox),
                                      Suit_Str  (Rabbit),
                                      Suit_Str  (Mouse),
                                      Suit_Str  (Bird),
@@ -280,7 +282,7 @@ package body Root.Lizards is
       Val        : Natural;
 
       procedure Convert is
-         Opts : String_Arr (1 .. Clears'Length + 1);
+         Opts : Str_Arr (1 .. Clears'Length + 1);
          Clear : Priority;
       begin
          Curr_Action := Convert;
@@ -327,7 +329,7 @@ package body Root.Lizards is
       end Crusade;
 
       procedure Sanctify is
-         Opts  : String_Arr (1 .. Clears'Length);
+         Opts  : Str_Arr (1 .. Clears'Length);
          Clear : Priority;
       begin
          Curr_Action := Sanctify;
@@ -392,7 +394,7 @@ package body Root.Lizards is
       -- Fox, Rabbit, Mouse Suit --
       else
          declare
-            Opts : String_Arr (1 .. Clears'Length + 1);
+            Opts : Str_Arr (1 .. Clears'Length + 1);
             Clear : Priority;
          begin
             for I in Clears'Range loop

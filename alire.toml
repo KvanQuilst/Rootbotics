@@ -8,3 +8,5 @@ maintainers = ["Dylan E. <76961140+KvanQuilst@users.noreply.github.com>"]
 maintainers-logins = ["kvanquilst"]
 
 executables = ["rootbotics"]
+[[depends-on]]
+io_utils = "^1.0.0"

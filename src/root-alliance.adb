@@ -25,6 +25,7 @@
 -------------------------------------------------------------------------------
 with Ada.Text_IO; use Ada.Text_IO;
 
+with Root.IO; use Root.IO;
 with Root.Maps; use Root.Maps;
 
 package body Root.Alliance is
@@ -43,12 +44,12 @@ package body Root.Alliance is
       begin
          Put ("             Forts:");
          for S in Clearing_Suit'Range loop
-            Set_Style ((if Fort_Supply (S) > 0
+            Set_Fg ((if Fort_Supply (S) > 0
                         then Suit_Color (S)
-                        else B_Black));
+                        else (Color_T, B_Black)));
             Put (" " & Fort);
          end loop;
-         Reset_Style;
+         Reset_All;
          New_Line;
       end Forts_State;
 
@@ -59,9 +60,9 @@ package body Root.Alliance is
          for I in reverse 1 .. SYMPATHY_MAX loop
             if I mod 2 = 0 then
                if Sympathy_Supply >= I then
-                  Set_Style (Green);
+                  Set_Fg (Green);
                else
-                  Set_Style (B_Black);
+                  Set_Fg (B_Black);
                end if;
                Put ("   " & Sympathy);
             end if;
@@ -71,16 +72,16 @@ package body Root.Alliance is
          for I in reverse 1 .. SYMPATHY_MAX loop
             if I mod 2 = 1 then
                if Sympathy_Supply >= I then
-                  Set_Style (Green);
+                  Set_Fg (Green);
                else
-                  Set_Style (B_Black);
+                  Set_Fg (B_Black);
                end if;
                if I /= SYMPATHY_MAX then
                   Put ("   " & Sympathy);
                end if;
             end if;
          end loop;
-         Reset_Style;
+         Reset_All;
          New_Line;
       end Sympathy_State;
    begin
@@ -227,7 +228,7 @@ package body Root.Alliance is
 
       Num_Sym : constant Natural := Count_Sym;
       Clear : Natural;
-      Opts  : String_Arr (1 .. Num_Sym);
+      Opts  : Str_Arr (1 .. Num_Sym);
       Idx   : Positive := 1;
    begin
       Curr_Action := Revolt;
@@ -345,7 +346,7 @@ package body Root.Alliance is
             declare
                F_Clears : Int_Arr (1 .. Count);
                F_Colors : Color_Arr (1 .. Count);
-               Opts     : String_Arr (1 .. Count);
+               Opts     : Str_Arr (1 .. Count);
                Idx      : Positive := 1;
                Opt      : Character;
             begin
@@ -359,7 +360,7 @@ package body Root.Alliance is
                end loop;
 
                Put_Line ("Which clearing has the least enemy pieces?");
-               Opt := Get_Option_HL (Opts, F_Colors);
+               Opt := Get_Option (Opts, F_Colors);
                Clear := Character'Pos (Opt) - Character'Pos ('a') + 1;
                Clear := F_Clears (Clear);
             end;
@@ -385,7 +386,7 @@ package body Root.Alliance is
             declare
                F_Clears : Int_Arr (1 .. Count);
                F_Colors : Color_Arr (1 .. Count);
-               Opts     : String_Arr (1 .. Count);
+               Opts     : Str_Arr (1 .. Count);
                Idx      : Positive := 1;
                Opt      : Character;
             begin
@@ -399,7 +400,7 @@ package body Root.Alliance is
                end loop;
 
                Put_Line ("Which clearing has the least enemy pieces?");
-               Opt := Get_Option_HL (Opts, F_Colors);
+               Opt := Get_Option (Opts, F_Colors);
                Clear := Character'Pos (Opt) - Character'Pos ('a') + 1;
                Clear := F_Clears (Clear);
             end;
