@@ -13,19 +13,17 @@ some of the decision analysis for the user. **Note:** this tool is used entirely
 the terminal and lacks a GUI implementation!
 
 The Rootbotics Assistant is currently in an unfinished state. 
-The following features are finished/in testing:
-- Logical Lizards (no traits or difficulty yet)
-- Automated Alliance (no traits or difficulty yet)
-
-At this time, the following features are remaining for implementation:
-- Mechnical Marquise 2.0
-- Electric Eyrie
-- Vagabot
-- Logical Lizards
-- Riverfolk Robots
-- Drillbit Duchy
-- Difficulties and Traits
-- Lake Map Raft Logic
+| Feature | State | Details |
+| :------ | :---: | :------ |
+| Mechanical Marquise 2.0 | x | |
+| Electric Eyrie | x | |
+| Automated Alliance | ~ | Traits and Difficult left |
+| Vagabot | x | |
+| Logical Lizards | ~ | Traits and Difficulty left |
+| Riverfolk Robots | x | Will be very complex... |
+| Drillbit Duchy | ~ | Traits and Difficulty left |
+| Cogwheel Corvids | x | |
+| Special Map Functions | x | Pertaining to Mountain and Lake |
 
 ![ASCII Factions](img/factions.png)
 
@@ -52,7 +50,5 @@ Number of Buildings --- 2-^-@    - Number of Warriors
 ```
 
 ## Credits
-- Cole Wehrle - The creation of Root
-- Kyle Ferrin - The Root artwork
-- Benjamin Schmauss - The creator of Root: The Clockwork Expansion 1 & 2
-- Leder Games - The distributor and producer of Root
+Thanks to Leder Games for the creation and publication of Root and its
+expansions as well as the permission to develop this tool.
