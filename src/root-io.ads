@@ -76,7 +76,6 @@ package Root.IO is
    -- General Format:        --
    --  $ Input: <user input> --
    ----------------------------
-   function Get_Integer    (Low, High : Integer)    return Integer;
    function Get_Integers   (Low, High : Integer)    return Int_Set;
 
    function Get_Yes_No return Boolean;

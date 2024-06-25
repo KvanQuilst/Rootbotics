@@ -36,30 +36,6 @@ package body Root.IO is
   -- Get Checked User Input --
   ----------------------------
 
-   function Get_Integer (Low, High : Integer) return Integer is
-      C    : Character;
-      EOL  : Boolean;
-      Val  : Integer := -1;
-
-      Line : Unbounded_String;
-      pragma Unreferenced (Line);
-   begin
-      loop
-         Put ("Response: ");
-         Look_Ahead (C, EOL);
-         if C >= '0' and then C <= '9' then
-            Get (Val);
-         end if;
-
-         exit when Val >= Low and then Val <= High;
-
-         Put_Line ("Invalid input!");
-         Line := To_Unbounded_String (Get_Line);
-      end loop;
-      Line := To_Unbounded_String (Get_Line);
-      return Val;
-   end Get_Integer;
-
    function Get_Integers (Low, High : Integer) return Int_Set is
       Ints  : Int_Set;
       Line  : Unbounded_String;
