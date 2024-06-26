@@ -28,8 +28,9 @@ package Root is
    type Difficulty is (Easy, Default, Challenging, Nightmare);
 
    type Suit  is (Fox, Rabbit, Mouse, Bird);
-   type Phase is (Birdsong, Daylight, Evening, None);
    subtype Clearing_Suit is Suit range Fox .. Mouse;
+
+   type Phase is (Birdsong, Daylight, Evening, None);
 
    subtype Priority is Integer range 1 .. 12;
 

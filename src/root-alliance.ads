@@ -28,13 +28,16 @@ with IO_Utils.Ansi; use IO_Utils.Ansi;
 with IO_Utils.Strings; use IO_Utils.Strings;
 with IO_Utils.User_IO; use IO_Utils.User_IO;
 
+with Root.Color; use Root.Color;
 with Root.Faction; use Root.Faction;
 
 package Root.Alliance is
 
-   Faction_Color : constant Color_Elem  := (Color_RGB_T, (19, 162, 85));
-   Name_Plain    : constant String      := "Automated Alliance";
-   Name          : constant String      := Set_Fg (Name_Plain, Faction_Color);
+   Name_Plain : constant String := "Automated Alliance";
+
+   function Faction_Color return Color_Elem renames Alliance_Color;
+   function Name          return String is
+      (Set_Fg (Name_Plain, Faction_Color));
 
    procedure Setup;
    procedure Take_Turn;
@@ -70,7 +73,7 @@ private
    Curr_Action : Action := None;
 
    Logo_Width : constant := 21;
-   Logo : Logo_Arr :=
+   function Logo return Logo_Arr is
       (Unbounded (Set_Fg ("      _       _      ", Faction_Color)),
        Unbounded (Set_Fg ("     / \     / \     ", Faction_Color)),
        Unbounded (Set_Fg ("    |/ \|   |/ \|    ", Faction_Color)),

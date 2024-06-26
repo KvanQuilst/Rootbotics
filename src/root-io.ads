@@ -26,7 +26,9 @@
 with Ada.Containers.Ordered_Sets;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with IO_Utils.Ansi; use IO_Utils.Ansi;
+with IO_Utils.Strings; use IO_Utils.Strings;
 
+with Root.Color; use Root.Color;
 with Root.Faction; use Root.Faction;
 
 package Root.IO is
@@ -46,29 +48,39 @@ package Root.IO is
    --------------------------
    -- Common Color Strings --
    --------------------------
-   Suit_Str : constant array (Suit'Range) of Unbounded_String :=
-      (Fox    => Unbounded (ESC & "[31mFox" & ESC & "[0m"),
-       Mouse  => Unbounded (ESC & "[33mMouse" & ESC & "[0m"),
-       Rabbit => Unbounded (ESC & "[93mRabbit" & ESC & "[0m"),
-       Bird   => Unbounded (ESC & "[94mBird" & ESC & "[0m"));
-
    Suit_Str_Plain : constant array (Suit'Range) of Unbounded_String :=
       (Fox    => Unbounded ("Fox"),
        Mouse  => Unbounded ("Mouse"),
        Rabbit => Unbounded ("Rabbit"),
        Bird   => Unbounded ("Bird"));
 
-   Suit_Color : constant array (Suit'Range) of Color_Elem :=
-      (Fox    => (Color_RGB_T, (221, 79, 57)),
-       Mouse  => (Color_RGB_T, (255, 232, 100)),
-       Rabbit => (Color_RGB_T, (251, 157, 105)),
-       Bird   => (Color_RGB_T, (105, 190, 193)));
+   -- This type shouldn't need to be referenced... --
+   type Suit_Color_Arr is array (Suit'Range) of Color_Elem;
+   function Suit_Color return Suit_Color_Arr is
+      (Fox    => Fox_Color,
+       Mouse  => Mouse_Color,
+       Rabbit => Rabbit_Color,
+       Bird   => Bird_Color);
 
-   Phase_Color : constant array (Phase'Range) of Color_Elem :=
-      (Birdsong => (Color_T, Yellow),
-       Daylight => (Color_T, B_Cyan),
-       Evening  => (Color_T, B_Black),
-       None     => (Color_T, White));
+   -- This type shouldn't need to be referenced... --
+   type Suit_Str_Arr is array (Suit'Range) of Unbounded_String;
+   function Suit_Str return Suit_Str_Arr is
+      (Fox    => Unbounded (Set_Fg (To_String (Suit_Str_Plain (Fox)),
+                                    Suit_Color (Fox))),
+       Mouse  => Unbounded (Set_Fg (To_String (Suit_Str_Plain (Mouse)),
+                                    Suit_Color (Mouse))),
+       Rabbit => Unbounded (Set_Fg (To_String (Suit_Str_Plain (Rabbit)),
+                                    Suit_Color (Rabbit))),
+       Bird   => Unbounded (Set_Fg (To_String (Suit_Str_Plain (Bird)),
+                                    Suit_Color (Bird))));
+
+   -- This type shouldn't need to be referenced... --
+   type Phase_Color_Arr is array (Phase'Range) of Color_Elem;
+   function Phase_Color return Phase_Color_Arr is
+      (Birdsong => Birdsong_Color,
+       Daylight => Daylight_Color,
+       Evening  => Evening_Color,
+       None     => Default_Color);
 
    ----------------------------
    -- Get Checked User Input --

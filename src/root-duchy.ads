@@ -27,12 +27,16 @@ with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with IO_Utils.Ansi; use IO_Utils.Ansi;
 with IO_Utils.Strings; use IO_Utils.Strings;
 
+with Root.Color; use Root.Color;
 with Root.Faction; use Root.Faction;
+
 package Root.Duchy is
 
-   Faction_Color : constant Color_Elem  := (Color_RGB_T, (237, 195, 163));
-   Name_Plain    : constant String      := "Drillbit Duchy";
-   Name          : constant String      := Set_Fg (Name_Plain, Faction_Color);
+   Name_Plain : constant String := "Drillbit Duchy";
+
+   function Faction_Color return Color_Elem renames Duchy_Color;
+   function Name          return String is
+      (Set_Fg (Name_Plain, Faction_Color));
 
    procedure Setup;
    procedure Take_Turn;
@@ -94,7 +98,7 @@ private
        Unbounded ("Duchess of Mud"));
 
    Logo_Width : constant := 24;
-   Logo : Logo_Arr :=
+   function Logo return Logo_Arr is
       (Unbounded (Set_Fg ("                        ", Faction_Color)),
        Unbounded (Set_Fg ("   ____________         ", Faction_Color)),
        Unbounded (Set_Fg ("  /            \   \\/\ ", Faction_Color)),

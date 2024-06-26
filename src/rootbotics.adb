@@ -23,12 +23,14 @@
 -- with The Rootbotics Assistant. If not, see                                --
 -- <https://www.gnu.org/licenses/>.                                          --
 -------------------------------------------------------------------------------
+with Ada.Command_Line;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Ada.Text_IO; use Ada.Text_IO;
 with IO_Utils.Ansi; use IO_Utils.Ansi;
 with IO_Utils.User_IO; use IO_Utils.User_IO;
 
 with Root; use Root;
+with Root.Color;
 with Root.IO; use Root.IO;
 with Root.Maps; use Root.Maps;
 
@@ -59,7 +61,56 @@ procedure Rootbotics is
 
    Playing : array (Faction'Range) of Boolean := (others => False);
    Num_Playing : Integer := 0;
+
+   function Handle_Args return Boolean is
+      use Ada.Command_Line;
+      use Root.Color;
+
+      function Cmd_Color (Arg : Positive) return Boolean is
+      begin
+         if Arg = Argument_Count then
+            Put_Line ("--color requires an argument!");
+            Put_Line ("  Options: base | 8bit | truecolor");
+            Set_Exit_Status (1);
+            return False;
+         end if;
+
+         if Argument (Arg + 1) = "base" then
+            C_Setting := Base;
+         elsif Argument (Arg + 1) = "8bit" then
+            C_Setting := EightBit;
+         elsif Argument (Arg + 1) = "truecolor" then
+            C_Setting := Truecolor;
+         else
+            return False;
+         end if;
+
+         return True;
+      end Cmd_Color;
+
+   begin
+      if Argument_Count < 1 then
+         return True;
+      end if;
+
+      for Arg in 1 .. Argument_Count loop
+         if Argument (Arg) (1 .. 2) = "--" then
+            if Argument (Arg) = "--color" and then
+               not Cmd_Color (Arg)
+            then
+               return False;
+            end if;
+         end if;
+      end loop;
+
+      return True;
+   end Handle_Args;
+
 begin
+   if not Handle_Args then
+      return;
+   end if;
+
    Put_Title_Prompt;
    Put_Line ("Welcome to the Rootbotics Logic Tool " & VERSION & "!");
    New_Line;

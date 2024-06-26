@@ -49,9 +49,9 @@ package body Root.Lizards is
          Set_Fg (B_Black);
          Put (Used);
          Set_Fg ((case G is
-                     when Fox => Red,
-                     when Rabbit => B_Yellow,
-                     when Mouse => Yellow));
+                     when Fox => Suit_Color (Fox),
+                     when Rabbit => Suit_Color (Rabbit),
+                     when Mouse => Suit_Color (Mouse)));
          Put (Remaining);
          Reset_All;
       end Garden_State;

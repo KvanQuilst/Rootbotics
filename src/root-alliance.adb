@@ -60,7 +60,7 @@ package body Root.Alliance is
          for I in reverse 1 .. SYMPATHY_MAX loop
             if I mod 2 = 0 then
                if Sympathy_Supply >= I then
-                  Set_Fg (Green);
+                  Set_Fg (Faction_Color);
                else
                   Set_Fg (B_Black);
                end if;
@@ -72,7 +72,7 @@ package body Root.Alliance is
          for I in reverse 1 .. SYMPATHY_MAX loop
             if I mod 2 = 1 then
                if Sympathy_Supply >= I then
-                  Set_Fg (Green);
+                  Set_Fg (Faction_Color);
                else
                   Set_Fg (B_Black);
                end if;
