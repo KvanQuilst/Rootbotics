@@ -132,6 +132,28 @@ package body Root.Duchy is
       Curr_Order := Root.IO.Get_Turn_Order;
    end Reveal;
 
+   -------------------------
+   -- Duchy Common Action --
+   -------------------------
+   function Deploy_Building (C : Priority) return Boolean is
+      Ret : Boolean;
+   begin
+      if Warrior_Supply >= 9 then
+         Ret := Deploy_Building (Citadel_Supply,
+                                 Map_Citadels,
+                                 C,
+                                 Citadel'Image);
+      else
+         Ret := Deploy_Building (Market_Supply,
+                                 Map_Markets,
+                                 C,
+                                 Market'Image);
+      end if;
+
+      Map_Buildings (C) := Map_Buildings (C) + (if Ret then 1 else 0);
+      return Ret;
+   end Deploy_Building;
+
    -----------------
    -- Duchy Setup --
    -----------------
@@ -173,24 +195,6 @@ package body Root.Duchy is
       Sway_Minister (Get_Suit_Opt);
       Put_Line ("Discard the cards.");
    end Setup;
-
-   --------------------------
-   -- Duchy Common Actions --
-   --------------------------
-   procedure Deploy_Building (Build : Building; Clear : Priority) is
-   begin
-      if Map_Buildings (Clear) < Clearings (Clear).Buildings then
-         case Build is
-            when Citadel => Root.Faction.Deploy_Building
-                              (Citadel_Supply, Map_Citadels, Clear,
-                               Set_Fg ("Citadel", Faction_Color));
-            when Market => Root.Faction.Deploy_Building
-                              (Market_Supply, Map_Markets, Clear,
-                               Set_Fg ("Market", Faction_Color));
-         end case;
-         Map_Buildings (Clear) := Map_Buildings (Clear) + 1;
-      end if;
-   end Deploy_Building;
 
    ----------------------
    -- Duchy Turn Logic --
@@ -392,7 +396,67 @@ package body Root.Duchy is
       end loop;
    end Battle;
 
-   procedure Build is null;
+   procedure Build is
+      Clears  : Priority_Arr (Priority'Range);
+      Size    : Natural := 0;
+      Success : Boolean;
+   begin
+      Curr_Action := Build;
+
+      -- Get Clearings with Warriors --
+      for W of Map_Warriors loop
+         if W > 0 then
+            Size := Size + 1;
+         end if;
+      end loop;
+
+      for C in Map_Warriors'Range loop
+         if Rule (C) and then Map_Warriors (C) > 0
+         then
+            Size := Size + 1;
+            Clears (Size) := C;
+         end if;
+      end loop;
+
+      -- Determine which clearing to build in --
+      declare
+         Clear, Clear_Idx : Priority;
+      begin
+         loop
+            Success := True;
+
+            -- Get Max Warriors --
+            declare
+               Max       : Natural := 0;
+            begin
+               for Idx in 1 .. Size loop
+                  if Map_Warriors (Clears (Idx)) > Max then
+                     Max := Map_Warriors (Clears (Idx));
+                     Clear := Clears (Idx);
+                     Clear_Idx := Idx;
+                  end if;
+               end loop;
+            end;
+
+            exit when Deploy_Building (Clear);
+
+            -- Shift Values Down --
+            for I in Clear_Idx .. Size - 1 loop
+               Clears (I) := Clears (I) + 1;
+            end loop;
+            Size := Size - 1;
+
+            Success := False;
+         end loop;
+      end;
+
+      if not Success and then
+         (Citadel_Supply > 0 or else
+          Market_Supply > 0)
+      then
+         Put_Score (1, Name);
+      end if;
+   end Build;
 
    procedure Ministers is
       procedure Marshal_Action is

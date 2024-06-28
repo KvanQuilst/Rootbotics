@@ -82,7 +82,7 @@ private
 
    type Minister_Arr is array (Integer range 1 .. 3) of Minister;
    Swayed_Ministers : array (Minister'Range) of Boolean := (others => False);
-   Suit_Ministers : array (Clearing_Suit'Range) of Minister_Arr :=
+   Suit_Ministers   : array (Clearing_Suit'Range) of Minister_Arr :=
          (Fox    => (Captain, Brigadier, Earl_of_Stone),
           Rabbit => (Marshal, Banker, Baron_of_Dirt),
           Mouse  => (Foremole, Mayor, Duchess_of_Mud));

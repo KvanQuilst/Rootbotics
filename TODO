@@ -3,7 +3,6 @@ GENERAL
 ! Run tests where needed
 - End the game
 - Enable user to quit out of turn at start of turn
-- More with colors
 - Enable user to get extra information about current phase of a turn
    -- Input wrapper? => Filters input according for 'h' or 'q' and passes rest to get_*
 - v0.4 -> Move to OO model?
@@ -13,7 +12,6 @@ GENERAL
 ROOTBOTICS
 --------------------
 - Grey out factions which have had a turn this round
-- Handle --color=<base|8bit|Truecolor> options
 
 ROOT . MAPS
 --------------------
