@@ -260,7 +260,16 @@ package body Root.Duchy is
       Ministers;
    end Daylight;
 
-   procedure Evening is null;
+   procedure Evening is
+   begin
+      Curr_Phase := Evening;
+
+      Rally;
+
+      Score;
+
+      Sway_Minister (Curr_Order);
+   end Evening;
 
    -------------
    -- Actions --
@@ -561,6 +570,7 @@ package body Root.Duchy is
    end Score;
 
    procedure Sway_Minister (S : Suit) is
+      Swayed : Boolean := False;
    begin
       Curr_Action := Sway;
 
@@ -570,6 +580,7 @@ package body Root.Duchy is
                Swayed_Ministers (M) := True;
                Put_Line ("Place a crown on the " &
                          To_String (Minister_Str (M)) & ".");
+               Swayed := True;
                exit;
             end if;
          end loop;
@@ -579,9 +590,25 @@ package body Root.Duchy is
                Swayed_Ministers (M) := True;
                Put_Line ("Place a crown on the " &
                          To_String (Minister_Str (M)) & ".");
+               Swayed := True;
                exit;
             end if;
          end loop;
+      end if;
+
+      if not Swayed then
+         for M in reverse Minister'Range loop
+            if not Swayed_Ministers (M) then
+               Swayed_Ministers (M) := True;
+               Put_Line ("Place a crow on the " &
+                         To_String (Minister_Str (M)) & ".");
+               Swayed := True;
+            end if;
+         end loop;
+      end if;
+
+      if not Swayed then
+         Put_Line ("No ministers to sway.");
       end if;
       Continue;
    end Sway_Minister;
