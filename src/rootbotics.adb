@@ -26,11 +26,10 @@
 with Ada.Command_Line;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Ada.Text_IO; use Ada.Text_IO;
-with IO_Utils.Ansi; use IO_Utils.Ansi;
 with IO_Utils.User_IO; use IO_Utils.User_IO;
 
 with Root; use Root;
-with Root.Color;
+with Root.Color; use Root.Color;
 with Root.IO; use Root.IO;
 with Root.Maps; use Root.Maps;
 
@@ -64,7 +63,6 @@ procedure Rootbotics is
 
    function Handle_Args return Boolean is
       use Ada.Command_Line;
-      use Root.Color;
 
       function Cmd_Color (Arg : Positive) return Boolean is
       begin
@@ -150,10 +148,10 @@ begin
                       Unbounded ("Winter"),
                       Unbounded ("Lake"),
                       Unbounded ("Mountain")),
-                     ((Color_T, Green),
-                      (Color_T, B_Cyan),
-                      (Color_T, Blue),
-                      (Color_T, Yellow)));
+                     (Fall_Map_Color,
+                      Winter_Map_Color,
+                      Lake_Map_Color,
+                      Mountain_Map_Color));
    begin
       Init_Map (case Opt is
                   when 'a' => Fall,

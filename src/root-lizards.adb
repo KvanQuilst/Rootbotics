@@ -46,7 +46,7 @@ package body Root.Lizards is
          Remaining : constant String :=
             To_String (Garden_Supply (G) * " **");
       begin
-         Set_Fg (B_Black);
+         Set_Fg (Root.Color.Dark_Grey);
          Put (Used);
          Set_Fg ((case G is
                      when Fox => Suit_Color (Fox),
@@ -66,11 +66,11 @@ package body Root.Lizards is
                Put (" ");
             end if;
             if C = Next_Conspiracy then
-               Set_Fg (Green);
+               Set_Fg (Root.Color.Green);
                Put (Conspiracies (C)'Image);
                Reset_All;
             elsif C = Next_Conspiracy - 1 then
-               Set_Fg (B_Black);
+               Set_Fg (Root.Color.Dark_Grey);
                Put (Conspiracies (C)'Image);
                Reset_All;
             else

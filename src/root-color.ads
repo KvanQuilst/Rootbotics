@@ -35,11 +35,29 @@ package Root.Color is
    --------------
    -- Factions --
    --------------
+   function Marquise_Color return Color_Elem is
+      (case C_Setting is
+         when Base      => (Color_T,      Yellow),
+         when EightBit  => (Color_8_T,    255),
+         when Truecolor => (Color_RGB_T, (242, 118, 53)));
+
+   function Eyrie_Color return Color_Elem is
+      (case C_Setting is
+         when Base      => (Color_T,      Blue),
+         when EightBit  => (Color_8_T,    255),
+         when Truecolor => (Color_RGB_T, (47, 111, 184)));
+
    function Alliance_Color return Color_Elem is
       (case C_Setting is
          when Base      => (Color_T,      Green),
          when EightBit  => (Color_8_T,    28),
-         when Truecolor => (Color_RGB_T, (19, 162, 85)));
+         when Truecolor => (Color_RGB_T, (98, 188, 86)));
+
+   function Vagabond_Color return Color_Elem is
+      (case C_Setting is
+         when Base      => (Color_T,      B_Black),
+         when EightBit  => (Color_8_T,    241),
+         when Truecolor => (Color_RGB_T, (167, 165, 165)));
 
    function Lizard_Color return Color_Elem is
       (case C_Setting is
@@ -100,5 +118,26 @@ package Root.Color is
          when Base      => (Color_T,       B_Black),
          when EightBit  => (Color_8_T,     255),
          when Truecolor => (Color_RGB_T, (255, 255, 255)));
+
+   ------------
+   -- Basics --
+   ------------
+   function Orange return Color_Elem renames Marquise_Color;
+   function Green  return Color_Elem renames Alliance_Color;
+   function Blue   return Color_Elem renames Eyrie_Color;
+   function Light_Grey   return Color_Elem is
+      (case C_Setting is
+         when Base      => (Color_T,      B_White),
+         when EightBit  => (Color_8_T,    250),
+         when Truecolor => (Color_RGB_T, (164, 178, 179)));
+   function Dark_Grey return Color_Elem renames Vagabond_Color;
+
+   ----------
+   -- Maps --
+   ----------
+   function Fall_Map_Color     return Color_Elem renames Green;
+   function Winter_Map_Color   return Color_Elem renames Light_Grey;
+   function Lake_Map_Color     return Color_Elem renames Blue;
+   function Mountain_Map_Color return Color_Elem renames Orange;
 
 end Root.Color;

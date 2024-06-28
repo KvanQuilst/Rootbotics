@@ -55,7 +55,7 @@ package body Root.Duchy is
             when Market =>
                Put ("          Markets:");
          end case;
-         Set_Fg (B_Black);
+         Set_Fg (Root.Color.Dark_Grey);
          Put (Used);
          Set_Fg (Faction_Color);
          Put (Remaining);
@@ -68,21 +68,21 @@ package body Root.Duchy is
          Put_Line ("     Ministers:");
          for I in Integer range 1 .. 3 loop
             if Swayed_Ministers (Suit_Ministers (Fox) (I)) then
-               Set_Fg (B_Black);
+               Set_Fg (Root.Color.Dark_Grey);
             else
                Set_Fg (Suit_Color (Fox));
             end if;
             Put (To_String (Minister_Str (Suit_Ministers (Fox) (I))) & " ");
             Cursor_Col_Set (16);
             if Swayed_Ministers (Suit_Ministers (Rabbit) (I)) then
-               Set_Fg (B_Black);
+               Set_Fg (Root.Color.Dark_Grey);
             else
                Set_Fg (Suit_Color (Rabbit));
             end if;
             Put (To_String (Minister_Str (Suit_Ministers (Rabbit) (I))) & " ");
             Cursor_Col_Set (32);
             if Swayed_Ministers (Suit_Ministers (Mouse) (I)) then
-               Set_Fg (B_Black);
+               Set_Fg (Root.Color.Dark_Grey);
             else
                Set_Fg (Suit_Color (Mouse));
             end if;

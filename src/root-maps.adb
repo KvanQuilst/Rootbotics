@@ -27,6 +27,7 @@ with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Ada.Text_IO; use Ada.Text_IO;
 with IO_Utils.Ansi; use IO_Utils.Ansi;
 
+with Root.Color;
 with Root.IO; use Root.IO;
 
 package body Root.Maps is
@@ -93,7 +94,7 @@ package body Root.Maps is
          if Prio < 10 then
             Put ("-");
          end if;
-         Set_Fg (B_White);
+         Set_Fg (Root.Color.Light_Grey);
          Int_IO.Put (Prio, Width => 0);
          Reset_All;
          Cursor_Line_Move (0 - Line - 2);
@@ -220,7 +221,7 @@ package body Root.Maps is
       if Pri < 10 then
          Put ("-");
       end if;
-      Set_Fg (B_White);
+      Set_Fg (Root.Color.Light_Grey);
       Int_IO.Put (Pri, Width => 0);
       Reset_All;
       Cursor_Line_Move (0 - Line - 2);

@@ -259,7 +259,7 @@ package body Root.IO is
    procedure Put_Title is
       First : Boolean := True;
    begin
-      Set_Fg (Yellow);
+      Set_Fg (Root.Color.Orange);
       Put_Line (Title (1));
       Put_Line (Title (2));
       for L of Title (3 .. Title'Last - 2) loop
@@ -280,14 +280,14 @@ package body Root.IO is
             Set_Fg (Suit_Color (Bird));
             Put (L (32 .. 38));
          end if;
-         Set_Fg (Yellow);
+         Set_Fg (Root.Color.Orange);
          Put (L (39 .. 40));
          New_Line;
       end loop;
       Put (Title (Title'Last - 1) (1 .. 2));
       Reset_All;
       Put (Title (Title'Last - 1) (3 .. 38));
-      Set_Fg (Yellow);
+      Set_Fg (Root.Color.Orange);
       Put_Line (Title (Title'Last - 1) (39 .. 40));
       Put_Line (Title (Title'Last));
       Reset_All;

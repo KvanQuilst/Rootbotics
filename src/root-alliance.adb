@@ -46,7 +46,7 @@ package body Root.Alliance is
          for S in Clearing_Suit'Range loop
             Set_Fg ((if Fort_Supply (S) > 0
                         then Suit_Color (S)
-                        else (Color_T, B_Black)));
+                        else Root.Color.Dark_Grey));
             Put (" " & Fort);
          end loop;
          Reset_All;
@@ -62,7 +62,7 @@ package body Root.Alliance is
                if Sympathy_Supply >= I then
                   Set_Fg (Faction_Color);
                else
-                  Set_Fg (B_Black);
+                  Set_Fg (Root.Color.Dark_Grey);
                end if;
                Put ("   " & Sympathy);
             end if;
@@ -74,7 +74,7 @@ package body Root.Alliance is
                if Sympathy_Supply >= I then
                   Set_Fg (Faction_Color);
                else
-                  Set_Fg (B_Black);
+                  Set_Fg (Root.Color.Dark_Grey);
                end if;
                if I /= SYMPATHY_MAX then
                   Put ("   " & Sympathy);
