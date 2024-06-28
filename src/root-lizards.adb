@@ -149,11 +149,13 @@ package body Root.Lizards is
    -- Lizards Common Actions --
    ----------------------------
    procedure Deploy_Building (Clear : Priority) is
-      S : constant Suit := Clearings (Clear).C_Suit;
+      S   : constant Suit := Clearings (Clear).C_Suit;
+      Ret : Boolean;
+      pragma Unreferenced (Ret);
    begin
       if Garden_Supply (S) > 0 then
-         Root.Faction.Deploy_Building (Garden_Supply (S), Gardens,
-                                       Clear, S'Image & " Garden");
+         Ret := Deploy_Building (Garden_Supply (S), Gardens,
+                                 Clear, S'Image & " Garden");
          Rule (Clear) := True;
       end if;
    end Deploy_Building;

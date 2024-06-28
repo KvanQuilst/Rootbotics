@@ -205,11 +205,17 @@ package body Root.Faction is
       Continue;
    end Deploy_Warriors;
 
-   procedure Deploy_Building (Supply     : in out Natural;
+   function Deploy_Building (Supply     : in out Natural;
                               Map_Builds : in out Building_Arr;
                               Clear      :        Priority;
-                              Build_Type :        String) is
+                              Build_Type :        String) return Boolean is
+      Ret : Boolean := True;
    begin
+      Put_Line ("Does clearing" & Clear'Image & " have building space?");
+      if not Get_Yes_No then
+         return False;
+      end if;
+
       if Supply > 0 and then
          Map_Builds (Clear) < Clearings (Clear).Buildings
       then
@@ -219,8 +225,10 @@ package body Root.Faction is
          Supply := Supply - 1;
       else
          Put_Line ("Unable to place building: building supply is depleted!");
+         Ret := False;
       end if;
       Continue;
+      return Ret;
    end Deploy_Building;
 
 end Root.Faction;

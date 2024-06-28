@@ -64,9 +64,9 @@ package Root.Faction is
                               Map_Warriors : in out Warrior_Arr;
                               Clear        :        Priority;
                               Num_Warriors :        Positive);
-   procedure Deploy_Building (Supply     : in out Natural;
-                              Map_Builds : in out Building_Arr;
-                              Clear      :        Priority;
-                              Build_Type :        String);
+   function Deploy_Building (Supply     : in out Natural;
+                             Map_Builds : in out Building_Arr;
+                             Clear      :        Priority;
+                             Build_Type :        String) return Boolean;
 
 end Root.Faction;
