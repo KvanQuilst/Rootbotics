@@ -24,9 +24,6 @@
 -- <https://www.gnu.org/licenses/>.                                          --
 -------------------------------------------------------------------------------
 package Root is
-
-   type Difficulty is (Easy, Default, Challenging, Nightmare);
-
    type Suit  is (Fox, Rabbit, Mouse, Bird);
    subtype Clearing_Suit is Suit range Fox .. Mouse;
 

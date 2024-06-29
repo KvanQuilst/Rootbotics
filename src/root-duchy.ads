@@ -76,6 +76,7 @@ private
    Map_Tunnels    : Token_Arr     := (others => False);
    Rule           : Rule_Arr      := (others => False);
 
+   Diff        : Difficulty;
    Curr_Order  : Suit;
    Curr_Phase  : Phase := None;
    Curr_Action : Action := None;

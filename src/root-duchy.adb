@@ -165,6 +165,13 @@ package body Root.Duchy is
       Put_Logo;
       New_Line;
 
+      Diff := Check_Difficulty (Name);
+
+      Erase_Screen;
+      Cursor_Home;
+      Put_Logo;
+      New_Line;
+
       Put_Line ("Which clearing will the " & Name & " start in?");
       C := Get_Integer (1, 12);
 

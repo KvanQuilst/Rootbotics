@@ -27,6 +27,7 @@ with Ada.Text_IO; use Ada.Text_IO;
 with IO_Utils.Ansi; use IO_Utils.Ansi;
 with IO_Utils.User_IO; use IO_Utils.User_IO;
 
+with Root.Color;
 with Root.IO; use Root.IO;
 with Root.Maps; use Root.Maps;
 
@@ -55,6 +56,25 @@ package body Root.Faction is
    ---------------------------------
    -- Faction Resrouce Management --
    ---------------------------------
+   function Check_Difficulty (Name : String) return Difficulty is
+      Diff : Character range 'a' .. 'd';
+   begin
+      Put_Line ("What difficulty will the " & Name & " play at?");
+      Diff := Get_Option ((To_Unbounded_String ("Easy"),
+                           To_Unbounded_String ("Normal (no change)"),
+                           To_Unbounded_String ("Challenging"),
+                           To_Unbounded_String ("Nightmare")),
+                          (Root.Color.Green,
+                           Root.Color.Default,
+                           Root.Color.Blue,
+                           Root.Color.Red));
+      return (case Diff is
+               when 'a' => Easy,
+               when 'b' => Normal,
+               when 'c' => Challenging,
+               when 'd' => Nightmare);
+   end Check_Difficulty;
+
    function Check_Warriors (Prompt       : access procedure;
                             Supply       : in out   Natural;
                             Map_Warriors : in out   Warrior_Arr;

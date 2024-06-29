@@ -35,6 +35,8 @@ package Root.Faction is
    subtype Building_Suit is Suit range Fox .. Mouse;
    type Suit_Build_Supply is array (Building_Suit'Range) of Integer;
 
+   type Difficulty is (Easy, Normal, Challenging, Nightmare);
+
    ----------------
    -- Faction IO --
    ----------------
@@ -46,6 +48,8 @@ package Root.Faction is
    ---------------------------------
    -- Faction Resource Management --
    ---------------------------------
+   function Check_Difficulty (Name : String) return Difficulty;
+
    function Check_Warriors  (Prompt       : access procedure;
                              Supply       : in out   Natural;
                              Map_Warriors : in out   Warrior_Arr;
