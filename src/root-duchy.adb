@@ -557,7 +557,42 @@ package body Root.Duchy is
       end loop;
    end Ministers;
 
-   procedure Rally is null;
+   procedure Rally is
+      Min       : Natural := WARRIOR_MAX;
+      Min_Clear : Priority;
+      Success   : Boolean := False;
+   begin
+      for C in Priority'Range loop
+         if Map_Buildings (C) = 0 and then
+            Map_Warriors (C) <= 2
+         then
+            for N of Clearings (C).Neighbors loop
+               if N = 0 then
+                  exit;
+               end if;
+
+               if Map_Buildings (N) > 0 and then
+                  Map_Warriors (N) < Min
+               then
+                  Min := Map_Warriors (N);
+                  Min_Clear := N;
+                  Success := True;
+               end if;
+            end loop;
+
+            if Success then
+               Move_Warriors (Map_Warriors, Rule, C,
+                              Min_Clear, Map_Warriors (C), Name);
+            else
+               Put_Line ("Move all warriors from clearing" & C'Image
+                       & " to the burrow.");
+               Burrow := Burrow + Map_Warriors (C);
+               Map_Warriors (C) := 0;
+            end if;
+            Continue;
+         end if;
+      end loop;
+   end Rally;
 
    procedure Score is
       Markets : constant Integer := BUILD_MAX - Market_Supply;
