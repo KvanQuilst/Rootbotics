@@ -30,7 +30,7 @@ package Root.Color is
    type Color_Setting is (Base, EightBit, Truecolor);
    C_Setting : Color_Setting := Base;
 
-   Default_Color : constant Color_Elem := (Color_T, Default);
+   Default : constant Color_Elem := (Color_T, IO_Utils.Ansi.Default);
 
    --------------
    -- Factions --
@@ -122,6 +122,11 @@ package Root.Color is
    ------------
    -- Basics --
    ------------
+   function Red    return Color_Elem is
+      (case C_Setting is
+         when Base      => (Color_T,      Red),
+         when EightBit  => (Color_8_T,    255),
+         when Truecolor => (Color_RGB_T, (210, 33, 40)));
    function Orange return Color_Elem renames Marquise_Color;
    function Green  return Color_Elem renames Alliance_Color;
    function Blue   return Color_Elem renames Eyrie_Color;

@@ -80,7 +80,7 @@ package Root.IO is
       (Birdsong => Birdsong_Color,
        Daylight => Daylight_Color,
        Evening  => Evening_Color,
-       None     => Default_Color);
+       None     => Root.Color.Default);
 
    ----------------------------
    -- Get Checked User Input --
