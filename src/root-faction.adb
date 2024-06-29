@@ -184,6 +184,51 @@ package body Root.Faction is
       end if;
    end Check_Rule;
 
+   procedure Move_Warriors (Map_Warriors : in out Warrior_Arr;
+                            Rule         : in out Rule_Arr;
+                            To, From     :        Priority;
+                            Num_Warriors :        Natural;
+                            Name         :        String) is
+   begin
+      pragma Assert (Map_Warriors (From) >= Num_Warriors);
+      pragma Assert ((for some N of Clearings (From).Neighbors => N = To));
+
+      if Map_Warriors (From) = 0 then
+         return;
+      end if;
+
+      Put_Line ("Do the " & Name & " rule either clearing" & From'Image
+              & " or clearing" & To'Image & "?");
+      if not Get_Yes_No then
+         return;
+      end if;
+
+      if Num_Warriors = Map_Warriors (From) then
+         Put_Line ("Move all warriors from clearing" & From'Image
+                 & " to clearing" & To'Image & ".");
+      else
+         Put_Line ("Move" & Num_Warriors'Image & " warriors from clearing"
+                 & From'Image & " to clearing" & To'Image & ".");
+      end if;
+      Continue;
+
+      Map_Warriors (To) := Map_Warriors (To) + Num_Warriors;
+      Map_Warriors (From) := Map_Warriors (From) - Num_Warriors;
+      if not Rule (To) then
+         Put_Line ("Do the " & Name & " rule clearing" & To'Image & " now?");
+         Rule (To) := Get_Yes_No;
+         Continue;
+      end if;
+
+      if Map_Warriors (From) /= 0 and then Rule (From)
+      then
+         Put_Line ("Do the " & Name & " still rule clearing"
+                 & From'Image & "?");
+         Rule (From) := Get_Yes_No;
+         Continue;
+      end if;
+   end Move_Warriors;
+
    procedure Deploy_Warriors (Supply       : in out Natural;
                               Map_Warriors : in out Warrior_Arr;
                               Clear        :        Priority;
@@ -206,9 +251,9 @@ package body Root.Faction is
    end Deploy_Warriors;
 
    function Deploy_Building (Supply     : in out Natural;
-                              Map_Builds : in out Building_Arr;
-                              Clear      :        Priority;
-                              Build_Type :        String) return Boolean is
+                             Map_Builds : in out Building_Arr;
+                             Clear      :        Priority;
+                             Build_Type :        String) return Boolean is
       Ret : Boolean := True;
    begin
       Put_Line ("Does clearing" & Clear'Image & " have building space?");

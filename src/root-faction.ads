@@ -60,13 +60,18 @@ package Root.Faction is
    procedure Check_Rule     (Prompt : access procedure;
                              Rule   : in out Rule_Arr);
 
+   procedure Move_Warriors   (Map_Warriors : in out Warrior_Arr;
+                              Rule         : in out Rule_Arr;
+                              To, From     :        Priority;
+                              Num_Warriors :        Natural;
+                              Name         :        String);
    procedure Deploy_Warriors (Supply       : in out Natural;
                               Map_Warriors : in out Warrior_Arr;
                               Clear        :        Priority;
                               Num_Warriors :        Positive);
-   function Deploy_Building (Supply     : in out Natural;
-                             Map_Builds : in out Building_Arr;
-                             Clear      :        Priority;
-                             Build_Type :        String) return Boolean;
+   function Deploy_Building  (Supply       : in out Natural;
+                              Map_Builds   : in out Building_Arr;
+                              Clear        :        Priority;
+                              Build_Type   :        String) return Boolean;
 
 end Root.Faction;
