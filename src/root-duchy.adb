@@ -276,17 +276,26 @@ package body Root.Duchy is
       Score;
 
       Sway_Minister (Curr_Order);
+
+      if Diff = Nightmare then
+         Put_Score (1, Name);
+      end if;
    end Evening;
 
    -------------
    -- Actions --
    -------------
    procedure Recruit is
-      Total : constant Natural := 2 + (case Citadel_Supply is
-                                          when BUILD_MAX     => 0,
-                                          when BUILD_MAX - 1 => 1,
-                                          when BUILD_MAX - 2 => 2,
-                                          when others        => 4);
+      Diff_Num : constant Natural := (case Diff is
+                                       when Easy        => 1,
+                                       when Normal      => 2,
+                                       when Challenging => 3,
+                                       when Nightmare   => 3);
+      Total    : constant Natural := Diff_Num + (case Citadel_Supply is
+                                                   when BUILD_MAX     => 0,
+                                                   when BUILD_MAX - 1 => 1,
+                                                   when BUILD_MAX - 2 => 2,
+                                                   when others        => 4);
    begin
       Curr_Action := Recruit;
       Prompt;
