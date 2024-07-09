@@ -168,10 +168,11 @@ package body Root.Duchy is
 
          Put_Line ("Which traits will the " & Name & " be playing with?");
          declare
-            Opts : Char_Arr := Get_Options ((Unbounded ("Foundations"),
-                                             Unbounded ("Invaders"),
-                                             Unbounded ("Investors"),
-                                             Unbounded ("Overwhelm")));
+            Opts : constant Char_Arr := Get_Options (
+                                          (Unbounded ("Foundations"),
+                                           Unbounded ("Invaders"),
+                                           Unbounded ("Investors"),
+                                           Unbounded ("Overwhelm")));
          begin
             for Opt of Opts loop
                case Opt is
@@ -293,6 +294,10 @@ package body Root.Duchy is
 
       Dig (Curr_Order);
 
+      if Traits (Foundations) then
+         Dig (Curr_Order);
+      end if;
+
       Battle;
 
       Build;
@@ -353,8 +358,9 @@ package body Root.Duchy is
       Count   :          Natural := 0;
       Clear   :          Priority;
       T_Clear :          Natural := 0;
+      Req     : constant Integer := (if Traits (Foundations) then 3 else 4);
    begin
-      if Burrow < 4 then
+      if Burrow < Req then
          return;
       end if;
 
@@ -418,10 +424,10 @@ package body Root.Duchy is
          Map_Tunnels (Clear) := True;
          Map_Tunnels (T_Clear) := False;
       end if;
-      Put_Line ("Move 4 warriors from the Burrow to clearing" &
+      Put_Line ("Move" & Req'Image & " warriors from the Burrow to clearing" &
                 Clear'Image & ".");
-      Map_Warriors (Clear) := Map_Warriors (Clear) + 4;
-      Burrow := Burrow - 4;
+      Map_Warriors (Clear) := Map_Warriors (Clear) + Req;
+      Burrow := Burrow - Req;
    end Dig;
 
    procedure Battle is
