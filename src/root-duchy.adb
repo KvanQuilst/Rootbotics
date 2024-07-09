@@ -158,6 +158,33 @@ package body Root.Duchy is
    -- Duchy Setup --
    -----------------
    procedure Setup is
+      procedure Set_Traits is
+      begin
+         Put_Line ("Will the " & Name & " be playing with any traits?");
+         if not Get_Yes_No then
+            return;
+         end if;
+         New_Line;
+
+         Put_Line ("Which traits will the " & Name & " be playing with?");
+         declare
+            Opts : Char_Arr := Get_Options ((Unbounded ("Foundations"),
+                                             Unbounded ("Invaders"),
+                                             Unbounded ("Investors"),
+                                             Unbounded ("Overwhelm")));
+         begin
+            for Opt of Opts loop
+               case Opt is
+                  when 'a' => Traits (Foundations) := True;
+                  when 'b' => Traits (Invaders)    := True;
+                  when 'c' => Traits (Investors)   := True;
+                  when 'd' => Traits (Overwhelm)   := True;
+                  when others => null;
+               end case;
+            end loop;
+         end;
+      end Set_Traits;
+
       C : Priority;
    begin
       Erase_Screen;
@@ -166,6 +193,12 @@ package body Root.Duchy is
       New_Line;
 
       Diff := Check_Difficulty (Name);
+
+      Erase_Screen;
+      Cursor_Home;
+      Put_Logo;
+      New_Line;
+      Set_Traits;
 
       Erase_Screen;
       Cursor_Home;

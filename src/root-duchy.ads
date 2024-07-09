@@ -48,6 +48,7 @@ private
    TUNNEL_MAX  : constant Integer := 3;
    BUILD_MAX   : constant Integer := 3;
 
+   type Trait    is (Foundations, Invaders, Investors, Overwhelm);
    type Action   is (Reveal, Craft, Recruit,
                      Dig, Battle, Build, Ministers,
                      Rally, Score, Sway,
@@ -75,6 +76,9 @@ private
    Map_Markets    : Building_Arr  := (others => 0);
    Map_Tunnels    : Token_Arr     := (others => False);
    Rule           : Rule_Arr      := (others => False);
+
+   Traits : array (Trait range Trait'First .. Trait'Last) of Boolean :=
+      (others => False);
 
    Diff        : Difficulty;
    Curr_Order  : Suit;
