@@ -124,7 +124,7 @@ private
    procedure Recruit;
 
    procedure Dig (S : Suit);
-   procedure Battle;
+   procedure Battle (S : Suit);
    procedure Build;
    procedure Ministers;
 

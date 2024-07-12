@@ -172,7 +172,11 @@ package body Root.Duchy is
                                           (Unbounded ("Foundations"),
                                            Unbounded ("Invaders"),
                                            Unbounded ("Investors"),
-                                           Unbounded ("Overwhelm")));
+                                           Unbounded ("Overwhelm")),
+                                          (Faction_Color,
+                                           Faction_Color,
+                                           Faction_Color,
+                                           Faction_Color));
          begin
             for Opt of Opts loop
                case Opt is
@@ -298,7 +302,7 @@ package body Root.Duchy is
          Dig (Curr_Order);
       end if;
 
-      Battle;
+      Battle (Curr_Order);
 
       Build;
 
@@ -402,12 +406,15 @@ package body Root.Duchy is
                end if;
             end loop;
 
-            if S = Bird then
+            if Traits (Invaders) then
+               Put_Line ("Which clearing has the most enemy buildings, then " &
+                         "the fewest enemy warriors?");
+            elsif S = Bird then
                Put_Line ("Which clearing has the most enemy buildings and " &
                          "tokens?");
             else
                Put_Line ("Which clearing has the most buildings slots, then " &
-                         "the fewest warriors?");
+                         "the fewest enemy warriors?");
             end if;
             Clear := Character'Pos (Get_Option (Opts)) -
                                                       Character'Pos ('a') + 1;
@@ -430,12 +437,12 @@ package body Root.Duchy is
       Burrow := Burrow - Req;
    end Dig;
 
-   procedure Battle is
+   procedure Battle (S : Suit) is
       Lost : Integer;
    begin
       Curr_Action := Battle;
 
-      for C of Filter_Clearings (Curr_Order) loop
+      for C of Filter_Clearings (S) loop
          if Map_Warriors (C) > 0 then
             Put_Line ("Are there enemy pieces in clearing" & C'Image & "?");
             if Get_Yes_No then
@@ -465,6 +472,12 @@ package body Root.Duchy is
       Size    : Natural := 0;
       Success : Boolean;
    begin
+      if (Warrior_Supply >= 9 and then Citadel_Supply = 0) or else
+         Market_Supply = 0
+      then
+         return;
+      end if;
+
       Curr_Action := Build;
 
       -- Get Clearings with Warriors --
@@ -503,6 +516,10 @@ package body Root.Duchy is
             end;
 
             exit when Deploy_Building (Clear);
+
+            if Traits (Invaders) then
+               Battle (Bird);
+            end if;
 
             -- Shift Values Down --
             for I in Clear_Idx .. Size - 1 loop
