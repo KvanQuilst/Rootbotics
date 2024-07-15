@@ -135,6 +135,34 @@ package body Root.Duchy is
    -------------------------
    -- Duchy Common Action --
    -------------------------
+
+   -- Assumes buldings are always lost between turns --
+   procedure Check_Buildings is
+      Buildings : Integer;
+   begin
+      Prompt;
+      Put_Line ("Does the number of buildings match for each clearing?");
+      if Get_Yes_No then
+         return;
+      end if;
+
+      for C in Clearings'Range loop
+         if Map_Buildings (C) > 0 then
+            Put_Line ("Is clearing" & C'Image & " correct?");
+            if Get_Yes_No then
+               Prompt;
+               Put_Line ("What is the number of buildings in clearing" &
+                         C'Image & "?");
+               Buildings := Get_Integer (0, Map_Buildings (C));
+               if Buildings < Map_Buildings (C) then
+                  Map_Buildings (C) := Buildings;
+                  Cost_of_Errors (Clearings (C).C_Suit);
+               end if;
+            end if;
+         end if;
+      end loop;
+   end Check_Buildings;
+
    function Deploy_Building (C : Priority) return Boolean is
       Ret : Boolean;
    begin
@@ -259,7 +287,7 @@ package body Root.Duchy is
       begin null; end;
 
       -- Confirm Buildings --
-      --  TODO: Deal with buildings w/ Cost of Errors
+      Check_Buildings;
 
       -- Confirm Tokens --
       Check_Tokens (Prompt'Access, Tunnel_Supply, Map_Tunnels);
@@ -327,6 +355,36 @@ package body Root.Duchy is
    -------------
    -- Actions --
    -------------
+   procedure Cost_of_Errors (S : Suit) is
+      Lost : Minister;
+   begin
+      -- Foundations --
+      if Traits (Foundations) and then
+         (for some M of Suit_Ministers (S) => Swayed_Ministers (M))
+      then
+         for M of reverse Suit_Ministers (S) loop
+            Lost := M;
+            exit when Swayed_Ministers (M);
+         end loop;
+
+         Prompt;
+         Put_Line ("If not done already, remove the crown from " &
+                   To_String (Minister_Str (Lost)) & ".");
+      end if;
+
+      -- Regular --
+      if (for some M of Swayed_Ministers => M) then
+         for M in reverse Swayed_Ministers'Range loop
+            Lost := M;
+            exit when Swayed_Ministers (M);
+         end loop;
+
+         Prompt;
+         Put_Line ("If not done already, remove the crown from " &
+                   To_String (Minister_Str (Lost)) & ".");
+      end if;
+   end Cost_of_Errors;
+
    procedure Recruit is
       Diff_Num : constant Natural := (case Diff is
                                        when Easy        => 1,

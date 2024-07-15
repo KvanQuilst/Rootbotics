@@ -120,6 +120,8 @@ private
    procedure Evening;
 
    -- Actions --
+   procedure Cost_of_Errors (S : Suit);
+
    procedure Reveal;
    procedure Recruit;
 
