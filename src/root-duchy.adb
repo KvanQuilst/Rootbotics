@@ -358,6 +358,24 @@ package body Root.Duchy is
    procedure Cost_of_Errors (S : Suit) is
       Lost : Minister;
    begin
+      -- Investors --
+      if Traits (Investors) then
+         Prompt;
+         Put_Line ("Was this building removed by a human?");
+         if Get_Yes_No then
+            Prompt;
+            Put_Line ("Did the human discard a card matching the clearing "
+                    & "suit?");
+            if Get_Yes_No then
+               Prompt;
+               Put_Line ("Remove one point for the " & Name & ".");
+            else
+               Sway_Minister (S);
+               return;
+            end if;
+         end if;
+      end if;
+
       -- Foundations --
       if Traits (Foundations) and then
          (for some M of Suit_Ministers (S) => Swayed_Ministers (M))
