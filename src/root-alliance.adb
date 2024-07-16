@@ -122,6 +122,40 @@ package body Root.Alliance is
    --------------------
 
    procedure Setup is
+      procedure Set_Traits is
+      begin
+         Put_Line ("Will the " & Name & " be playing with any traits?");
+         if not Get_Yes_No then
+            return;
+         end if;
+         New_Line;
+
+         Put_Line ("Which traits will the " & Name & " be playing with?");
+         declare
+            Opts : constant Char_Arr := Get_Options (
+                                          (Unbounded ("Informants"),
+                                           Unbounded ("Popularity"),
+                                           Unbounded ("Steadfast"),
+                                           Unbounded ("Veterans"),
+                                           Unbounded ("Wildfire")),
+                                          (Faction_Color,
+                                           Faction_Color,
+                                           Faction_Color,
+                                           Faction_Color,
+                                           Faction_Color));
+         begin
+            for Opt of Opts loop
+               case Opt is
+                  when 'a' => Traits (Informants) := True;
+                  when 'b' => Traits (Popularity) := True;
+                  when 'c' => Traits (Steadfast)  := True;
+                  when 'd' => Traits (Veterans)   := True;
+                  when 'e' => Traits (Wildfire)   := True;
+                  when others => null;
+               end case;
+            end loop;
+         end;
+      end Set_Traits;
    begin
       Erase_Screen;
       Cursor_Home;
@@ -129,6 +163,13 @@ package body Root.Alliance is
       New_Line;
 
       Diff := Check_Difficulty (Name);
+
+      Erase_Screen;
+      Cursor_Home;
+      Put_Logo;
+      New_Line;
+
+      Set_Traits;
    end Setup;
 
    -------------------------
@@ -188,10 +229,10 @@ package body Root.Alliance is
       if Curr_Order = Bird or else not Revolt (Clears) then
 
          if Sympathy_Supply >= 6 then
-            Spread_Sympathy;
+            Spread_Sympathy (True);
          end if;
 
-         Spread_Sympathy;
+         Spread_Sympathy (True);
       end if;
 
    end Birdsong;
@@ -203,7 +244,7 @@ package body Root.Alliance is
    begin
       Curr_Phase := Daylight;
 
-      Spread_Sympathy;
+      Spread_Sympathy (True);
 
       if Curr_Order = Bird then
          B := Revolt (Clears);
@@ -216,6 +257,10 @@ package body Root.Alliance is
 
       Organize;
       Recruit;
+
+      if Traits (Wildfire) then
+         Spread_Sympathy (False);
+      end if;
 
       if Diff = Nightmare then
          Put_Score (1, Name);
@@ -279,7 +324,7 @@ package body Root.Alliance is
       return True;
    end Revolt;
 
-   procedure Spread_Sympathy is
+   procedure Spread_Sympathy (Score : Boolean) is
       Adj_Clears : array (Priority'Range) of Boolean := (others => False);
       Count      : Natural := 0;
       Clear      : Priority;
@@ -424,7 +469,9 @@ package body Root.Alliance is
       Sympathy_Supply := Sympathy_Supply - 1;
       Put_Line ("Place a sympathy token in clearing" & Clear'Image & ".");
       Continue;
-      Score_Sympathy;
+      if Score then
+         Score_Sympathy;
+      end if;
       Continue;
    end Spread_Sympathy;
 
@@ -445,7 +492,7 @@ package body Root.Alliance is
             Map_Warriors (C) := 0;
             Continue;
 
-            Spread_Sympathy;
+            Spread_Sympathy (True);
          end if;
       end loop;
    end Organize;

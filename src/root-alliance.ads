@@ -48,8 +48,9 @@ private
    SYMPATHY_MAX : constant Integer := 10;
    FORTS_MAX    : constant Integer := 1;
 
-   type    Action is (Revolt, Spread_Sympathy, Organize, Recruit,
-                      Reveal, Craft, None);
+   type Trait   is (Informants, Popularity, Steadfast, Veterans, Wildfire);
+   type Action  is (Revolt, Spread_Sympathy, Organize, Recruit,
+                   Reveal, Craft, None);
    subtype Fort is Building_Suit;
 
    procedure Put_Phase with Inline;
@@ -67,6 +68,9 @@ private
    Forts           : Building_Arr := (others => 0);
    Map_Sympathy    : Token_Arr    := (others => False);
    Rule            : Rule_Arr     := (others => False);
+
+   Traits : array (Trait range Trait'First .. Trait'Last) of Boolean :=
+      (others => False);
 
    Diff        : Difficulty;
    Curr_Order  : Suit;
@@ -95,7 +99,7 @@ private
    -- Actions --
    procedure Reveal;
    function  Revolt (Clears : Int_Arr) return Boolean;
-   procedure Spread_Sympathy;
+   procedure Spread_Sympathy (Score : Boolean);
    procedure Organize;
    procedure Recruit;
 
