@@ -226,8 +226,9 @@ package body Root.Alliance is
       Continue;
 
       -- Revolt --
-      if Curr_Order = Bird or else not Revolt (Clears) then
-
+      if (Curr_Order = Bird and then Traits (Steadfast)) or else
+         not Revolt (Clears)
+      then
          if Sympathy_Supply >= 6 then
             Spread_Sympathy (True);
          end if;
@@ -339,10 +340,14 @@ package body Root.Alliance is
          end if;
 
          Prompt;
-         Put_Line ("Are there three or more warriors from one enemy in " &
-                   "clearing" & Clear'Image & "?");
+         if not Traits (Steadfast) then
+            Put_Line ("Are there three or more warriors from one enemy in " &
+                      "clearing" & Clear'Image & "?");
+         end if;
 
-         if Get_Yes_No then
+         if not Traits (Steadfast) and then
+            Get_Yes_No
+         then
             Put ("Score +");
             Put ((case Sympathy_Supply is
                      when 0      => "3",
