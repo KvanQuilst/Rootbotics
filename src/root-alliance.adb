@@ -121,7 +121,15 @@ package body Root.Alliance is
    -- Alliance Setup --
    --------------------
 
-   procedure Setup is null;
+   procedure Setup is
+   begin
+      Erase_Screen;
+      Cursor_Home;
+      Put_Logo;
+      New_Line;
+
+      Diff := Check_Difficulty (Name);
+   end Setup;
 
    -------------------------
    -- Alliance Turn Logic --
@@ -208,6 +216,10 @@ package body Root.Alliance is
 
       Organize;
       Recruit;
+
+      if Diff = Nightmare then
+         Put_Score (1, Name);
+      end if;
    end Evening;
 
    -------------
@@ -417,10 +429,15 @@ package body Root.Alliance is
    end Spread_Sympathy;
 
    procedure Organize is
+      Num_Warriors : constant Integer := (case Diff is
+                                             when Easy        => 4,
+                                             when Normal      => 3,
+                                             when Challenging => 2,
+                                             when Nightmare   => 2);
    begin
       Curr_Action := Organize;
       for C in Priority'Range loop
-         if Forts (C) = 1 and then Map_Warriors (C) >= 3 then
+         if Forts (C) = 1 and then Map_Warriors (C) >= Num_Warriors then
             Prompt;
             Put_Line ("Remove all " & Name & " warriors from clearing" &
                        C'Image & ".");
