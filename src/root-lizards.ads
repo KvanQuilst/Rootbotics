@@ -32,7 +32,7 @@ with Root.Faction; use Root.Faction;
 
 package Root.Lizards is
 
-   Name_Plain    : constant String      := "Logical Lizards";
+   Name_Plain : constant String := "Logical Lizards";
 
    function Faction_Color return Color_Elem renames Lizard_Color;
    function Name          return String is
@@ -69,6 +69,7 @@ private
    Conspiracies    : constant array (Conspiracy_Count'Range) of Conspiracy :=
                         (Convert, Crusade, Convert, Crusade, Sanctify);
 
+   Diff        : Difficulty;
    Curr_Order  : Suit;
    Curr_Phase  : Phase;
    Curr_Action : Action;

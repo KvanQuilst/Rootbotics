@@ -127,6 +127,13 @@ package body Root.Lizards is
       Put_Logo;
       New_Line;
 
+      Diff := Check_Difficulty (Name);
+
+      Erase_Screen;
+      Cursor_Home;
+      Put_Logo;
+      New_Line;
+
       Put_Line ("Which corner will the " & Name & " start in?");
       Corner := Get_Integer (1, 4);
 
@@ -219,12 +226,17 @@ package body Root.Lizards is
                                      Suit_Str  (Mouse),
                                      Suit_Str  (Bird),
                                      Unbounded ("None"));
-      C : Character;
+      Num_Cards : constant Natural := (case Diff is
+                                          when Easy        => 3,
+                                          when Normal      => 4,
+                                          when Challenging => 5,
+                                          when Nightmare   => 5);
+      C         : Character;
    begin
       Curr_Phase := Daylight;
       Curr_Action := Rituals;
 
-      for I in Integer range 1 .. 4 loop
+      for I in Integer range 1 .. Num_Cards loop
          Prompt;
          Put_Line ("Reveal top card of Lost Souls pile; what is it's suit?");
          C := Get_Option (Opts);
@@ -264,6 +276,10 @@ package body Root.Lizards is
       Put_Line ("Craft the top card of the deck for 1 point and add it " &
                 "to your Lost Souls pile.");
       Continue;
+
+      if Diff = Nightmare then
+         Put_Score (1, Name);
+      end if;
    end Evening;
 
    -------------
