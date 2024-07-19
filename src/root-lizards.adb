@@ -206,6 +206,11 @@ package body Root.Lizards is
 
       Evening;
 
+      if Traits (Erratic) then
+         Prompt;
+         Put_Line ("Draw a card and add it to the Lost Souls pile.");
+      end if;
+
    end Take_Turn;
 
    ------------
@@ -320,6 +325,13 @@ package body Root.Lizards is
             Map_Warriors (Clear) := Map_Warriors (Clear) + 1;
             Idle_Count := 0;
             Continue;
+
+            if Traits (Fanatics) then
+               Put_Line ("Battle the player in clearing" & Clear'Image &
+                         " who has the most defenseless buildings, " &
+                         "then the most victory points, " &
+                         "dealing an extra hit.");
+            end if;
          end if;
       end Convert;
 
@@ -338,6 +350,13 @@ package body Root.Lizards is
                   Map_Warriors (C) := Map_Warriors (C) - Val;
                   Warrior_Supply := Warrior_Supply + Val;
                   Idle_Count := 0;
+
+                  if Traits (Spiteful) then
+                     Put_Line ("Were any enemy tokens removed during battle?");
+                     if Get_Yes_No then
+                        Put_Line ("Score +1 extra point per token removed.");
+                     end if;
+                  end if;
                end if;
             end if;
          end loop;
@@ -405,8 +424,13 @@ package body Root.Lizards is
             Put_Line ("Add a warrior from clearing" & Max_Clear'Image &
                       " to the acolytes box.");
             Put_Line ("Discard the " & To_String (Suit_Str (Bird)) & " card.");
-         else
-            Put_Line ("Nothing to do...");
+         end if;
+
+         if Traits (Martyrs) and then
+            Warrior_Supply > 0
+         then
+            Put_Line ("Add a warrior from the " & Name & "'s supply to the " &
+                      "acolytes box.");
          end if;
 
       -- Fox, Rabbit, Mouse Suit --

@@ -46,9 +46,11 @@ private
    WARRIOR_MAX  : constant Integer := 25;
    GARDENS_MAX  : constant Integer := 5;
 
+   type Trait  is (Erratic, Fanatics, Martyrs, Spiteful);
+   type Action is (Outcasts, Convert, Crusade, Sanctify, Rituals, None);
+
    type Conspiracy is (Convert, Crusade, Sanctify);
    type Conspiracy_Count is mod 5;
-   type Action is (Outcasts, Convert, Crusade, Sanctify, Rituals, None);
    subtype Garden is Building_Suit;
 
    procedure Put_Phase with Inline;
@@ -68,6 +70,9 @@ private
    Next_Conspiracy : Conspiracy_Count := 0;
    Conspiracies    : constant array (Conspiracy_Count'Range) of Conspiracy :=
                         (Convert, Crusade, Convert, Crusade, Sanctify);
+
+   Traits : array (Trait range Trait'First .. Trait'Last) of Boolean :=
+      (others => False);
 
    Diff        : Difficulty;
    Curr_Order  : Suit;
