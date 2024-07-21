@@ -102,12 +102,16 @@ package body Root.Lizards is
    begin
       Root.IO.Put_Phase (Curr_Phase,
                         (case Curr_Action is
-                           when Outcasts => "Outcasts",
-                           when Convert  => "Convert",
-                           when Crusade  => "Crusade",
-                           when Sanctify => "Sanctify",
-                           when Rituals  => "Rituals",
-                           when None     => ""));
+                           when Outcasts        => "Outcasts",
+                           when Convert         => "Convert",
+                           when Crusade         => "Crusade",
+                           when Sanctify        => "Sanctify",
+                           when Rituals         => "Rituals",
+                           when Score           => "Score",
+                           when Discard         => "Discard Lost Souls",
+                           when Return_Revealed => "Return Revealed Cards",
+                           when Craft           => "Craft",
+                           when None            => ""));
    end Put_Phase;
 
    procedure Prompt is
@@ -221,66 +225,24 @@ package body Root.Lizards is
       Curr_Phase := Birdsong;
       if Acolytes > 0 then
          Outcasts;
-         Do_Conspiracies;
+         Perform_Conspiracies;
       end if;
    end Birdsong;
 
    procedure Daylight is
-      Opts : constant Str_Arr := (Suit_Str  (Fox),
-                                     Suit_Str  (Rabbit),
-                                     Suit_Str  (Mouse),
-                                     Suit_Str  (Bird),
-                                     Unbounded ("None"));
-      Num_Cards : constant Natural := (case Diff is
-                                          when Easy        => 3,
-                                          when Normal      => 4,
-                                          when Challenging => 5,
-                                          when Nightmare   => 5);
-      C         : Character;
    begin
       Curr_Phase := Daylight;
-      Curr_Action := Rituals;
-
-      for I in Integer range 1 .. Num_Cards loop
-         Prompt;
-         Put_Line ("Reveal top card of Lost Souls pile; what is it's suit?");
-         C := Get_Option (Opts);
-         if C /= 'e' then
-            Ritual ((case C is
-                     when 'a' => Fox,
-                     when 'b' => Rabbit,
-                     when 'c' => Mouse,
-                     when 'd' => Bird,
-                     when others => Bird));
-         else
-            return;
-         end if;
-      end loop;
+      Rituals;
    end Daylight;
 
    procedure Evening is
-      Min : Integer := GARDENS_MAX;
    begin
       Curr_Phase := Evening;
-      Curr_Action := None;
-      Prompt;
 
-      -- Determine scoring garden track --
-      for Num of Garden_Supply loop
-         Min := Integer'Min (Min, Num);
-      end loop;
-      case Min is
-         when 0      => Put_Line ("Score 4 points for the " & Name);
-         when 1      => Put_Line ("Score 3 points for the " & Name);
-         when 2 | 3  => Put_Line ("Score 2 points for the " & Name);
-         when others => null;
-      end case;
-
-      Put_Line ("Discard Lost Souls deck.");
-      Put_Line ("Return revealed cards IN ORDER to Lost Souls.");
-      Put_Line ("Craft the top card of the deck for 1 point and add it " &
-                "to your Lost Souls pile.");
-      Continue;
+      Score;
+      Discard_Lost_Souls;
+      Return_Revealed;
+      Craft;
 
       if Diff = Nightmare then
          Put_Score (1, Name);
@@ -299,7 +261,7 @@ package body Root.Lizards is
       Curr_Order := Get_Suit_Opt;
    end Outcasts;
 
-   procedure Do_Conspiracies is
+   procedure Perform_Conspiracies is
       Idle_Count : Natural := 0;
       Clears     : constant Int_Arr := Filter_Clearings (Curr_Order);
       Val        : Natural;
@@ -404,7 +366,7 @@ package body Root.Lizards is
             Acolytes := Acolytes - 1;
          end if;
       end loop;
-   end Do_Conspiracies;
+   end Perform_Conspiracies;
 
    procedure Ritual (S : Suit) is
       Max       : Integer  := 0;
@@ -464,5 +426,79 @@ package body Root.Lizards is
          end;
       end if;
    end Ritual;
+
+   procedure Rituals is
+      Opts : constant Str_Arr := (Suit_Str  (Fox),
+                                  Suit_Str  (Rabbit),
+                                  Suit_Str  (Mouse),
+                                  Suit_Str  (Bird),
+                                  Unbounded ("None"));
+      Num_Cards : constant Natural := (case Diff is
+                                          when Easy        => 3,
+                                          when Normal      => 4,
+                                          when Challenging => 5,
+                                          when Nightmare   => 5);
+      C         : Character;
+   begin
+      Curr_Action := Rituals;
+
+      for I in Integer range 1 .. Num_Cards loop
+         Prompt;
+         Put_Line ("Reveal top card of Lost Souls pile; what is it's suit?");
+         C := Get_Option (Opts);
+         if C /= 'e' then
+            Ritual ((case C is
+                     when 'a' => Fox,
+                     when 'b' => Rabbit,
+                     when 'c' => Mouse,
+                     when 'd' => Bird,
+                     when others => Bird));
+         else
+            return;
+         end if;
+      end loop;
+   end Rituals;
+
+   procedure Score is
+      Min : Integer := GARDENS_MAX;
+   begin
+      Curr_Action := Score;
+      Prompt;
+      for Num of Garden_Supply loop
+         Min := Integer'Min (Min, Num);
+      end loop;
+      case Min is
+         when 0      => Put_Line ("Score 4 points for the " & Name);
+         when 1      => Put_Line ("Score 3 points for the " & Name);
+         when 2 | 3  => Put_Line ("Score 2 points for the " & Name);
+         when others => null;
+      end case;
+      Continue;
+   end Score;
+
+   procedure Discard_Lost_Souls is
+   begin
+      Curr_Action := Discard;
+      Prompt;
+      Put_Line ("Discard Lost Souls deck.");
+      Continue;
+   end Discard_Lost_Souls;
+
+   procedure Return_Revealed is
+   begin
+      Curr_Action := Return_Revealed;
+      Prompt;
+      Put_Line ("Return revealed cards IN ORDER to Lost Souls.");
+      Continue;
+   end Return_Revealed;
+
+   procedure Craft is
+   begin
+      Curr_Action := Craft;
+      Prompt;
+      Put_Line ("Craft the top card of the deck for 1 point and add it " &
+                "to your Lost Souls pile.");
+      Continue;
+   end Craft;
 
 end Root.Lizards;

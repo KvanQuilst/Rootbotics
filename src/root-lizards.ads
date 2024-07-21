@@ -47,7 +47,10 @@ private
    GARDENS_MAX  : constant Integer := 5;
 
    type Trait  is (Erratic, Fanatics, Martyrs, Spiteful);
-   type Action is (Outcasts, Convert, Crusade, Sanctify, Rituals, None);
+   type Action is (Outcasts, Convert, Crusade, Sanctify,
+                   Rituals,
+                   Score, Discard, Return_Revealed, Craft,
+                   None);
 
    type Conspiracy is (Convert, Crusade, Sanctify);
    type Conspiracy_Count is mod 5;
@@ -98,7 +101,13 @@ private
 
    -- Actions --
    procedure Outcasts;
-   procedure Do_Conspiracies;
-   procedure Ritual (S : Suit);
+   procedure Perform_Conspiracies;
+
+   procedure Rituals with Inline;
+
+   procedure Score;
+   procedure Discard_Lost_Souls with Inline;
+   procedure Return_Revealed    with Inline;
+   procedure Craft              with Inline;
 
 end Root.Lizards;
