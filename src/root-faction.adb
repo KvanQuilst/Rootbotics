@@ -208,7 +208,8 @@ package body Root.Faction is
                             Rule         : in out Rule_Arr;
                             To, From     :        Priority;
                             Num_Warriors :        Natural;
-                            Name         :        String) is
+                            Name         :        String;
+                            Prompt       : access procedure) is
    begin
       pragma Assert (Map_Warriors (From) >= Num_Warriors);
       pragma Assert ((for some N of Clearings (From).Neighbors => N = To));
@@ -217,9 +218,9 @@ package body Root.Faction is
          return;
       end if;
 
-      Put_Line ("Do the " & Name & " rule either clearing" & From'Image
-              & " or clearing" & To'Image & "?");
-      if not Get_Yes_No then
+      if not Rule (To) or else
+         not Rule (From)
+      then
          return;
       end if;
 
@@ -235,6 +236,7 @@ package body Root.Faction is
       Map_Warriors (To) := Map_Warriors (To) + Num_Warriors;
       Map_Warriors (From) := Map_Warriors (From) - Num_Warriors;
       if not Rule (To) then
+         Prompt.all;
          Put_Line ("Do the " & Name & " rule clearing" & To'Image & " now?");
          Rule (To) := Get_Yes_No;
          Continue;
@@ -242,6 +244,7 @@ package body Root.Faction is
 
       if Map_Warriors (From) /= 0 and then Rule (From)
       then
+         Prompt.all;
          Put_Line ("Do the " & Name & " still rule clearing"
                  & From'Image & "?");
          Rule (From) := Get_Yes_No;
@@ -281,6 +284,7 @@ package body Root.Faction is
          return False;
       end if;
 
+      New_Line;
       if Supply > 0 and then
          Map_Builds (Clear) < Clearings (Clear).Buildings
       then

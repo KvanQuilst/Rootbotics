@@ -80,7 +80,7 @@ package body Root.Duchy is
                Set_Fg (Suit_Color (Rabbit));
             end if;
             Put (To_String (Minister_Str (Suit_Ministers (Rabbit) (I))) & " ");
-            Cursor_Col_Set (32);
+            Cursor_Col_Set (31);
             if Swayed_Ministers (Suit_Ministers (Mouse) (I)) then
                Set_Fg (Root.Color.Dark_Grey);
             else
@@ -520,20 +520,25 @@ package body Root.Duchy is
 
       for C of Filter_Clearings (S) loop
          if Map_Warriors (C) > 0 then
+            Prompt;
             Put_Line ("Are there enemy pieces in clearing" & C'Image & "?");
             if Get_Yes_No then
+               Prompt;
                Put_Line ("Battle the enemy faction with the most buildings, "
-                       & "then the most pieces, then the most points "
+                       & "then the most pieces,");
+               Put_Line ("then the most points "
                        & "in clearing" & C'Image & ".");
                if Swayed_Ministers (Captain) and then Map_Tunnels (C)
                then
                   Put_Line ("Deal an extra hit with the Captain Minister.");
                end if;
+               New_Line;
                Put_Line ("How many warriors were lost?");
                Lost := Get_Integer (0, Map_Warriors (C));
                Map_Warriors (C) := Map_Warriors (C) - Lost;
                Warrior_Supply := Warrior_Supply + Lost;
 
+               Prompt;
                Put_Line ("Do the " & Name & " rule clearing" & C'Image & "?");
                Rule (C) := Get_Yes_No;
                return;
@@ -555,13 +560,7 @@ package body Root.Duchy is
       end if;
 
       Curr_Action := Build;
-
-      -- Get Clearings with Warriors --
-      for W of Map_Warriors loop
-         if W > 0 then
-            Size := Size + 1;
-         end if;
-      end loop;
+      Prompt;
 
       for C in Map_Warriors'Range loop
          if Rule (C) and then Map_Warriors (C) > 0
@@ -580,7 +579,7 @@ package body Root.Duchy is
 
             -- Get Max Warriors --
             declare
-               Max       : Natural := 0;
+               Max : Natural := 0;
             begin
                for Idx in 1 .. Size loop
                   if Map_Warriors (Clears (Idx)) > Max then
@@ -686,6 +685,7 @@ package body Root.Duchy is
       end Duchess_of_Mud_Action;
    begin
       Curr_Action := Ministers;
+      Prompt;
 
       for M in Minister'Range loop
          -- null entries mark ministers which give new abilities --
@@ -710,8 +710,11 @@ package body Root.Duchy is
       Min_Clear : Priority;
       Success   : Boolean := False;
    begin
+      Curr_Action := Rally;
+
       for C in Priority'Range loop
          if Map_Buildings (C) = 0 and then
+            Map_Warriors (C) > 0  and then
             Map_Warriors (C) <= 2
          then
             for N of Clearings (C).Neighbors loop
@@ -728,16 +731,35 @@ package body Root.Duchy is
                end if;
             end loop;
 
+            Prompt;
             if Success then
                Move_Warriors (Map_Warriors, Rule, C,
-                              Min_Clear, Map_Warriors (C), Name);
+                              Min_Clear, Map_Warriors (C),
+                              Name, Prompt'Access);
             else
                Put_Line ("Move all warriors from clearing" & C'Image
                        & " to the burrow.");
                Burrow := Burrow + Map_Warriors (C);
                Map_Warriors (C) := 0;
+               Continue;
             end if;
-            Continue;
+         end if;
+      end loop;
+
+      for C in Priority'Range loop
+         if Rule (C) and then
+            Map_Warriors (C) > 4
+         then
+            declare
+               Num : constant Natural := Map_Warriors (C) - 4;
+            begin
+               Prompt;
+               Put_Line ("Move" & Num'Image & " warriors from clearing"
+                       & C'Image & " to the burrow.");
+               Burrow := Burrow + Num;
+               Map_Warriors (C) := 4;
+               Continue;
+            end;
          end if;
       end loop;
    end Rally;
@@ -746,6 +768,7 @@ package body Root.Duchy is
       Markets : constant Integer := BUILD_MAX - Market_Supply;
    begin
       Curr_Action := Score;
+      Prompt;
 
       if Markets > 0 then
          Put_Score (Markets, Name);
@@ -783,7 +806,7 @@ package body Root.Duchy is
          for M in reverse Minister'Range loop
             if not Swayed_Ministers (M) then
                Swayed_Ministers (M) := True;
-               Put_Line ("Place a crow on the " &
+               Put_Line ("Place a crown on the " &
                          To_String (Minister_Str (M)) & ".");
                Swayed := True;
             end if;
@@ -793,7 +816,6 @@ package body Root.Duchy is
       if not Swayed then
          Put_Line ("No ministers to sway.");
       end if;
-      Continue;
    end Sway_Minister;
 
 end Root.Duchy;

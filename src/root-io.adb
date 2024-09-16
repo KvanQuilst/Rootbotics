@@ -128,7 +128,6 @@ package body Root.IO is
    begin
       Put_Line ("What is the order of this turn?");
       S := Get_Suit_Opt;
-      Continue;
       return S;
    end Get_Turn_Order;
 

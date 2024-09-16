@@ -68,7 +68,8 @@ package Root.Faction is
                               Rule         : in out Rule_Arr;
                               To, From     :        Priority;
                               Num_Warriors :        Natural;
-                              Name         :        String);
+                              Name         :        String;
+                              Prompt       : access procedure);
    procedure Deploy_Warriors (Supply       : in out Natural;
                               Map_Warriors : in out Warrior_Arr;
                               Clear        :        Priority;
