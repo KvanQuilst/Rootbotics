@@ -267,6 +267,7 @@ package body Root.Duchy is
       Put_Line ("What is the suit of the second card?");
       Sway_Minister (Get_Suit_Opt);
       Put_Line ("Discard the cards.");
+      Continue;
    end Setup;
 
    ----------------------
@@ -369,6 +370,7 @@ package body Root.Duchy is
             if Get_Yes_No then
                Prompt;
                Put_Line ("Remove one point for the " & Name & ".");
+               Continue;
             else
                Sway_Minister (S);
                return;
@@ -388,6 +390,7 @@ package body Root.Duchy is
          Prompt;
          Put_Line ("If not done already, remove the crown from " &
                    To_String (Minister_Str (Lost)) & ".");
+         Continue;
       end if;
 
       -- Regular --
@@ -400,6 +403,7 @@ package body Root.Duchy is
          Prompt;
          Put_Line ("If not done already, remove the crown from " &
                    To_String (Minister_Str (Lost)) & ".");
+         Continue;
       end if;
    end Cost_of_Errors;
 
@@ -507,10 +511,13 @@ package body Root.Duchy is
          Map_Tunnels (Clear) := True;
          Map_Tunnels (T_Clear) := False;
       end if;
+      Continue;
+      Prompt;
       Put_Line ("Move" & Req'Image & " warriors from the Burrow to clearing" &
                 Clear'Image & ".");
       Map_Warriors (Clear) := Map_Warriors (Clear) + Req;
       Burrow := Burrow - Req;
+      Continue;
    end Dig;
 
    procedure Battle (S : Suit) is
@@ -672,6 +679,7 @@ package body Root.Duchy is
       begin
          if Citadels > 0 then
             Put_Score (Citadels, Name);
+            Continue;
          end if;
       end Earl_of_Stone_Action;
 
@@ -681,6 +689,7 @@ package body Root.Duchy is
       begin
          if Tunnel_Supply = 0 then
             Put_Score (2, Name);
+            Continue;
          end if;
       end Duchess_of_Mud_Action;
    begin
@@ -768,10 +777,11 @@ package body Root.Duchy is
       Markets : constant Integer := BUILD_MAX - Market_Supply;
    begin
       Curr_Action := Score;
-      Prompt;
 
       if Markets > 0 then
+         Prompt;
          Put_Score (Markets, Name);
+         Continue;
       end if;
    end Score;
 
@@ -784,8 +794,10 @@ package body Root.Duchy is
          for M in Minister'Range loop
             if not Swayed_Ministers (M) then
                Swayed_Ministers (M) := True;
+               Prompt;
                Put_Line ("Place a crown on the " &
                          To_String (Minister_Str (M)) & ".");
+               Continue;
                Swayed := True;
                exit;
             end if;
@@ -794,8 +806,10 @@ package body Root.Duchy is
          for M of Suit_Ministers (S) loop
             if not Swayed_Ministers (M) then
                Swayed_Ministers (M) := True;
+               Prompt;
                Put_Line ("Place a crown on the " &
                          To_String (Minister_Str (M)) & ".");
+               Continue;
                Swayed := True;
                exit;
             end if;
@@ -806,15 +820,19 @@ package body Root.Duchy is
          for M in reverse Minister'Range loop
             if not Swayed_Ministers (M) then
                Swayed_Ministers (M) := True;
+               Prompt;
                Put_Line ("Place a crown on the " &
                          To_String (Minister_Str (M)) & ".");
+               Continue;
                Swayed := True;
             end if;
          end loop;
       end if;
 
       if not Swayed then
+         Prompt;
          Put_Line ("No ministers to sway.");
+         Continue;
       end if;
    end Sway_Minister;
 
