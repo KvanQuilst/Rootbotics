@@ -4,7 +4,7 @@
 --                                                                           --
 --                           ROOT . COLOR (Spac)                             --
 --                                                                           --
---                      Copyright (C) 2024 Dylan Eskew                       --
+--                      Copyright (C) 2025 Dylan Eskew                       --
 --                                                                           --
 -- This file specifies the coloring strategies used in the Rootbatics        --
 -- Assistant.                                                                --

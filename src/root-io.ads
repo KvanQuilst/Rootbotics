@@ -4,7 +4,7 @@
 --                                                                           --
 --                             ROOT . IO (Spec)                              --
 --                                                                           --
---                      Copyright (C) 2024 Dylan Eskew                       --
+--                      Copyright (C) 2025 Dylan Eskew                       --
 --                                                                           --
 -- This file specifies the common terminal IO interactions for The           --
 -- Rootbotics Assistant.                                                     --

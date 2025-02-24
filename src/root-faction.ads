@@ -4,7 +4,7 @@
 --                                                                           --
 --                          ROOT . FACTION (Spec)                            --
 --                                                                           --
---                      Copyright (C) 2024 Dylan Eskew                       --
+--                      Copyright (C) 2025 Dylan Eskew                       --
 --                                                                           --
 -- This file contains the specification of the common faction-related        --
 -- subroutines used throughout The Rootbotics Assistnat.                     --

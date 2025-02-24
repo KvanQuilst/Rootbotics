@@ -4,7 +4,7 @@
 --                                                                           --
 --                           ROOT . DUCHY (Spec)                             --
 --                                                                           --
---                      Copyright (C) 2024 Dylan Eskew                       --
+--                      Copyright (C) 2025 Dylan Eskew                       --
 --                                                                           --
 -- This file contains the specification for the Automated Alliance faction   --
 -- from Root: The Clockwork Expansion for use in The Rootbotics Assistant.   --

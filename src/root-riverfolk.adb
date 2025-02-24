@@ -4,7 +4,7 @@
 --                                                                           --
 --                         ROOT . RIVERFOLK (Body)                           --
 --                                                                           --
---                      Copyright (C) 2024 Dylan Eskew                       --
+--                      Copyright (C) 2025 Dylan Eskew                       --
 --                                                                           --
 -- This file contains the implementation of the Riverfolk Robots faction     --
 -- from Root: The Clockwork Expansion 2 for use in The Rootbotics Assistant. --
