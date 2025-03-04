@@ -1,0 +1,12 @@
+name = "rootbotics"
+description = "A terminal client for Rootbotics Server"
+version = "0.3-dev"
+
+authors = ["Dylan E."]
+maintainers = ["Dylan E. <76961140+KvanQuilst@users.noreply.github.com>"]
+maintainers-logins = ["kvanquilst"]
+licenses = "GPL-3.0-or-later"
+website = ""
+tags = []
+
+executables = ["rootbotics"]
