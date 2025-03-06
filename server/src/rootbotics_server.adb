@@ -28,13 +28,27 @@ with Ada.Text_IO; use Ada.Text_IO;
 
 with GNAT.Sockets; use GNAT.Sockets;
 
+with Root.Messages;
+with Root; use Root;
+with Root.Game; use Root.Game;
+with Root.Maps; use Root.Maps;
+
 procedure Rootbotics_Server is
    VERSION : constant String := "v0.3-dev";
+
+   type UInt8 is mod 2**8;
+
+   type Msg is record
+      T : Integer;
+      Msg : Integer;
+   end record with Pack;
 
    -- Networking --
    Address         : Sock_Addr_Type;
    Server, Socket  : Socket_Type;
    Channel         : Stream_Access;
+   Root_Game       : Session := New_Session (M_Type  => Fall,
+                                             M_Suits => (others => Fox));
 begin
    -- Setup Server --
    Address.Addr := Addresses (Get_Host_By_Name (Host_Name), 1);
@@ -49,9 +63,10 @@ begin
    Channel := Stream (Socket);
 
    declare
-      Message : constant String := String'Input (Channel);
+      --  Message : constant Msg := Msg'Input (Channel);
+      Message : Integer := Integer'Input (Channel);
    begin
-      Put_Line (Message);
+      Put_Line (Message'Image);
    end;
 
    Close_Socket (Server);

@@ -2,12 +2,12 @@
 --                                                                           --
 --                        THE ROOTBOTICS ASSISTANT                           --
 --                                                                           --
---                                ROOTBOTICS                                 --
+--                          ROOT . FACTION (Spec)                            --
 --                                                                           --
 --                      Copyright (C) 2025 Dylan Eskew                       --
 --                                                                           --
--- This file contains the terminal client for managing Leder Games' Root:    --
--- Clockwork Expansion factions.                                             --
+-- This file contains the specification of the common faction-related        --
+-- subroutines used throughout The Rootbotics Assistant.                     --
 --                                                                           --
 -- The Rootbotics Assistant is free software: you can redistribute it and/or --
 -- modify it under the terms of the GNU General Public License as published  --
@@ -23,56 +23,42 @@
 -- with The Rootbotics Assistant. If not, see                                --
 -- <https://www.gnu.org/licenses/>.                                          --
 -------------------------------------------------------------------------------
-with Ada.Exceptions; use Ada.Exceptions;
-with Ada.Text_IO; use Ada.Text_IO;
+package Root.Faction is
 
-with GNAT.Sockets; use GNAT.Sockets;
+   type Faction_By_Seat is array (Seat'Range) of Faction_Type;
 
-procedure Rootbotics is
-   VERSION : constant String := "v0.3-dev";
+   -------------------
+   -- Faction Class --
+   -------------------
+   type Faction (<>) is tagged private;
+   type Clockwork_Faction (<>) is tagged private;
 
-   type UInt8 is mod 2**8;
+   -- Faction Methods --
+   function Get_Faction (Self : Faction) return Faction_Type;
 
-   type T is (Cats, Mice);
+   function Score_Points (Self       : in out Faction;
+                          Num_Points :        UInt8) return Boolean;
 
-   type Msg (Ty : T) is record
-      case Ty is
-         when Cats =>
-            B : UInt8;
-            C : UInt8;
-            D : UInt8;
-         when Mice =>
-            M : UInt8;
-            N : UInt8;
-            O : UInt8;
-      end case;
-   end record with Pack;
+   -- Clockwork Methods --
+   function  Get_Difficulty (Self  : Clockwork_Faction) return Difficulty;
 
-   M : constant Msg := (Cats, 0, 0, 16#80#);
-   N : constant UInt8 := 0;
-   O : constant UInt8 := 16#80#;
+   procedure Take_Turn      (Self  : in out Clockwork_Faction;
+                             Order :        Suit);
 
-   -- Networking --
-   Address : Sock_Addr_Type;
-   Socket  : Socket_Type;
-   Channel : Stream_Access;
-begin
-   Address.Addr := Addresses (Get_Host_By_Name (Host_Name), 1);
-   Address.Port := 5876;
-   Create_Socket (Socket);
+private
 
-   Set_Socket_Option (Socket, Socket_Level, (Reuse_Address, True));
+   -------------------
+   -- Faction Class --
+   -------------------
+   type Faction (F_Type : Faction_Type) is tagged record
+      S              : Seat;
+      Points         : UInt8 range 0 .. 50 := 0;
+      -- Dynamic Items Array --
+   end record;
 
-   Connect_Socket (Socket, Address);
-   Channel := Stream (Socket);
+   type Clockwork_Faction is new Faction with record
+      Diff           : Difficulty := Normal;
+      Traits         : UInt8      := 0;
+   end record;
 
-   UInt8'Output (Channel, O);
-   UInt8'Output (Channel, N);
-   UInt8'Output (Channel, N);
-   UInt8'Output (Channel, N);
-
-   Close_Socket (Socket);
-
-exception when E : others =>
-   Put_Line (Exception_Name (E) & ": " & Exception_Message (E));
-end Rootbotics;
+end Root.Faction;
