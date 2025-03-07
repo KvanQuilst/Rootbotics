@@ -2,12 +2,12 @@
 --                                                                           --
 --                          ROOT FACTION ASSISTANT                           --
 --                                                                           --
---                            ROOT . GAME (Spec)                             --
+--                                GAME (Body)                                --
 --                                                                           --
 --                      Copyright (C) 2025 Dylan Eskew                       --
 --                                                                           --
--- This file contains the specification for the centeral game logic for the  --
--- Root Faction Assisstant.                                                  --
+-- This file contains the specification for the centeral games logic for     --
+-- the Root Faction Assistant.                                               --
 --                                                                           --
 -- The Root Faction Assistant is free software: you can redistribute it      --
 -- and/or modify it under the terms of the GNU General Public License as     --
@@ -23,27 +23,20 @@
 -- with The Rootbotics Assistant. If not, see                                --
 -- <https://www.gnu.org/licenses/>.                                          --
 -------------------------------------------------------------------------------
-with Root.Faction; use Root.Faction;
-with Root.Maps; use Root.Maps;
+package body Game is
 
-package Root.Game is
-
-   ----------------
-   -- Game Class --
-   ----------------
-   type Session (<>) is tagged private;
+   ------------------
+   -- Game Methods --
+   ------------------
 
    -- Constructor --
    function New_Session (M_Type  : Map_Type;
-                         M_Suits : Priority_Suits) return Session;
+                         M_Suits : Priority_Suits) return Session is
+      (M_Type => M_Type,
+       M      => New_Map (M_Type, M_Suits),
+       F      => Marquise);
 
-   function  Get_Map (Self : Session) return Map;
+   function Get_Map (Self : Session) return Map is
+      (Self.M);
 
-private
-
-   type Session (M_Type  : Map_Type) is tagged record
-      M : Map (M_Type);
-      F : Faction_Type;
-   end record;
-
-end Root.Game;
+end Game;

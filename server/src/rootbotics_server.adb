@@ -28,10 +28,10 @@ with Ada.Text_IO; use Ada.Text_IO;
 
 with GNAT.Sockets; use GNAT.Sockets;
 
-with Root.Messages;
 with Root; use Root;
-with Root.Game; use Root.Game;
-with Root.Maps; use Root.Maps;
+with Root.Messages;
+with Game; use Game;
+with Maps; use Maps;
 
 procedure Rootbotics_Server is
    VERSION : constant String := "v0.3-dev";

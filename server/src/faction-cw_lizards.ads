@@ -2,11 +2,11 @@
 --                                                                           --
 --                          ROOT FACTION ASSISTANT                           --
 --                                                                           --
---                     ROOT . FACTION . CW_DUCHY (Spec)                      --
+--                        FACTION . CW_LIZARDS (Spec)                        --
 --                                                                           --
 --                      Copyright (C) 2025 Dylan Eskew                       --
 --                                                                           --
--- This file contains the specification of the Drillbit Duchy faction.       --
+-- This file contains the specification of the Logical Lizards faction.      --
 --                                                                           --
 -- The Root Faction Assistant is free software: you can redistribute it      --
 -- and/or modify it under the terms of the GNU General Public License as     --
@@ -22,14 +22,14 @@
 -- with The Rootbotics Assistant. If not, see                                --
 -- <https://www.gnu.org/licenses/>.                                          --
 -------------------------------------------------------------------------------
-package Root.Faction.CW_Duchy is
+package Faction.CW_Lizards is
 
-   type Drillbit_Duchy is new Clockwork_Faction with private;
+   type Logical_Lizards is new Clockwork_Faction with private;
 
 private
 
-   type Drillbit_Duchy is new Clockwork_Faction (Duchy) with record
+   type Logical_Lizards is new Clockwork_Faction (Lizards) with record
       null;
    end record;
 
-end Root.Faction.CW_Duchy;
+end Faction.CW_Lizards;

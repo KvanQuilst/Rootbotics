@@ -2,11 +2,11 @@
 --                                                                           --
 --                          ROOT FACTION ASSISTANT                           --
 --                                                                           --
---                          ROOT . FACTION (Spec)                            --
+--                              FACTION (Body)                               --
 --                                                                           --
 --                      Copyright (C) 2025 Dylan Eskew                       --
 --                                                                           --
--- This file contains the specification of the common faction-related        --
+-- This file contains the implementation of the common faction-related       --
 -- subroutines used throughout The Rootbotics Assistant.                     --
 --                                                                           --
 -- The Root Faction Assistant is free software: you can redistribute it      --
@@ -23,44 +23,27 @@
 -- with The Rootbotics Assistant. If not, see                                --
 -- <https://www.gnu.org/licenses/>.                                          --
 -------------------------------------------------------------------------------
-package Root.Faction is
+with Faction.CW_Alliance; use Faction.CW_Alliance;
+with Faction.CW_Lizards;  use Faction.CW_Lizards;
+with Faction.CW_Duchy;    use Faction.CW_Duchy;
 
-   type Faction_By_Seat is array (Seat'Range) of Faction_Type;
+package body Faction is
 
-   -------------------
-   -- Faction Class --
-   -------------------
-   type Faction (<>) is abstract tagged private;
-
-   -- Faction Concrete Methods --
-   function Get_Faction (Self : Faction) return Faction_Type;
+   ---------------------
+   -- Faction Methods --
+   ---------------------
+   function Get_Faction (Self : Faction) return Faction_Type is
+      (Self.F_Type);
 
    function Score_Points (Self       : in out Faction;
-                          Num_Points :        UInt8) return Boolean;
+                          Num_Points :        UInt8) return Boolean is
+   begin
+      Self.Points := Self.Points + Num_Points;
+      return Self.Points >= 30;
+   end Score_Points;
 
-   -- Faction Abstract Methods --
-   procedure Setup     (Self : in out Faction) is null;
-   procedure Take_Turn (Self : in out Faction) is null;
+   -------------------------------
+   -- Clockwork Faction Methods --
+   -------------------------------
 
-   -----------------------------
-   -- Clockwork Faction Class --
-   -----------------------------
-   type Clockwork_Faction (<>) is new Faction with private;
-
-private
-
-   -------------------
-   -- Faction Class --
-   -------------------
-   type Faction (F_Type : Faction_Type) is tagged record
-      S              : Seat;
-      Points         : UInt8 range 0 .. 50 := 0;
-      -- Dynamic Items Array --
-   end record;
-
-   type Clockwork_Faction is new Faction with record
-      Diff           : Difficulty := Normal;
-      Traits         : UInt8      := 0;
-   end record;
-
-end Root.Faction;
+end Faction;

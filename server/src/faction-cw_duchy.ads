@@ -2,12 +2,11 @@
 --                                                                           --
 --                          ROOT FACTION ASSISTANT                           --
 --                                                                           --
---                          ROOT . FACTION (Body)                            --
+--                         FACTION . CW_DUCHY (Spec)                         --
 --                                                                           --
 --                      Copyright (C) 2025 Dylan Eskew                       --
 --                                                                           --
--- This file contains the implementation of the common faction-related       --
--- subroutines used throughout The Rootbotics Assistant.                     --
+-- This file contains the specification of the Drillbit Duchy faction.       --
 --                                                                           --
 -- The Root Faction Assistant is free software: you can redistribute it      --
 -- and/or modify it under the terms of the GNU General Public License as     --
@@ -23,27 +22,14 @@
 -- with The Rootbotics Assistant. If not, see                                --
 -- <https://www.gnu.org/licenses/>.                                          --
 -------------------------------------------------------------------------------
-with Root.Faction.CW_Alliance; use Root.Faction.CW_Alliance;
-with Root.Faction.CW_Lizards;  use Root.Faction.CW_Lizards;
-with Root.Faction.CW_Duchy;    use Root.Faction.CW_Duchy;
+package Faction.CW_Duchy is
 
-package body Root.Faction is
+   type Drillbit_Duchy is new Clockwork_Faction with private;
 
-   ---------------------
-   -- Faction Methods --
-   ---------------------
-   function Get_Faction (Self : Faction) return Faction_Type is
-      (Self.F_Type);
+private
 
-   function Score_Points (Self       : in out Faction;
-                          Num_Points :        UInt8) return Boolean is
-   begin
-      Self.Points := Self.Points + Num_Points;
-      return Self.Points >= 30;
-   end Score_Points;
+   type Drillbit_Duchy is new Clockwork_Faction (Duchy) with record
+      null;
+   end record;
 
-   -------------------------------
-   -- Clockwork Faction Methods --
-   -------------------------------
-
-end Root.Faction;
+end Faction.CW_Duchy;

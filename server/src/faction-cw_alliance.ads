@@ -2,12 +2,11 @@
 --                                                                           --
 --                          ROOT FACTION ASSISTANT                           --
 --                                                                           --
---                            ROOT . GAME (Body)                             --
+--                       FACTION . CW_ALLIANCE (Spec)                        --
 --                                                                           --
 --                      Copyright (C) 2025 Dylan Eskew                       --
 --                                                                           --
--- This file contains the specification for the centeral games logic for     --
--- the Root Faction Assistant.                                               --
+-- This file contains the specification of the Automated Alliance faction.   --
 --                                                                           --
 -- The Root Faction Assistant is free software: you can redistribute it      --
 -- and/or modify it under the terms of the GNU General Public License as     --
@@ -23,20 +22,14 @@
 -- with The Rootbotics Assistant. If not, see                                --
 -- <https://www.gnu.org/licenses/>.                                          --
 -------------------------------------------------------------------------------
-package body Root.Game is
+package Faction.CW_Alliance is
 
-   ------------------
-   -- Game Methods --
-   ------------------
+   type Automated_Alliance is new Clockwork_Faction with private;
 
-   -- Constructor --
-   function New_Session (M_Type  : Map_Type;
-                         M_Suits : Priority_Suits) return Session is
-      (M_Type => M_Type,
-       M      => New_Map (M_Type, M_Suits),
-       F      => Marquise);
+private
 
-   function Get_Map (Self : Session) return Map is
-      (Self.M);
+   type Automated_Alliance is new Clockwork_Faction with record
+      null;
+   end record;
 
-end Root.Game;
+end Faction.CW_Alliance;

@@ -2,7 +2,7 @@
 --                                                                           --
 --                          ROOT FACTION ASSISTANT                           --
 --                                                                           --
---                            ROOT . MAPS (Body)                             --
+--                                 MAPS (Body)                               --
 --                                                                           --
 --                      Copyright (C) 2025 Dylan Eskew                       --
 --                                                                           --
@@ -23,7 +23,7 @@
 -- with The Rootbotics Assistant. If not, see                                --
 -- <https://www.gnu.org/licenses/>.                                          --
 -------------------------------------------------------------------------------
-package body Root.Maps is
+package body Maps is
 
    -----------------
    -- Map Methods --
@@ -98,4 +98,4 @@ package body Root.Maps is
       return Totals;
    end Count_For_Rule;
 
-end Root.Maps;
+end Maps;

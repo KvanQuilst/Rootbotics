@@ -2,11 +2,12 @@
 --                                                                           --
 --                          ROOT FACTION ASSISTANT                           --
 --                                                                           --
---                    ROOT . FACTION . CW_LIZARDS (Spec)                     --
+--                               GAME (Spec)                                 --
 --                                                                           --
 --                      Copyright (C) 2025 Dylan Eskew                       --
 --                                                                           --
--- This file contains the specification of the Logical Lizards faction.      --
+-- This file contains the specification for the centeral game logic for the  --
+-- Root Faction Assisstant.                                                  --
 --                                                                           --
 -- The Root Faction Assistant is free software: you can redistribute it      --
 -- and/or modify it under the terms of the GNU General Public License as     --
@@ -22,14 +23,27 @@
 -- with The Rootbotics Assistant. If not, see                                --
 -- <https://www.gnu.org/licenses/>.                                          --
 -------------------------------------------------------------------------------
-package Root.Faction.CW_Lizards is
+with Root; use Root;
+with Maps; use Maps;
 
-   type Logical_Lizards is new Clockwork_Faction with private;
+package Game is
+
+   ----------------
+   -- Game Class --
+   ----------------
+   type Session (<>) is tagged private;
+
+   -- Constructor --
+   function New_Session (M_Type  : Map_Type;
+                         M_Suits : Priority_Suits) return Session;
+
+   function  Get_Map (Self : Session) return Map;
 
 private
 
-   type Logical_Lizards is new Clockwork_Faction (Lizards) with record
-      null;
+   type Session (M_Type  : Map_Type) is tagged record
+      M : Map (M_Type);
+      F : Faction_Type;
    end record;
 
-end Root.Faction.CW_Lizards;
+end Game;

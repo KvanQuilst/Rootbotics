@@ -2,7 +2,7 @@
 --                                                                           --
 --                          ROOT FACTION ASSISTANT                           --
 --                                                                           --
---                            ROOT . MAPS (Spec)                             --
+--                                MAPS (Spec)                                --
 --                                                                           --
 --                      Copyright (C) 2025 Dylan Eskew                       --
 --                                                                           --
@@ -23,7 +23,10 @@
 -- with The Rootbotics Assistant. If not, see                                --
 -- <https://www.gnu.org/licenses/>.                                          --
 -------------------------------------------------------------------------------
-package Root.Maps is
+with Root; use Root;
+with Types; use Types;
+
+package Maps is
 
    subtype Clearing_Suit  is Suit range Fox .. Mouse;
    type    Priority_Suits is array (Priority'Range) of Clearing_Suit;
@@ -189,4 +192,4 @@ private
        Warriors | Tokens | Buildings => <>)  -- 12
    );
 
-end Root.Maps;
+end Maps;
