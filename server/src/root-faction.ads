@@ -30,26 +30,22 @@ package Root.Faction is
    -------------------
    -- Faction Class --
    -------------------
-   type Faction (<>) is tagged private;
+   type Faction (<>) is abstract tagged private;
 
-   -- Faction Methods --
+   -- Faction Concrete Methods --
    function Get_Faction (Self : Faction) return Faction_Type;
-
-   procedure Take_Turn (Self : in out Faction) is null;
 
    function Score_Points (Self       : in out Faction;
                           Num_Points :        UInt8) return Boolean;
+
+   -- Faction Abstract Methods --
+   procedure Setup     (Self : in out Faction) is null;
+   procedure Take_Turn (Self : in out Faction) is null;
 
    -----------------------------
    -- Clockwork Faction Class --
    -----------------------------
    type Clockwork_Faction (<>) is new Faction with private;
-
-   -- Clockwork Methods --
-   function  Get_Difficulty (Self  : Clockwork_Faction) return Difficulty;
-
-   procedure Take_Turn (Self  : in out Clockwork_Faction;
-                        Order :        Suit) is null;
 
 private
 

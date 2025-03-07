@@ -23,9 +23,6 @@
 -- with The Rootbotics Assistant. If not, see                                --
 -- <https://www.gnu.org/licenses/>.                                          --
 -------------------------------------------------------------------------------
-with Root.Faction; use Root.Faction;
-with Root.Maps; use Root.Maps;
-
 package Root.Messages is
 
    type Message_Type is (

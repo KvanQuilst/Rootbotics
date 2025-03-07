@@ -82,10 +82,20 @@ package body Root.Maps is
           else 0);
    end Remove_Warriors;
 
-   function Who_Rules (Self     : Map;
-                       Clearing : Priority) return Seat is
+   function Count_For_Rule (Self         : Map;
+                            Clearing     : Priority;
+                            Count_Tokens : Boolean_By_Seat)
+      return Total_By_Seat is
+      C      : constant Maps.Clearing := Self.Clearings (Clearing);
+      Totals :          Total_By_Seat := (others => 0);
    begin
-      return Self.Clearings (Clearing).Ruled_By;
-   end Who_Rules;
+      for S in Seat'Range loop
+         Totals (S) := C.Warriors (S)
+                     + C.Buildings (S)
+                     + (if Count_Tokens (S) then C.Tokens (S)
+                                            else 0);
+      end loop;
+      return Totals;
+   end Count_For_Rule;
 
 end Root.Maps;

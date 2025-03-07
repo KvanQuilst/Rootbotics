@@ -126,4 +126,7 @@ package Root is
 
    subtype Seat is UInt8 range 1 .. 6;
 
+   type Boolean_By_Seat is array (Seat'Range) of Boolean;
+   type Total_By_Seat   is array (Seat'Range) of UInt8;
+
 end Root;

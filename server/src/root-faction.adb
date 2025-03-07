@@ -23,6 +23,10 @@
 -- with The Rootbotics Assistant. If not, see                                --
 -- <https://www.gnu.org/licenses/>.                                          --
 -------------------------------------------------------------------------------
+with Root.Faction.CW_Alliance; use Root.Faction.CW_Alliance;
+with Root.Faction.CW_Lizards;  use Root.Faction.CW_Lizards;
+with Root.Faction.CW_Duchy;    use Root.Faction.CW_Duchy;
+
 package body Root.Faction is
 
    ---------------------
@@ -41,7 +45,5 @@ package body Root.Faction is
    -------------------------------
    -- Clockwork Faction Methods --
    -------------------------------
-   function Get_Difficulty (Self : Clockwork_Faction) return Difficulty is
-      (Self.Diff);
 
 end Root.Faction;
