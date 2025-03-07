@@ -32,11 +32,10 @@ with Root.Messages;
 with Root; use Root;
 with Root.Game; use Root.Game;
 with Root.Maps; use Root.Maps;
+with Root.Faction.CW_Duchy; use  Root.Faction.CW_Duchy;
 
 procedure Rootbotics_Server is
    VERSION : constant String := "v0.3-dev";
-
-   type UInt8 is mod 2**8;
 
    type Msg is record
       T : Integer;

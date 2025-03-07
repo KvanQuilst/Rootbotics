@@ -44,7 +44,4 @@ package body Root.Faction is
    function Get_Difficulty (Self : Clockwork_Faction) return Difficulty is
       (Self.Diff);
 
-   procedure Take_Turn (Self  : in out Clockwork_Faction;
-                        Order :        Suit) is null;
-
 end Root.Faction;
