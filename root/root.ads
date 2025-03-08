@@ -115,18 +115,15 @@ package Root is
       Nightmare   => 3
    );
 
-   type Phase is (Birdsong, Daylight, Evening, None);
+   subtype Clearing_Suit is Suit range Fox .. Mouse;
 
    subtype Priority is UInt8 range 1 .. 12;
-
-   type Priority_Arr  is array (Priority range <>) of Priority;
-   type Priority_List is array (Priority'Range) of UInt8 range 0 .. 12;
-
-   type Meeple_Arr    is array (Priority'Range) of UInt8;
+   type Boolean_By_Priority is array (Priority) of Boolean;
 
    subtype Seat is UInt8 range 1 .. 6;
+   type Boolean_By_Seat is array (Seat) of Boolean;
+   type Total_By_Seat   is array (Seat) of UInt8;
 
-   type Boolean_By_Seat is array (Seat'Range) of Boolean;
-   type Total_By_Seat   is array (Seat'Range) of UInt8;
+   type Inventory is array (Item) of UInt8;
 
 end Root;

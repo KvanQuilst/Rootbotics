@@ -37,17 +37,15 @@ package Root.Messages is
       Player  => 2
    );
 
-   -------------
-   -- Faction --
-   -------------
-   type Msg_Faction (Faction : Faction_Type) is record
-      Warrior_Supply : Integer;
-      case Faction is
-         when Duchy =>
-            Burrow : Integer;
-         when others =>
-              null;
-      end case;
-   end record;
+   ----------------------------
+   -- Serializable Interface --
+   ----------------------------
+   type Serializable is interface;
+
+   type Payload is array (UInt8 range <>) of UInt8;
+
+   function  Msg_Length  (Self : Serializable) return UInt8   is abstract;
+   function  Serialize   (Self : Serializable) return Payload is abstract;
+   procedure Deserialize (Self : Serializable)                is abstract;
 
 end Root.Messages;

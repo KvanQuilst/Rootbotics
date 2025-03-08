@@ -22,14 +22,24 @@
 -- with The Rootbotics Assistant. If not, see                                --
 -- <https://www.gnu.org/licenses/>.                                          --
 -------------------------------------------------------------------------------
+with Root.Messages; use Root.Messages;
+
 package Faction.CW_Lizards is
 
-   type Logical_Lizards is new Clockwork_Faction with private;
+   type Logical_Lizards is new Faction and Serializable with private;
+
+   overriding
+   function  Msg_Length  (Self : Logical_Lizards) return UInt8   is (0);
+   overriding
+   function  Serialize   (Self : Logical_Lizards) return Payload is (0, 0);
+   overriding
+   procedure Deserialize (Self : Logical_Lizards)                is null;
 
 private
 
-   type Logical_Lizards is new Clockwork_Faction (Lizards) with record
-      null;
-   end record;
+   type Logical_Lizards is new Faction (Lizards) and Serializable with
+      record
+         null;
+      end record;
 
 end Faction.CW_Lizards;

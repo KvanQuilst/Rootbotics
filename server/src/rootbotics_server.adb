@@ -30,6 +30,7 @@ with GNAT.Sockets; use GNAT.Sockets;
 
 with Root; use Root;
 with Root.Messages;
+with Faction; use Faction;
 with Game; use Game;
 with Maps; use Maps;
 

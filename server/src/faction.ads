@@ -28,7 +28,7 @@ with Types; use Types;
 
 package Faction is
 
-   type Faction_By_Seat is array (Seat'Range) of Faction_Type;
+   type Faction_By_Seat is array (Seat) of Faction_Type;
 
    -------------------
    -- Faction Class --
@@ -45,25 +45,16 @@ package Faction is
    procedure Setup     (Self : in out Faction) is null;
    procedure Take_Turn (Self : in out Faction) is null;
 
-   -----------------------------
-   -- Clockwork Faction Class --
-   -----------------------------
-   type Clockwork_Faction (<>) is new Faction with private;
-
 private
 
    -------------------
    -- Faction Class --
    -------------------
-   type Faction (F_Type : Faction_Type) is tagged record
-      S              : Seat;
-      Points         : UInt8 range 0 .. 50 := 0;
-      -- Dynamic Items Array --
-   end record;
-
-   type Clockwork_Faction is new Faction with record
-      Diff           : Difficulty := Normal;
-      Traits         : UInt8      := 0;
-   end record;
+   type Faction (F_Type : Faction_Type) is tagged
+      record
+         S              : Seat;
+         Points         : UInt8 range 0 .. 50 := 0;
+         Items          : Inventory;
+      end record;
 
 end Faction;

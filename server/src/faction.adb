@@ -42,8 +42,4 @@ package body Faction is
       return Self.Points >= 30;
    end Score_Points;
 
-   -------------------------------
-   -- Clockwork Faction Methods --
-   -------------------------------
-
 end Faction;

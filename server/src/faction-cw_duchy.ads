@@ -22,14 +22,24 @@
 -- with The Rootbotics Assistant. If not, see                                --
 -- <https://www.gnu.org/licenses/>.                                          --
 -------------------------------------------------------------------------------
+with Root.Messages; use Root.Messages;
+
 package Faction.CW_Duchy is
 
-   type Drillbit_Duchy is new Clockwork_Faction with private;
+   type Drillbit_Duchy is new Faction and Serializable with private;
+
+   overriding
+   function  Msg_Length  (Self : Drillbit_Duchy) return UInt8   is (0);
+   overriding
+   function  Serialize   (Self : Drillbit_Duchy) return Payload is (0, 0);
+   overriding
+   procedure Deserialize (Self : Drillbit_Duchy)                is null;
 
 private
 
-   type Drillbit_Duchy is new Clockwork_Faction (Duchy) with record
-      null;
-   end record;
+   type Drillbit_Duchy is new Faction (Duchy) and Serializable with
+      record
+         null;
+      end record;
 
 end Faction.CW_Duchy;

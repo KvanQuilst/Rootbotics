@@ -41,9 +41,10 @@ package Game is
 
 private
 
-   type Session (M_Type  : Map_Type) is tagged record
-      M : Map (M_Type);
-      F : Faction_Type;
-   end record;
+   type Session (M_Type  : Map_Type) is tagged
+      record
+         M : Map (M_Type);
+         F : Faction_Type;
+      end record;
 
 end Game;

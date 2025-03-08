@@ -28,8 +28,7 @@ with Types; use Types;
 
 package Maps is
 
-   subtype Clearing_Suit  is Suit range Fox .. Mouse;
-   type    Priority_Suits is array (Priority'Range) of Clearing_Suit;
+   type    Priority_Suits is array (Priority) of Clearing_Suit;
 
    ---------------
    -- Map Class --
@@ -72,14 +71,15 @@ private
       Buildings   : Total_By_Seat              := (others => 0);
    end record;
 
-   type Clearings_Arr is array (Priority'Range) of Clearing;
+   type Clearings_Arr is array (Priority) of Clearing;
 
    ---------------
    -- Map Class --
    ---------------
-   type Map (M_Type : Map_Type) is tagged record
-      Clearings : Clearings_Arr;
-   end record;
+   type Map (M_Type : Map_Type) is tagged
+      record
+         Clearings : Clearings_Arr;
+      end record;
 
    ----------
    -- Maps --
