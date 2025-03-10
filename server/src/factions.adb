@@ -23,15 +23,54 @@
 -- with The Rootbotics Assistant. If not, see                                --
 -- <https://www.gnu.org/licenses/>.                                          --
 -------------------------------------------------------------------------------
+with Ada.Exceptions; use Ada.Exceptions;
+with Ada.Streams; use Ada.Streams;
+with Ada.Text_IO; use Ada.Text_IO;
+
+with Games; use Games;
+with Messages; use Messages;
+
 with Factions.CW_Alliance; use Factions.CW_Alliance;
-with Factions.CW_Lizards;  use Factions.CW_Lizards;
-with Factions.CW_Duchy;    use Factions.CW_Duchy;
+with Factions.CW_Lizards; use Factions.CW_Lizards;
+with Factions.CW_Duchy; use Factions.CW_Duchy;
 
 package body Factions is
 
+   ----------------------
+   -- Message Handling --
+   ----------------------------------------------------------------------------
+   procedure Receive (Stream : not null access Root_Stream_Type'Class;
+                      Length : UInt8) is
+   begin
+      if Length < Faction_Msg_Len then
+         --  TODO: Non-terminating error msg
+         Put_Line ("> ERROR: FACTIONS . RECEIVE: "
+                 & "Faction message length too short:" & Length'Image);
+         return;
+      end if;
+
+      declare
+         Payload : constant Faction_Msg := Faction_Msg'Input (Stream);
+      begin
+         case Payload.Faction is
+            when others =>
+               Put_Line ("> ERROR: FACTION . RECEIVE: "
+                       & "Faction message unimplemented!");
+         end case;
+      end;
+   exception
+      when Constraint_Error =>
+         --  TODO: Non-terminating error msg
+         Put_Line ("> ERROR: FACTIONS . RECEIVE: "
+                 & "Invalid message.");
+      when E : others =>
+         Put_Line (Exception_Name (E) & ": " & Exception_Message (E));
+         raise;
+   end Receive;
+
    ---------------------
    -- Faction Methods --
-   ---------------------
+   ----------------------------------------------------------------------------
    function Get_Faction (Self : Faction) return Faction_Type is
       (Self.F_Type);
 

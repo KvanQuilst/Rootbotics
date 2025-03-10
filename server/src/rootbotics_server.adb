@@ -29,7 +29,7 @@ with GNAT.Sockets; use GNAT.Sockets;
 
 with Factions; use Factions;
 with Factions.CW_Alliance;
-with Message_Handler;
+with Servers;
 
 procedure Rootbotics_Server is
    VERSION : constant String := "v0.3-dev";
@@ -57,7 +57,7 @@ begin
    --  Faction'Output (Channel, F);
    F.Send (Channel);
 
-   Message_Handler.Receive (Channel);
+   Servers.Receive (Channel);
 
    Close_Socket (Server);
    Close_Socket (Socket);

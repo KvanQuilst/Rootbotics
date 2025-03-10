@@ -2,7 +2,7 @@
 --                                                                           --
 --                          ROOT FACTION ASSISTANT                           --
 --                                                                           --
---                          MESSAGE_HANDLER (Spec)                           --
+--                              SERVERS (Spec)                               --
 --                                                                           --
 --                      Copyright (C) 2025 Dylan Eskew                       --
 --                                                                           --
@@ -24,12 +24,26 @@
 -- with The Rootbotics Assistant. If not, see                                --
 -- <https://www.gnu.org/licenses/>.                                          --
 -------------------------------------------------------------------------------
+with GNAT.Sockets; use GNAT.Sockets;
+
 with Ada.Streams;
 
-package Message_Handler is
+package Servers is
 
-   procedure Receive (
-      Stream : not null access Ada.Streams.Root_Stream_Type'Class
-   );
+   procedure Receive
+      (Stream : not null access Ada.Streams.Root_Stream_Type'Class);
 
-end Message_Handler;
+   ------------------
+   -- Server Class --
+   ------------------
+   type Server is tagged private;
+
+private
+
+   type Server is tagged
+      record
+         Address : Sock_Addr_Type;
+         Server  : Socket_Type;
+      end record;
+
+end Servers;

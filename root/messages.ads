@@ -28,6 +28,12 @@ with Types; use Types;
 
 package Messages is
 
+   ----------------------------------------------------------------------------
+   -- NOTE: When adding or changing message types, need to ensure the message
+   --       record is always a multiple of 8-bytes in size. Otherwise, the
+   --       *_Len constant will break;
+   ----------------------------------------------------------------------------
+
    type Message_Type is (
       Game,
       Faction
@@ -46,7 +52,8 @@ package Messages is
    for Msg_Header use record
       Length   at 0 range 0 .. 7;
       Msg_Type at 1 range 0 .. 7;
-   end record; -- Length: 2 --
+   end record;
+   Msg_Header_Len : constant UInt8 := (Msg_Header'Size / 8);
 
    ----------------------
    -- Faction Messages --
@@ -61,7 +68,8 @@ package Messages is
       Faction at 0 range 0 .. 3;
       S       at 0 range 4 .. 7;
       Points  at 1 range 0 .. 7;
-   end record; -- Length: 2 --
+   end record;
+   Faction_Msg_Len : constant UInt8 := (Faction_Msg'Size / 8);
 
    -- Automated Alliance --
    type Automated_Alliance_Msg is record

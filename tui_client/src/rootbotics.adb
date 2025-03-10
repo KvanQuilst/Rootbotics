@@ -28,6 +28,7 @@ with Ada.Text_IO; use Ada.Text_IO;
 with GNAT.Sockets; use GNAT.Sockets;
 
 with Messages; use Messages;
+with Root; use Root;
 with Types; use Types;
 
 procedure Rootbotics is
@@ -62,8 +63,21 @@ begin
       --  Put_Line ("Points:" & Msg.Base.Points'Image);
    end;
 
-   UInt8'Output (Channel, 3);
-   UInt8'Output (Channel, 1);
+   declare
+      Header  : constant Msg_Header :=
+         (Length   => 4,
+          Msg_Type => Faction);
+      Payload : constant Faction_Msg :=
+         (Faction => Alliance,
+          S       => 1,
+          Points  => 10);
+   begin
+     Msg_Header'Output (Channel, Header);
+     --  Faction_Msg'Output (Channel, Payload);
+     UInt4'Output (Channel, 1);
+     UInt4'Output (Channel, 1);
+     UInt8'Output (Channel, 40);
+   end;
 
    Close_Socket (Socket);
 

@@ -88,7 +88,7 @@ package body Maps is
                             Count_Tokens : Boolean_By_Seat)
       return Total_By_Seat is
       C      : constant Maps.Clearing := Self.Clearings (Clearing);
-      Totals :          Total_By_Seat := (others => 0);
+      Totals :          Total_By_Seat := [others => 0];
    begin
       for S in Seat'Range loop
          Totals (S) := C.Warriors (S)

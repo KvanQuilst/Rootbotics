@@ -68,9 +68,9 @@ private
       Ruins       : Boolean;
       Ruled       : Boolean       := False;
       Ruled_By    : Seat          := 1;
-      Warriors    : Total_By_Seat := (others => 0);
-      Tokens      : Total_By_Seat := (others => 0);
-      Buildings   : Total_By_Seat := (others => 0);
+      Warriors    : Total_By_Seat := [others => 0];
+      Tokens      : Total_By_Seat := [others => 0];
+      Buildings   : Total_By_Seat := [others => 0];
    end record;
 
    type Clearings_Arr is array (Priority) of Clearing;
@@ -78,7 +78,7 @@ private
    ---------------
    -- Map Class --
    ---------------
-   Initial_Item_Supply : constant Inventory := (
+   Initial_Item_Supply : constant Inventory := [
       Boot => 2,
       Bag  => 2,
       Crossbow => 1,
@@ -86,7 +86,7 @@ private
       Sword    => 2,
       Tea      => 2,
       Coins    => 2
-   );
+   ];
 
    type Map (M_Type : Map_Type) is tagged
       record
@@ -97,7 +97,7 @@ private
    ----------
    -- Maps --
    ----------
-   Fall_Clearings : constant Clearings_Arr := (
+   Fall_Clearings : constant Clearings_Arr := [
       (Fox,    1, False,
        Ruled | Ruled_By | Warriors | Tokens | Buildings => <>), -- 1
       (Mouse,  2, False,
@@ -122,9 +122,9 @@ private
        Ruled | Ruled_By | Warriors | Tokens | Buildings => <>), -- 11
       (Fox,    1, True,
        Ruled | Ruled_By | Warriors | Tokens | Buildings => <>)  -- 12
-   );
+   ];
 
-   Winter_Clearings : constant Clearings_Arr := (
+   Winter_Clearings : constant Clearings_Arr := [
       (Rabbit, 1, False,
        Ruled | Ruled_By | Warriors | Tokens | Buildings => <>), -- 1
       (Rabbit, 1, False,
@@ -149,9 +149,9 @@ private
        Ruled | Ruled_By | Warriors | Tokens | Buildings => <>), -- 11
       (Mouse,  2, True,
        Ruled | Ruled_By | Warriors | Tokens | Buildings => <>)  -- 12
-   );
+   ];
 
-   Lake_Clearings : constant Clearings_Arr := (
+   Lake_Clearings : constant Clearings_Arr := [
       (Rabbit, 2, False,
        Ruled | Ruled_By | Warriors | Tokens | Buildings => <>), -- 1
       (Rabbit, 1, False,
@@ -176,9 +176,9 @@ private
        Ruled | Ruled_By | Warriors | Tokens | Buildings => <>), -- 11
       (Mouse,  2, True,
        Ruled | Ruled_By | Warriors | Tokens | Buildings => <>)  -- 12
-   );
+   ];
 
-   Mountain_Clearings : constant Clearings_Arr := (
+   Mountain_Clearings : constant Clearings_Arr := [
       (Rabbit, 2, False,
        Ruled | Ruled_By | Warriors | Tokens | Buildings => <>), -- 1
       (Rabbit, 2, False,
@@ -203,6 +203,6 @@ private
        Ruled | Ruled_By | Warriors | Tokens | Buildings => <>), -- 11
       (Mouse,  2, True,
        Ruled | Ruled_By | Warriors | Tokens | Buildings => <>)  -- 12
-   );
+   ];
 
 end Maps;

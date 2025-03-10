@@ -2,7 +2,7 @@
 --                                                                           --
 --                          ROOT FACTION ASSISTANT                           --
 --                                                                           --
---                          MESSAGE_HANDLER (Body)                           --
+--                              SERVERS (Body)                               --
 --                                                                           --
 --                      Copyright (C) 2025 Dylan Eskew                       --
 --                                                                           --
@@ -28,10 +28,11 @@ with Ada.Exceptions; use Ada.Exceptions;
 with Ada.Streams; use Ada.Streams;
 with Ada.Text_IO; use Ada.Text_IO;
 
+with Factions;
 with Messages; use Messages;
 with Types; use Types;
 
-package body Message_Handler is
+package body Servers is
 
    procedure Receive (Stream : not null access Root_Stream_Type'Class) is
       --  Payload : constant Msg_Header := Msg_Header'Input (Stream);
@@ -39,25 +40,33 @@ package body Message_Handler is
       Msg_Type_Val : constant UInt8 := UInt8'Input (Stream);
       Msg_Type     : Message_Type;
    begin
-      if Length <= 2 then
+      if Length <= Msg_Header_Len then
          --  TODO: Non-terminating error msg
+         Put_Line ("> ERROR: MESSAGE_HANDLER . RECEIVE: "
+                 & "Message length too short:" & Length'Image);
          return;
       end if;
 
       Msg_Type := Message_Type'Val (Msg_Type_Val);
 
+      Put_Line ("> DEBUG: " & Msg_Type'Image);
+
       case Msg_Type is
+         when Faction =>
+            Factions.Receive (Stream, Length - 2);
          when others =>
-            Put_Line ("> TODO: Unimplemented message type!");
+            Put_Line ("> ERROR: MESSAGE . RECEIVE: "
+                    & "Unimplemented message type!");
       end case;
 
    exception
       when Constraint_Error =>
          --  TODO: Non-terminating error msg
-         Put_Line ("> ERROR: Unrecognized message type!");
+         Put_Line ("> ERROR: MESSAGE . RECEIVE: "
+                 & "Unrecognized message type:" & Msg_Type_Val'Image);
       when E : others =>
          Put_Line (Exception_Name (E) & ": " & Exception_Message (E));
          raise;
    end Receive;
 
-end Message_Handler;
+end Servers;

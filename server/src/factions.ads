@@ -32,6 +32,11 @@ package Factions is
 
    type Faction_By_Seat is array (Seat) of Faction_Type;
 
+   procedure Receive (
+      Stream : not null access Ada.Streams.Root_Stream_Type'Class;
+      Length : UInt8
+   );
+
    -------------------
    -- Faction Class --
    -------------------

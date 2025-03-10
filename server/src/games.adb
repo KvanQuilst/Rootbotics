@@ -27,7 +27,7 @@ package body Games is
 
    ------------------
    -- Game Methods --
-   ------------------
+   ----------------------------------------------------------------------------
 
    -- Constructor --
    function New_Game (M_Type  : Map_Type;
