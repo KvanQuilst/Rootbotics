@@ -2,11 +2,12 @@
 --                                                                           --
 --                          ROOT FACTION ASSISTANT                           --
 --                                                                           --
---                        FACTION . CW_LIZARDS (Spec)                        --
+--                               TYPES (Spec)                                --
 --                                                                           --
 --                      Copyright (C) 2025 Dylan Eskew                       --
 --                                                                           --
--- This file contains the specification of the Logical Lizards faction.      --
+-- This file contains the specification for common mundane types used        --
+-- throughout the project.                                                   --
 --                                                                           --
 -- The Root Faction Assistant is free software: you can redistribute it      --
 -- and/or modify it under the terms of the GNU General Public License as     --
@@ -22,24 +23,17 @@
 -- with The Rootbotics Assistant. If not, see                                --
 -- <https://www.gnu.org/licenses/>.                                          --
 -------------------------------------------------------------------------------
-with Root.Messages; use Root.Messages;
+package Types is
 
-package Faction.CW_Lizards is
+   type UInt2 is mod 2 ** 2
+      with Size => 2;
+   type UInt3 is mod 2 ** 3
+      with Size => 3;
+   type UInt4 is mod 2 ** 4
+      with Size => 4;
+   type UInt8 is mod 2 ** 8
+      with Size => 8;
+   type UInt16 is mod 2 ** 16
+      with Size => 16;
 
-   type Logical_Lizards is new Faction and Serializable with private;
-
-   overriding
-   function  Msg_Length  (Self : Logical_Lizards) return UInt8   is (0);
-   overriding
-   function  Serialize   (Self : Logical_Lizards) return Payload is (0, 0);
-   overriding
-   procedure Deserialize (Self : Logical_Lizards)                is null;
-
-private
-
-   type Logical_Lizards is new Faction (Lizards) and Serializable with
-      record
-         null;
-      end record;
-
-end Faction.CW_Lizards;
+end Types;

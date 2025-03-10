@@ -2,12 +2,11 @@
 --                                                                           --
 --                          ROOT FACTION ASSISTANT                           --
 --                                                                           --
---                              FACTION (Spec)                               --
+--                       FACTIONS . CW_LIZARDS (Spec)                        --
 --                                                                           --
 --                      Copyright (C) 2025 Dylan Eskew                       --
 --                                                                           --
--- This file contains the specification of the common faction-related        --
--- subroutines used throughout The Rootbotics Assistant.                     --
+-- This file contains the specification of the Logical Lizards faction.      --
 --                                                                           --
 -- The Root Faction Assistant is free software: you can redistribute it      --
 -- and/or modify it under the terms of the GNU General Public License as     --
@@ -23,38 +22,36 @@
 -- with The Rootbotics Assistant. If not, see                                --
 -- <https://www.gnu.org/licenses/>.                                          --
 -------------------------------------------------------------------------------
-with Root; use Root;
-with Types; use Types;
+with Messages; use Messages;
 
-package Faction is
+package Factions.CW_Lizards is
 
-   type Faction_By_Seat is array (Seat) of Faction_Type;
+   type Logical_Lizards is new Faction with private;
 
-   -------------------
-   -- Faction Class --
-   -------------------
-   type Faction (<>) is abstract tagged private;
+   -- Faction Methods --
+   overriding
+   procedure Setup     (Self : in out Logical_Lizards) is null;
+   overriding
+   procedure Take_Turn (Self : in out Logical_Lizards) is null;
 
-   -- Faction Concrete Methods --
-   function Get_Faction (Self : Faction) return Faction_Type;
+   -- Serialization Methods --
+   overriding
+   procedure Send (
+      Self   : Logical_Lizards;
+      Stream : not null access Ada.Streams.Root_Stream_Type'Class
+   ) is null;
 
-   function Score_Points (Self       : in out Faction;
-                          Num_Points :        UInt8) return Boolean;
-
-   -- Faction Abstract Methods --
-   procedure Setup     (Self : in out Faction) is null;
-   procedure Take_Turn (Self : in out Faction) is null;
+   overriding
+   procedure Receive (
+      Self   : in out Logical_Lizards;
+      Stream : not null access Ada.Streams.Root_Stream_Type'Class
+   ) is null;
 
 private
 
-   -------------------
-   -- Faction Class --
-   -------------------
-   type Faction (F_Type : Faction_Type) is tagged
+   type Logical_Lizards is new Faction (Lizards) with
       record
-         S              : Seat;
-         Points         : UInt8 range 0 .. 50 := 0;
-         Items          : Inventory;
+         null;
       end record;
 
-end Faction;
+end Factions.CW_Lizards;

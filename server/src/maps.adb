@@ -31,12 +31,13 @@ package body Maps is
 
    -- Constructors --
    function New_Map (M_Type : Map_Type) return Map is
-      (M_Type => M_Type,
-       Clearings => (case M_Type is
-                        when Fall     => Fall_Clearings,
-                        when Winter   => Winter_Clearings,
-                        when Lake     => Lake_Clearings,
-                        when Mountain => Mountain_Clearings));
+      (M_Type      => M_Type,
+       Item_Supply => <>,
+       Clearings   => (case M_Type is
+                          when Fall     => Fall_Clearings,
+                          when Winter   => Winter_Clearings,
+                          when Lake     => Lake_Clearings,
+                          when Mountain => Mountain_Clearings));
 
    function New_Map (M_Type : Map_Type;
                      Suits  : Priority_Suits) return Map is

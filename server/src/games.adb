@@ -2,7 +2,7 @@
 --                                                                           --
 --                          ROOT FACTION ASSISTANT                           --
 --                                                                           --
---                                GAME (Body)                                --
+--                                GAMES (Body)                               --
 --                                                                           --
 --                      Copyright (C) 2025 Dylan Eskew                       --
 --                                                                           --
@@ -23,20 +23,20 @@
 -- with The Rootbotics Assistant. If not, see                                --
 -- <https://www.gnu.org/licenses/>.                                          --
 -------------------------------------------------------------------------------
-package body Game is
+package body Games is
 
    ------------------
    -- Game Methods --
    ------------------
 
    -- Constructor --
-   function New_Session (M_Type  : Map_Type;
-                         M_Suits : Priority_Suits) return Session is
+   function New_Game (M_Type  : Map_Type;
+                      M_Suits : Priority_Suits) return Game is
       (M_Type => M_Type,
        M      => New_Map (M_Type, M_Suits),
        F      => Marquise);
 
-   function Get_Map (Self : Session) return Map is
+   function Get_Map (Self : Game) return Map is
       (Self.M);
 
-end Game;
+end Games;

@@ -2,11 +2,12 @@
 --                                                                           --
 --                          ROOT FACTION ASSISTANT                           --
 --                                                                           --
---                       FACTION . CW_ALLIANCE (Spec)                        --
+--                             FACTIONS (Spec)                               --
 --                                                                           --
 --                      Copyright (C) 2025 Dylan Eskew                       --
 --                                                                           --
--- This file contains the specification of the Automated Alliance faction.   --
+-- This file contains the specification of the common faction-related        --
+-- subroutines used throughout The Rootbotics Assistant.                     --
 --                                                                           --
 -- The Root Faction Assistant is free software: you can redistribute it      --
 -- and/or modify it under the terms of the GNU General Public License as     --
@@ -22,37 +23,51 @@
 -- with The Rootbotics Assistant. If not, see                                --
 -- <https://www.gnu.org/licenses/>.                                          --
 -------------------------------------------------------------------------------
-with Root.Messages; use Root.Messages;
+with Ada.Streams;
 
-package Faction.CW_Alliance is
+with Root; use Root;
+with Types; use Types;
 
-   type Automated_Alliance is new Faction and Serializable with private;
+package Factions is
 
-   overriding
-   function  Msg_Length  (Self : Automated_Alliance) return UInt8   is (0);
-   overriding
-   function  Serialize   (Self : Automated_Alliance) return Payload is (0, 0);
-   overriding
-   procedure Deserialize (Self : Automated_Alliance)                is null;
+   type Faction_By_Seat is array (Seat) of Faction_Type;
+
+   -------------------
+   -- Faction Class --
+   -------------------
+   type Faction (<>) is abstract tagged private;
+
+   -- Faction Concrete Methods --
+   function Get_Faction (Self : Faction) return Faction_Type;
+
+   function Score_Points (Self       : in out Faction;
+                          Num_Points :        UInt8) return Boolean;
+
+   -- Faction Abstract Methods --
+   procedure Setup     (Self : in out Faction) is abstract;
+   procedure Take_Turn (Self : in out Faction) is abstract;
+
+   -- Serialization Methods --
+   procedure Send (
+      Self   : Faction;
+      Stream : not null access Ada.Streams.Root_Stream_Type'Class
+   ) is abstract;
+
+   procedure Receive (
+      Self   : in out Faction;
+      Stream : not null access Ada.Streams.Root_Stream_Type'Class
+   ) is abstract;
 
 private
 
-   subtype Warrior          is UInt8 range 0 .. 10;
-   type    Warrior_By_Clear is array (Priority) of Warrior;
-
-   subtype Sympathy          is UInt8 range 0 .. 10;
-
-   type Base_Supply_By_Suit is array (Clearing_Suit) of Boolean;
-   type Base_Clears_By_Suit is array (Clearing_Suit) of Priority;
-
-   type Automated_Alliance is new Faction (Alliance) and Serializable with
+   -------------------
+   -- Faction Class --
+   -------------------
+   type Faction (F_Type : Faction_Type) is abstract tagged
       record
-         Warrior_Supply     : Warrior             := Warrior'Last;
-         Map_Warriors       : Warrior_By_Clear    := (others => 0);
-         Sympathy_Supply    : Sympathy            := Sympathy'Last;
-         Sympathetic_Clears : Boolean_By_Priority := (others => False);
-         Base_Supply        : Base_Supply_By_Suit := (others => True);
-         Base_Clears        : Base_Clears_By_Suit := (others => 1);
+         S      : Seat;
+         Points : Point     := 0;
+         Items  : Inventory := [others => 0];
       end record;
 
-end Faction.CW_Alliance;
+end Factions;

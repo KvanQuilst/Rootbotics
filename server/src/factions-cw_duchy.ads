@@ -2,12 +2,11 @@
 --                                                                           --
 --                          ROOT FACTION ASSISTANT                           --
 --                                                                           --
---                               TYPES (Spec)                                --
+--                        FACTIONS . CW_DUCHY (Spec)                         --
 --                                                                           --
 --                      Copyright (C) 2025 Dylan Eskew                       --
 --                                                                           --
--- This file contains the specification for common mundane types used        --
--- throughout the project.                                                   --
+-- This file contains the specification of the Drillbit Duchy faction.       --
 --                                                                           --
 -- The Root Faction Assistant is free software: you can redistribute it      --
 -- and/or modify it under the terms of the GNU General Public License as     --
@@ -23,9 +22,36 @@
 -- with The Rootbotics Assistant. If not, see                                --
 -- <https://www.gnu.org/licenses/>.                                          --
 -------------------------------------------------------------------------------
-package Types is
+with Messages; use Messages;
 
-   type UInt8 is mod 2 ** 8
-      with Size => 8;
+package Factions.CW_Duchy is
 
-end Types;
+   type Drillbit_Duchy is new Faction with private;
+
+   -- Faction Methods --
+   overriding
+   procedure Setup     (Self : in out Drillbit_Duchy) is null;
+   overriding
+   procedure Take_Turn (Self : in out Drillbit_Duchy) is null;
+
+   -- Serialization Methods --
+   overriding
+   procedure Send (
+      Self   : Drillbit_Duchy;
+      Stream : not null access Ada.Streams.Root_Stream_Type'Class
+   ) is null;
+
+   overriding
+   procedure Receive (
+      Self   : in out Drillbit_Duchy;
+      Stream : not null access Ada.Streams.Root_Stream_Type'Class
+   ) is null;
+
+private
+
+   type Drillbit_Duchy is new Faction (Duchy) with
+      record
+         null;
+      end record;
+
+end Factions.CW_Duchy;

@@ -25,32 +25,13 @@
 -------------------------------------------------------------------------------
 with Ada.Exceptions; use Ada.Exceptions;
 with Ada.Text_IO; use Ada.Text_IO;
-
 with GNAT.Sockets; use GNAT.Sockets;
+
+with Messages; use Messages;
+with Types; use Types;
 
 procedure Rootbotics is
    VERSION : constant String := "v0.3-dev";
-
-   type UInt8 is mod 2**8;
-
-   type T is (Cats, Mice);
-
-   type Msg (Ty : T) is record
-      case Ty is
-         when Cats =>
-            B : UInt8;
-            C : UInt8;
-            D : UInt8;
-         when Mice =>
-            M : UInt8;
-            N : UInt8;
-            O : UInt8;
-      end case;
-   end record with Pack;
-
-   M : constant Msg := (Cats, 0, 0, 16#80#);
-   N : constant UInt8 := 0;
-   O : constant UInt8 := 16#80#;
 
    -- Networking --
    Address : Sock_Addr_Type;
@@ -66,10 +47,23 @@ begin
    Connect_Socket (Socket, Address);
    Channel := Stream (Socket);
 
-   UInt8'Output (Channel, O);
-   UInt8'Output (Channel, N);
-   UInt8'Output (Channel, N);
-   UInt8'Output (Channel, N);
+   declare
+      --  Msg : Automated_Alliance_Msg := Automated_Alliance_Msg'Input (Channel);
+      Len : constant UInt8 := UInt8'Input (Channel);
+      Msg : UInt8;
+   begin
+      Put_Line ("Length:" & Len'Image);
+      for I in 0 .. (Len - 1) loop
+         Msg := UInt8'Input (Channel);
+         Put_Line ("Byte" & I'Image & ":" & Msg'Image);
+      end loop;
+      --  Put_Line ("Faction:" & Msg.Base.Faction'Image);
+      --  Put_Line ("Seat:" & Msg.Base.S'Image);
+      --  Put_Line ("Points:" & Msg.Base.Points'Image);
+   end;
+
+   UInt8'Output (Channel, 3);
+   UInt8'Output (Channel, 1);
 
    Close_Socket (Socket);
 

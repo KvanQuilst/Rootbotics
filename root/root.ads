@@ -88,7 +88,7 @@ package Root is
       Riverfolk,
       Duchy,
       Corvids
-   ) with Size => 8;
+   ) with Size => 4;
 
    for Faction_Type use (
       Marquise  => 0,
@@ -120,9 +120,11 @@ package Root is
    subtype Priority is UInt8 range 1 .. 12;
    type Boolean_By_Priority is array (Priority) of Boolean;
 
-   subtype Seat is UInt8 range 1 .. 6;
+   subtype Seat is UInt4 range 1 .. 6;
    type Boolean_By_Seat is array (Seat) of Boolean;
    type Total_By_Seat   is array (Seat) of UInt8;
+
+   subtype Point is UInt8 range 0 .. 40;
 
    type Inventory is array (Item) of UInt8;
 

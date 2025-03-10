@@ -2,12 +2,13 @@
 --                                                                           --
 --                          ROOT FACTION ASSISTANT                           --
 --                                                                           --
---                            ROOTBOTICS SERVER                              --
+--                          MESSAGE_HANDLER (Body)                           --
 --                                                                           --
 --                      Copyright (C) 2025 Dylan Eskew                       --
 --                                                                           --
--- This file contains the main server loop for managing Leder Games' Root:   --
--- Clockwork Expansion bots.                                                 --
+-- This file contains the implementation for the message handling aspect     --
+-- of the Root Faction Assistant. This is the package which handles          --
+-- interactions with clients.                                                --
 --                                                                           --
 -- The Root Faction Assistant is free software: you can redistribute it      --
 -- and/or modify it under the terms of the GNU General Public License as     --
@@ -24,44 +25,39 @@
 -- <https://www.gnu.org/licenses/>.                                          --
 -------------------------------------------------------------------------------
 with Ada.Exceptions; use Ada.Exceptions;
+with Ada.Streams; use Ada.Streams;
 with Ada.Text_IO; use Ada.Text_IO;
-with GNAT.Sockets; use GNAT.Sockets;
 
-with Factions; use Factions;
-with Factions.CW_Alliance;
-with Message_Handler;
+with Messages; use Messages;
+with Types; use Types;
 
-procedure Rootbotics_Server is
-   VERSION : constant String := "v0.3-dev";
+package body Message_Handler is
 
-   F : constant Faction'Class := Factions.CW_Alliance.New_Faction;
+   procedure Receive (Stream : not null access Root_Stream_Type'Class) is
+      --  Payload : constant Msg_Header := Msg_Header'Input (Stream);
+      Length       : constant UInt8 := UInt8'Input (Stream);
+      Msg_Type_Val : constant UInt8 := UInt8'Input (Stream);
+      Msg_Type     : Message_Type;
+   begin
+      if Length <= 2 then
+         --  TODO: Non-terminating error msg
+         return;
+      end if;
 
-   -- Networking --
-   Address         : Sock_Addr_Type;
-   Server, Socket  : Socket_Type;
-   Channel         : Stream_Access;
+      Msg_Type := Message_Type'Val (Msg_Type_Val);
 
-begin
-   -- Setup Server --
-   Address.Addr := Addresses (Get_Host_By_Name (Host_Name), 1);
-   Address.Port := 5876;
-   Create_Socket (Server);
+      case Msg_Type is
+         when others =>
+            Put_Line ("> TODO: Unimplemented message type!");
+      end case;
 
-   Set_Socket_Option (Server, Socket_Level, (Reuse_Address, True));
+   exception
+      when Constraint_Error =>
+         --  TODO: Non-terminating error msg
+         Put_Line ("> ERROR: Unrecognized message type!");
+      when E : others =>
+         Put_Line (Exception_Name (E) & ": " & Exception_Message (E));
+         raise;
+   end Receive;
 
-   Bind_Socket (Server, Address);
-   Listen_Socket (Server);
-   Accept_Socket (Server, Socket, Address);
-   Channel := Stream (Socket);
-
-   --  Faction'Output (Channel, F);
-   F.Send (Channel);
-
-   Message_Handler.Receive (Channel);
-
-   Close_Socket (Server);
-   Close_Socket (Socket);
-
-exception when E : others =>
-   Put_Line (Exception_Name (E) & ": " & Exception_Message (E));
-end Rootbotics_Server;
+end Message_Handler;

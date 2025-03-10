@@ -66,9 +66,11 @@ private
       Suit        : Clearing_Suit;
       Builds_Free : UInt8 range 0 .. 3;
       Ruins       : Boolean;
-      Warriors    : Total_By_Seat              := (others => 0);
-      Tokens      : Total_By_Seat              := (others => 0);
-      Buildings   : Total_By_Seat              := (others => 0);
+      Ruled       : Boolean       := False;
+      Ruled_By    : Seat          := 1;
+      Warriors    : Total_By_Seat := (others => 0);
+      Tokens      : Total_By_Seat := (others => 0);
+      Buildings   : Total_By_Seat := (others => 0);
    end record;
 
    type Clearings_Arr is array (Priority) of Clearing;
@@ -76,9 +78,20 @@ private
    ---------------
    -- Map Class --
    ---------------
+   Initial_Item_Supply : constant Inventory := (
+      Boot => 2,
+      Bag  => 2,
+      Crossbow => 1,
+      Hammer   => 1,
+      Sword    => 2,
+      Tea      => 2,
+      Coins    => 2
+   );
+
    type Map (M_Type : Map_Type) is tagged
       record
-         Clearings : Clearings_Arr;
+         Item_Supply : Inventory := Initial_Item_Supply;
+         Clearings   : Clearings_Arr;
       end record;
 
    ----------
@@ -86,110 +99,110 @@ private
    ----------
    Fall_Clearings : constant Clearings_Arr := (
       (Fox,    1, False,
-       Warriors | Tokens | Buildings => <>), -- 1
+       Ruled | Ruled_By | Warriors | Tokens | Buildings => <>), -- 1
       (Mouse,  2, False,
-       Warriors | Tokens | Buildings => <>), -- 2
+       Ruled | Ruled_By | Warriors | Tokens | Buildings => <>), -- 2
       (Rabbit, 1, False,
-       Warriors | Tokens | Buildings => <>), -- 3
+       Ruled | Ruled_By | Warriors | Tokens | Buildings => <>), -- 3
       (Rabbit, 1, False,
-       Warriors | Tokens | Buildings => <>), -- 4
+       Ruled | Ruled_By | Warriors | Tokens | Buildings => <>), -- 4
       (Rabbit, 2, False,
-       Warriors | Tokens | Buildings => <>), -- 5
+       Ruled | Ruled_By | Warriors | Tokens | Buildings => <>), -- 5
       (Fox,    1, True,
-       Warriors | Tokens | Buildings => <>), -- 6
+       Ruled | Ruled_By | Warriors | Tokens | Buildings => <>), -- 6
       (Mouse,  2, False,
-       Warriors | Tokens | Buildings => <>), -- 7
+       Ruled | Ruled_By | Warriors | Tokens | Buildings => <>), -- 7
       (Fox,    2, False,
-       Warriors | Tokens | Buildings => <>), -- 8
+       Ruled | Ruled_By | Warriors | Tokens | Buildings => <>), -- 8
       (Mouse,  2, False,
-       Warriors | Tokens | Buildings => <>), -- 9
+       Ruled | Ruled_By | Warriors | Tokens | Buildings => <>), -- 9
       (Rabbit, 1, True,
-       Warriors | Tokens | Buildings => <>), -- 10
+       Ruled | Ruled_By | Warriors | Tokens | Buildings => <>), -- 10
       (Mouse,  2, True,
-       Warriors | Tokens | Buildings => <>), -- 11
+       Ruled | Ruled_By | Warriors | Tokens | Buildings => <>), -- 11
       (Fox,    1, True,
-       Warriors | Tokens | Buildings => <>)  -- 12
+       Ruled | Ruled_By | Warriors | Tokens | Buildings => <>)  -- 12
    );
 
    Winter_Clearings : constant Clearings_Arr := (
       (Rabbit, 1, False,
-       Warriors | Tokens | Buildings => <>), -- 1
+       Ruled | Ruled_By | Warriors | Tokens | Buildings => <>), -- 1
       (Rabbit, 1, False,
-       Warriors | Tokens | Buildings => <>), -- 2
+       Ruled | Ruled_By | Warriors | Tokens | Buildings => <>), -- 2
       (Rabbit, 2, False,
-       Warriors | Tokens | Buildings => <>), -- 3
+       Ruled | Ruled_By | Warriors | Tokens | Buildings => <>), -- 3
       (Fox,    2, False,
-       Warriors | Tokens | Buildings => <>), -- 4
+       Ruled | Ruled_By | Warriors | Tokens | Buildings => <>), -- 4
       (Fox,    2, False,
-       Warriors | Tokens | Buildings => <>), -- 5
+       Ruled | Ruled_By | Warriors | Tokens | Buildings => <>), -- 5
       (Mouse,  2, False,
-       Warriors | Tokens | Buildings => <>), -- 6
+       Ruled | Ruled_By | Warriors | Tokens | Buildings => <>), -- 6
       (Fox,    1, False,
-       Warriors | Tokens | Buildings => <>), -- 7
+       Ruled | Ruled_By | Warriors | Tokens | Buildings => <>), -- 7
       (Fox,    1, True,
-       Warriors | Tokens | Buildings => <>), -- 8
+       Ruled | Ruled_By | Warriors | Tokens | Buildings => <>), -- 8
       (Mouse,  1, True,
-       Warriors | Tokens | Buildings => <>), -- 9
+       Ruled | Ruled_By | Warriors | Tokens | Buildings => <>), -- 9
       (Mouse,  1, False,
-       Warriors | Tokens | Buildings => <>), -- 10
+       Ruled | Ruled_By | Warriors | Tokens | Buildings => <>), -- 10
       (Rabbit, 2, True,
-       Warriors | Tokens | Buildings => <>), -- 11
+       Ruled | Ruled_By | Warriors | Tokens | Buildings => <>), -- 11
       (Mouse,  2, True,
-       Warriors | Tokens | Buildings => <>)  -- 12
+       Ruled | Ruled_By | Warriors | Tokens | Buildings => <>)  -- 12
    );
 
    Lake_Clearings : constant Clearings_Arr := (
       (Rabbit, 2, False,
-       Warriors | Tokens | Buildings => <>), -- 1
+       Ruled | Ruled_By | Warriors | Tokens | Buildings => <>), -- 1
       (Rabbit, 1, False,
-       Warriors | Tokens | Buildings => <>), -- 2
+       Ruled | Ruled_By | Warriors | Tokens | Buildings => <>), -- 2
       (Fox,    1, False,
-       Warriors | Tokens | Buildings => <>), -- 3
+       Ruled | Ruled_By | Warriors | Tokens | Buildings => <>), -- 3
       (Rabbit, 1, False,
-       Warriors | Tokens | Buildings => <>), -- 4
+       Ruled | Ruled_By | Warriors | Tokens | Buildings => <>), -- 4
       (Mouse,  2, True,
-       Warriors | Tokens | Buildings => <>), -- 5
+       Ruled | Ruled_By | Warriors | Tokens | Buildings => <>), -- 5
       (Mouse,  2, False,
-       Warriors | Tokens | Buildings => <>), -- 6
+       Ruled | Ruled_By | Warriors | Tokens | Buildings => <>), -- 6
       (Fox,    1, False,
-       Warriors | Tokens | Buildings => <>), -- 7
+       Ruled | Ruled_By | Warriors | Tokens | Buildings => <>), -- 7
       (Fox,    1, False,
-       Warriors | Tokens | Buildings => <>), -- 8
+       Ruled | Ruled_By | Warriors | Tokens | Buildings => <>), -- 8
       (Fox,    1, False,
-       Warriors | Tokens | Buildings => <>), -- 9
+       Ruled | Ruled_By | Warriors | Tokens | Buildings => <>), -- 9
       (Mouse,  2, True,
-       Warriors | Tokens | Buildings => <>), -- 10
+       Ruled | Ruled_By | Warriors | Tokens | Buildings => <>), -- 10
       (Rabbit, 2, True,
-       Warriors | Tokens | Buildings => <>), -- 11
+       Ruled | Ruled_By | Warriors | Tokens | Buildings => <>), -- 11
       (Mouse,  2, True,
-       Warriors | Tokens | Buildings => <>)  -- 12
+       Ruled | Ruled_By | Warriors | Tokens | Buildings => <>)  -- 12
    );
 
    Mountain_Clearings : constant Clearings_Arr := (
       (Rabbit, 2, False,
-       Warriors | Tokens | Buildings => <>), -- 1
+       Ruled | Ruled_By | Warriors | Tokens | Buildings => <>), -- 1
       (Rabbit, 2, False,
-       Warriors | Tokens | Buildings => <>), -- 2
+       Ruled | Ruled_By | Warriors | Tokens | Buildings => <>), -- 2
       (Rabbit, 2, False,
-       Warriors | Tokens | Buildings => <>), -- 3
+       Ruled | Ruled_By | Warriors | Tokens | Buildings => <>), -- 3
       (Mouse,  2, False,
-       Warriors | Tokens | Buildings => <>), -- 4
+       Ruled | Ruled_By | Warriors | Tokens | Buildings => <>), -- 4
       (Fox,    1, False,
-       Warriors | Tokens | Buildings => <>), -- 5
+       Ruled | Ruled_By | Warriors | Tokens | Buildings => <>), -- 5
       (Fox,    1, False,
-       Warriors | Tokens | Buildings => <>), -- 6
+       Ruled | Ruled_By | Warriors | Tokens | Buildings => <>), -- 6
       (Mouse,  1, False,
-       Warriors | Tokens | Buildings => <>), -- 7
+       Ruled | Ruled_By | Warriors | Tokens | Buildings => <>), -- 7
       (Fox,    1, False,
-       Warriors | Tokens | Buildings => <>), -- 8
+       Ruled | Ruled_By | Warriors | Tokens | Buildings => <>), -- 8
       (Mouse,  2, True,
-       Warriors | Tokens | Buildings => <>), -- 9
+       Ruled | Ruled_By | Warriors | Tokens | Buildings => <>), -- 9
       (Rabbit, 1, True,
-       Warriors | Tokens | Buildings => <>), -- 10
+       Ruled | Ruled_By | Warriors | Tokens | Buildings => <>), -- 10
       (Fox,    2, True,
-       Warriors | Tokens | Buildings => <>), -- 11
+       Ruled | Ruled_By | Warriors | Tokens | Buildings => <>), -- 11
       (Mouse,  2, True,
-       Warriors | Tokens | Buildings => <>)  -- 12
+       Ruled | Ruled_By | Warriors | Tokens | Buildings => <>)  -- 12
    );
 
 end Maps;
