@@ -25,9 +25,11 @@
 with Ada.Streams; use Ada.Streams;
 
 with Messages; use Messages;
+with Server;
 
 package body Factions.CW_Alliance is
 
+   overriding
    function New_Faction return Automated_Alliance is
       (F_Type                               => Alliance,
        S                                    => 1,

@@ -42,6 +42,10 @@ package Factions is
    -- Faction Class --
    -------------------
    type Faction (<>) is abstract new Server.Serializable with private;
+   type Faction_Class is access Faction'Class;
+
+   -- Constructor --
+   function New_Faction return Faction is abstract;
 
    -- Faction Concrete Methods --
    function Get_Faction (Self : Faction) return Faction_Type;

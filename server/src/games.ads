@@ -23,8 +23,9 @@
 -- with The Rootbotics Assistant. If not, see                                --
 -- <https://www.gnu.org/licenses/>.                                          --
 -------------------------------------------------------------------------------
-with Root; use Root;
+with Factions; use Factions;
 with Maps; use Maps;
+with Root; use Root;
 
 package Games is
 
@@ -34,17 +35,23 @@ package Games is
    type Game (<>) is tagged private;
 
    -- Constructor --
-   function New_Game (M_Type  : Map_Type;
-                      M_Suits : Priority_Suits) return Game;
+   function New_Game (M_Type      : Map_Type;
+                      M_Suits     : Priority_Suits;
+                      Num_Players : Seat) return Game;
 
    function  Get_Map (Self : Game) return Map;
 
 private
 
-   type Game (M_Type  : Map_Type) is tagged
+   type Faction_By_Seat is array (Seat range <>) of Faction_Class;
+
+   type Game (M_Type      : Map_Type;
+              Num_Players : Seat) is tagged
       record
          M : Map (M_Type);
-         F : Faction_Type;
+         Players : Faction_By_Seat (1 .. Num_Players);
+         -- Configure post initialization --
+         Factions_Set : Boolean := False;
       end record;
 
 end Games;

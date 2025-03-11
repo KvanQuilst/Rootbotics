@@ -30,11 +30,14 @@ package body Games is
    ----------------------------------------------------------------------------
 
    -- Constructor --
-   function New_Game (M_Type  : Map_Type;
-                      M_Suits : Priority_Suits) return Game is
-      (M_Type => M_Type,
-       M      => New_Map (M_Type, M_Suits),
-       F      => Marquise);
+   function New_Game (M_Type      : Map_Type;
+                      M_Suits     : Priority_Suits;
+                      Num_Players : Seat) return Game is
+      (M_Type      => M_Type,
+       Num_Players => Num_Players,
+       M           => New_Map (M_Type, M_Suits),
+       Players     => [others => null],
+       Factions_Set => <>);
 
    function Get_Map (Self : Game) return Map is
       (Self.M);

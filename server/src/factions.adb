@@ -30,10 +30,6 @@ with Ada.Text_IO; use Ada.Text_IO;
 with Games; use Games;
 with Messages; use Messages;
 
-with Factions.CW_Alliance; use Factions.CW_Alliance;
-with Factions.CW_Lizards; use Factions.CW_Lizards;
-with Factions.CW_Duchy; use Factions.CW_Duchy;
-
 package body Factions is
 
    ----------------------
