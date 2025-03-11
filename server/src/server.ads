@@ -2,7 +2,7 @@
 --                                                                           --
 --                          ROOT FACTION ASSISTANT                           --
 --                                                                           --
---                              SERVERS (Spec)                               --
+--                               SERVER (Spec)                               --
 --                                                                           --
 --                      Copyright (C) 2025 Dylan Eskew                       --
 --                                                                           --
@@ -24,26 +24,39 @@
 -- with The Rootbotics Assistant. If not, see                                --
 -- <https://www.gnu.org/licenses/>.                                          --
 -------------------------------------------------------------------------------
+with Ada.Streams;
 with GNAT.Sockets; use GNAT.Sockets;
 
-with Ada.Streams;
+with Messages; use Messages;
 
-package Servers is
+package Server is
 
-   procedure Receive
-      (Stream : not null access Ada.Streams.Root_Stream_Type'Class);
+   procedure Initialize (Port : Port_Type := 5864);
+   procedure Finalize;
 
-   ------------------
-   -- Server Class --
-   ------------------
-   type Server is tagged private;
+   ----------------------------
+   -- Serializable Interface --
+   ----------------------------
+   type Serializable is interface;
+   procedure Send (Self : Serializable) is abstract;
+   procedure Receive (
+      Self   : in out Serializable;
+      Stream : not null access Ada.Streams.Root_Stream_Type'Class
+   ) is abstract;
+
+   procedure Receive;
+
+   ----------------------
+   -- Send Subprograms --
+   ----------------------
+
+   -- Faction Messages --
+   procedure Send (Payload : Automated_Alliance_Msg);
 
 private
 
-   type Server is tagged
-      record
-         Address : Sock_Addr_Type;
-         Server  : Socket_Type;
-      end record;
+   Server  : Socket_Type;
+   Socket  : Socket_Type;
+   Channel : Stream_Access;
 
-end Servers;
+end Server;

@@ -22,6 +22,8 @@
 -- with The Rootbotics Assistant. If not, see                                --
 -- <https://www.gnu.org/licenses/>.                                          --
 -------------------------------------------------------------------------------
+with Ada.Streams;
+
 package Factions.CW_Alliance is
 
    type Automated_Alliance is new Faction with private;
@@ -37,10 +39,7 @@ package Factions.CW_Alliance is
 
    -- Serialization Methods --
    overriding
-   procedure Send (
-      Self   : Automated_Alliance;
-      Stream : not null access Ada.Streams.Root_Stream_Type'Class
-   );
+   procedure Send (Self : Automated_Alliance);
 
    overriding
    procedure Receive (

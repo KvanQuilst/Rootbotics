@@ -36,10 +36,7 @@ package Factions.CW_Lizards is
 
    -- Serialization Methods --
    overriding
-   procedure Send (
-      Self   : Logical_Lizards;
-      Stream : not null access Ada.Streams.Root_Stream_Type'Class
-   ) is null;
+   procedure Send (Self : Logical_Lizards) is null;
 
    overriding
    procedure Receive (

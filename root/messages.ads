@@ -29,9 +29,9 @@ with Types; use Types;
 package Messages is
 
    ----------------------------------------------------------------------------
-   -- NOTE: When adding or changing message types, need to ensure the message
-   --       record is always a multiple of 8-bytes in size. Otherwise, the
-   --       *_Len constant will break;
+   --  NOTE: When adding or changing message types, need to ensure the message
+   --        record is always a multiple of 8-bytes in size. Otherwise, the
+   --        *_Len constant will break;
    ----------------------------------------------------------------------------
 
    type Message_Type is (
@@ -73,13 +73,11 @@ package Messages is
 
    -- Automated Alliance --
    type Automated_Alliance_Msg is record
-      Header : Msg_Header;
       Base   : Faction_Msg;
    end record;
 
    for Automated_Alliance_Msg use record
-      Header at 0 range 0 .. 15;
-      Base   at 2 range 0 .. 15;
+      Base   at 0 range 0 .. 15;
    end record;
 
 end Messages;

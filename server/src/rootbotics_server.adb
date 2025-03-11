@@ -25,42 +25,23 @@
 -------------------------------------------------------------------------------
 with Ada.Exceptions; use Ada.Exceptions;
 with Ada.Text_IO; use Ada.Text_IO;
-with GNAT.Sockets; use GNAT.Sockets;
 
 with Factions; use Factions;
 with Factions.CW_Alliance;
-with Servers;
+with Server;
 
 procedure Rootbotics_Server is
    VERSION : constant String := "v0.3-dev";
 
    F : constant Faction'Class := Factions.CW_Alliance.New_Faction;
-
-   -- Networking --
-   Address         : Sock_Addr_Type;
-   Server, Socket  : Socket_Type;
-   Channel         : Stream_Access;
-
 begin
-   -- Setup Server --
-   Address.Addr := Addresses (Get_Host_By_Name (Host_Name), 1);
-   Address.Port := 5876;
-   Create_Socket (Server);
+   Server.Initialize;
 
-   Set_Socket_Option (Server, Socket_Level, (Reuse_Address, True));
+   F.Send;
 
-   Bind_Socket (Server, Address);
-   Listen_Socket (Server);
-   Accept_Socket (Server, Socket, Address);
-   Channel := Stream (Socket);
+   Server.Receive;
 
-   --  Faction'Output (Channel, F);
-   F.Send (Channel);
-
-   Servers.Receive (Channel);
-
-   Close_Socket (Server);
-   Close_Socket (Socket);
+   Server.Finalize;
 
 exception when E : others =>
    Put_Line (Exception_Name (E) & ": " & Exception_Message (E));

@@ -26,6 +26,7 @@
 with Ada.Streams;
 
 with Root; use Root;
+with Server;
 with Types; use Types;
 
 package Factions is
@@ -40,7 +41,7 @@ package Factions is
    -------------------
    -- Faction Class --
    -------------------
-   type Faction (<>) is abstract tagged private;
+   type Faction (<>) is abstract new Server.Serializable with private;
 
    -- Faction Concrete Methods --
    function Get_Faction (Self : Faction) return Faction_Type;
@@ -52,23 +53,13 @@ package Factions is
    procedure Setup     (Self : in out Faction) is abstract;
    procedure Take_Turn (Self : in out Faction) is abstract;
 
-   -- Serialization Methods --
-   procedure Send (
-      Self   : Faction;
-      Stream : not null access Ada.Streams.Root_Stream_Type'Class
-   ) is abstract;
-
-   procedure Receive (
-      Self   : in out Faction;
-      Stream : not null access Ada.Streams.Root_Stream_Type'Class
-   ) is abstract;
-
 private
 
    -------------------
    -- Faction Class --
    -------------------
-   type Faction (F_Type : Faction_Type) is abstract tagged
+   type Faction (F_Type : Faction_Type) is
+      abstract new Server.Serializable with
       record
          S      : Seat;
          Points : Point     := 0;

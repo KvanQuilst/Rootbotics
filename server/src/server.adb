@@ -2,7 +2,7 @@
 --                                                                           --
 --                          ROOT FACTION ASSISTANT                           --
 --                                                                           --
---                              SERVERS (Body)                               --
+--                               SERVER (Body)                               --
 --                                                                           --
 --                      Copyright (C) 2025 Dylan Eskew                       --
 --                                                                           --
@@ -25,19 +25,41 @@
 -- <https://www.gnu.org/licenses/>.                                          --
 -------------------------------------------------------------------------------
 with Ada.Exceptions; use Ada.Exceptions;
-with Ada.Streams; use Ada.Streams;
 with Ada.Text_IO; use Ada.Text_IO;
 
 with Factions;
-with Messages; use Messages;
 with Types; use Types;
 
-package body Servers is
+package body Server is
 
-   procedure Receive (Stream : not null access Root_Stream_Type'Class) is
+   procedure Initialize (Port : Port_Type := 5864) is
+      Address : Sock_Addr_Type;
+   begin
+      Address.Addr := Addresses (Get_Host_By_Name (Host_Name), 1);
+      Address.Port := Port;
+      Create_Socket (Server);
+
+      Set_Socket_Option (Server, Socket_Level, (Reuse_Address, True));
+
+      Bind_Socket (Server, Address);
+
+      Put_Line ("> Waiting for client to connect (Port :=" & Port'Image & ")");
+      Listen_Socket (Server);
+      Accept_Socket (Server, Socket, Address);
+
+      Channel := Stream (Socket);
+   end Initialize;
+
+   procedure Finalize is
+   begin
+      Close_Socket (Server);
+      Close_Socket (Socket);
+   end Finalize;
+
+   procedure Receive is
       --  Payload : constant Msg_Header := Msg_Header'Input (Stream);
-      Length       : constant UInt8 := UInt8'Input (Stream);
-      Msg_Type_Val : constant UInt8 := UInt8'Input (Stream);
+      Length       : constant UInt8 := UInt8'Input (Channel);
+      Msg_Type_Val : constant UInt8 := UInt8'Input (Channel);
       Msg_Type     : Message_Type;
    begin
       if Length <= Msg_Header_Len then
@@ -53,7 +75,7 @@ package body Servers is
 
       case Msg_Type is
          when Faction =>
-            Factions.Receive (Stream, Length - 2);
+            Factions.Receive (Channel, Length - 2);
          when others =>
             Put_Line ("> ERROR: MESSAGE . RECEIVE: "
                     & "Unimplemented message type!");
@@ -69,4 +91,21 @@ package body Servers is
          raise;
    end Receive;
 
-end Servers;
+   ----------------------
+   -- Send Subprograms --
+   ----------------------------------------------------------------------------
+
+   function Get_Header (Bits : UInt8;
+                        Msg_Type : Message_Type) return Msg_Header is
+      (Length   => (Msg_Header'Size + Bits) / 8,
+       Msg_Type => Msg_Type);
+
+   -- Faction Messages --
+   procedure Send (Payload : Automated_Alliance_Msg) is
+   begin
+      Msg_Header'Output (Channel,
+                         Get_Header (Automated_Alliance_Msg'Size, Faction));
+      Automated_Alliance_Msg'Output (Channel, Payload);
+   end Send;
+
+end Server;

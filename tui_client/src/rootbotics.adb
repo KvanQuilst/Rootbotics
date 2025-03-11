@@ -40,7 +40,7 @@ procedure Rootbotics is
    Channel : Stream_Access;
 begin
    Address.Addr := Addresses (Get_Host_By_Name (Host_Name), 1);
-   Address.Port := 5876;
+   Address.Port := 5864;
    Create_Socket (Socket);
 
    Set_Socket_Option (Socket, Socket_Level, (Reuse_Address, True));

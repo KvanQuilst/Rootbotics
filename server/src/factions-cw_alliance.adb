@@ -41,41 +41,18 @@ package body Factions.CW_Alliance is
    -- Serializing Methods --
    ----------------------------------------------------------------------------
    overriding
-   procedure Send (Self   : Automated_Alliance;
-                   Stream : not null access Root_Stream_Type'Class) is
+   procedure Send (Self : Automated_Alliance) is
       Payload : constant Automated_Alliance_Msg := (
-         Header => (Length   => Automated_Alliance_Msg'Size / 8,
-                    Msg_Type => Messages.Faction),
          Base   => (Faction  => Alliance,
                     S        => Self.S,
                     Points   => Self.Points)
       );
    begin
-      Automated_Alliance_Msg'Output (Stream, Payload);
+      Server.Send (Payload);
    end Send;
 
    overriding
    procedure Receive (Self   : in out Automated_Alliance;
-                      Stream : not null access Root_Stream_Type'Class) is
-      Payload : constant Automated_Alliance_Msg :=
-         Automated_Alliance_Msg'Input (Stream);
-   begin
-      -- Message Length Check --
-      if Payload.Header.Length /= (Automated_Alliance_Msg'Size / 8) then
-         -- TODO: Non-terminating error msg --
-         return; -- No update --
-      end if;
-
-      -- Message Type Check --
-      if Payload.Header.Msg_Type /= Messages.Faction or else
-         Payload.Base.Faction    /= Alliance         or else
-         Payload.Base.S          /= Self.S
-      then
-         -- TODO: Non-terminating error msg --
-         return; -- No update --
-      end if;
-
-      Self.Points := Payload.Base.Points;
-   end Receive;
+                      Stream : not null access Root_Stream_Type'Class) is null;
 
 end Factions.CW_Alliance;

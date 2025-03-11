@@ -36,10 +36,7 @@ package Factions.CW_Duchy is
 
    -- Serialization Methods --
    overriding
-   procedure Send (
-      Self   : Drillbit_Duchy;
-      Stream : not null access Ada.Streams.Root_Stream_Type'Class
-   ) is null;
+   procedure Send (Self : Drillbit_Duchy) is null;
 
    overriding
    procedure Receive (
