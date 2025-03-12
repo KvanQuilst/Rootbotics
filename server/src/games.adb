@@ -23,21 +23,48 @@
 -- with The Rootbotics Assistant. If not, see                                --
 -- <https://www.gnu.org/licenses/>.                                          --
 -------------------------------------------------------------------------------
+with Ada.Text_IO; use Ada.Text_IO;
+
 package body Games is
 
    ------------------
    -- Game Methods --
    ----------------------------------------------------------------------------
-
    -- Constructor --
-   function New_Game (M_Type      : Map_Type;
+   function New_Game (Adset       : Boolean;
+                      M_Type      : Map_Type;
                       M_Suits     : Priority_Suits;
                       Num_Players : Seat) return Game is
-      (M_Type      => M_Type,
+      (Adset       => Adset,
+       M_Type      => M_Type,
        Num_Players => Num_Players,
        M           => New_Map (M_Type, M_Suits),
        Players     => [others => null],
        Factions_Set => <>);
+
+   procedure Set_Faction (Self      : in out Game;
+                          S         :        Seat;
+                          Clockwork :        Boolean;
+                          Faction   :        Faction_Type) is
+   begin
+      if not Clockwork and then Self.Adset then
+         --  TODO: Error sent to controlling client
+         Put_Line ("> ERROR: GAME . SET_FACTION: " &
+                   "Cannot specify seat for player faction with Adset.");
+         return;
+      end if;
+   end Set_Faction;
+
+   procedure Set_Adset_Faction (Self    : in out Game;
+                                Faction :        Faction_Type) is
+   begin
+      if not Self.Adset then
+         --  TODO: Error sent to controlling client
+         Put_Line ("> ERROR: GAME . SET_ADSET_FACTION: " &
+                   "Cannot set AdSet faction in non-AdSet game.");
+         return;
+      end if;
+   end Set_Adset_Faction;
 
    function Get_Map (Self : Game) return Map is
       (Self.M);

@@ -35,9 +35,20 @@ package Games is
    type Game (<>) is tagged private;
 
    -- Constructor --
-   function New_Game (M_Type      : Map_Type;
+   function New_Game (Adset       : Boolean;
+                      M_Type      : Map_Type;
                       M_Suits     : Priority_Suits;
                       Num_Players : Seat) return Game;
+
+   -- For standard setup and clockwork factions always --
+   procedure Set_Faction (Self      : in out Game;
+                          S         :        Seat;
+                          Clockwork :        Boolean;
+                          Faction   :        Faction_Type);
+
+   -- Only for player factions --
+   procedure Set_Adset_Faction (Self    : in out Game;
+                                Faction :        Faction_Type);
 
    function  Get_Map (Self : Game) return Map;
 
@@ -45,12 +56,13 @@ private
 
    type Faction_By_Seat is array (Seat range <>) of Faction_Class;
 
-   type Game (M_Type      : Map_Type;
+   type Game (Adset       : Boolean;
+              M_Type      : Map_Type;
               Num_Players : Seat) is tagged
       record
          M : Map (M_Type);
          Players : Faction_By_Seat (1 .. Num_Players);
-         -- Configure post initialization --
+         -- Configure post-Initialization, pre-Start --
          Factions_Set : Boolean := False;
       end record;
 
