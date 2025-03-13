@@ -54,6 +54,11 @@ package Factions is
    function Score_Points (Self       : in out Faction;
                           Num_Points :        UInt8) return Boolean;
 
+   procedure Add_Item    (Self : in out Faction;
+                          I    :        Item);
+   function  Remove_Item (Self : in out Faction;
+                          I    :        Item) return Boolean;
+
    -- Faction Abstract Methods --
    procedure Setup     (Self : in out Faction) is abstract;
    procedure Take_Turn (Self : in out Faction) is abstract;

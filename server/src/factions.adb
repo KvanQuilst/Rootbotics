@@ -94,4 +94,22 @@ package body Factions is
       return Self.Points >= 30;
    end Score_Points;
 
+   procedure Add_Item (Self : in out Faction;
+                       I    :        Item) is
+   begin
+      Self.Items (I) := @ + 1;
+   end Add_Item;
+
+   function Remove_Item (Self : in out Faction;
+                         I    :        Item) return Boolean is
+   begin
+      if Self.Items (I) = 0 then
+         Put_Line ("> ERROR: FACTIONS . REMOVE_ITEM: "
+                 & "There are no " & I'Image & "s in the supply to remove.");
+         return False;
+      end if;
+      Self.Items (I) := @ - 1;
+      return True;
+   end Remove_Item;
+
 end Factions;
