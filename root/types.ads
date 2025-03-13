@@ -34,6 +34,12 @@ package Types is
    type UInt16 is mod 2 ** 16
       with Size => 16;
 
+   --
+   --  Intended Usage:
+   --  V : UInt8 := 16#00#;
+   --  B : Bitfield (0 .. V'Size - 1)
+   --     with Address => V'Address, Import, Volatile;
+   --
    type Bitfield is array (Natural range <>) of Boolean
       with Pack;
 
