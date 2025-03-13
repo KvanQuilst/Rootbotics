@@ -27,13 +27,14 @@ package Types is
 
    type UInt2 is mod 2 ** 2
       with Size => 2;
-   type UInt3 is mod 2 ** 3
-      with Size => 3;
    type UInt4 is mod 2 ** 4
       with Size => 4;
    type UInt8 is mod 2 ** 8
       with Size => 8;
    type UInt16 is mod 2 ** 16
       with Size => 16;
+
+   type Bitfield is array (Natural range <>) of Boolean
+      with Pack;
 
 end Types;

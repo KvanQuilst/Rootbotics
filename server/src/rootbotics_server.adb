@@ -27,6 +27,7 @@ with Ada.Exceptions; use Ada.Exceptions;
 with Ada.Text_IO; use Ada.Text_IO;
 
 with Factions; use Factions;
+with Logs;
 with Root; use Root;
 with Server;
 
