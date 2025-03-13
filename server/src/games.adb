@@ -71,7 +71,7 @@ package body Games is
          Put_Line ("> INFO: Re-assigning seat" & S'Image
                  & "to " & Faction'Image);
       end if;
-      Self.Players (S) := New_Faction (Faction);
+      Self.Players (S) := New_Faction (Faction, Clockwork);
    end Set_Faction;
 
    --  TODO: Considering boolean function?
@@ -90,7 +90,7 @@ package body Games is
             --  TODO: Server INFO message
             Put_Line ("> INFO: Player" & S'Image
                     & " is playing the " & Faction'Image);
-            Self.Players (S) := New_Faction (Faction);
+            Self.Players (S) := New_Faction (Faction, False);
          end if;
       end loop;
 

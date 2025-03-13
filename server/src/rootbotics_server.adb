@@ -33,7 +33,7 @@ with Server;
 procedure Rootbotics_Server is
    VERSION : constant String := "v0.3-dev";
 
-   F : constant Faction_Class := New_Faction (Alliance);
+   F : constant Faction_Class := New_Faction (Alliance, True);
 begin
    Server.Initialize;
 

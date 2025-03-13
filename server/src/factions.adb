@@ -69,7 +69,8 @@ package body Factions is
    -- Faction Methods --
    ----------------------------------------------------------------------------
    -- Constructor --
-   function New_Faction (F_Type : Faction_Type) return Faction_Class is
+   function New_Faction (F_Type    : Faction_Type;
+                         Clockwork : Boolean) return Faction_Class is
       (case F_Type is
          when Alliance =>
             CW_Alliance.New_Automated_Alliance,
