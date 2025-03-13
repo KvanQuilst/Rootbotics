@@ -30,6 +30,7 @@ with Ada.Text_IO; use Ada.Text_IO;
 with Messages; use Messages;
 
 with Factions.CW_Alliance;
+with Factions.Player;
 
 package body Factions is
 
@@ -71,11 +72,16 @@ package body Factions is
    -- Constructor --
    function New_Faction (F_Type    : Faction_Type;
                          Clockwork : Boolean) return Faction_Class is
-      (case F_Type is
-         when Alliance =>
-            CW_Alliance.New_Automated_Alliance,
-         when others =>
-            null
+      (if Clockwork
+       then
+         (case F_Type is
+            when Alliance =>
+               CW_Alliance.New_Automated_Alliance,
+            when others =>
+               null
+         )
+      else
+         Player.New_Player_Faction (F_Type)
       );
 
    function Get_Faction (Self : Faction) return Faction_Type is
