@@ -49,14 +49,14 @@ package Games is
    function  Get_Map (Self : Game) return Map;
 
    -- For standard setup and clockwork factions always --
-   procedure Set_Faction (Self      : in out Game;
-                          S         :        Seat;
-                          Clockwork :        Boolean;
-                          Faction   :        Faction_Type);
+   function Set_Faction (Self      : in out Game;
+                         S         :        Seat;
+                         Clockwork :        Boolean;
+                         Faction   :        Faction_Type) return Boolean;
 
    -- Only for player factions --
-   procedure Set_Adset_Faction (Self    : in out Game;
-                                Faction :        Faction_Type);
+   function Set_Adset_Faction (Self    : in out Game;
+                               Faction :        Faction_Type) return Boolean;
 
 private
 
