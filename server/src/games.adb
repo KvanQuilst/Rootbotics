@@ -42,6 +42,12 @@ package body Games is
        Players     => [others => null],
        Factions_Set => <>);
 
+   function Get_Map (Self : Game) return Map is
+      (Self.M);
+
+   -- Phase: Pick Factions
+
+   --  TODO: Consider boolean function?
    procedure Set_Faction (Self      : in out Game;
                           S         :        Seat;
                           Clockwork :        Boolean;
@@ -49,12 +55,26 @@ package body Games is
    begin
       if not Clockwork and then Self.Adset then
          --  TODO: Error sent to controlling client
-         Put_Line ("> ERROR: GAME . SET_FACTION: " &
-                   "Cannot specify seat for player faction with Adset.");
+         Put_Line ("> ERROR: GAME . SET_FACTION: "
+                 & "Cannot specify seat for player faction with Adset.");
          return;
       end if;
+
+      if S > Self.Num_Players then
+         --  TODO: Error sent to controlling client
+         Put_Line ("> ERROR: GAME . SET_FACTION: "
+                 & "Seat specified exceeds number of players playing.");
+         return;
+      end if;
+
+      if not Self.Players (S) = null then
+         Put_Line ("> INFO: Re-assigning seat" & S'Image
+                 & "to " & Faction'Image);
+      end if;
+      Self.Players (S) := New_Faction (Faction);
    end Set_Faction;
 
+   --  TODO: Considering boolean function?
    procedure Set_Adset_Faction (Self    : in out Game;
                                 Faction :        Faction_Type) is
    begin
@@ -64,9 +84,19 @@ package body Games is
                    "Cannot set AdSet faction in non-AdSet game.");
          return;
       end if;
-   end Set_Adset_Faction;
 
-   function Get_Map (Self : Game) return Map is
-      (Self.M);
+      for S in Seat'First .. Self.Num_Players loop
+         if Self.Players (S) = null then
+            --  TODO: Server INFO message
+            Put_Line ("> INFO: Player" & S'Image
+                    & " is playing the " & Faction'Image);
+            Self.Players (S) := New_Faction (Faction);
+         end if;
+      end loop;
+
+      --  TODO: Error sent to client
+      Put_Line ("> ERROR: GAME . SET_ADSET_FACTION: "
+              & " All players already assigned a faction.");
+   end Set_Adset_Faction;
 
 end Games;

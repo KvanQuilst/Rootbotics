@@ -29,8 +29,7 @@ package Factions.CW_Alliance is
    type Automated_Alliance is new Faction with private;
 
    -- Constructor --
-   overriding
-   function New_Faction return Automated_Alliance;
+   function New_Automated_Alliance return Faction_Class;
 
    -- Faction Methods --
    overriding

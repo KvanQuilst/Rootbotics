@@ -29,6 +29,12 @@ with Root; use Root;
 
 package Games is
 
+   type Phase is (
+      Pick_Factions,
+      Setup,
+      Play
+   );
+
    ----------------
    -- Game Class --
    ----------------
@@ -40,6 +46,8 @@ package Games is
                       M_Suits     : Priority_Suits;
                       Num_Players : Seat) return Game;
 
+   function  Get_Map (Self : Game) return Map;
+
    -- For standard setup and clockwork factions always --
    procedure Set_Faction (Self      : in out Game;
                           S         :        Seat;
@@ -49,8 +57,6 @@ package Games is
    -- Only for player factions --
    procedure Set_Adset_Faction (Self    : in out Game;
                                 Faction :        Faction_Type);
-
-   function  Get_Map (Self : Game) return Map;
 
 private
 

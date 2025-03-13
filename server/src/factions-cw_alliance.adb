@@ -29,15 +29,18 @@ with Server;
 
 package body Factions.CW_Alliance is
 
-   overriding
-   function New_Faction return Automated_Alliance is
-      (F_Type                               => Alliance,
-       S                                    => 1,
-       Points | Items                       => <>,
-       Warrior_Supply | Map_Warriors        => <>,
-       Sympathy_Supply | Sympathetic_Clears => <>,
-       Base_Supply | Base_Clears            => <>
+   function New_Automated_Alliance return Faction_Class is
+      AA : constant Faction_Class := new Automated_Alliance'(
+         F_Type                               => Alliance,
+         S                                    => 1,
+         Points | Items                       => <>,
+         Warrior_Supply | Map_Warriors        => <>,
+         Sympathy_Supply | Sympathetic_Clears => <>,
+         Base_Supply | Base_Clears            => <>
       );
+   begin
+      return AA;
+   end New_Automated_Alliance;
 
    -------------------------
    -- Serializing Methods --

@@ -45,7 +45,7 @@ package Factions is
    type Faction_Class is access Faction'Class;
 
    -- Constructor --
-   function New_Faction return Faction is abstract;
+   function New_Faction (F_Type : Faction_Type) return Faction_Class;
 
    -- Faction Concrete Methods --
    function Get_Faction (Self : Faction) return Faction_Type;

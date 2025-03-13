@@ -27,13 +27,13 @@ with Ada.Exceptions; use Ada.Exceptions;
 with Ada.Text_IO; use Ada.Text_IO;
 
 with Factions; use Factions;
-with Factions.CW_Alliance;
+with Root; use Root;
 with Server;
 
 procedure Rootbotics_Server is
    VERSION : constant String := "v0.3-dev";
 
-   F : constant Faction'Class := Factions.CW_Alliance.New_Faction;
+   F : constant Faction_Class := New_Faction (Alliance);
 begin
    Server.Initialize;
 
