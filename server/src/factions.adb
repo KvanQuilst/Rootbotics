@@ -25,8 +25,8 @@
 -------------------------------------------------------------------------------
 with Ada.Exceptions; use Ada.Exceptions;
 with Ada.Streams; use Ada.Streams;
-with Ada.Text_IO; use Ada.Text_IO;
 
+with Logs; use Logs;
 with Messages; use Messages;
 
 with Factions.CW_Alliance;
@@ -41,9 +41,8 @@ package body Factions is
                       Length : UInt8) is
    begin
       if Length < Faction_Msg_Len then
-         --  TODO: Non-terminating error msg
-         Put_Line ("> ERROR: FACTIONS . RECEIVE: "
-                 & "Faction message length too short:" & Length'Image);
+         Put_Msg (Warning, "FACTIONS . RECEIVE: "
+                & "Faction message length too short:" & Length'Image);
          return;
       end if;
 
@@ -52,17 +51,16 @@ package body Factions is
       begin
          case Payload.Faction is
             when others =>
-               Put_Line ("> ERROR: FACTION . RECEIVE: "
-                       & "Faction message unimplemented!");
+               Put_Msg (Warning, "FACTIONS . RECEIVE: "
+                      & "Faction message unimplemented!");
          end case;
       end;
    exception
       when Constraint_Error =>
-         --  TODO: Non-terminating error msg
-         Put_Line ("> ERROR: FACTIONS . RECEIVE: "
-                 & "Invalid message.");
+         Put_Msg (Warning, "FACTIONS . RECEIVE: "
+                & "Invalid message.");
       when E : others =>
-         Put_Line (Exception_Name (E) & ": " & Exception_Message (E));
+         Put_Msg (Error, Exception_Name (E) & ": " & Exception_Message (E));
          raise;
    end Receive;
 
@@ -104,8 +102,8 @@ package body Factions is
                          I    :        Item) return Boolean is
    begin
       if Self.Items (I) = 0 then
-         Put_Line ("> ERROR: FACTIONS . REMOVE_ITEM: "
-                 & "There are no " & I'Image & "s in the supply to remove.");
+         Put_Msg (Error, "FACTIONS . REMOVE_ITEM: "
+                & "There are no " & I'Image & "s in the supply to remove.");
          return False;
       end if;
       Self.Items (I) := @ - 1;

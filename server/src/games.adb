@@ -25,6 +25,9 @@
 -------------------------------------------------------------------------------
 with Ada.Text_IO; use Ada.Text_IO;
 
+with Logs; use Logs;
+with Types; use Types;
+
 package body Games is
 
    ------------------
@@ -45,7 +48,7 @@ package body Games is
    function Get_Map (Self : Game) return Map is
       (Self.M);
 
-   -- Phase: Pick Factions
+   -- Phase: Pick Factions --
 
    function Set_Faction (Self      : in out Game;
                          S         :        Seat;
@@ -66,7 +69,7 @@ package body Games is
          return False;
       end if;
 
-      if not Self.Players (S) = null then
+      if not (Self.Players (S) = null) then
          Put_Line ("> INFO: Re-assigning seat" & S'Image
                  & "to " & Faction'Image);
       end if;
@@ -86,9 +89,8 @@ package body Games is
 
       for S in Seat'First .. Self.Num_Players loop
          if Self.Players (S) = null then
-            --  TODO: Server INFO message
-            Put_Line ("> INFO: Player" & S'Image
-                    & " is playing the " & Faction'Image);
+            Put_Msg (Info, "Player" & S'Image
+                   & " is playing the " & Faction'Image);
             Self.Players (S) := New_Faction (Faction, False);
             return True;
          end if;
