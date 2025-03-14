@@ -64,7 +64,7 @@ package body Server is
    begin
       if Length <= Msg_Header_Len then
          --  TODO: Non-terminating error msg
-         Put_Line ("> ERROR: MESSAGE_HANDLER . RECEIVE: "
+         Put_Line ("> ERROR: SERVER . RECEIVE: "
                  & "Message length too short:" & Length'Image);
          return;
       end if;
@@ -77,14 +77,14 @@ package body Server is
          when Faction =>
             Factions.Receive (Channel, Length - 2);
          when others =>
-            Put_Line ("> ERROR: MESSAGE . RECEIVE: "
+            Put_Line ("> ERROR: SERVER . RECEIVE: "
                     & "Unimplemented message type!");
       end case;
 
    exception
       when Constraint_Error =>
          --  TODO: Non-terminating error msg
-         Put_Line ("> ERROR: MESSAGE . RECEIVE: "
+         Put_Line ("> ERROR: SERVER . RECEIVE: "
                  & "Unrecognized message type:" & Msg_Type_Val'Image);
       when E : others =>
          Put_Line (Exception_Name (E) & ": " & Exception_Message (E));
