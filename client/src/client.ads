@@ -2,7 +2,7 @@
 --                                                                           --
 --                        THE ROOTBOTICS ASSISTANT                           --
 --                                                                           --
---                                ROOTBOTICS                                 --
+--                              CLIENT (Spec)                                --
 --                                                                           --
 --                      Copyright (C) 2025 Dylan Eskew                       --
 --                                                                           --
@@ -23,64 +23,18 @@
 -- with The Rootbotics Assistant. If not, see                                --
 -- <https://www.gnu.org/licenses/>.                                          --
 -------------------------------------------------------------------------------
-with Ada.Exceptions; use Ada.Exceptions;
-with Ada.Text_IO; use Ada.Text_IO;
+with GNAT.Sockets; use GNAT.Sockets;
 
-with Client;
-with Messages; use Messages;
-with Root; use Root;
-with Types; use Types;
+package Client is
 
-procedure Rootbotics is
-   VERSION : constant String := "v0.3-dev";
-begin
+   procedure Initialize (Port : Port_Type := 5864);
+   procedure Finalize;
 
-   Client.Initialize;
+   procedure Receive;
 
-   Client.Finalize;
+private
 
-   --  Address.Addr := Addresses (Get_Host_By_Name (Host_Name), 1);
-   --  Address.Port := 5864;
-   --  Create_Socket (Socket);
+   Client  : Socket_Type;
+   Channel : Stream_Access;
 
-   --  Set_Socket_Option (Socket, Socket_Level, (Reuse_Address, True));
-
-   --  Connect_Socket (Socket, Address);
-   --  Channel := Stream (Socket);
-
-   --  declare
-   --     --  Msg : Automated_Alliance_Msg := Automated_Alliance_Msg'Input (Channel);
-   --     Len : constant UInt8 := UInt8'Input (Channel);
-   --     Msg : UInt8;
-   --  begin
-   --     Put_Line ("Length:" & Len'Image);
-   --     for I in 0 .. (Len - 1) loop
-   --        Msg := UInt8'Input (Channel);
-   --        Put_Line ("Byte" & I'Image & ":" & Msg'Image);
-   --     end loop;
-   --     --  Put_Line ("Faction:" & Msg.Base.Faction'Image);
-   --     --  Put_Line ("Seat:" & Msg.Base.S'Image);
-   --     --  Put_Line ("Points:" & Msg.Base.Points'Image);
-   --  end;
-
-   --  declare
-   --     Header  : constant Msg_Header :=
-   --        (Length   => 4,
-   --         Msg_Type => Faction);
-   --     Payload : constant Faction_Msg :=
-   --        (Faction => Alliance,
-   --         S       => 1,
-   --         Points  => 10);
-   --  begin
-   --    Msg_Header'Output (Channel, Header);
-   --    --  Faction_Msg'Output (Channel, Payload);
-   --    UInt4'Output (Channel, 1);
-   --    UInt4'Output (Channel, 1);
-   --    UInt8'Output (Channel, 40);
-   --  end;
-
-   --  Close_Socket (Socket);
-
-exception when E : others =>
-   Put_Line (Exception_Name (E) & ": " & Exception_Message (E));
-end Rootbotics;
+end Client;

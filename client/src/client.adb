@@ -2,7 +2,7 @@
 --                                                                           --
 --                        THE ROOTBOTICS ASSISTANT                           --
 --                                                                           --
---                                ROOTBOTICS                                 --
+--                              CLIENT (Body)                                --
 --                                                                           --
 --                      Copyright (C) 2025 Dylan Eskew                       --
 --                                                                           --
@@ -23,64 +23,60 @@
 -- with The Rootbotics Assistant. If not, see                                --
 -- <https://www.gnu.org/licenses/>.                                          --
 -------------------------------------------------------------------------------
-with Ada.Exceptions; use Ada.Exceptions;
 with Ada.Text_IO; use Ada.Text_IO;
 
-with Client;
 with Messages; use Messages;
-with Root; use Root;
 with Types; use Types;
 
-procedure Rootbotics is
-   VERSION : constant String := "v0.3-dev";
-begin
+package body Client is
 
-   Client.Initialize;
+   procedure Initialize (Port : Port_Type := 5864) is
+      Address : Sock_Addr_Type;
 
-   Client.Finalize;
+      function Try_Connect return Boolean is
+      begin
+         Connect_Socket (Client, Address);
+         Channel := Stream (Client);
+         return True;
+      exception when Socket_Error =>
+         Put_Line ("Server unavailable... trying again in 5 seconds.");
+         return False;
+      end Try_Connect;
+   begin
+      Address.Addr := Addresses (Get_Host_By_Name (Host_Name), 1);
+      Address.Port := Port;
+      Create_Socket (Client);
 
-   --  Address.Addr := Addresses (Get_Host_By_Name (Host_Name), 1);
-   --  Address.Port := 5864;
-   --  Create_Socket (Socket);
+      Set_Socket_Option (Client, Socket_Level, (Reuse_Address, True));
 
-   --  Set_Socket_Option (Socket, Socket_Level, (Reuse_Address, True));
+      loop
+         if Try_Connect then
+            Put_Line ("Connected to server!");
+            return;
+         end if;
+         delay 5.0;
+      end loop;
+   end Initialize;
 
-   --  Connect_Socket (Socket, Address);
-   --  Channel := Stream (Socket);
+   procedure Finalize is
+   begin
+      Close_Socket (Client);
+   end Finalize;
 
-   --  declare
-   --     --  Msg : Automated_Alliance_Msg := Automated_Alliance_Msg'Input (Channel);
-   --     Len : constant UInt8 := UInt8'Input (Channel);
-   --     Msg : UInt8;
-   --  begin
-   --     Put_Line ("Length:" & Len'Image);
-   --     for I in 0 .. (Len - 1) loop
-   --        Msg := UInt8'Input (Channel);
-   --        Put_Line ("Byte" & I'Image & ":" & Msg'Image);
-   --     end loop;
-   --     --  Put_Line ("Faction:" & Msg.Base.Faction'Image);
-   --     --  Put_Line ("Seat:" & Msg.Base.S'Image);
-   --     --  Put_Line ("Points:" & Msg.Base.Points'Image);
-   --  end;
+   procedure Receive is
+      Length   : constant UInt8        := UInt8'Input (Channel);
+      Msg_Type : constant Message_Type := Message_Type'Input (Channel);
 
-   --  declare
-   --     Header  : constant Msg_Header :=
-   --        (Length   => 4,
-   --         Msg_Type => Faction);
-   --     Payload : constant Faction_Msg :=
-   --        (Faction => Alliance,
-   --         S       => 1,
-   --         Points  => 10);
-   --  begin
-   --    Msg_Header'Output (Channel, Header);
-   --    --  Faction_Msg'Output (Channel, Payload);
-   --    UInt4'Output (Channel, 1);
-   --    UInt4'Output (Channel, 1);
-   --    UInt8'Output (Channel, 40);
-   --  end;
+      pragma Assert (Length > Msg_Header_Len,
+                     "ERROR: Invalid message length from server!");
+   begin
+      case Msg_Type is
+         when Faction =>
+            null;
+         when others =>
+            Put_Line ("ERROR: CLIENT . RECEIVE: "
+                    & "Unimplemented message type!");
+      end case;
+   end Receive;
 
-   --  Close_Socket (Socket);
-
-exception when E : others =>
-   Put_Line (Exception_Name (E) & ": " & Exception_Message (E));
-end Rootbotics;
+end Client;
