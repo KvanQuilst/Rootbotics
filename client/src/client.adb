@@ -67,12 +67,10 @@ package body Client is
       Length   : constant UInt8        := UInt8'Input (Channel);
       Msg_Type : constant Message_Type := Message_Type'Input (Channel);
 
-      pragma Assert (Length > Msg_Header_Len,
+      pragma Assert (Length >= Msg_Header_Len,
                      "ERROR: Invalid message length from server!");
    begin
       case Msg_Type is
-         when Faction =>
-            null;
          when others =>
             Put_Line ("ERROR: CLIENT . RECEIVE: "
                     & "Unimplemented message type!");

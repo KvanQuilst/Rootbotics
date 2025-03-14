@@ -36,12 +36,20 @@ package Messages is
 
    type Message_Type is (
       Game,
-      Faction
+      Faction,
+      Map,
+      Acknowledge,
+      Error,
+      Phase
    ) with Size => 8;
 
    for Message_Type use (
-      Game    => 0,
-      Faction => 1
+      Game        => 0,
+      Faction     => 1,
+      Map         => 2,
+      Acknowledge => 3,
+      Error       => 4,
+      Phase       => 5
    );
 
    type Msg_Header is record
@@ -54,6 +62,21 @@ package Messages is
       Msg_Type at 1 range 0 .. 7;
    end record;
    Msg_Header_Len : constant UInt8 := (Msg_Header'Size / 8);
+
+   -------------------
+   -- Phase Message --
+   -------------------
+   type Game_Phase is (
+      Creation,
+      Setup,
+      Turns
+   ) with Size => 8;
+
+   for Game_Phase use (
+      Creation => 0,
+      Setup => 1,
+      Turns => 2
+   );
 
    ----------------------
    -- Faction Messages --
