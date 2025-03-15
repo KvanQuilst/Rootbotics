@@ -28,8 +28,6 @@ with Types; use Types;
 
 package Maps is
 
-   type    Priority_Suits is array (Priority) of Clearing_Suit;
-
    ---------------
    -- Map Class --
    ---------------
@@ -37,11 +35,9 @@ package Maps is
 
    -- Constructors --
    function New_Map (M_Type : Map_Type) return Map;
-   function New_Map (M_Type : Map_Type;
-                     Suits  : Priority_Suits) return Map;
 
-   -- Check that each suit has four clearings --
-   function Validate_Map (Self : Map) return Boolean;
+   procedure Set_Clearing_Suits (Self  : in out Map;
+                                 Suits : Clearing_Suit_By_Priority);
 
    procedure Place_Warriors (Self         : in out Map;
                              S            :        Seat;

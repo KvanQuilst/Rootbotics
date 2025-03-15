@@ -30,13 +30,22 @@ package Root is
    ----------------------
    -- Enumerated Types --
    ----------------------
+   type Deck_Type is (
+      Base,
+      Exiles_And_Partisans
+   ) with Size => 2;
+
+   for Deck_Type use (
+      Base                 => 0,
+      Exiles_And_Partisans => 1
+   );
 
    type Map_Type is (
       Fall,
       Winter,
       Lake,
       Mountain
-   ) with Size => 8;
+   ) with Size => 3;
 
    for Map_Type use (
       Fall     => 0,
@@ -50,7 +59,7 @@ package Root is
       Rabbit,
       Mouse,
       Bird
-   ) with Size => 8;
+   ) with Size => 4;
 
    for Suit use (
       Fox    => 0,
@@ -119,6 +128,7 @@ package Root is
 
    subtype Priority is UInt8 range 1 .. 12;
    type Boolean_By_Priority is array (Priority) of Boolean;
+   type Clearing_Suit_By_Priority is array (Priority) of Clearing_Suit;
 
    subtype Seat is UInt4 range 1 .. 6;
    type Boolean_By_Seat is array (Seat) of Boolean;

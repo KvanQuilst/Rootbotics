@@ -37,6 +37,8 @@ begin
 
    Client.Initialize;
 
+   Client.Receive;
+
    Client.Finalize;
 
    --  Address.Addr := Addresses (Get_Host_By_Name (Host_Name), 1);

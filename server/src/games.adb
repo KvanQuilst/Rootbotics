@@ -23,39 +23,73 @@
 -- with The Rootbotics Assistant. If not, see                                --
 -- <https://www.gnu.org/licenses/>.                                          --
 -------------------------------------------------------------------------------
+with Ada.Exceptions; use Ada.Exceptions;
+with Ada.Streams; use Ada.Streams;
 with Ada.Text_IO; use Ada.Text_IO;
 
 with Logs; use Logs;
-with Types; use Types;
 
 package body Games is
+
+   ----------------------
+   -- Message Handling --
+   ----------------------------------------------------------------------------
+   procedure Receive (Stream   : not null access Root_Stream_Type'Class;
+                      Length   : UInt8) is
+   begin
+      if Length < Messages.Create_Game_Msg_Len then
+         Put_Msg (Warning, "GAME . RECEIVE: "
+            & "Game creation message length too short:" & Length'Image);
+         return;
+      end if;
+
+      declare
+         Payload : constant Messages.Create_Game_Msg :=
+            Messages.Create_Game_Msg'Input (Stream);
+      begin
+         Curr_Game := New_Game (Payload.AdSet,
+                                Payload.Deck,
+                                Payload.Map,
+                                Payload.Num_Players);
+      exception
+         when Constraint_Error =>
+            Put_Msg (Warning, "GAMES . RECEIVE: "
+                   & "Create_Game message invalid!");
+         when E : others =>
+            Put_Msg (Error, Exception_Name (E) & ": " & Exception_Message (E));
+            raise;
+      end;
+   end Receive;
 
    ------------------
    -- Game Methods --
    ----------------------------------------------------------------------------
    -- Constructor --
-   function New_Game (Adset       : Boolean;
+   function New_Game (AdSet       : Boolean;
+                      Deck        : Deck_Type;
                       M_Type      : Map_Type;
-                      M_Suits     : Priority_Suits;
-                      Num_Players : Seat) return Game is
-      (Adset       => Adset,
-       M_Type      => M_Type,
-       Num_Players => Num_Players,
-       M           => New_Map (M_Type, M_Suits),
-       Players     => [others => null],
-       Factions_Set => <>);
+                      Num_Players : Seat) return Game_Access is
+      G : constant Game_Access := new Game'(AdSet       => AdSet,
+                                            Deck        => Deck,
+                                            M_Type      => M_Type,
+                                            Num_Players => Num_Players,
+                                            M           => New_Map (M_Type),
+                                            Players     => [others => null],
+                                            Phase       => Messages.Creation,
+                                            Map_Set | Factions_Set => <>);
+   begin
+      return G;
+   end New_Game;
 
    function Get_Map (Self : Game) return Map is
       (Self.M);
-
-   -- Phase: Pick Factions --
 
    function Set_Faction (Self      : in out Game;
                          S         :        Seat;
                          Clockwork :        Boolean;
                          Faction   :        Faction_Type) return Boolean is
    begin
-      if not Clockwork and then Self.Adset then
+      if not Clockwork and then Self.AdSet then
          --  TODO: Error sent to controlling client
          Put_Line ("> ERROR: GAME . SET_FACTION: "
                  & "Cannot specify seat for player faction with Adset.");
@@ -80,7 +114,7 @@ package body Games is
    function Set_Adset_Faction (Self    : in out Game;
                                Faction :        Faction_Type) return Boolean is
    begin
-      if not Self.Adset then
+      if not Self.AdSet then
          --  TODO: Error sent to controlling client
          Put_Line ("> ERROR: GAME . SET_ADSET_FACTION: " &
                    "Cannot set AdSet faction in non-AdSet game.");
@@ -101,5 +135,8 @@ package body Games is
               & " All players already assigned a faction.");
       return False;
    end Set_Adset_Faction;
+
+   function Get_Current_Game return Game_Access is
+      (Curr_Game);
 
 end Games;

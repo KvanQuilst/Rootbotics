@@ -44,11 +44,15 @@ package Server is
       Stream : not null access Ada.Streams.Root_Stream_Type'Class
    ) is abstract;
 
-   procedure Receive;
+   procedure Receive (Expect : Message_Type);
 
    ----------------------
    -- Send Subprograms --
    ----------------------
+
+   --  Send only header of Message_Type.
+   --  NOTE: Not all Message_Type's can be sent via this method
+   procedure Send (Msg_Type : Message_Type);
 
    -- Faction Messages --
    procedure Send (Payload : Automated_Alliance_Msg);

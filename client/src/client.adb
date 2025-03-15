@@ -25,6 +25,7 @@
 -------------------------------------------------------------------------------
 with Ada.Text_IO; use Ada.Text_IO;
 
+with Game; use Game;
 with Messages; use Messages;
 with Types; use Types;
 

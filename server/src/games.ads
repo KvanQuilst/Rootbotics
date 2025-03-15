@@ -23,28 +23,35 @@
 -- with The Rootbotics Assistant. If not, see                                --
 -- <https://www.gnu.org/licenses/>.                                          --
 -------------------------------------------------------------------------------
+with Ada.Streams;
+
 with Factions; use Factions;
 with Maps; use Maps;
+with Messages;
 with Root; use Root;
+with Types; use Types;
 
 package Games is
 
-   type Phase is (
-      Pick_Factions,
-      Setup,
-      Play
+   ----------------------
+   -- Message Handling --
+   ----------------------
+   procedure Receive (
+      Stream   : not null access Ada.Streams.Root_Stream_Type'Class;
+      Length   : UInt8
    );
 
    ----------------
    -- Game Class --
    ----------------
    type Game (<>) is tagged private;
+   type Game_Access is access Game;
 
    -- Constructor --
-   function New_Game (Adset       : Boolean;
+   function New_Game (AdSet       : Boolean;
+                      Deck        : Deck_Type;
                       M_Type      : Map_Type;
-                      M_Suits     : Priority_Suits;
-                      Num_Players : Seat) return Game;
+                      Num_Players : Seat) return Game_Access;
 
    function  Get_Map (Self : Game) return Map;
 
@@ -58,18 +65,25 @@ package Games is
    function Set_Adset_Faction (Self    : in out Game;
                                Faction :        Faction_Type) return Boolean;
 
+   function Get_Current_Game return Game_Access;
+
 private
 
    type Faction_By_Seat is array (Seat range <>) of Faction_Class;
 
-   type Game (Adset       : Boolean;
+   type Game (AdSet       : Boolean;
+              Deck        : Deck_Type;
               M_Type      : Map_Type;
               Num_Players : Seat) is tagged
       record
-         M : Map (M_Type);
+         M       : Map (M_Type);
          Players : Faction_By_Seat (1 .. Num_Players);
+         Phase   : Messages.Game_Phase;
          -- Configure post-Initialization, pre-Start --
+         Map_Set      : Boolean := False;
          Factions_Set : Boolean := False;
       end record;
+
+   Curr_Game : Game_Access := null;
 
 end Games;

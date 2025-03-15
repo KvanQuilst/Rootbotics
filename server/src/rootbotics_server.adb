@@ -26,24 +26,26 @@
 with Ada.Exceptions; use Ada.Exceptions;
 with Ada.Text_IO; use Ada.Text_IO;
 
-with Factions; use Factions;
 with Games; use Games;
-with Root; use Root;
+with Messages; use Messages;
 with Server;
 
 procedure Rootbotics_Server is
    VERSION : constant String := "v0.3-dev";
 
-   F : constant Faction_Class := New_Faction (Alliance, True);
+   Curr_Game : Game_Access := null;
 begin
+
    Server.Initialize;
 
-   F.Send;
-
-   Server.Receive;
+   -- Waiting for game creation parameters --
+   loop
+      Server.Send (Request_Create_Game);
+      Server.Receive (Create_Game);
+      Curr_Game := Get_Current_Game;
+      exit when Curr_Game /= null;
+   end loop;
 
    Server.Finalize;
 
-exception when E : others =>
-   Put_Line (Exception_Name (E) & ": " & Exception_Message (E));
 end Rootbotics_Server;

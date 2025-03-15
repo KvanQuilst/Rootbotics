@@ -40,16 +40,26 @@ package Messages is
       Map,
       Acknowledge,
       Error,
-      Phase
+      Request_Create_Game,
+      Create_Game,
+      Request_Map_Clears,
+      Map_Clears,
+      Request_Battle,
+      Battle
    ) with Size => 8;
 
    for Message_Type use (
-      Game        => 0,
-      Faction     => 1,
-      Map         => 2,
-      Acknowledge => 3,
-      Error       => 4,
-      Phase       => 5
+      Game                => 0,
+      Faction             => 1,
+      Map                 => 2,
+      Acknowledge         => 3,
+      Error               => 4,
+      Request_Create_Game => 5,
+      Create_Game         => 6,
+      Request_Map_Clears  => 7,
+      Map_Clears          => 8,
+      Request_Battle      => 9,
+      Battle              => 10
    );
 
    type Msg_Header is record
@@ -63,9 +73,9 @@ package Messages is
    end record;
    Msg_Header_Len : constant UInt8 := (Msg_Header'Size / 8);
 
-   -------------------
-   -- Phase Message --
-   -------------------
+   ------------------
+   -- Game Message --
+   ------------------
    type Game_Phase is (
       Creation,
       Setup,
@@ -77,6 +87,37 @@ package Messages is
       Setup => 1,
       Turns => 2
    );
+
+   type Map_Clearings is (
+      Balanced,
+      Random
+   ) with Size => 1;
+
+   type Create_Game_Msg is record
+      AdSet       : Boolean;
+      Deck        : Deck_Type;
+      Map         : Map_Type;
+      Clearings   : Map_Clearings;
+      Padding     : Boolean;
+      Num_Players : UInt4;
+   end record;
+
+   for Create_Game_Msg use record
+      AdSet       at 0 range 0 .. 0;
+      Deck        at 0 range 1 .. 2;
+      Map         at 0 range 3 .. 5;
+      Clearings   at 0 range 6 .. 6;
+      Padding     at 0 range 7 .. 7;
+
+      Num_Players at 1 range 0 .. 7;
+   end record;
+   Create_Game_Msg_Len : constant UInt8 := (Create_Game_Msg'Size / 8);
+
+   type Game_Msg is record
+      Phase : Game_Phase;
+   end record;
+
+   Game_Msg_Len : constant UInt8 := (Game_Msg'Size / 8);
 
    ----------------------
    -- Faction Messages --

@@ -28,6 +28,8 @@ with Ada.Exceptions; use Ada.Exceptions;
 with Ada.Text_IO; use Ada.Text_IO;
 
 with Factions;
+with Games;
+with Logs; use Logs;
 with Types; use Types;
 
 package body Server is
@@ -56,9 +58,8 @@ package body Server is
       Close_Socket (Socket);
    end Finalize;
 
-   procedure Receive is
-      --  Payload : constant Msg_Header := Msg_Header'Input (Stream);
-      Length       : constant UInt8 := UInt8'Input (Channel);
+   procedure Receive (Expect : Message_Type) is
+      Length       :          UInt8 := UInt8'Input (Channel);
       Msg_Type_Val : constant UInt8 := UInt8'Input (Channel);
       Msg_Type     : Message_Type;
    begin
@@ -71,11 +72,22 @@ package body Server is
 
       Msg_Type := Message_Type'Val (Msg_Type_Val);
 
+      if Msg_Type /= Expect then
+         --  TODO: Send msg error to controlling client
+         Put_Msg (Error, "SERVER . RECEIVE: "
+                & "Received message is not expected type."
+                & " Expected: " & Expect'Image
+                & " Received: " & Msg_Type'Image);
+      end if;
+
       Put_Line ("> DEBUG: " & Msg_Type'Image);
 
+      Length := @ - Msg_Header_Len;
       case Msg_Type is
          when Faction =>
-            Factions.Receive (Channel, Length - 2);
+            Factions.Receive (Channel, Length);
+         when Create_Game =>
+            Games.Receive (Channel, Length);
          when others =>
             Put_Line ("> ERROR: SERVER . RECEIVE: "
                     & "Unimplemented message type!");
@@ -99,6 +111,18 @@ package body Server is
                         Msg_Type : Message_Type) return Msg_Header is
       (Length   => (Msg_Header'Size + Bits) / 8,
        Msg_Type => Msg_Type);
+
+   procedure Send (Msg_Type : Message_Type) is
+   begin
+      case Msg_Type is
+         when Request_Create_Game =>
+            Msg_Header'Output (Channel, Get_Header (0, Msg_Type));
+         when others =>
+            Put_Msg (Warning, "SERVER . SEND: "
+                   & "Unable to send header-only of type: " & Msg_Type'Image);
+            return;
+      end case;
+   end Send;
 
    -- Faction Messages --
    procedure Send (Payload : Automated_Alliance_Msg) is

@@ -23,6 +23,8 @@
 -- with The Rootbotics Assistant. If not, see                                --
 -- <https://www.gnu.org/licenses/>.                                          --
 -------------------------------------------------------------------------------
+with Logs; use Logs;
+
 package body Maps is
 
    -----------------
@@ -39,28 +41,29 @@ package body Maps is
                           when Lake     => Lake_Clearings,
                           when Mountain => Mountain_Clearings));
 
-   function New_Map (M_Type : Map_Type;
-                     Suits  : Priority_Suits) return Map is
-      M : Map := New_Map (M_Type);
+   procedure Set_Clearing_Suits (Self  : in out Map;
+                                 Suits : Clearing_Suit_By_Priority) is
+      F, M, R : UInt8 := 0;
    begin
-      for P in Priority'Range loop
-         M.Clearings (P).Suit := Suits (P);
-      end loop;
-      return M;
-   end New_Map;
-
-   function Validate_Map (Self : Map) return Boolean is
-      F, M, R : Integer := 0;
-   begin
-      for C of Self.Clearings loop
-         case C.Suit is
-            when Fox    => F := F + 1;
-            when Mouse  => M := M + 1;
-            when Rabbit => R := R + 1;
+      for C of Suits loop
+         case C is
+            when Fox    => F := @ + 1;
+            when Mouse  => M := @ + 1;
+            when Rabbit => R := @ + 1;
          end case;
       end loop;
-      return (F = 4) and then (M = 4) and then (R = 4);
-   end Validate_Map;
+
+      if (F /= 4) or else (M /= 4) or else (R /= 4) then
+         --  TODO: Send message to controlling client
+         Put_Msg (Warning, "MAPS . SET_CLEARING_SUITS: "
+                & "Suits are not evenly distributed.");
+         return;
+      end if;
+
+      for Clearing in Self.Clearings'Range loop
+         Self.Clearings (Clearing).Suit := Suits (Clearing);
+      end loop;
+   end Set_Clearing_Suits;
 
    procedure Place_Warriors (Self         : in out Map;
                              S            :        Seat;
