@@ -141,5 +141,7 @@ package Messages is
    for Automated_Alliance_Msg use record
       Base   at 0 range 0 .. 15;
    end record;
+   Automated_Alliance_Msg_Len : constant UInt8 :=
+      (Automated_Alliance_Msg'Size / 8);
 
 end Messages;

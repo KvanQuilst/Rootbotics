@@ -120,9 +120,9 @@ package body Server is
    -- Send Subprograms --
    ----------------------------------------------------------------------------
 
-   function Get_Header (Bits : UInt8;
+   function Get_Header (Length   : UInt8;
                         Msg_Type : Message_Type) return Msg_Header is
-      (Length   => (Msg_Header'Size + Bits) / 8,
+      (Length   => Msg_Header_Len + Length,
        Msg_Type => Msg_Type);
 
    procedure Send (Msg_Type : Message_Type) is
@@ -141,7 +141,7 @@ package body Server is
    procedure Send (Payload : Automated_Alliance_Msg) is
    begin
       Msg_Header'Output (Channel,
-                         Get_Header (Automated_Alliance_Msg'Size, Faction));
+                         Get_Header (Automated_Alliance_Msg_Len, Faction));
       Automated_Alliance_Msg'Output (Channel, Payload);
    end Send;
 
