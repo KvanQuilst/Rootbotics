@@ -31,7 +31,10 @@ begin
 
    Client.Initialize;
 
-   Client.Receive;
+   loop
+      Client.Receive;
+      exit when Client.Exiting;
+   end loop;
 
    Client.Finalize;
 

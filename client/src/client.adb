@@ -26,7 +26,6 @@
 with Ada.Text_IO; use Ada.Text_IO;
 
 with Game;
-with Messages; use Messages;
 with Types; use Types;
 
 package body Client is
@@ -64,6 +63,9 @@ package body Client is
       Close_Socket (Client);
    end Finalize;
 
+   function Exiting return Boolean is
+      (Client_Exit);
+
    procedure Receive is
       Length   : constant UInt8        := UInt8'Input (Channel);
       Msg_Type : constant Message_Type := Message_Type'Input (Channel);
@@ -72,12 +74,27 @@ package body Client is
                      "ERROR: Invalid message length from server!");
    begin
       case Msg_Type is
-         when Create_Game =>
-            Game.Create_Game (Channel);
+         when Create_Game => Game.Create_Game;
          when others =>
             Put_Line ("ERROR: CLIENT . RECEIVE: "
                     & "Unimplemented message type!");
       end case;
    end Receive;
+
+   ----------------------
+   -- Send Subprograms --
+   ----------------------------------------------------------------------------
+   function Get_Header (Length    : UInt8;
+                        Msg_Type : Message_Type) return Msg_Header is
+      (Length   => Msg_Header_Len + Length,
+       Msg_Type => Msg_Type);
+
+   procedure Send (Payload : Create_Game_Msg) is
+   begin
+      Msg_Header'Output (Channel,
+                         Get_Header (Create_Game_Msg_Len, Create_Game));
+      Create_Game_Msg'Output (Channel,
+                              Payload);
+   end Send;
 
 end Client;

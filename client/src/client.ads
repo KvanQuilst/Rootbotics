@@ -25,16 +25,24 @@
 -------------------------------------------------------------------------------
 with GNAT.Sockets; use GNAT.Sockets;
 
+with Messages; use Messages;
+
 package Client is
 
    procedure Initialize (Port : Port_Type := 5864);
    procedure Finalize;
 
+   function Exiting return Boolean;
+
    procedure Receive;
+
+   procedure Send (Payload : Create_Game_Msg);
 
 private
 
    Client  : Socket_Type;
    Channel : Stream_Access;
+
+   Client_Exit : Boolean := False;
 
 end Client;

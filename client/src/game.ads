@@ -34,9 +34,7 @@ package Game is
       Msg_Type : Message_Type
    );
 
-   procedure Create_Game (
-      Stream   : not null access Ada.Streams.Root_Stream_Type'Class
-   );
+   procedure Create_Game;
 
 private
 

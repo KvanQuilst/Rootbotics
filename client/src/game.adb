@@ -40,7 +40,7 @@ package body Game is
       end case;
    end Receive;
 
-   procedure Create_Game (Stream : not null access Root_Stream_Type'Class) is
+   procedure Create_Game is
    begin
       null;
    end Create_Game;
