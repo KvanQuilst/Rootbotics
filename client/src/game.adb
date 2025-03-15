@@ -26,6 +26,9 @@
 with Ada.Streams; use Ada.Streams;
 with Ada.Text_IO; use Ada.Text_IO;
 
+with Client;
+with Root; use Root;
+
 package body Game is
 
    procedure Receive (Stream   : not null access Root_Stream_Type'Class;
@@ -42,7 +45,14 @@ package body Game is
 
    procedure Create_Game is
    begin
-      null;
+      Client.Send ((
+         AdSet       => False,
+         Deck        => Exiles_And_Partisans,
+         Map         => Fall,
+         Clearings   => Balanced,
+         Padding     => False,
+         Num_Players => 4
+      ));
    end Create_Game;
 
 end Game;

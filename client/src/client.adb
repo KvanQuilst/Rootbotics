@@ -74,10 +74,10 @@ package body Client is
                      "ERROR: Invalid message length from server!");
    begin
       case Msg_Type is
-         when Create_Game => Game.Create_Game;
+         when Request_Create_Game => Game.Create_Game;
          when others =>
             Put_Line ("ERROR: CLIENT . RECEIVE: "
-                    & "Unimplemented message type!");
+                    & "Unimplemented message type: " & Msg_Type'Image);
       end case;
    end Receive;
 
