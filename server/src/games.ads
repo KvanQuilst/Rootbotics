@@ -53,6 +53,9 @@ package Games is
                       M_Type      : Map_Type;
                       Num_Players : Seat) return Game_Access;
 
+   function Map_Clears_Set (Self : Game) return Boolean;
+   function Factions_Set   (Self : Game) return Boolean;
+
    function  Get_Map (Self : Game) return Map;
 
    -- For standard setup and clockwork factions always --

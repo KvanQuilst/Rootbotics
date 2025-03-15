@@ -81,6 +81,12 @@ package body Games is
       return G;
    end New_Game;
 
+   function Map_Clears_Set (Self : Game) return Boolean is
+      (Self.Map_Set);
+
+   function Factions_Set (Self : Game) return Boolean is
+      (Self.Factions_Set);
+
    function Get_Map (Self : Game) return Map is
       (Self.M);
 

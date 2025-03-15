@@ -36,8 +36,10 @@ package Maps is
    -- Constructors --
    function New_Map (M_Type : Map_Type) return Map;
 
-   procedure Set_Clearing_Suits (Self  : in out Map;
-                                 Suits : Clearing_Suit_By_Priority);
+   function Set_Clearing_Suits (
+      Self  : in out Map;
+      Suits :        Clearing_Suit_By_Priority
+   ) return Boolean;
 
    procedure Place_Warriors (Self         : in out Map;
                              S            :        Seat;

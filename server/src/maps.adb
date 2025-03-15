@@ -41,8 +41,10 @@ package body Maps is
                           when Lake     => Lake_Clearings,
                           when Mountain => Mountain_Clearings));
 
-   procedure Set_Clearing_Suits (Self  : in out Map;
-                                 Suits : Clearing_Suit_By_Priority) is
+   function Set_Clearing_Suits (
+      Self  : in out Map;
+      Suits :        Clearing_Suit_By_Priority
+   ) return Boolean is
       F, M, R : UInt8 := 0;
    begin
       for C of Suits loop
@@ -57,12 +59,13 @@ package body Maps is
          --  TODO: Send message to controlling client
          Put_Msg (Warning, "MAPS . SET_CLEARING_SUITS: "
                 & "Suits are not evenly distributed.");
-         return;
+         return False;
       end if;
 
       for Clearing in Self.Clearings'Range loop
          Self.Clearings (Clearing).Suit := Suits (Clearing);
       end loop;
+      return True;
    end Set_Clearing_Suits;
 
    procedure Place_Warriors (Self         : in out Map;

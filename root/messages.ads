@@ -38,7 +38,6 @@ package Messages is
       Game,
       Faction,
       Map,
-      Acknowledge,
       Error,
       Request_Create_Game,
       Create_Game,
@@ -52,14 +51,13 @@ package Messages is
       Game                => 0,
       Faction             => 1,
       Map                 => 2,
-      Acknowledge         => 3,
-      Error               => 4,
-      Request_Create_Game => 5,
-      Create_Game         => 6,
-      Request_Map_Clears  => 7,
-      Map_Clears          => 8,
-      Request_Battle      => 9,
-      Battle              => 10
+      Error               => 3,
+      Request_Create_Game => 4,
+      Create_Game         => 5,
+      Request_Map_Clears  => 6,
+      Map_Clears          => 7,
+      Request_Battle      => 8,
+      Battle              => 9
    );
 
    type Msg_Header is record

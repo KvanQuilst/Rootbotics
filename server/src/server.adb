@@ -58,6 +58,16 @@ package body Server is
       Close_Socket (Socket);
    end Finalize;
 
+   procedure Exhaust_Length (Length : UInt8) is
+      Byte : UInt8;
+
+      pragma Unreferenced (Byte);
+   begin
+      for I in 1 .. Length loop
+         Byte := UInt8'Input (Channel);
+      end loop;
+   end Exhaust_Length;
+
    procedure Receive (Expect : Message_Type) is
       Length       :          UInt8 := UInt8'Input (Channel);
       Msg_Type_Val : constant UInt8 := UInt8'Input (Channel);
@@ -78,6 +88,9 @@ package body Server is
                 & "Received message is not expected type."
                 & " Expected: " & Expect'Image
                 & " Received: " & Msg_Type'Image);
+
+         Exhaust_Length (Length - Msg_Header_Len);
+         return;
       end if;
 
       Put_Line ("> DEBUG: " & Msg_Type'Image);
