@@ -2,7 +2,7 @@
 --                                                                           --
 --                        THE ROOTBOTICS ASSISTANT                           --
 --                                                                           --
---                                ROOTBOTICS                                 --
+--                               GAME (Body)                                 --
 --                                                                           --
 --                      Copyright (C) 2025 Dylan Eskew                       --
 --                                                                           --
@@ -23,16 +23,26 @@
 -- with The Rootbotics Assistant. If not, see                                --
 -- <https://www.gnu.org/licenses/>.                                          --
 -------------------------------------------------------------------------------
-with Client;
+with Ada.Streams; use Ada.Streams;
+with Ada.Text_IO; use Ada.Text_IO;
 
-procedure Rootbotics is
-   VERSION : constant String := "v0.3-dev";
-begin
+package body Game is
 
-   Client.Initialize;
+   procedure Receive (Stream   : not null access Root_Stream_Type'Class;
+                      Msg_Type : Message_Type) is
+   begin
+      case Msg_Type is
+         when Messages.Game =>
+            State := Game_Msg'Input (Stream);
+         when others =>
+            Put_Line ("> ERROR: We shouldn't be here!");
+            --  TODO: Exit with error
+      end case;
+   end Receive;
 
-   Client.Receive;
+   procedure Create_Game (Stream : not null access Root_Stream_Type'Class) is
+   begin
+      null;
+   end Create_Game;
 
-   Client.Finalize;
-
-end Rootbotics;
+end Game;

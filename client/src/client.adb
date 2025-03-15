@@ -25,7 +25,7 @@
 -------------------------------------------------------------------------------
 with Ada.Text_IO; use Ada.Text_IO;
 
-with Game; use Game;
+with Game;
 with Messages; use Messages;
 with Types; use Types;
 
@@ -72,6 +72,8 @@ package body Client is
                      "ERROR: Invalid message length from server!");
    begin
       case Msg_Type is
+         when Create_Game =>
+            Game.Create_Game (Channel);
          when others =>
             Put_Line ("ERROR: CLIENT . RECEIVE: "
                     & "Unimplemented message type!");
