@@ -24,7 +24,7 @@
 -------------------------------------------------------------------------------
 with Ada.Streams;
 
-package Factions.CW_Alliance is
+private package Factions.CW_Alliance is
 
    type Automated_Alliance is new Faction with private;
 
@@ -57,7 +57,7 @@ private
    type Base_Supply_By_Suit is array (Clearing_Suit) of Boolean;
    type Base_Clears_By_Suit is array (Clearing_Suit) of Priority;
 
-   type Automated_Alliance is new Faction (Alliance) with
+   type Automated_Alliance is new Faction with
       record
          Warrior_Supply     : Warrior             := Warrior'Last;
          Map_Warriors       : Warrior_By_Clear    := [others => 0];
