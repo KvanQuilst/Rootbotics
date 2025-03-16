@@ -101,6 +101,8 @@ package body Server is
             Factions.Receive (Channel, Length);
          when Create_Game =>
             Games.Receive (Channel, Length);
+         when Map_Clears =>
+            null;
          when others =>
             Put_Line ("> ERROR: SERVER . RECEIVE: "
                     & "Unimplemented message type!");

@@ -24,6 +24,7 @@
 -- <https://www.gnu.org/licenses/>.                                          --
 -------------------------------------------------------------------------------
 with Root; use Root;
+with Messages;
 with Types; use Types;
 
 package Maps is
@@ -32,9 +33,13 @@ package Maps is
    -- Map Class --
    ---------------
    type Map (M_Type : Map_Type) is tagged private;
+   type Map_Access is access Map;
 
    -- Constructors --
-   function New_Map (M_Type : Map_Type) return Map;
+   procedure New_Map (M_Type : Map_Type;
+                      Clearing_Set : Messages.Map_Clearings);
+
+   function Clearings_Set (Self : in out Map) return Boolean;
 
    function Set_Clearing_Suits (
       Self  : in out Map;
@@ -54,6 +59,8 @@ package Maps is
                             Clearing     : Priority;
                             Count_Tokens : Boolean_By_Seat)
       return Total_By_Seat;
+
+   function Get_Current_Map return Map_Access;
 
 private
 
@@ -89,8 +96,11 @@ private
    type Map (M_Type : Map_Type) is tagged
       record
          Item_Supply : Inventory := Initial_Item_Supply;
+         Clears_Set  : Boolean;
          Clearings   : Clearings_Arr;
       end record;
+
+   Current_Map : Map_Access := null;
 
    ----------
    -- Maps --

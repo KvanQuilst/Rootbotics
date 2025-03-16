@@ -24,6 +24,7 @@
 -- <https://www.gnu.org/licenses/>.                                          --
 -------------------------------------------------------------------------------
 with Logs; use Logs;
+with Messages; use Messages;
 
 package body Maps is
 
@@ -32,14 +33,23 @@ package body Maps is
    -----------------
 
    -- Constructors --
-   function New_Map (M_Type : Map_Type) return Map is
-      (M_Type      => M_Type,
-       Item_Supply => <>,
-       Clearings   => (case M_Type is
-                          when Fall     => Fall_Clearings,
-                          when Winter   => Winter_Clearings,
-                          when Lake     => Lake_Clearings,
-                          when Mountain => Mountain_Clearings));
+   procedure New_Map (M_Type       : Map_Type;
+                      Clearing_Set : Messages.Map_Clearings) is
+   begin
+      Current_Map := new Map'(
+         M_Type      => M_Type,
+         Item_Supply => <>,
+         Clears_Set  => (Clearing_Set = Messages.Balanced),
+         Clearings   => (case M_Type is
+                            when Fall     => Fall_Clearings,
+                            when Winter   => Winter_Clearings,
+                            when Lake     => Lake_Clearings,
+                            when Mountain => Mountain_Clearings)
+      );
+   end New_Map;
+
+   function Clearings_Set (Self : in out Map) return Boolean is
+      (Self.Clears_Set);
 
    function Set_Clearing_Suits (
       Self  : in out Map;
@@ -104,5 +114,8 @@ package body Maps is
       end loop;
       return Totals;
    end Count_For_Rule;
+
+   function Get_Current_Map return Map_Access is
+      (Current_Map);
 
 end Maps;

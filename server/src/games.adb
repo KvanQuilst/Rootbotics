@@ -28,6 +28,7 @@ with Ada.Streams; use Ada.Streams;
 with Ada.Text_IO; use Ada.Text_IO;
 
 with Logs; use Logs;
+with Maps;
 
 package body Games is
 
@@ -47,10 +48,11 @@ package body Games is
          Payload : constant Messages.Create_Game_Msg :=
             Messages.Create_Game_Msg'Input (Stream);
       begin
-         Curr_Game := New_Game (Payload.AdSet,
-                                Payload.Deck,
-                                Payload.Map,
-                                Payload.Num_Players);
+         New_Game (Payload.AdSet,
+                   Payload.Deck,
+                   Payload.Map,
+                   Payload.Clearing_Set,
+                   Payload.Num_Players);
       exception
          when Constraint_Error =>
             Put_Msg (Warning, "GAMES . RECEIVE: "
@@ -65,30 +67,23 @@ package body Games is
    -- Game Methods --
    ----------------------------------------------------------------------------
    -- Constructor --
-   function New_Game (AdSet       : Boolean;
-                      Deck        : Deck_Type;
-                      M_Type      : Map_Type;
-                      Num_Players : Seat) return Game_Access is
-      G : constant Game_Access := new Game'(AdSet       => AdSet,
-                                            Deck        => Deck,
-                                            M_Type      => M_Type,
-                                            Num_Players => Num_Players,
-                                            M           => New_Map (M_Type),
-                                            Players     => [others => null],
-                                            Phase       => Messages.Creation,
-                                            Map_Set | Factions_Set => <>);
+   procedure New_Game (AdSet        : Boolean;
+                       Deck         : Deck_Type;
+                       M_Type       : Map_Type;
+                       Clearing_Set : Messages.Map_Clearings;
+                       Num_Players  : Seat) is
    begin
-      return G;
+      Maps.New_Map (M_Type, Clearing_Set);
+      Current_Game := new Game'(AdSet       => AdSet,
+                                Deck        => Deck,
+                                Num_Players => Num_Players,
+                                Players     => [others => null],
+                                Phase       => Messages.Creation,
+                                Factions_Set => <>);
    end New_Game;
-
-   function Map_Clears_Set (Self : Game) return Boolean is
-      (Self.Map_Set);
 
    function Factions_Set (Self : Game) return Boolean is
       (Self.Factions_Set);
-
-   function Get_Map (Self : Game) return Map is
-      (Self.M);
 
    function Set_Faction (Self      : in out Game;
                          S         :        Seat;
@@ -143,6 +138,6 @@ package body Games is
    end Set_Adset_Faction;
 
    function Get_Current_Game return Game_Access is
-      (Curr_Game);
+      (Current_Game);
 
 end Games;

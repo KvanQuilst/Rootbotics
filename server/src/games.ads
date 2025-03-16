@@ -26,7 +26,6 @@
 with Ada.Streams;
 
 with Factions; use Factions;
-with Maps; use Maps;
 with Messages;
 with Root; use Root;
 with Types; use Types;
@@ -48,15 +47,13 @@ package Games is
    type Game_Access is access Game;
 
    -- Constructor --
-   function New_Game (AdSet       : Boolean;
-                      Deck        : Deck_Type;
-                      M_Type      : Map_Type;
-                      Num_Players : Seat) return Game_Access;
+   procedure New_Game (AdSet        : Boolean;
+                       Deck         : Deck_Type;
+                       M_Type       : Map_Type;
+                       Clearing_Set : Messages.Map_Clearings;
+                       Num_Players  : Seat);
 
-   function Map_Clears_Set (Self : Game) return Boolean;
    function Factions_Set   (Self : Game) return Boolean;
-
-   function  Get_Map (Self : Game) return Map;
 
    -- For standard setup and clockwork factions always --
    function Set_Faction (Self      : in out Game;
@@ -76,17 +73,14 @@ private
 
    type Game (AdSet       : Boolean;
               Deck        : Deck_Type;
-              M_Type      : Map_Type;
               Num_Players : Seat) is tagged
       record
-         M       : Map (M_Type);
          Players : Faction_By_Seat (1 .. Num_Players);
          Phase   : Messages.Game_Phase;
          -- Configure post-Initialization, pre-Start --
-         Map_Set      : Boolean := False;
          Factions_Set : Boolean := False;
       end record;
 
-   Curr_Game : Game_Access := null;
+   Current_Game : Game_Access := null;
 
 end Games;

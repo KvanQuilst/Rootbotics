@@ -92,22 +92,22 @@ package Messages is
    ) with Size => 1;
 
    type Create_Game_Msg is record
-      AdSet       : Boolean;
-      Deck        : Deck_Type;
-      Map         : Map_Type;
-      Clearings   : Map_Clearings;
-      Padding     : Boolean;
-      Num_Players : UInt4;
+      AdSet        : Boolean;
+      Deck         : Deck_Type;
+      Map          : Map_Type;
+      Clearing_Set : Map_Clearings;
+      Padding      : Boolean;
+      Num_Players  : UInt4;
    end record;
 
    for Create_Game_Msg use record
-      AdSet       at 0 range 0 .. 0;
-      Deck        at 0 range 1 .. 2;
-      Map         at 0 range 3 .. 5;
-      Clearings   at 0 range 6 .. 6;
-      Padding     at 0 range 7 .. 7;
+      AdSet        at 0 range 0 .. 0;
+      Deck         at 0 range 1 .. 2;
+      Map          at 0 range 3 .. 5;
+      Clearing_Set at 0 range 6 .. 6;
+      Padding      at 0 range 7 .. 7;
 
-      Num_Players at 1 range 0 .. 7;
+      Num_Players  at 1 range 0 .. 7;
    end record;
    Create_Game_Msg_Len : constant UInt8 := (Create_Game_Msg'Size / 8);
 
