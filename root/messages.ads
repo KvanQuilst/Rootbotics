@@ -33,7 +33,6 @@ package Messages is
    --        record is always a multiple of 8-bytes in size. Otherwise, the
    --        *_Len constant will break;
    ----------------------------------------------------------------------------
-
    type Message_Type is (
       Game,
       Faction,
@@ -54,12 +53,12 @@ package Messages is
       Error               => 3,
 
       -- Server Requests / Client Responses --
-      Request_Create_Game => 4,
-      Create_Game         => 5,
-      Request_Map_Clears  => 6,
-      Map_Clears          => 7,
-      Request_Battle      => 8,
-      Battle              => 9
+      Request_Create_Game => 4, -- Server --
+      Create_Game         => 5, -- Client --
+      Request_Map_Clears  => 6, -- Server --
+      Map_Clears          => 7, -- Client --
+      Request_Battle      => 8, -- Server --
+      Battle              => 9  -- Client --
    );
 
    type Msg_Header is record
@@ -74,13 +73,33 @@ package Messages is
    Msg_Header_Len : constant UInt8 := (Msg_Header'Size / 8);
 
    ------------------
-   -- Game Message --
-   ------------------
+   -- Map Messages --
+   ----------------------------------------------------------------------------
    type Map_Clearings is (
       Balanced,
       Random
    ) with Size => 1;
 
+   -- Client Message --
+   type Map_Clears_Msg is record
+      Clearing_Suits : Clearing_Suit_By_Priority;
+   end record;
+
+   for Map_Clears_Msg use record
+      Clearing_Suits at 0 range 0 .. (Priority'Last * Suit'Size) - 1;
+   end record;
+   Map_Clears_Msg_Len : constant UInt8 := (Map_Clears_Msg'Size / 8);
+
+   -- Server Message --
+   type Map_Msg is record
+      null;
+   end record;
+
+   -------------------
+   -- Game Messages --
+   ----------------------------------------------------------------------------
+
+   -- Client Message --
    type Create_Game_Msg is record
       AdSet        : Boolean;
       Deck         : Deck_Type;
@@ -101,18 +120,11 @@ package Messages is
    end record;
    Create_Game_Msg_Len : constant UInt8 := (Create_Game_Msg'Size / 8);
 
-   type Map_Clears_Msg is record
-      Clearing_Suits : Clearing_Suit_By_Priority;
-   end record;
-
-   for Map_Clears_Msg use record
-      Clearing_Suits at 0 range 0 .. (Priority'Last * Suit'Size) - 1;
-   end record;
-   Map_Clears_Msg_Len : constant UInt8 := (Map_Clears_Msg'Size / 8);
-
    ----------------------
    -- Faction Messages --
-   ----------------------
+   ----------------------------------------------------------------------------
+
+   -- Server Message --
    type Faction_Msg is record
       Faction : Faction_Type;
       S       : Seat;
@@ -126,7 +138,7 @@ package Messages is
    end record;
    Faction_Msg_Len : constant UInt8 := (Faction_Msg'Size / 8);
 
-   -- Automated Alliance --
+   -- Automated Alliance | Server Message --
    type Automated_Alliance_Msg is record
       Base   : Faction_Msg;
    end record;
