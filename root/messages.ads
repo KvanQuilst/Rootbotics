@@ -52,6 +52,8 @@ package Messages is
       Faction             => 1,
       Map                 => 2,
       Error               => 3,
+
+      -- Server Requests / Client Responses --
       Request_Create_Game => 4,
       Create_Game         => 5,
       Request_Map_Clears  => 6,
