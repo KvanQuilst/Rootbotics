@@ -35,8 +35,14 @@ package body Maps is
                      Length : UInt8) return Boolean is
    begin
       if Length < Messages.Map_Clears_Msg_Len then
-         Put_Msg (Warning, "GAME . RECEIVE: "
+         Put_Msg (Warning, "MAP . RECEIVE: "
             & "Game creation message length too short:" & Length'Image);
+         return False;
+      end if;
+
+      if Current_Map /= null then
+         Put_Msg (Warning, "MAP . RECEIVE: "
+                & "Attempting to create game when one already created!");
          return False;
       end if;
 
@@ -47,7 +53,7 @@ package body Maps is
          return Current_Map.Set_Clearing_Suits (Payload.Clearing_Suits);
       exception
          when Constraint_Error =>
-            Put_Msg (Warning, "GAMES . RECEIVE: "
+            Put_Msg (Warning, "MAP . RECEIVE: "
                    & "Create_Game message invalid!");
             return False;
          when E : others =>

@@ -35,10 +35,10 @@ package Games is
    ----------------------
    -- Message Handling --
    ----------------------
-   procedure Receive (
+   function Receive (
       Stream   : not null access Ada.Streams.Root_Stream_Type'Class;
       Length   : UInt8
-   );
+   ) return Boolean;
 
    ----------------
    -- Game Class --

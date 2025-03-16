@@ -35,13 +35,19 @@ package body Games is
    ----------------------
    -- Message Handling --
    ----------------------------------------------------------------------------
-   procedure Receive (Stream   : not null access Root_Stream_Type'Class;
-                      Length   : UInt8) is
+   function Receive (Stream   : not null access Root_Stream_Type'Class;
+                     Length   : UInt8) return Boolean is
    begin
       if Length < Messages.Create_Game_Msg_Len then
          Put_Msg (Warning, "GAME . RECEIVE: "
             & "Game creation message length too short:" & Length'Image);
-         return;
+         return False;
+      end if;
+
+      if Current_Game /= null then
+         Put_Msg (Warning, "GAME . RECEIVE: "
+                & "Attempting to create game when one already created!");
+         return False;
       end if;
 
       declare
@@ -57,10 +63,12 @@ package body Games is
          when Constraint_Error =>
             Put_Msg (Warning, "GAMES . RECEIVE: "
                    & "Create_Game message invalid!");
+            return False;
          when E : others =>
             Put_Msg (Error, Exception_Name (E) & ": " & Exception_Message (E));
             raise;
       end;
+      return True;
    end Receive;
 
    ------------------

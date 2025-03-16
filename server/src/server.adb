@@ -102,7 +102,7 @@ package body Server is
          when Faction =>
             Factions.Receive (Channel, Length);
          when Create_Game =>
-            Games.Receive (Channel, Length);
+            Recv_Success := Games.Receive (Channel, Length);
          when Map_Clears =>
             Recv_Success := Maps.Receive (Channel, Length);
          when others =>
