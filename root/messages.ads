@@ -74,18 +74,6 @@ package Messages is
    ------------------
    -- Game Message --
    ------------------
-   type Game_Phase is (
-      Creation,
-      Setup,
-      Turns
-   ) with Size => 8;
-
-   for Game_Phase use (
-      Creation => 0,
-      Setup => 1,
-      Turns => 2
-   );
-
    type Map_Clearings is (
       Balanced,
       Random
@@ -110,11 +98,6 @@ package Messages is
       Num_Players  at 1 range 0 .. 7;
    end record;
    Create_Game_Msg_Len : constant UInt8 := (Create_Game_Msg'Size / 8);
-
-   type Game_Msg is record
-      Phase : Game_Phase;
-   end record;
-   Game_Msg_Len : constant UInt8 := (Game_Msg'Size / 8);
 
    type Map_Clears_Msg is record
       Clearing_Suits : Clearing_Suit_By_Priority;

@@ -76,7 +76,6 @@ private
               Num_Players : Seat) is tagged
       record
          Players : Faction_By_Seat (1 .. Num_Players);
-         Phase   : Messages.Game_Phase;
          -- Configure post-Initialization, pre-Start --
          Factions_Set : Boolean := False;
       end record;

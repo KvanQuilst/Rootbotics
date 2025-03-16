@@ -78,7 +78,6 @@ package body Games is
                                 Deck        => Deck,
                                 Num_Players => Num_Players,
                                 Players     => [others => null],
-                                Phase       => Messages.Creation,
                                 Factions_Set => <>);
    end New_Game;
 
