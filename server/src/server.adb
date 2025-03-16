@@ -119,7 +119,6 @@ package body Server is
    ----------------------
    -- Send Subprograms --
    ----------------------------------------------------------------------------
-
    function Get_Header (Length   : UInt8;
                         Msg_Type : Message_Type) return Msg_Header is
       (Length   => Msg_Header_Len + Length,
@@ -128,7 +127,7 @@ package body Server is
    procedure Send (Msg_Type : Message_Type) is
    begin
       case Msg_Type is
-         when Request_Create_Game =>
+         when Request_Create_Game | Request_Map_Clears =>
             Msg_Header'Output (Channel, Get_Header (0, Msg_Type));
          when others =>
             Put_Msg (Warning, "SERVER . SEND: "

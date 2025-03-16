@@ -43,6 +43,12 @@ begin
       exit when Curr_Game /= null;
    end loop;
 
+   loop
+      Server.Send (Request_Map_Clears);
+      Server.Receive (Map_Clears);
+      exit when Curr_Game.Map_Clears_Set;
+   end loop;
+
    Server.Finalize;
 
 end Rootbotics_Server;
