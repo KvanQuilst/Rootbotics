@@ -23,12 +23,18 @@
 -- with The Rootbotics Assistant. If not, see                                --
 -- <https://www.gnu.org/licenses/>.                                          --
 -------------------------------------------------------------------------------
+with Ada.Streams;
+
 with Root; use Root;
 with Messages;
 with Types; use Types;
 
 package Maps is
 
+   function Receive (
+      Stream : not null access Ada.Streams.Root_Stream_Type'Class;
+      Length : UInt8
+   ) return Boolean;
    ---------------
    -- Map Class --
    ---------------
@@ -40,11 +46,6 @@ package Maps is
                       Clearing_Set : Messages.Map_Clearings);
 
    function Clearings_Set (Self : in out Map) return Boolean;
-
-   function Set_Clearing_Suits (
-      Self  : in out Map;
-      Suits :        Clearing_Suit_By_Priority
-   ) return Boolean;
 
    procedure Place_Warriors (Self         : in out Map;
                              S            :        Seat;
@@ -99,6 +100,11 @@ private
          Clears_Set  : Boolean;
          Clearings   : Clearings_Arr;
       end record;
+
+   function Set_Clearing_Suits (
+      Self  : in out Map;
+      Suits :        Clearing_Suit_By_Priority
+   ) return Boolean;
 
    Current_Map : Map_Access := null;
 

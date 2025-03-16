@@ -23,10 +23,38 @@
 -- with The Rootbotics Assistant. If not, see                                --
 -- <https://www.gnu.org/licenses/>.                                          --
 -------------------------------------------------------------------------------
+with Ada.Exceptions; use Ada.Exceptions;
+with Ada.Streams; use Ada.Streams;
+
 with Logs; use Logs;
 with Messages; use Messages;
 
 package body Maps is
+
+   function Receive (Stream : not null access Root_Stream_Type'Class;
+                     Length : UInt8) return Boolean is
+   begin
+      if Length < Messages.Map_Clears_Msg_Len then
+         Put_Msg (Warning, "GAME . RECEIVE: "
+            & "Game creation message length too short:" & Length'Image);
+         return False;
+      end if;
+
+      declare
+         Payload : constant Messages.Map_Clears_Msg :=
+            Messages.Map_Clears_Msg'Input (Stream);
+      begin
+         return Current_Map.Set_Clearing_Suits (Payload.Clearing_Suits);
+      exception
+         when Constraint_Error =>
+            Put_Msg (Warning, "GAMES . RECEIVE: "
+                   & "Create_Game message invalid!");
+            return False;
+         when E : others =>
+            Put_Msg (Error, Exception_Name (E) & ": " & Exception_Message (E));
+            raise;
+      end;
+   end Receive;
 
    -----------------
    -- Map Methods --

@@ -29,6 +29,7 @@ with Ada.Text_IO; use Ada.Text_IO;
 
 with Factions;
 with Games;
+with Maps;
 with Logs; use Logs;
 with Types; use Types;
 
@@ -72,6 +73,7 @@ package body Server is
       Length       :          UInt8 := UInt8'Input (Channel);
       Msg_Type_Val : constant UInt8 := UInt8'Input (Channel);
       Msg_Type     : Message_Type;
+      Recv_Success : Boolean := False;
    begin
       if Length <= Msg_Header_Len then
          --  TODO: Non-terminating error msg
@@ -102,12 +104,18 @@ package body Server is
          when Create_Game =>
             Games.Receive (Channel, Length);
          when Map_Clears =>
-            null;
+            Recv_Success := Maps.Receive (Channel, Length);
          when others =>
             Put_Line ("> ERROR: SERVER . RECEIVE: "
                     & "Unimplemented message type!");
       end case;
 
+      if not Recv_Success then
+         --  TODO: Send error to controlling client
+         Put_Msg (Info, "SERVER . RECEIVE: "
+                & "Client paylaod failed to process.");
+         return;
+      end if;
    exception
       when Constraint_Error =>
          --  TODO: Non-terminating error msg
