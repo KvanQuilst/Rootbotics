@@ -44,15 +44,26 @@ package body Game is
    end Receive;
 
    procedure Create_Game is
-   begin
-      Client.Send ((
+      Payload : constant Create_Game_Msg := (
          AdSet       => False,
          Deck        => Exiles_And_Partisans,
          Map         => Fall,
          Clearings   => Balanced,
          Padding     => False,
          Num_Players => 4
-      ));
+      );
+   begin
+      Client.Send (Payload);
    end Create_Game;
+
+   procedure Map_Clears is
+      Payload : constant Map_Clears_Msg := (
+         Clearing_Suits => [1 .. 4  => Fox,
+                            5 .. 8  => Mouse,
+                            9 .. 12 => Rabbit]
+      );
+   begin
+      Client.Send (Payload);
+   end Map_Clears;
 
 end Game;

@@ -114,8 +114,16 @@ package Messages is
    type Game_Msg is record
       Phase : Game_Phase;
    end record;
-
    Game_Msg_Len : constant UInt8 := (Game_Msg'Size / 8);
+
+   type Map_Clears_Msg is record
+      Clearing_Suits : Clearing_Suit_By_Priority;
+   end record;
+
+   for Map_Clears_Msg use record
+      Clearing_Suits at 0 range 0 .. (Priority'Last * Suit'Size) - 1;
+   end record;
+   Map_Clears_Msg_Len : constant UInt8 := (Map_Clears_Msg'Size / 8);
 
    ----------------------
    -- Faction Messages --

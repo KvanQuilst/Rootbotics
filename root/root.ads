@@ -128,7 +128,8 @@ package Root is
 
    subtype Priority is UInt8 range 1 .. 12;
    type Boolean_By_Priority is array (Priority) of Boolean;
-   type Clearing_Suit_By_Priority is array (Priority) of Clearing_Suit;
+   type Clearing_Suit_By_Priority is array (Priority) of Clearing_Suit
+      with Component_Size => 4;
 
    subtype Seat is UInt4 range 1 .. 6;
    type Boolean_By_Seat is array (Seat) of Boolean;

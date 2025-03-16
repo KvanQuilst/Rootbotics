@@ -37,6 +37,7 @@ package Client is
    procedure Receive;
 
    procedure Send (Payload : Create_Game_Msg);
+   procedure Send (Payload : Map_Clears_Msg);
 
 private
 

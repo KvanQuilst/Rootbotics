@@ -75,6 +75,7 @@ package body Client is
    begin
       case Msg_Type is
          when Request_Create_Game => Game.Create_Game;
+         when Request_Map_Clears  => Game.Map_Clears;
          when others =>
             Put_Line ("ERROR: CLIENT . RECEIVE: "
                     & "Unimplemented message type: " & Msg_Type'Image);
@@ -93,8 +94,14 @@ package body Client is
    begin
       Msg_Header'Output (Channel,
                          Get_Header (Create_Game_Msg_Len, Create_Game));
-      Create_Game_Msg'Output (Channel,
-                              Payload);
+      Create_Game_Msg'Output (Channel, Payload);
+   end Send;
+
+   procedure Send (Payload : Map_Clears_Msg) is
+   begin
+      Msg_Header'Output (Channel,
+                         Get_Header (Map_Clears_Msg_Len, Map_Clears));
+      Map_Clears_Msg'Output (Channel, Payload);
    end Send;
 
 end Client;
