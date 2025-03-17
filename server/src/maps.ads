@@ -47,6 +47,8 @@ package Maps is
 
    function Clearings_Set (Self : in out Map) return Boolean;
 
+   function Get_Map_Type  (Self : in out Map) return Map_Type;
+
    procedure Place_Warriors (Self         : in out Map;
                              S            :        Seat;
                              Clearing     :        Priority;

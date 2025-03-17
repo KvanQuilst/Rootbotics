@@ -39,7 +39,7 @@ begin
 
    -- Waiting for game creation parameters --
    loop
-      Server.Send (Request_Create_Game);
+      Server.Send (Create_Game);
       Server.Receive (Create_Game);
       Curr_Game := Get_Current_Game;
       Curr_Map  := Get_Current_Map;
@@ -48,7 +48,7 @@ begin
 
    -- Waiting for Map Clearings to be set --
    loop
-      Server.Send (Request_Map_Clears);
+      Server.Send (Map_Clears);
       Server.Receive (Map_Clears);
       exit when Curr_Map.Clearings_Set;
    end loop;

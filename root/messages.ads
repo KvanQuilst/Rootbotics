@@ -38,11 +38,9 @@ package Messages is
       Faction,
       Map,
       Error,
-      Request_Create_Game,
+      Request,
       Create_Game,
-      Request_Map_Clears,
       Map_Clears,
-      Request_Battle,
       Battle
    ) with Size => 8;
 
@@ -51,14 +49,12 @@ package Messages is
       Faction             => 1,
       Map                 => 2,
       Error               => 3,
+      Request             => 4,
 
-      -- Server Requests / Client Responses --
-      Request_Create_Game => 4, -- Server --
+      -- Client Responses --
       Create_Game         => 5, -- Client --
-      Request_Map_Clears  => 6, -- Server --
-      Map_Clears          => 7, -- Client --
-      Request_Battle      => 8, -- Server --
-      Battle              => 9  -- Client --
+      Map_Clears          => 6, -- Client --
+      Battle              => 7  -- Client --
    );
 
    type Msg_Header is record
@@ -71,6 +67,42 @@ package Messages is
       Msg_Type at 1 range 0 .. 7;
    end record;
    Msg_Header_Len : constant UInt8 := (Msg_Header'Size / 8);
+
+   --------------
+   -- Requests --
+   ----------------------------------------------------------------------------
+   type Request_Type is (
+      Create_Game,
+      Map_Clears,
+      Battle
+   ) with Size => 8;
+
+   for Request_Type use (
+      Create_Game => 0,
+      Map_Clears  => 1,
+      Battle      => 2
+   );
+
+   type Request_Msg is record
+      Req_Type : Request_Type;
+   end record;
+
+   for Request_Msg use record
+      Req_Type at 0 range 0 .. 7;
+   end record;
+   Request_Msg_Len : constant UInt8 := (Request_Msg'Size / 8);
+
+   type Request_Map_Clears_Msg is record
+      Base : Request_Msg;
+      Map  : Map_Type;
+   end record;
+
+   for Request_Map_Clears_Msg use record
+      Base at 0 range 0 .. 7;
+      Map  at 1 range 0 .. 7;
+   end record;
+   Request_Map_Clears_Msg_Len : constant UInt8 :=
+      (Request_Map_Clears_Msg'Size / 8);
 
    ------------------
    -- Map Messages --

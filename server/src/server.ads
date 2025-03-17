@@ -50,9 +50,7 @@ package Server is
    -- Send Subprograms --
    ----------------------
 
-   --  Send only header of Message_Type.
-   --  NOTE: Not all Message_Type's can be sent via this method
-   procedure Send (Msg_Type : Message_Type);
+   procedure Send (Req_Type : Messages.Request_Type);
 
    -- Faction Messages --
    procedure Send (Payload : Automated_Alliance_Msg);

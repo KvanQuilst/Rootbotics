@@ -85,6 +85,9 @@ package body Maps is
    function Clearings_Set (Self : in out Map) return Boolean is
       (Self.Clears_Set);
 
+   function Get_Map_Type (Self : in out Map) return Map_Type is
+      (Self.M_Type);
+
    function Set_Clearing_Suits (
       Self  : in out Map;
       Suits :        Clearing_Suit_By_Priority

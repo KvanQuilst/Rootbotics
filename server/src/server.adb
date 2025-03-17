@@ -101,10 +101,13 @@ package body Server is
       case Msg_Type is
          when Faction =>
             Factions.Receive (Channel, Length);
+         ----------------------------------------------------------------------
          when Create_Game =>
             Recv_Success := Games.Receive (Channel, Length);
+         ----------------------------------------------------------------------
          when Map_Clears =>
             Recv_Success := Maps.Receive (Channel, Length);
+         ----------------------------------------------------------------------
          when others =>
             Put_Line ("> ERROR: SERVER . RECEIVE: "
                     & "Unimplemented message type!");
@@ -134,15 +137,25 @@ package body Server is
       (Length   => Msg_Header_Len + Length,
        Msg_Type => Msg_Type);
 
-   procedure Send (Msg_Type : Message_Type) is
+   procedure Send (Req_Type : Messages.Request_Type) is
    begin
-      case Msg_Type is
-         when Request_Create_Game | Request_Map_Clears =>
-            Msg_Header'Output (Channel, Get_Header (0, Msg_Type));
+      case Req_Type is
+         when Map_Clears =>
+            Msg_Header'Output (Channel,
+                               Get_Header (Request_Map_Clears_Msg_Len,
+                                           Request));
+            Request_Map_Clears_Msg'Output (
+               Channel,
+               (Base => (
+                  Req_Type => Messages.Request_Type'(Map_Clears)
+               ),
+                Map  => Maps.Get_Current_Map.Get_Map_Type)
+            );
+         ----------------------------------------------------------------------
          when others =>
-            Put_Msg (Warning, "SERVER . SEND: "
-                   & "Unable to send header-only of type: " & Msg_Type'Image);
-            return;
+            Msg_Header'Output  (Channel,
+                                Get_Header (Request_Msg_Len, Request));
+            Request_Msg'Output (Channel, (Req_Type => Req_Type));
       end case;
    end Send;
 
