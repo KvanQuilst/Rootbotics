@@ -77,7 +77,7 @@ package body Server is
    begin
       if Length <= Msg_Header_Len then
          --  TODO: Non-terminating error msg
-         Put_Line ("> ERROR: SERVER . RECEIVE: "
+         Put_Msg (Error, "SERVER . RECEIVE: "
                  & "Message length too short:" & Length'Image);
          return;
       end if;
@@ -95,7 +95,7 @@ package body Server is
          return;
       end if;
 
-      Put_Line ("> DEBUG: " & Msg_Type'Image);
+      Put_Msg (Debug, "Received: " & Msg_Type'Image);
 
       Length := @ - Msg_Header_Len;
       case Msg_Type is
@@ -109,8 +109,8 @@ package body Server is
             Recv_Success := Maps.Receive (Channel, Length);
          ----------------------------------------------------------------------
          when others =>
-            Put_Line ("> ERROR: SERVER . RECEIVE: "
-                    & "Unimplemented message type!");
+            Put_Msg (Error, "SERVER . RECEIVE: "
+                    & "Unexpected message type!");
       end case;
 
       if not Recv_Success then
@@ -122,7 +122,7 @@ package body Server is
    exception
       when Constraint_Error =>
          --  TODO: Non-terminating error msg
-         Put_Line ("> ERROR: SERVER . RECEIVE: "
+         Put_Msg (Error, "SERVER . RECEIVE: "
                  & "Unrecognized message type:" & Msg_Type_Val'Image);
       when E : others =>
          Put_Line (Exception_Name (E) & ": " & Exception_Message (E));
