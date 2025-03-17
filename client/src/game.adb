@@ -35,8 +35,6 @@ package body Game is
                       Msg_Type : Message_Type) is
    begin
       case Msg_Type is
-         when Messages.Game =>
-            State := Game_Msg'Input (Stream);
          when others =>
             Put_Line ("> ERROR: We shouldn't be here!");
             --  TODO: Exit with error
@@ -45,12 +43,12 @@ package body Game is
 
    procedure Create_Game is
       Payload : constant Create_Game_Msg := (
-         AdSet       => False,
-         Deck        => Exiles_And_Partisans,
-         Map         => Fall,
-         Clearings   => Balanced,
-         Padding     => False,
-         Num_Players => 4
+         AdSet        => False,
+         Deck         => Exiles_And_Partisans,
+         Map          => Fall,
+         Clearing_Set => Balanced,
+         Padding      => False,
+         Num_Players  => 4
       );
    begin
       Client.Send (Payload);

@@ -47,11 +47,13 @@ begin
    end loop;
 
    -- Waiting for Map Clearings to be set --
-   loop
-      Server.Send (Map_Clears);
-      Server.Receive (Map_Clears);
-      exit when Curr_Map.Clearings_Set;
-   end loop;
+   if not Curr_Map.Clearings_Set then
+      loop
+         Server.Send (Map_Clears);
+         Server.Receive (Map_Clears);
+         exit when Curr_Map.Clearings_Set;
+      end loop;
+   end if;
 
    Server.Finalize;
 

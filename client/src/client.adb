@@ -66,6 +66,23 @@ package body Client is
    function Exiting return Boolean is
       (Client_Exit);
 
+   procedure Handle_Request is
+      Req_Type : constant Messages.Request_Type :=
+         Messages.Request_Type'Input (Channel);
+   begin
+      case Req_Type is
+         when Create_Game =>
+            Game.Create_Game;
+         ----------------------------------------------------------------------
+         when Map_Clears =>
+            Game.Map_Clears;
+         ----------------------------------------------------------------------
+         when Battle =>
+            null;
+         ----------------------------------------------------------------------
+      end case;
+   end Handle_Request;
+
    procedure Receive is
       Length   : constant UInt8        := UInt8'Input (Channel);
       Msg_Type : constant Message_Type := Message_Type'Input (Channel);
@@ -74,8 +91,9 @@ package body Client is
                      "ERROR: Invalid message length from server!");
    begin
       case Msg_Type is
-         when Request_Create_Game => Game.Create_Game;
-         when Request_Map_Clears  => Game.Map_Clears;
+         when Request =>
+            Handle_Request;
+         ----------------------------------------------------------------------
          when others =>
             Put_Line ("ERROR: CLIENT . RECEIVE: "
                     & "Unimplemented message type: " & Msg_Type'Image);

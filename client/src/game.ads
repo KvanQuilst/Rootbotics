@@ -37,8 +37,4 @@ package Game is
    procedure Create_Game;
    procedure Map_Clears;
 
-private
-
-   State : Game_Msg;
-
 end Game;
